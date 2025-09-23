@@ -1,10 +1,12 @@
-ASP.NET MVC .NET 8 Starter Template 🚀
 
-Brzi početak za MVC projekte sa Identity i EF Core
+
+# ASP.NET MVC .NET 8 Starter Template 🚀
+
+##  Namenjeno za momentalni početak izrade ASP.NET MVC aplikacija bez trošenja vremena na početnu konfiguraciju
 
 Ovo je starter/template projekat za ASP.NET Core MVC (.NET 8) koji pruža unapred konfigurisanu strukturu za brži razvoj web aplikacija. Idealno za projekte koji zahtevaju korisničke naloge, autentifikaciju, autorizaciju i rad sa bazom podataka.
 
-🔧 Tehnologije
+## 🔧 Tehnologije
 
 ASP.NET Core MVC (.NET 8)
 
@@ -12,7 +14,7 @@ Entity Framework Core 9
 
 Identity Framework (autentifikacija i autorizacija)
 
-🗂️ Struktura šablona
+## 🗂️ Struktura šablona
 
 Data – ApplicationDbContext, Seeder klasa za inicijalne podatke (korisnici i role)
 
@@ -28,7 +30,7 @@ LogHelper – centralizovano logovanje | Logger ispisuje sve modelstate validaci
 
 PaginatedList<T> – Generička klasa za paginaciju bilo kojih podataka
 
-⚡ Glavne funkcionalnosti
+## ⚡ Glavne funkcionalnosti
 
 Prekonfigurisani Identity Framework
 
@@ -40,7 +42,7 @@ Integracija sa EF Core i unapred podešen DbContext
 
 Laka ekspanzija novih projekata i funkcionalnosti
 
-🚀 Kako koristiti
+## 🚀 Kako koristiti
 
 Klonirajte repozitorijum ili kopirajte template folder.
 
@@ -52,7 +54,7 @@ Koristite helper metode i BaseController za standardne funkcionalnosti.
 
 Pokrenite projekat i proverite inicijalizaciju baze sa Seeder klasom.
 
-📝 Napomene
+## 📝 Napomene
 
 Kreiran kao head-start template za MVC projekte.
 
