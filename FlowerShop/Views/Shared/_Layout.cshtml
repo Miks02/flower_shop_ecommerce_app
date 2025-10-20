@@ -8,11 +8,15 @@
 </head>
 <body>
 
-<div class="bg-red-500 text-yellow-200">
+@await Html.PartialAsync("Components/Header/Default.cshtml")
+
+<div class="flex justify-center items-center my-4">
     <main role="main" class="">
         @RenderBody()
     </main>
 </div>
+
+@await Html.PartialAsync("Components/Footer/Default.cshtml")
 
 
 <script src="~/js/site.js" asp-append-version="true"></script>

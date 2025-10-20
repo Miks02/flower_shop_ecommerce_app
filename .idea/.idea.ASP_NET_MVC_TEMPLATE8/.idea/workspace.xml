@@ -10,10 +10,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="3dfc88a0-1942-43a6-9550-17949b4f6ca4" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.ASP_NET_MVC_TEMPLATE8/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.ASP_NET_MVC_TEMPLATE8/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FlowerShop/Helpers/Seeder.cs" beforeDir="false" afterPath="$PROJECT_DIR$/FlowerShop/Helpers/Seeder.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FlowerShop/Views/Shared/_Layout.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/FlowerShop/Views/Shared/_Layout.cshtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FlowerShop/wwwroot/css/site.css" beforeDir="false" afterPath="$PROJECT_DIR$/FlowerShop/wwwroot/css/site.css" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -45,6 +44,12 @@
     &quot;accountId&quot;: &quot;bc4d6a79-8d13-4a43-8f1c-a66d77783172&quot;
   }
 }</component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/FlowerShop/Components/FooterViewComponent.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/FlowerShop/Components/HeaderViewComponent.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/FlowerShop/Views/Shared/Components/Footer/Default.cshtml" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/FlowerShop/Views/Shared/Components/Header/Default.cshtml" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="FORCE_HIGHLIGHTING" />
+  </component>
   <component name="MetaFilesCheckinStateConfiguration" checkMetaFiles="true" />
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 4
@@ -145,7 +150,15 @@
       <option name="project" value="LOCAL" />
       <updated>1760981799766</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="feat(helper): Modify seeder method so that it only seeds an administrator">
+      <option name="closed" value="true" />
+      <created>1760982596318</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1760982596318</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -157,7 +170,8 @@
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
     <MESSAGE value="Initial" />
     <MESSAGE value="feat(styles): Remove bootstrap and add Tailwindcss into the project" />
-    <option name="LAST_COMMIT_MESSAGE" value="feat(styles): Remove bootstrap and add Tailwindcss into the project" />
+    <MESSAGE value="feat(helper): Modify seeder method so that it only seeds an administrator" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat(helper): Modify seeder method so that it only seeds an administrator" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
