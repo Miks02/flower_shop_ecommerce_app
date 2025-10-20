@@ -4,8 +4,8 @@ namespace FlowerShop.Components;
 
 public class FooterViewComponent : ViewComponent
 {
-    public IViewComponentResult Invoke()
+    public async Task<IViewComponentResult> InvokeAsync()
     {
-        return View();
+        return await Task.FromResult(View());
     }
 }

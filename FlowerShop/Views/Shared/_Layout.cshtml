@@ -8,7 +8,7 @@
 </head>
 <body>
 
-@await Html.PartialAsync("Components/Header/Default.cshtml")
+@await Component.InvokeAsync("Header")
 
 <div class="flex justify-center items-center my-4">
     <main role="main" class="">
@@ -16,7 +16,7 @@
     </main>
 </div>
 
-@await Html.PartialAsync("Components/Footer/Default.cshtml")
+@await Component.InvokeAsync("Footer")
 
 
 <script src="~/js/site.js" asp-append-version="true"></script>
