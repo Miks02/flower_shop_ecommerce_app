@@ -1,5 +1,69 @@
+# ==============================
+# Visual Studio / .NET
+# ==============================
+
+## Build Folders
 bin/
 obj/
-/packages/
-riderModule.iml
-/_ReSharper.Caches/
+out/
+
+## User-specific files
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+## Rider / JetBrains
+.idea/
+*.sublime-workspace
+*.sublime-project
+
+## Visual Studio Code
+.vscode/
+
+## NuGet
+*.nupkg
+*.snupkg
+packages/
+
+# ==============================
+# ASP.NET / EF Core
+# ==============================
+
+## App settings with secrets
+appsettings.Development.json
+appsettings.Local.json
+appsettings.*.json.user
+
+
+# ==============================
+# Node 
+# ==============================
+
+node_modules/
+
+# npm / yarn / pnpm logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# ==============================
+# Misc
+# ==============================
+
+*.log
+*.vspscc
+*.vssscc
+*.db
+*.db-journal
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# ==============================
+# Optional: JetBrains Rider / Resharper
+# ==============================
+.idea/
+*.sln.iml
