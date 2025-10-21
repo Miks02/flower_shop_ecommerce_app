@@ -20,6 +20,7 @@
       <Folder Include="Areas\Admin\Views\" />
       <Folder Include="Data\Implementations\" />
       <Folder Include="Data\Interfaces\" />
+      <Folder Include="wwwroot\AppImages\" />
     </ItemGroup>
 
 </Project>

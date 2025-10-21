@@ -1,3 +1,140 @@
-<header>
-    <div>Test header</div>
+<header class=" text-white sticky flex flex-col w-full justify-center items-center">
+    <div id="navbar" class="w-full ">
+        <nav class="flex mx-auto items-center justify-between sm:justify-center lg:w-[50%]">
+            <button type="button" id="navbar-open" class="ml-2 text-2xl sm:hidden hover:text-red-200 duration-200">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+            <a href="#" class="sm:mr-auto ml-[20.5px] sm:ml-0 p-3 hover:opacity-80 duration-200"><img src="AppImages/Logo bez pozadine.png" class="brightness-200 max-w-32 rounded-full"/></a>
+            <ul class="text-lg hidden sm:flex">
+                <li><a href="#" class="mx-2 hover:text-red-200 duration-200">Početna</a></li>
+                <li><a href="#" class="mx-2 hover:text-red-200 duration-200">O nama</a></li>
+                <li><a href="#" class="mx-2 hover:text-red-200 duration-200">Katalog</a></li>
+                <li><a href="#" class="mx-2 hover:text-red-200 duration-200">Kontakt</a></li>
+            </ul>
+            <div class="sm:ml-auto flex gap-4 mr-2">
+                <button id="searchButton" type="button" class="text-xl md:text-lg  hover:text-red-200 duration-200">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </button>
+                <a href="#" class="hidden sm:block text-xl md:text-lg hover:text-red-200 duration-200"><i class="fa-regular fa-user"></i></a>
+                <a href="#" class=" fw-bolder text-xl md:text-lg  hover:text-red-200 duration-200"><i class="fa-solid fa-cart-shopping"></i></a>
+            </div>
+        </nav>
+        <div id="searchBar" class="transition-all transform h-0 invisible  px-2 md:px-0 w-[75%] flex mx-auto items-center justify-center sm:justify-center self-center content-center duration-300  lg:w-[40%]">
+            <div id="searchInput" class="transition-all opacity-0 flex shadow-xl mx-auto w-full justify-center duration-200">
+                <div class="inline bg-red-400 rounded-l-xl py-2 w-[15%] md:w-[5%] text-center">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </div>
+                <input type="text" class="border-none inline outline-none pl-2 py-2 text-black rounded-r-xl w-[95%]" placeholder="Pretraži proizvod...">
+            </div>
+        </div>
+        
+        
+        
+    </div>
+    
+    
+    <div id="mobile-navbar" class=" md:hidden fixed top-0 left-0 h-screen w-full z-10 shadow-2xl backdrop-blur-3xl transform -translate-x-full transition-transform duration-300">
+    <nav class="flex flex-col h-full p-3 pb-1 sm:hidden relative">
+        <div class="flex justify-between items-center content-center border-b border-b-red-100 mb-1">
+            <a href="#" class="hover:opacity-80 duration-200 mb-4">
+                <img src="AppImages/Logo bez pozadine.png" class="brightness-200 w-36 rounded-full mx-auto" />
+            </a>
+            <button type="button" id="navbar-close" class="text-3xl pb-1 sm:hidden hover:text-red-200 duration-200">
+                <i class="fa-solid fa-close"></i>
+            </button>
+        </div>
+
+        <ul class="text-lg flex flex-col w-full space-y-1 text-center justify-center ">
+            <li>
+                <a href="#" class="group flex items-center mx-2 py-2 px-3 rounded-lg transition-all duration-300 hover:bg-orange-500/10">
+                    <i class="fa-solid fa-house mr-5 text-white transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:text-orange-300"></i>
+                    <span class="transition-colors duration-300 group-hover:text-orange-200">Početna</span>
+                </a>
+            </li>
+            <li>
+                <a href="#" class="group flex items-center mx-2 py-2 px-3 rounded-lg transition-all duration-300 hover:bg-orange-500/10">
+                    <i class="fa-solid fa-users-rectangle mr-5 text-white transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:text-orange-300"></i>
+                    <span class="transition-colors duration-300 group-hover:text-orange-200">O nama</span>
+                </a>
+            </li>
+            <li>
+                <a href="#" class="group flex items-center mx-2 py-2 px-3 rounded-lg transition-all duration-300 hover:bg-orange-500/10">
+                    <i class="fa-solid fa-table mr-5 text-white transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:text-orange-300"></i>
+                    <span class="transition-colors duration-300 group-hover:text-orange-200">Katalog</span>
+                </a>
+            </li>
+            <li>
+                <a href="#" class="group flex items-center mx-2 py-2 px-3 rounded-lg transition-all duration-300 hover:bg-orange-500/10">
+                    <i class="fa-solid fa-address-card mr-5 text-white transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:text-orange-300"></i>
+                    <span class="transition-colors duration-300 group-hover:text-orange-200">Kontakt</span>
+                </a>
+            </li>
+            <li>
+                <a href="#" class="group flex items-center mx-2 py-2 px-3 rounded-lg transition-all duration-300 hover:bg-green-500/10">
+                    <i class="fa-solid fa-cart-shopping mr-5 text-green-400 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:text-green-300"></i>
+                    <span class="transition-colors duration-300 group-hover:text-green-200">Korpa</span>
+                </a>
+            </li>
+        </ul>
+
+        <ul class="text-lg flex flex-col w-full mt-auto space-y-1">
+            <li>
+                <a href="#" class="group flex items-center mx-2 py-2 px-3 rounded-lg transition-all duration-300 hover:bg-yellow-500/10">
+                    <i class="fa-solid fa-right-to-bracket mr-5 text-orange-400 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:text-yellow-300"></i>
+                    <span class="transition-colors duration-300 group-hover:text-yellow-200">Prijava</span>
+                </a>
+            </li>
+            <li>
+                <a href="#" class="group flex items-center mx-2 py-2 px-3 rounded-lg transition-all duration-300 hover:bg-blue-500/10">
+                    <i class="fa-solid fa-user-plus mr-5 text-orange-400 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:text-blue-300"></i>
+                    <span class="transition-colors duration-300 group-hover:text-blue-200">Registracija</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</div>
+
+    
 </header>
+
+<script>
+    const menuOpen = document.getElementById('navbar-open');
+    const menuClose = document.getElementById('navbar-close');
+    const mobileNavbar = document.getElementById('mobile-navbar');
+    const searchButton = document.getElementById('searchButton');
+    const searchBar = document.getElementById('searchBar');
+    const searchInput = document.getElementById('searchInput');
+    const navbar = document.getElementById('navbar');
+
+    menuOpen.addEventListener('click', () => {
+        mobileNavbar.classList.remove('-translate-x-full');
+        mobileNavbar.classList.add('translate-x-0');
+    });
+
+    menuClose.addEventListener('click', () => {
+        mobileNavbar.classList.remove('translate-x-0');
+        mobileNavbar.classList.add('-translate-x-full');
+    });
+    
+    searchButton.addEventListener('click', () => {
+        if(searchBar.classList.contains('invisible')) {
+            searchBar.classList.remove('invisible');
+            searchBar.classList.remove('h-0');
+            searchBar.classList.add('h-[50px]');
+            searchBar.classList.add('mb-4');
+            searchInput.classList.remove('opacity-0');
+            
+            
+        }
+        else {
+            searchBar.classList.add('invisible');
+            searchBar.classList.add('h-0');
+            searchBar.classList.remove('h-[50px]');
+            searchBar.classList.remove('mb-4');
+            searchInput.classList.add('opacity-0');
+            navbar.classList.remove('bg-red-900/50');
+        }
+        
+    })
+    
+</script>
