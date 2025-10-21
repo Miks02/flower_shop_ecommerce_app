@@ -11,14 +11,10 @@
   <component name="ChangeListManager">
     <list default="true" id="3dfc88a0-1942-43a6-9550-17949b4f6ca4" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.ASP_NET_MVC_TEMPLATE8/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.ASP_NET_MVC_TEMPLATE8/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FlowerShop/FlowerShop.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/FlowerShop/FlowerShop.csproj" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/FlowerShop/Views/Home/Index.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/FlowerShop/Views/Home/Index.cshtml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/FlowerShop/Views/Shared/Components/Header/Default.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/FlowerShop/Views/Shared/Components/Header/Default.cshtml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/FlowerShop/Views/Shared/_Layout.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/FlowerShop/Views/Shared/_Layout.cshtml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FlowerShop/wwwroot/css/input.css" beforeDir="false" afterPath="$PROJECT_DIR$/FlowerShop/wwwroot/css/input.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/FlowerShop/wwwroot/css/site.css" beforeDir="false" afterPath="$PROJECT_DIR$/FlowerShop/wwwroot/css/site.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -53,8 +49,12 @@
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$PROJECT_DIR$/FlowerShop/Components/FooterViewComponent.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/FlowerShop/Components/HeaderViewComponent.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/FlowerShop/ViewModels/Components/HeroViewModel.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="mock://C:/Projects/FlowerShop/FlowerShop/Views/Home/Index.cshtml" root0="FORCE_HIGHLIGHTING" root1="SKIP_HIGHLIGHTING" root2="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/FlowerShop/Views/Shared/Components/Footer/Default.cshtml" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/FlowerShop/Views/Shared/Components/Header/Default.cshtml" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="FORCE_HIGHLIGHTING" />
+    <setting file="mock://C:/Projects/FlowerShop/FlowerShop/Views/Shared/Components/Header/Default.cshtml" root0="FORCE_HIGHLIGHTING" root1="SKIP_HIGHLIGHTING" root2="FORCE_HIGHLIGHTING" />
+    <setting file="mock://C:/Projects/FlowerShop/FlowerShop/Views/Shared/_Layout.cshtml" root0="FORCE_HIGHLIGHTING" root1="SKIP_HIGHLIGHTING" root2="FORCE_HIGHLIGHTING" />
     <setting file="mock://C:/Projects/FlowerShop/FlowerShop/Views/Shared/_Layout.cshtml" root0="FORCE_HIGHLIGHTING" root1="SKIP_HIGHLIGHTING" root2="FORCE_HIGHLIGHTING" />
   </component>
   <component name="MetaFilesCheckinStateConfiguration" checkMetaFiles="true" />
@@ -62,6 +62,9 @@
   &quot;associatedIndex&quot;: 4
 }</component>
   <component name="ProjectId" id="34KvtvWuA4VGNE0eIHfViAYxW3Q" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="1" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -181,7 +184,15 @@
       <option name="project" value="LOCAL" />
       <updated>1760988745913</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="feat(view component): Add a responsive navbar">
+      <option name="closed" value="true" />
+      <created>1761071190101</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1761071190101</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -196,7 +207,8 @@
     <MESSAGE value="feat(helper): Modify seeder method so that it only seeds an administrator" />
     <MESSAGE value="feat(view): Add partials views for header and footer" />
     <MESSAGE value="feat(view): Make view component methods asynchronous" />
-    <option name="LAST_COMMIT_MESSAGE" value="feat(view): Make view component methods asynchronous" />
+    <MESSAGE value="feat(view component): Add a responsive navbar" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat(view component): Add a responsive navbar" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
