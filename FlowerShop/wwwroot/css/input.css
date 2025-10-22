@@ -6,3 +6,15 @@
 * {
    font-family: 'Poppins', sans-serif;
 }
+
+.btn {
+    @apply relative overflow-hidden cursor-pointer px-10 py-3 font-semibold text-white rounded-lg shadow-all transition-all duration-300;
+    
+}
+
+.btn:hover {
+    @apply opacity-90 scale-110 bg-opacity-90;
+}
+.shadow-all {
+    box-shadow: 0 0 5px #333;
+}
