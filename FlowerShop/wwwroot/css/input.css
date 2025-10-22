@@ -18,3 +18,7 @@
 .shadow-all {
     box-shadow: 0 0 5px #333;
 }
+
+.gradient-red {
+    @apply bg-gradient-to-bl from-red-800 to-red-900;
+}
