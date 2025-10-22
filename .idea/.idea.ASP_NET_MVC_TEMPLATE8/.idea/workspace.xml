@@ -11,6 +11,7 @@
   <component name="ChangeListManager">
     <list default="true" id="3dfc88a0-1942-43a6-9550-17949b4f6ca4" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.ASP_NET_MVC_TEMPLATE8/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.ASP_NET_MVC_TEMPLATE8/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FlowerShop/ViewModels/Components/HeroViewModel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/FlowerShop/ViewModels/Components/HeroViewModel.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/FlowerShop/Views/Home/Index.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/FlowerShop/Views/Home/Index.cshtml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/FlowerShop/Views/Shared/Components/Header/Default.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/FlowerShop/Views/Shared/Components/Header/Default.cshtml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/FlowerShop/Views/Shared/_Layout.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/FlowerShop/Views/Shared/_Layout.cshtml" afterDir="false" />
@@ -49,11 +50,17 @@
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$PROJECT_DIR$/FlowerShop/Components/FooterViewComponent.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/FlowerShop/Components/HeaderViewComponent.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/FlowerShop/Components/HeroViewComponent.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/FlowerShop/ViewModels/Components/HeroViewModel.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="mock://C:/Projects/FlowerShop/FlowerShop/Views/Home/Index.cshtml" root0="FORCE_HIGHLIGHTING" root1="SKIP_HIGHLIGHTING" root2="FORCE_HIGHLIGHTING" />
     <setting file="mock://C:/Projects/FlowerShop/FlowerShop/Views/Home/Index.cshtml" root0="FORCE_HIGHLIGHTING" root1="SKIP_HIGHLIGHTING" root2="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/FlowerShop/Views/Shared/Components/Footer/Default.cshtml" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/FlowerShop/Views/Shared/Components/Header/Default.cshtml" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="FORCE_HIGHLIGHTING" />
     <setting file="mock://C:/Projects/FlowerShop/FlowerShop/Views/Shared/Components/Header/Default.cshtml" root0="FORCE_HIGHLIGHTING" root1="SKIP_HIGHLIGHTING" root2="FORCE_HIGHLIGHTING" />
+    <setting file="mock://C:/Projects/FlowerShop/FlowerShop/Views/Shared/Components/Header/Default.cshtml" root0="FORCE_HIGHLIGHTING" root1="SKIP_HIGHLIGHTING" root2="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/FlowerShop/Views/Shared/Components/Hero/Default.cshtml" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="FORCE_HIGHLIGHTING" />
+    <setting file="mock://C:/Projects/FlowerShop/FlowerShop/Views/Shared/_Layout.cshtml" root0="FORCE_HIGHLIGHTING" root1="SKIP_HIGHLIGHTING" root2="FORCE_HIGHLIGHTING" />
+    <setting file="mock://C:/Projects/FlowerShop/FlowerShop/Views/Shared/_Layout.cshtml" root0="FORCE_HIGHLIGHTING" root1="SKIP_HIGHLIGHTING" root2="FORCE_HIGHLIGHTING" />
     <setting file="mock://C:/Projects/FlowerShop/FlowerShop/Views/Shared/_Layout.cshtml" root0="FORCE_HIGHLIGHTING" root1="SKIP_HIGHLIGHTING" root2="FORCE_HIGHLIGHTING" />
     <setting file="mock://C:/Projects/FlowerShop/FlowerShop/Views/Shared/_Layout.cshtml" root0="FORCE_HIGHLIGHTING" root1="SKIP_HIGHLIGHTING" root2="FORCE_HIGHLIGHTING" />
   </component>
@@ -192,7 +199,15 @@
       <option name="project" value="LOCAL" />
       <updated>1761071190101</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="feat(ComponentViewModel): Add HeroViewModel">
+      <option name="closed" value="true" />
+      <created>1761072589434</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1761072589434</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -208,7 +223,8 @@
     <MESSAGE value="feat(view): Add partials views for header and footer" />
     <MESSAGE value="feat(view): Make view component methods asynchronous" />
     <MESSAGE value="feat(view component): Add a responsive navbar" />
-    <option name="LAST_COMMIT_MESSAGE" value="feat(view component): Add a responsive navbar" />
+    <MESSAGE value="feat(ComponentViewModel): Add HeroViewModel" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat(ComponentViewModel): Add HeroViewModel" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
