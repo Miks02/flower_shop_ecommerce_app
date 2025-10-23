@@ -41,25 +41,42 @@ searchButton.addEventListener('click', () => {
 
 })
 
+const updateNavbarClasses = (options) => {
+    const { blur = false, shadow = false, bg = false } = options;
+
+    navbar.classList.toggle("backdrop-blur-3xl", blur);
+    navbar.classList.toggle("shadow-all", shadow);
+    navbar.classList.toggle("bg-red-900/30", bg);
+};
+
+searchInput.querySelector('input').addEventListener('input', (e) => {
+    const hasText = e.target.value.length > 0;
+    updateNavbarClasses({ blur: hasText, shadow: hasText, bg: hasText });
+});
+
 const handleIntersection = (entries) => {
     entries.forEach(entry => {
-        if(entry.isIntersecting) {
+        const isIntersecting = entry.isIntersecting;
+        const ratioLow = entry.intersectionRatio < 0.95;
+        const hasSearchText = searchInput.querySelector('input').value.length > 0;
+
+        if (isIntersecting) {
             navbar.classList.remove("gradient-red");
             mobileNavbar.classList.remove("bg-red-900/85");
-            if (entry.intersectionRatio < 0.95) {
-                navbar.classList.add("backdrop-blur-3xl");
-                navbar.classList.add("shadow-all");
-                navbar.classList.add("bg-red-900/30");
-            } else {
-                navbar.classList.remove("backdrop-blur-3xl");
-                navbar.classList.remove("shadow-all");
-                navbar.classList.remove("bg-red-900/30");
-            }
+
+            updateNavbarClasses({
+                blur: ratioLow || hasSearchText,
+                shadow: ratioLow || hasSearchText,
+                bg: ratioLow || hasSearchText
+            });
+
         } else {
             navbar.classList.add("gradient-red");
-            mobileNavbar.classList.add("bg-red-900/85");
-            mobileNavbar.classList.add("bg-opacity-50")
-            
+            mobileNavbar.classList.add("bg-red-900/85", "bg-opacity-50");
+
+            if (!hasSearchText) {
+                updateNavbarClasses({ blur: false, shadow: false, bg: false });
+            }
         }
     });
 };
