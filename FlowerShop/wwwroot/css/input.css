@@ -19,6 +19,18 @@
     box-shadow: 0 0 5px #333;
 }
 
+#navbar::before {
+    content: '';
+    @apply absolute inset-0 bg-gradient-to-bl from-red-800 to-red-900;
+    opacity: 0;
+    transition: opacity 0.200s ease-in-out;
+    z-index: -1;
+}
+
+#navbar.gradient-red::before {
+    opacity: 1;
+}
+
 .gradient-red {
     @apply bg-gradient-to-bl from-red-800 to-red-900;
 }

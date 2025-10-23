@@ -1,5 +1,5 @@
 <header class=" text-white fixed z-50 flex flex-col w-full justify-center items-center">
-    <div id="navbar" class="w-full ">
+    <div id="navbar" class="w-full transition-all duration-200 ease-in-out">
         <nav class="flex mx-auto items-center justify-between sm:justify-center lg:w-[50%]">
             <button type="button" id="navbar-open" class="ml-2 text-2xl sm:hidden hover:text-red-200 duration-200">
                 <i class="fa-solid fa-bars"></i>
@@ -33,7 +33,7 @@
     </div>
     
     
-    <div id="mobile-navbar" class=" md:hidden fixed top-0 left-0 h-screen w-full z-20 shadow-2xl backdrop-blur-3xl transform -translate-x-full transition-transform duration-300">
+    <div id="mobile-navbar" class=" md:hidden fixed top-0 left-0 h-screen w-full z-20 shadow-2xl backdrop-blur-3xl transform -translate-x-full transition-all duration-300">
     <nav class="flex flex-col h-full p-3 pb-1 sm:hidden relative">
         <div class="flex justify-between items-center content-center border-b border-b-red-100 mb-1">
             <a href="#" class="hover:opacity-80 duration-200 mb-4">
@@ -98,43 +98,6 @@
 </header>
 
 <script>
-    const menuOpen = document.getElementById('navbar-open');
-    const menuClose = document.getElementById('navbar-close');
-    const mobileNavbar = document.getElementById('mobile-navbar');
-    const searchButton = document.getElementById('searchButton');
-    const searchBar = document.getElementById('searchBar');
-    const searchInput = document.getElementById('searchInput');
-    const navbar = document.getElementById('navbar');
-
-    menuOpen.addEventListener('click', () => {
-        mobileNavbar.classList.remove('-translate-x-full');
-        mobileNavbar.classList.add('translate-x-0');
-    });
-
-    menuClose.addEventListener('click', () => {
-        mobileNavbar.classList.remove('translate-x-0');
-        mobileNavbar.classList.add('-translate-x-full');
-    });
     
-    searchButton.addEventListener('click', () => {
-        if(searchBar.classList.contains('invisible')) {
-            searchBar.classList.remove('invisible');
-            searchBar.classList.remove('h-0');
-            searchBar.classList.add('h-[50px]');
-            searchBar.classList.add('mb-4');
-            searchInput.classList.remove('opacity-0');
-            
-            
-        }
-        else {
-            searchBar.classList.add('invisible');
-            searchBar.classList.add('h-0');
-            searchBar.classList.remove('h-[50px]');
-            searchBar.classList.remove('mb-4');
-            searchInput.classList.add('opacity-0');
-            navbar.classList.remove('bg-red-900/50');
-        }
-        
-    })
     
 </script>
