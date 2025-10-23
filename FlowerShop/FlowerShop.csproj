@@ -21,6 +21,11 @@
       <Folder Include="Data\Implementations\" />
       <Folder Include="Data\Interfaces\" />
       <Folder Include="wwwroot\AppImages\" />
+      <Folder Include="wwwroot\js\" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <_ContentIncludedByDefault Remove="wwwroot\js\assets\main-BhkP5e4l.css" />
     </ItemGroup>
 
 </Project>

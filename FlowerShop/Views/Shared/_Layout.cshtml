@@ -20,7 +20,7 @@
 @await Component.InvokeAsync("Footer")
 
 
-<script src="~/js/site.js" asp-append-version="true"></script>
+<script type="module" src="~/js/main.js"  asp-append-version="true"></script>
 <script src="https://kit.fontawesome.com/fb9f5b5c58.js" crossorigin="anonymous"></script>
 @await RenderSectionAsync("Scripts", required: false)
 </body>
