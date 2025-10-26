@@ -17,12 +17,9 @@ public class ApplicationDbContext :  IdentityDbContext<ApplicationUser>
         {
             base.OnModelCreating(builder);
             
-
-            
-
-
-
-
+            builder.Entity<ApplicationUser>()
+                .Property(u => u.PhoneNumber)
+                .IsRequired();
 
         }
 }
