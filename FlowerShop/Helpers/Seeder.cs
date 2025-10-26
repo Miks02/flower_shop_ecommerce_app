@@ -11,7 +11,7 @@ public static class Seeder
         var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
         var userManager = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
    
-        string[] roleNames = { "Admin", "Courier", "User" };
+        string[] roleNames = { "Admin", "Deliverer", "User" };
         foreach (var roleName in roleNames)
         {
             if (!await roleManager.RoleExistsAsync(roleName))
