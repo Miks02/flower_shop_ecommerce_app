@@ -1,5 +1,6 @@
 using FlowerShop.Models;
 using FlowerShop.Data;
+using FlowerShop.Helpers;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -15,6 +16,7 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
     options.Password.RequireLowercase = false;
     options.Password.RequiredLength = 4;
     options.Password.RequiredUniqueChars = 0;
+    options.User.RequireUniqueEmail = true;
 }).AddEntityFrameworkStores<ApplicationDbContext>();
 // Add services to the container.
 builder.Services.AddControllersWithViews();
@@ -33,8 +35,10 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
-
+app.UseAuthentication();
 app.UseAuthorization();
+
+await Seeder.SeedUsers(app.Services);
 
 app.MapControllerRoute(
     name: "areas",
