@@ -4,6 +4,7 @@ using FlowerShop.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FlowerShop.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251027121531_AddProductAndItsRelatedEntities")]
+    partial class AddProductAndItsRelatedEntities
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -120,53 +123,7 @@ namespace FlowerShop.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Name")
-                        .IsUnique()
-                        .HasDatabaseName("UX_Categorys_Name");
-
                     b.ToTable("Categories");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Name = "Buketi"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Name = "Aranžmani"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Name = "Specijalni pokloni"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            Name = "101 Ruža"
-                        },
-                        new
-                        {
-                            Id = 5,
-                            Name = "Saksijsko cveće"
-                        },
-                        new
-                        {
-                            Id = 6,
-                            Name = "Box mede"
-                        },
-                        new
-                        {
-                            Id = 7,
-                            Name = "Dehidrirane ruže"
-                        },
-                        new
-                        {
-                            Id = 8,
-                            Name = "Venci i suze"
-                        });
                 });
 
             modelBuilder.Entity("FlowerShop.Models.FlowerType", b =>
@@ -231,28 +188,6 @@ namespace FlowerShop.Migrations
                         .HasDatabaseName("UX_Occasions_Name");
 
                     b.ToTable("Occasions");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Name = "Dan zaljubljenih"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Name = "8. Mart - Dan žena"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Name = "Rodjendan"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            Name = "Svadba i venčanje"
-                        });
                 });
 
             modelBuilder.Entity("FlowerShop.Models.Product", b =>
