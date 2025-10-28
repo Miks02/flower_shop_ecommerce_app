@@ -5,10 +5,12 @@
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>@ViewData["Title"] - FlowerShop</title>
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true"/>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" integrity="sha384-tViUnnbYAV00FLIhhi3v/dWt3Jxw4gZQcNoSCxCIFNJVCx7/D55/wXsrNIRANwdD" crossorigin="anonymous">
+    <link  rel="preload" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" integrity="sha384-tViUnnbYAV00FLIhhi3v/dWt3Jxw4gZQcNoSCxCIFNJVCx7/D55/wXsrNIRANwdD" crossorigin="anonymous">
 </head>
-<body class="flex flex-col min-h-screen">
+<body class="flex flex-col min-h-screen ">
+<div id="header-placeholder" class="fixed top-0 bg-red-200" style="height: 90px;"></div>
 
 @await Component.InvokeAsync("Header")
 
@@ -21,8 +23,8 @@
 @await Component.InvokeAsync("Footer")
 
 
-<script type="module" src="~/js/main.js"  asp-append-version="true"></script>
-<script src="https://kit.fontawesome.com/fb9f5b5c58.js" crossorigin="anonymous"></script>
+<script type="module" src="~/js/main.js" asp-append-version="true"></script>
 @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
+
