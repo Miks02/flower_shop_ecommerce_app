@@ -4,12 +4,12 @@
             <button type="button" id="navbar-open" class="ml-2 text-2xl sm:hidden hover:text-red-200 duration-200">
                 <i class="fa-solid fa-bars"></i>
             </button>
-            <a href="#" class="sm:mr-auto ml-[20.5px] sm:ml-0 p-3 hover:opacity-80 duration-200"><img src="AppImages/Logo bez pozadine.png" class="brightness-200 max-w-32 rounded-full"/></a>
+            <a asp-controller="Home" asp-action="Index" class="sm:mr-auto ml-[20.5px] sm:ml-0 p-3 hover:opacity-80 duration-200"><img src="AppImages/Logo bez pozadine.png" class="brightness-200 max-w-32 rounded-full"/></a>
             <ul class="text-lg hidden sm:flex">
-                <li><a href="#" class="mx-2 hover:text-red-200 duration-200">Početna</a></li>
+                <li><a asp-controller="Home" asp-action="Index" class="mx-2 hover:text-red-200 duration-200">Početna</a></li>
                 <li><a href="#" class="mx-2 hover:text-red-200 duration-200">O nama</a></li>
                 <li><a href="#" class="mx-2 hover:text-red-200 duration-200">Katalog</a></li>
-                <li><a href="#" class="mx-2 hover:text-red-200 duration-200">Kontakt</a></li>
+                <li><a asp-controller="Contact" asp-action="Index" class="mx-2 hover:text-red-200 duration-200">Kontakt</a></li>
             </ul>
             <div class="sm:ml-auto flex gap-4 mr-2">
                 <button id="searchButton" type="button" class="text-xl md:text-lg  hover:text-red-200 duration-200">

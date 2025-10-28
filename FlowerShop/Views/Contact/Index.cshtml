@@ -1,0 +1,77 @@
+
+@{
+    ViewBag.Title = "Kontakt";
+}
+
+@await Component.InvokeAsync("Hero", new
+{
+    title = "Kontakt",
+    subtitle = "Imate dodatnih pitanja ili želite savet oko izbora proizvoda? Javite se i odgovaramo u najkraćem mogućem roku.",
+    isHome = false,
+    backgroundImage = "'./AppImages/Hero pozadina.jpg'"
+
+})
+
+<section class="w-screen min-h-[400px] bg-gradient-to-tr from-red-100 to-rose-100 ">
+    <div class="p-2 sm:p-16 flex justify-center gap-10 flex-wrap lg:flex-nowrap min-w-[300px] flex-col-reverse lg:flex-row">
+        
+        <div class="flex flex-col gap-5 p-6 bg-red-200 rounded-3xl shadow-2xl text-red-800 min-w-[300px]">
+            <h1 class="text-3xl font-semibold">Kako do nas</h1>
+            <div class="flex flex-col gap-4 ">
+                <div class="flex gap-2 flex-col items-center text-center sm:flex-row">
+                    <i class="fa-solid fa-location-dot text-blue-500"></i>
+                    <p><strong>Adresa:</strong> Beograd, Savski nasip 7</p>
+                </div>
+                <div class="flex gap-2 flex-col items-center sm:flex-row">
+                    <i class="fa-solid fa-phone text-blue-500"></i> 
+                    <p><strong>Telefon:</strong> 066 546 75 85</p>
+                </div>
+                <div class="flex gap-2 flex-col items-center sm:flex-row">
+                    <i class="fa-solid fa-envelope text-blue-500"></i>
+                    <p><strong>Email:</strong> milan26022@its.edu.rs</p>
+
+                </div>
+                <div class="flex gap-2 flex-col items-center sm:flex-row">
+                    <i class="fa-solid fa-clock text-blue-500"></i>
+                    <p><strong>Radno vreme:</strong> Pon-Pet: 08:00 - 20:00</p>
+                </div>
+            </div>
+            
+            <div >
+                <iframe class="rounded-3xl shadow-all w-full xl:w-[400px] mx-auto" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2830.9623770224766!2d20.417235076602147!3d44.80195537737994!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x475a6fed775da59b%3A0xb523201fb055943a!2z0KHQsNCy0YHQutC4INC90LDRgdC40L8gNywg0JHQtdC-0LPRgNCw0LQgMTEwNzA!5e0!3m2!1ssr!2srs!4v1761578274338!5m2!1ssr!2srs"  style="border:0;" allowfullscreen="" height="400" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+            </div>
+        </div>
+        
+        <div class="flex flex-col gap-5 p-6 bg-red-300 rounded-3xl shadow-2xl text-red-900 min-w-[300px]">
+            <h1 class="text-3xl font-semibold">Pošaljite nam poruku</h1>
+            <div class="flex flex-col lg:flex-row lg:flex-nowrap flex-wrap gap-6 ">
+                <div class="flex flex-col">
+                    <label for="fullname">Ime i Prezime</label>
+                    <input type="text" id="fullname" name="fullname" placeholder="Unesite vaše ime i prezime" class="w-full p-2 border-2 shadow-2xl transition-all bg-red-200 placeholder-gray-500 border-red-500 rounded-md focus:outline-none focus:ring-4 focus:ring-red-400 focus:border-red-200">
+                </div>
+                
+                <div class="flex flex-col">
+                    <label for="email">Email adresa</label>
+                    <input type="text" id="email" name="email" placeholder="Unesite email adresu..." class="w-full p-2 border-2 shadow-2xl transition-all bg-red-200 placeholder-gray-500 border-red-500 rounded-md focus:outline-none focus:ring-4 focus:ring-red-400 focus:border-red-200">
+                </div>
+            </div>
+            <div class="flex flex-col">
+                <label for="phone">Telefon</label>
+                <input type="tel" id="phone" name="phone" placeholder="Unesite broj telefona..." class="w-full p-2 border-2 shadow-2xl transition-all bg-red-200 placeholder-gray-500 border-red-500 rounded-md focus:outline-none focus:ring-4 focus:ring-red-400 focus:border-red-200">
+            </div>
+            <div class="flex flex-col">
+                <label for="message">Poruka</label>
+                <textarea rows="10" cols="10" id="message" name="message" placeholder="Unesite broj telefona..." class="w-full p-2 border-2 shadow-2xl transition-all bg-red-200 placeholder-gray-500 border-red-500 rounded-md focus:outline-none focus:ring-4 focus:ring-red-400 focus:border-red-200"> </textarea>
+            </div>
+            
+            <div class="flex justify-center sm:justify-between flex-wrap gap-5">
+                <div class="flex  gap-4 flex-row-reverse">
+                    <label for="terms" class="self-center">Slažem se sa politikom privatnosti</label>
+                    <input type="checkbox" id="terms" name="terms" class="  ">
+                </div>
+                <button class="btn bg-red-900">Pošalji</button>
+            </div>
+        </div>
+
+    </div>
+</section>
