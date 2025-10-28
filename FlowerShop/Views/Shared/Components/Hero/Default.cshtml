@@ -1,9 +1,9 @@
 @model FlowerShop.ViewModels.Components.HeroViewModel
 
-<section class="hero  @(Model.IsHome ? "h-screen" : "h-32]")" style="background-image: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url(@Model.BackgroundImage); background-size: cover; background-position: center; background-repeat: no-repeat;">
+<section class="hero relative @(Model.IsHome ? "h-screen" : "h-[45vh] sm:h-[35vh]") " style="background-image: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url(@Model.BackgroundImage); background-size: cover; background-position: center; background-repeat: no-repeat;">
     @if (Model.IsHome)
     {
-        <div class=" w-screen position absolute top-[50%] left-[50%] transform -translate-x-1/2 text-center  -translate-y-1/2  text-white sm:p-3 sm:py-3 ">
+        <div class="w-screen position absolute top-[50%] left-[50%] transform -translate-x-1/2 text-center  -translate-y-1/2  text-white sm:p-3 sm:py-3 ">
             <h1 class=" text-5xl sm:text-6xl md:text-7xl m-2 font-bold text-red-200">@Model.Title</h1>
             <p class="my-4 text-gray-300 font-semibold">@Model.Subtitle</p>
             <button class="btn gradient-red cursor-pointer shadow-red-900/50">
@@ -14,8 +14,8 @@
     }
     else
     {
-        <div class=" w-screen position absolute top-[50%] left-[50%] transform -translate-x-1/2 text-center  -translate-y-1/2  text-white sm:p-3 sm:py-3 ">
-            <h1 class=" text-5xl sm:text-6xl md:text-7xl m-2 font-bold text-red-200">@Model.Title</h1>
+        <div class=" w-screen position absolute top-[60%] left-[50%] transform -translate-x-1/2 text-center  -translate-y-1/2  text-white sm:p-3 sm:py-3 ">
+            <h1 class=" text-4xl sm:text-5xl md:text-6xl m-2 font-bold text-red-200">@Model.Title</h1>
             <p class="my-4 text-gray-300 font-semibold">@Model.Subtitle</p>
         </div>
     }
