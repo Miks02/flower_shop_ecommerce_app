@@ -1,6 +1,8 @@
 using FlowerShop.Models;
 using FlowerShop.Data;
 using FlowerShop.Helpers;
+using FlowerShop.Services.Interfaces;
+using FlowerShop.Services.Mock;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -20,6 +22,10 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
 }).AddEntityFrameworkStores<ApplicationDbContext>();
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+builder.Services.AddScoped<IProductService, MockProductService>();
+builder.Services.AddScoped<ICategoryService, MockCategoryService>();
+builder.Services.AddScoped<IOccasionService, MockOccasionService>();
 
 var app = builder.Build();
 
