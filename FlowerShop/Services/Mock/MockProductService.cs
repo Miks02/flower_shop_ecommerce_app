@@ -22,12 +22,11 @@ public class MockProductService : IProductService
             new Occasion { Id = 1, Name = "Dan zaljubljenih" },
             new Occasion { Id = 2, Name = "8. Mart - Dan žena" },
             new Occasion { Id = 3, Name = "Rodjendan" },
-            new Occasion { Id = 4, Name = "Svadba i venčanje" }
         };
 
         _products = new List<Product>()
         {
-            new Product { Id = 1, Name = "Buket crvenih ruža", Price = 999, Stock = 100, Description = "Buket za sve prilike", ImageUrl = "./AppImages/buket.jpg", Category = _categories[0], Occasions = _occasions }
+            new Product { Id = 1, Name = "Buket crvenih ruža", Price = 999, Stock = 100, Description = "Buket za sve prilike", ImageUrl = "./AppImages/Proizvodi/Buketi/Buket crvenih ruza.jpg", Category = _categories[0], Occasions = _occasions }
 
         };
     }

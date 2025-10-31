@@ -1,0 +1,125 @@
+@using FlowerShop.ViewModels;
+@model CatalogueViewModel;
+@{
+    ViewData["Title"] = "Asortiman";
+    Layout = "_Layout";
+}
+
+@await Component.InvokeAsync("Hero", new
+{
+    title = "Asortiman",
+    subtitle = "Pregled asortimana"
+    
+})
+
+
+<section class="w-screen min-h-[400px] bg-gradient-to-tr from-red-100 to-rose-100 ">
+    <div class="flex justify-center gap-10 p-16">
+        <aside class="flex flex-col sticky bg-red-200 min-w-[300px] rounded-2xl shadow-lg">
+            <div class="flex mt-4 px-6 flex-col">
+                <h3 class="text-red-800 text-xl font-semibold"><i class="fa-solid fa-filter"></i> Filteri</h3>
+                <div class="bg-red-800 h-px w-full mx-auto mt-4"></div>
+            </div>
+            
+            <div class="flex  flex-col">
+                <div class="flex mt-4 px-6 flex-col">
+                    <h4 class="text-red-800 text-lg font-semibold"><i class="fa-regular fa-bookmark mr-2"></i> Kategorije</h4>
+                    <div class="flex flex-col gap-4 m-4 ">
+                        @foreach (var m in Model.Categories)
+                        {
+                            <div>
+                                <input
+                                    type="checkbox"
+                                    id="category-@m.Id"
+                                    name="category-@m.Id"
+                                    class="primary-checkbox">
+                                <label for="category-@m.Id" class="checkbox-label-primary">
+                                    @m.Name
+                                </label>
+                            </div>
+                        }
+                        
+
+                    </div>
+                </div>
+                
+                <div class="flex mt-4 px-6  flex-col">
+                    <h4 class="text-red-800 text-lg font-semibold"><i class="bi bi-tag mr-2 text-lg"></i> Prilike</h4>
+                    <div class="flex gap-4 flex-col m-4 ">
+                        @foreach (var m in Model.Occasions)
+                        {
+                            <div>
+                                <input
+                                    type="checkbox"
+                                    id="occasion-@m.Id"
+                                    name="occasion-@m.Id"
+                                    class="primary-checkbox">
+                                <label for="occasion-@m.Id" class="checkbox-label-primary">
+                                    @m.Name
+                                </label>
+                            </div>
+                        }
+                        
+
+                    </div>
+                </div>
+                <div class="flex mt-4 px-6  flex-col">
+                    <h4 class="text-red-800 text-lg font-semibold"><i class="bi bi-wallet2 mr-2"></i> Cenovni opseg</h4>
+                    <div class="flex gap-4 flex-col m-4 ">
+                        <div class="flex flex-col items-center">
+                            <input
+                                type="range"
+                                min="0"
+                                max="50000"
+                                value="0"
+                                step="100"
+                                id="price-range"
+                                name="price-range "
+                                class="w-full bg-gray-200 active:bg-red-400 shadow-md transition-all"
+                            >
+                            <label for="price-range" class="block text-center mt-2 text-red-800 font-semibold">
+                                Cena: <span id="price-tag" class="text-yellow-700">0</span> RSD
+                            </label>
+                            
+                        </div>
+                        
+                        
+
+                    </div>
+                </div>
+            </div>
+        </aside>
+        
+        <div class="flex flex-col gap-10 w-[70%]">
+            <div class="bg-red-300 min-w-[800px] p-3 rounded-2xl shadow-md">
+                <div class="flex justify-between items-center">
+                    <p class="text-red-900 font-semibold">Prikazano 15 od 60 proizvoda</p>
+                    <select class="rounded-xl font-semibold text-red-900 bg-red-200 text-sm p-2">
+                        <option value="#" selected disabled hidden>Sortiraj po</option>
+                        <option value="Podrazumevano">Podrazumevano</option>
+                        <option value="Ceni rastuće">Ceni rastuće</option>
+                        <option value="Ceni opadajuće">Ceni opadajuće</option>
+                        <option value="Najnovije">Najnovije</option>
+                        <option value="Preporučeno">Preporučeno</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="bg-red-300">
+                text
+            </div>
+        </div>
+    </div>
+    
+</section>
+
+<script>
+    const priceRange = document.getElementById('price-range');
+    const priceTag = document.getElementById("price-tag")
+    
+    priceRange.addEventListener("input", (e) => {
+        priceTag.innerHTML = e.target.value;
+    })
+    
+</script>
+
