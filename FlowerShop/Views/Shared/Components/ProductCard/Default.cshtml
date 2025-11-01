@@ -1,0 +1,57 @@
+@using FlowerShop.Helpers
+@using FlowerShop.ViewModels.Components
+@model ProductCardViewModel
+
+<div class="flex flex-col shadow-2xl m-4 rounded-2xl bg-red-200 min-w-[285px] max-w-[350px] transition-all hover:shadow-all  hover:-translate-y-2 duration-200 transform-gpu">
+    
+    <div class="relative rounded-2xl cursor-pointer">
+        
+        <img src="@Model.ImageUrl" alt="" class="object-cover w-full h-64 rounded-t-2xl">
+        @if (Model.Badge is not null)
+        {
+            <p class="absolute top-2 right-2 p-2 @Model.BadgeColor rounded-xl shadow-md font-semibold text-sm text-white">@Model.Badge.GetDisplayName()</p>
+        }
+
+    </div>
+                    
+    <div class="flex flex-col p-4 gap-4 min-h-[200px]">
+        <div class="w-full bg-yellow-200 rounded-md p-1 shadow-all ">
+            <h5 class="text-sm text-green-900 font-semibold text-center">@Model.Category</h5>
+        </div>
+        <div class="flex flex-col gap-2">
+            <h2 class="text-red-900 text-xl font-semibold">@Model.Name</h2>
+            <div class="flex justify-between items-center min-h-[60px]">
+                <div class="flex flex-col gap-2 ">
+                    @if (Model.PromoPrice != 0)
+                    {
+                        <p class="font-semibold text-green-700 line-through">@Model.Price RSD</p>
+                        <p class="font-semibold text-red-600">@Model.PromoPrice RSD</p>
+                    }
+                    else
+                    {
+                        <p class="font-semibold text-green-700">@Model.Price RSD</p>
+                    }
+                    
+                </div>
+                <div class="flex gap-2">
+                    <i class="fa-solid fa-star text-orange-500 p-0 m-0 self-center"></i>
+                    <p class="mt-1 text-orange-500">@(Model.Rating > 0 ? Model.Rating : Model.Rating.ToString("0"))</p>
+                </div>
+            </div>
+            <div class="bg-red-800 h-px w-full "></div>
+
+        </div>
+                        
+        <div >
+            <button class="flex gap-5 items-center text-white font-semibold  bg-green-600 w-[80%] rounded-xl py-3 px-3 mx-auto shadow-all hover:scale-105 transition-all hover:opacity-80 duration-200 will-change-transform">
+                <div class="flex w-full h-full items-center justify-center gap-5 transform">
+                    <h2 class="text-center">Dodaj u korpu</h2>
+                    <i class="fa-solid fa-cart-plus"></i>
+                </div>
+            </button>
+                            
+        </div>
+
+    </div>
+                    
+</div>
