@@ -139,8 +139,4 @@ input[type="range"]::-moz-range-thumb:active {
     @apply bg-gradient-to-b from-emerald-400 to-emerald-500
 }
 
-#filter-menu {
-    scrollbar-width: thin;
-    scrollbar-color: rgba(255, 255, 255, 0.25) rgba(100, 0, 0, 0.3);
-}
 
