@@ -18,12 +18,12 @@ priceRangeMobile.addEventListener("input", (e) => {
 
 filterOpen.addEventListener('click', () => {
     filterMenu.classList.remove('-translate-x-full');
-    document.body.classList.add('overflow-hidden');
+    document.body.classList.add('overflow-y-auto');
 })
 
 filterClose.addEventListener('click', () => {
     filterMenu.classList.add('-translate-x-full');
-    document.body.classList.remove('overflow-hidden');
+    document.body.classList.remove('overflow-y-auto');
 })
 
 const filterButtons = document.querySelectorAll('.filter-link');

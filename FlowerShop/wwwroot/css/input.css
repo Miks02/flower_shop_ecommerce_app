@@ -3,8 +3,29 @@
 @tailwind components;
 @tailwind utilities;
 
-* {
-   font-family: 'Poppins', sans-serif;
+*{
+    font-family: 'Poppins', sans-serif;
+    scrollbar-color: #b91c1c #FECACA;
+    scrollbar-width: thin;
+}
+
+*::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+*::-webkit-scrollbar-track {
+    background: #4b5563;
+}
+
+*::-webkit-scrollbar-thumb {
+    background-color: #b91c1c;
+    border-radius: 9999px;
+    border: 2px solid #4b5563;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+    background-color: #991b1b;
 }
 
 .btn {
@@ -118,4 +139,8 @@ input[type="range"]::-moz-range-thumb:active {
     @apply bg-gradient-to-b from-emerald-400 to-emerald-500
 }
 
+#filter-menu {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 255, 255, 0.25) rgba(100, 0, 0, 0.3);
+}
 
