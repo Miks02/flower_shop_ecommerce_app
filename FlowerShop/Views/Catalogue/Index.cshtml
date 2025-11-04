@@ -33,7 +33,8 @@
                                     type="checkbox"
                                     id="category-@m.Id"
                                     name="category-@m.Id"
-                                    class="primary-checkbox">
+                                    class="primary-checkbox data-input"
+                                    data-category-id="@m.Id">
                                 <label for="category-@m.Id" class="checkbox-label-primary">
                                     @m.Name
                                 </label>
@@ -213,7 +214,8 @@
                                     type="checkbox"
                                     id="category-mobile-@c.Id"
                                     name="category-@c.Id"
-                                    class="primary-checkbox self-center">
+                                    data-category-id="@c.Id"
+                                    class="primary-checkbox self-center data-input">
                                 <label for="category-mobile-@c.Id" class="checkbox-label-primary p-2 text-md hover:opacity-60">
                                     @c.Name
                                 </label>

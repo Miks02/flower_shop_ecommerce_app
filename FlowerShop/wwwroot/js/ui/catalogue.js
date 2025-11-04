@@ -57,4 +57,20 @@ filterButtons.forEach(button => {
     }
 });
 
-console.log("catalogue")
+const categoryCheckboxes = document.querySelectorAll("input[data-category-id]");
+
+categoryCheckboxes.forEach(cb => {
+    cb.addEventListener("change", (e) => {
+        const categoryId = e.currentTarget.dataset.categoryId;
+        const sameCheckboxes = document.querySelectorAll(`input[data-category-id="${categoryId}"]`);
+        
+        sameCheckboxes.forEach(otherCb => {
+            if(otherCb !== cb)
+                otherCb.checked = cb.checked;
+        })
+        
+    })
+})
+
+
+
