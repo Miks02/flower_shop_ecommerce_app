@@ -6,7 +6,6 @@ const filterOpen = document.getElementById('filter-open');
 
 filterOpen.addEventListener('click', (e) => {
     filterMenu.classList.remove('-translate-x-full');
-    document.body.classList.add('overflow-y-hidden');
     e.stopPropagation()
     toggleOverlay(filterMenu, "-translate-x-full")
 })
@@ -15,8 +14,7 @@ filterClose.addEventListener('click', () => {
     filterMenu.classList.add('-translate-x-full');
     if(document.querySelector('.overlay'))
         document.querySelector('.overlay').remove();
-    document.body.classList.remove('overflow-y-hidden');
-
+    document.body.classList.remove("overflow-y-hidden")
 })
 
 const filterButtons = document.querySelectorAll('.filter-link');

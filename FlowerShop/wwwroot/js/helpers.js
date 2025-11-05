@@ -52,9 +52,11 @@ export function initFilters () {
 
 }
 
+
 export function toggleOverlay(element, translateClass) {
     const overlay = document.createElement("div")
     document.body.appendChild(overlay);
+    document.body.classList.add("overflow-y-hidden");
     
     overlay.classList.add("overlay","fixed", "top-0", "w-screen", "h-screen", "bg-gray-900/30", "z-[1]");
     
