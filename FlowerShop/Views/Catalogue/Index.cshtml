@@ -34,7 +34,9 @@
                                     id="category-@m.Id"
                                     name="category-@m.Id"
                                     class="primary-checkbox data-input"
-                                    data-category-id="@m.Id">
+                                    data-id="@m.Id"
+                                    data-filter="@nameof(Model.Categories)"
+                                    >
                                 <label for="category-@m.Id" class="checkbox-label-primary">
                                     @m.Name
                                 </label>
@@ -55,7 +57,9 @@
                                     type="checkbox"
                                     id="occasion-@m.Id"
                                     name="occasion-@m.Id"
-                                    class="primary-checkbox">
+                                    class="primary-checkbox"
+                                    data-id="@m.Id"
+                                    data-filter="@nameof(Model.Occasions)">
                                 <label for="occasion-@m.Id" class="checkbox-label-primary">
                                     @m.Name
                                 </label>
@@ -115,11 +119,13 @@
                                 value="0"
                                 step="100"
                                 id="price-range"
-                                name="price-range "
+                                name="price-range"
+                                data-filter="price"
+                                data-id="0"
                                 class="w-full bg-gray-200 active:bg-red-400 shadow-md transition-all"
                             >
                             <label for="price-range" class="block text-center mt-2 text-red-800 font-semibold">
-                                Cena: <span id="price-tag" class="text-yellow-700">0</span> RSD
+                                Cena: <span id="price-tag" data-price class="text-yellow-700">0</span> RSD
                             </label>
 
                         </div>
@@ -136,10 +142,10 @@
                 <div class="flex justify-between items-center">
                     <p class="hidden md:block text-red-900 font-semibold">Prikazano 15 od 60 proizvoda</p>
                     <button id="filter-open" class="w-[100px] md:hidden md:w-auto appearance-none text-center active:opacity-50 transition-all md:appearance-auto rounded-xl font-semibold text-red-900 bg-red-200 text-sm p-2">Filteri</button>
-                    <button class="w-[100px] md:hidden md:w-auto appearance-none text-center active:opacity-50 transition-all md:appearance-auto rounded-xl font-semibold text-red-900 bg-red-200 text-sm p-2">Sortiranje</button>
+                    @* <button class="w-[100px] md:hidden md:w-auto appearance-none text-center active:opacity-50 transition-all md:appearance-auto rounded-xl font-semibold text-red-900 bg-red-200 text-sm p-2">Sortiranje</button> *@
                     
                     
-                    <select class="hidden md:block w-[100px] md:w-auto appearance-none text-center active:opacity-50 transition-all md:appearance-auto rounded-xl font-semibold text-red-900 bg-red-200 text-sm p-2">
+                    <select class="md:block w-[100px] md:w-auto appearance-none text-center active:opacity-50 transition-all md:appearance-auto rounded-xl font-semibold text-red-900 bg-red-200 text-sm p-2">
                         <option value="#" selected disabled hidden>Sortiraj po</option>
                         <option value="Podrazumevano">Podrazumevano</option>
                         <option value="Ceni rastuće">Ceni rastuće</option>
@@ -214,7 +220,8 @@
                                     type="checkbox"
                                     id="category-mobile-@c.Id"
                                     name="category-@c.Id"
-                                    data-category-id="@c.Id"
+                                    data-id="@c.Id"
+                                    data-filter="@nameof(Model.Categories)"
                                     class="primary-checkbox self-center data-input">
                                 <label for="category-mobile-@c.Id" class="checkbox-label-primary p-2 text-md hover:opacity-60">
                                     @c.Name
@@ -238,6 +245,8 @@
                                     type="checkbox"
                                     id="occasion-mobile-@o.Id"
                                     name="occasion-@o.Id"
+                                    data-id="@o.Id"
+                                    data-filter="@nameof(Model.Occasions)"
                                     class="primary-checkbox self-center ">
                                 <label for="occasion-mobile-@o.Id" class="checkbox-label-primary p-2 text-md hover:opacity-60 ">
                                     @o.Name
@@ -271,6 +280,8 @@
                                 step="100"
                                 id="price-range-mobile"
                                 name="price-range"
+                                data-filter="price"
+                                data-id="0"
                                 class="w-full bg-gray-200 active:bg-red-400 shadow-md transition-all">
                             <label for="price-range-mobile" class="block text-center mt-2 text-white font-semibold">
                                 Cena: <span id="price-tag-mobile" class="text-red-200">0</span> RSD
