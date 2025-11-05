@@ -51,3 +51,19 @@ export function initFilters () {
     }
 
 }
+
+export function toggleOverlay(element, translateClass) {
+    const overlay = document.createElement("div")
+    document.body.appendChild(overlay);
+    
+    overlay.classList.add("overlay","fixed", "top-0", "w-screen", "h-screen", "bg-gray-900/30", "z-[1]");
+    
+    document.addEventListener("click", (e) => {
+        if(e.target !== element && !element.contains(e.target))
+        {
+            element.classList.add(translateClass);
+            overlay.remove();
+            document.body.classList.remove("overflow-y-hidden");
+        }
+    })
+}

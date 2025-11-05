@@ -1,18 +1,20 @@
+import {toggleOverlay} from "../helpers.js";
 
 const filterMenu = document.getElementById('filter-menu');
 const filterClose = document.getElementById('filter-close');
 const filterOpen = document.getElementById('filter-open');
-const dropdown = document.querySelectorAll('.dropdown');
 
-
-
-filterOpen.addEventListener('click', () => {
+filterOpen.addEventListener('click', (e) => {
     filterMenu.classList.remove('-translate-x-full');
     document.body.classList.add('overflow-y-hidden');
+    e.stopPropagation()
+    toggleOverlay(filterMenu, "-translate-x-full")
 })
 
 filterClose.addEventListener('click', () => {
     filterMenu.classList.add('-translate-x-full');
+    if(document.querySelector('.overlay'))
+        document.querySelector('.overlay').remove();
     document.body.classList.remove('overflow-y-hidden');
 
 })
