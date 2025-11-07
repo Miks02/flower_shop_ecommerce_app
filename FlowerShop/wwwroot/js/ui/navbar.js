@@ -26,20 +26,15 @@ menuClose.addEventListener('click', () => {
 
 loginOpen.addEventListener("click", (e) => {
     e.preventDefault();
-    loginMenu.classList.remove('translate-x-full');
     e.stopPropagation();
     toggleOverlay(loginMenu, "translate-x-full");
-       
 
 })
 
 loginClose.addEventListener("click", (e) => {
     e.preventDefault();
-    loginMenu.classList.remove('translate-x-0');
-    loginMenu.classList.add('translate-x-full');
-    document.querySelector('.overlay').remove();
-    document.body.classList.remove("overflow-y-hidden");
-    
+    toggleOverlay(loginMenu, "translate-x-full");
+
 })
 
 searchButton.addEventListener('click', () => {

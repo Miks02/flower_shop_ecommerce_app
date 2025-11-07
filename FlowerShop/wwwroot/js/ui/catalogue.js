@@ -5,16 +5,15 @@ const filterClose = document.getElementById('filter-close');
 const filterOpen = document.getElementById('filter-open');
 
 filterOpen.addEventListener('click', (e) => {
-    filterMenu.classList.remove('-translate-x-full');
+    e.preventDefault();
     e.stopPropagation()
     toggleOverlay(filterMenu, "-translate-x-full")
 })
 
-filterClose.addEventListener('click', () => {
-    filterMenu.classList.add('-translate-x-full');
-    if(document.querySelector('.overlay'))
-        document.querySelector('.overlay').remove();
-    document.body.classList.remove("overflow-y-hidden")
+filterClose.addEventListener('click', (e) => {
+    e.preventDefault();
+    toggleOverlay(filterMenu, "-translate-x-full");
+
 })
 
 const filterButtons = document.querySelectorAll('.filter-link');
@@ -30,7 +29,6 @@ filterButtons.forEach(button => {
             arrow.classList.add("rotate-90");
         } else {
             dropdown.style.maxHeight = '0px';
-            console.log("closed");
         }
         
         button.addEventListener('click', (event) => {
