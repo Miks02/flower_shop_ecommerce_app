@@ -52,27 +52,45 @@ export function initFilters () {
 
 }
 
-// A function responsible for toggling dark overlays over the body
-// It can take specific disabled buttons as an argumnent and enable all of them
-// After the overlay was closed
-export function toggleOverlay(element, translateClass, optionalDisabledButtons = []) {
-    const overlay = document.createElement("div")
-    document.body.appendChild(overlay);
-    document.body.classList.add("overflow-y-hidden");
-    document.body.classList.add("pointer-events-none");
-    overlay.classList.add("overlay","fixed", "top-0", "w-screen", "h-screen", "bg-gray-900/40", "z-1");
+
+export function toggleOverlay(element, translateClass) {
+    let overlay = document.querySelector('.overlay')
+    const isElementVisible = !element.classList.contains(translateClass);
     
-    document.addEventListener("click", (e) => {
-        if(e.target !== element && !element.contains(e.target))
-        {
+    if(!overlay)
+    {
+        overlay = document.createElement("div")
+        document.body.appendChild(overlay);
+        document.body.classList.add("overflow-y-hidden");
+        overlay.classList.add("overlay","fixed", "top-0", "w-screen", "h-screen", "bg-gray-900/40");
+        
+        overlay.addEventListener("click", () => {
+            toggleOverlay(element, translateClass);
+        })
+        
+    }
+    
+    if(isElementVisible) {
+        element.classList.add(translateClass);
+        overlay.remove();
+        
+        document.body.classList.remove("overflow-y-hidden");
+        
+        return;
+    }
+    
+    element.classList.remove(translateClass);
+    
+    document.addEventListener("click", handleOutsideClick)
+    
+    function handleOutsideClick(e) {
+        if(e.target !== element && !element.contains(e.target)) {
             element.classList.add(translateClass);
             overlay.remove();
             document.body.classList.remove("overflow-y-hidden");
-            if(optionalDisabledButtons.length > 0) {
-                optionalDisabledButtons.forEach(o => {
-                    o.disabled = false;
-                })
-            }
+            
+            document.removeEventListener("click", handleOutsideClick);
         }
-    })
+    }
+    
 }
