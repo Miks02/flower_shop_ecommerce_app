@@ -17,7 +17,7 @@ public class HeroViewComponent : ViewComponent
         {
             Title = title,
             Subtitle = subtitle,
-            BackgroundImage = backgroundImage ?? "'./AppImages/Hero pozadina.jpg'",
+            BackgroundImage = backgroundImage ?? "'../AppImages/Hero pozadina.jpg'",
             IsHome = isHome
         };
         
