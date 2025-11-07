@@ -27,8 +27,10 @@ filterButtons.forEach(button => {
     if (dropdown && arrow) {
         if (dropdown.classList.contains('dropdown-default-open')) {
             dropdown.style.maxHeight = dropdown.scrollHeight + 'px';
+            arrow.classList.add("rotate-90");
         } else {
             dropdown.style.maxHeight = '0px';
+            console.log("closed");
         }
         
         button.addEventListener('click', (event) => {
