@@ -1,11 +1,14 @@
-console.log("navbar")
+import {toggleOverlay} from "../helpers.js";
 
 const heroSection = document.querySelector(".hero");
 const navbar = document.getElementById("navbar");
 const mobileNavbar = document.getElementById("mobile-navbar");
+const loginMenu = document.getElementById("login-menu");
 
 const menuOpen = document.getElementById('navbar-open');
 const menuClose = document.getElementById('navbar-close');
+const loginOpen = document.getElementById("login-open");
+const loginClose = document.getElementById("login-close");
 const searchButton = document.getElementById('searchButton');
 const searchBar = document.getElementById('searchBar');
 const searchInput = document.getElementById('searchInput');
@@ -19,6 +22,25 @@ menuClose.addEventListener('click', () => {
     mobileNavbar.classList.remove('translate-x-0');
     mobileNavbar.classList.add('-translate-x-full');
 });
+
+
+loginOpen.addEventListener("click", (e) => {
+    e.preventDefault();
+    loginMenu.classList.remove('translate-x-full');
+    e.stopPropagation();
+    toggleOverlay(loginMenu, "translate-x-full");
+       
+
+})
+
+loginClose.addEventListener("click", (e) => {
+    e.preventDefault();
+    loginMenu.classList.remove('translate-x-0');
+    loginMenu.classList.add('translate-x-full');
+    document.querySelector('.overlay').remove();
+    document.body.classList.remove("overflow-y-hidden");
+    
+})
 
 searchButton.addEventListener('click', () => {
     if(searchBar.classList.contains('invisible')) {
@@ -46,13 +68,14 @@ const updateNavbarClasses = (options) => {
 
     navbar.classList.toggle("backdrop-blur-3xl", blur);
     navbar.classList.toggle("shadow-all", shadow);
-    navbar.classList.toggle("bg-red-900/30", bg);
+    navbar.classList.toggle("bg-red-900/35", bg);
 };
 
 searchInput.querySelector('input').addEventListener('input', (e) => {
     const hasText = e.target.value.length > 0;
     updateNavbarClasses({ blur: hasText, shadow: hasText, bg: hasText });
 });
+
 
 const handleIntersection = (entries) => {
     entries.forEach(entry => {
@@ -63,7 +86,7 @@ const handleIntersection = (entries) => {
         if (isIntersecting) {
             navbar.classList.remove("gradient-red");
             mobileNavbar.classList.remove("bg-red-900/85");
-
+            
             updateNavbarClasses({
                 blur: ratioLow || hasSearchText,
                 shadow: ratioLow || hasSearchText,
@@ -73,7 +96,7 @@ const handleIntersection = (entries) => {
         } else {
             navbar.classList.add("gradient-red");
             mobileNavbar.classList.add("bg-red-900/85", "bg-opacity-50");
-
+            
             if (!hasSearchText) {
                 updateNavbarClasses({ blur: false, shadow: false, bg: false });
             }
@@ -86,6 +109,5 @@ const observer = new IntersectionObserver(handleIntersection, {
     rootMargin: "0px",
     root: null
 });
-console.log(observer)
 observer.observe(heroSection);
 
