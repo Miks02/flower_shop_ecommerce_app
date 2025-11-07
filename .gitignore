@@ -34,6 +34,7 @@ packages/
 appsettings.Development.json
 appsettings.Local.json
 appsettings.*.json.user
+appsettings.json
 
 
 # ==============================
@@ -68,3 +69,4 @@ Thumbs.db
 .idea/
 *.sln.iml
 *.iml
+site.css
