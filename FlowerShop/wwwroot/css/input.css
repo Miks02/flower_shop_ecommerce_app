@@ -124,7 +124,7 @@ input[type="range"]::-moz-range-thumb {
 }
 
 .custom-select {
-    @apply md:block shadow-md cursor-pointer hover:opacity-60 w-[100px] md:w-auto text-center active:opacity-50 transition-all rounded-xl
+    @apply md:block shadow-md cursor-pointer hover:opacity-60 w-[160px] sm:w-[175px] md:w-auto text-center active:opacity-50 transition-all rounded-xl
     font-semibold text-red-900 bg-red-200 text-sm p-2 appearance-none pr-8 bg-no-repeat bg-right custom-arrow
 }
 
