@@ -1,11 +1,13 @@
+using System.Reflection;
 using FlowerShop.Models;
 using FlowerShop.Data;
 using FlowerShop.Helpers;
 using FlowerShop.Services.Interfaces;
 using FlowerShop.Services.Mock;
+using FluentValidation;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-
+using FluentValidation.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,18 +16,23 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
 {
     options.Password.RequireDigit = true;
     options.Password.RequireNonAlphanumeric = false;
-    options.Password.RequireUppercase = false;
-    options.Password.RequireLowercase = false;
-    options.Password.RequiredLength = 4;
+    options.Password.RequireUppercase = true;
+    options.Password.RequireLowercase = true;
+    options.Password.RequiredLength = 8;
     options.Password.RequiredUniqueChars = 0;
     options.User.RequireUniqueEmail = true;
 }).AddEntityFrameworkStores<ApplicationDbContext>();
-// Add services to the container.
-builder.Services.AddControllersWithViews();
 
-builder.Services.AddScoped<IProductService, MockProductService>();
-builder.Services.AddScoped<ICategoryService, MockCategoryService>();
-builder.Services.AddScoped<IOccasionService, MockOccasionService>();
+builder.Services.AddScoped<IProductService, MockProductService>()
+                .AddScoped<ICategoryService, MockCategoryService>()
+                .AddScoped<IOccasionService, MockOccasionService>();
+
+builder.Services
+    .AddFluentValidationAutoValidation()
+    .AddFluentValidationClientsideAdapters()
+    .AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
+
+builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
 
