@@ -1,0 +1,58 @@
+@using FlowerShop.ViewModels.Components
+
+@model LoginViewModel
+
+<div class="flex flex-col p-4">
+    
+    <div class=" flex justify-between items-center content-center border-b border-b-red-100 mb-1 pb-3">
+        <h4 class="text-xl font-semibold">Prijava</h4>
+        <button type="button" data-menu-close="auth-close" id="login-close" class="text-3xl pb-1  hover:text-red-200 duration-200">
+            <i class="fa-solid fa-close"></i>
+        </button>
+    </div>
+
+    <div class="flex flex-col justify-center gap-5 ">
+
+        <div class="flex flex-col relative gap-2 mt-2 border-b border-b-red-100 pb-3">
+            <div class="flex flex-col gap-1">
+                <label asp-for="Username" class="font-semibold">Korisničko ime</label>
+                <input type="text" asp-for="Username" placeholder="Unesite korisničko ime" class="text-red-900 font-semibold w-full p-2 border-2 shadow-2xl transition-all bg-red-200 placeholder-gray-500 border-red-500 rounded-md focus:outline-none focus:ring-4 focus:ring-red-400 focus:border-red-200">
+                <span asp-validation-for="Username" class="text-red-200 text-sm font-medium mt-1 text-center"></span>
+            </div>
+
+            <div class="flex flex-col gap-1">
+                <label asp-for="Password" class="font-semibold">Lozinka</label>
+                <input type="password" asp-for="Password" placeholder="*****" class="text-red-900 font-semibold w-full p-2 border-2 shadow-2xl transition-all bg-red-200 placeholder-gray-500 border-red-500 rounded-md focus:outline-none focus:ring-4 focus:ring-red-400 focus:border-red-200">
+                <span asp-validation-for="Password" class="text-red-200 text-sm font-medium mt-1 text-center"></span>
+            </div>
+
+            <div class="flex flex-col mt-5">
+                <button class="btn bg-orange-400 ">Prijavi se</button>
+
+                <div class="flex flex-col mt-5">
+                    <div class="flex items-center">
+                        <input
+                            type="checkbox"
+                            asp-for="RememberMe"
+
+                            class="secondary-checkbox self-center ">
+                        <label asp-for="RememberMe" class="checkbox-label-primary p-2 text-md hover:opacity-60 text-white">
+                            Zapamti me
+                        </label>
+                    </div>
+                    <a href="#" class="font-semibold text-orange-200 transition-all hover:opacity-60 duration-200">Zaboravili ste lozinku ?</a>
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="flex flex-col relative gap-2  border-b border-b-red-100  pb-3">
+            <a asp-controller="Account" asp-action="Auth" class="max-w-[125px] mx-auto transition-all hover:opacity-60 duration-200"><img src="../AppImages/Ostalo/Korisnik.png" class="object-contain w-auto brightness-200" alt="Korisnik"></a>
+            <p class="mx-auto ">Još uvek nemate nalog?</p>
+            <a asp-controller="Account" asp-action="Auth" class="mx-auto font-semibold text-orange-200 transition-all hover:opacity-60 duration-200">Registrujte se</a>
+        </div>
+
+    </div>
+
+</div>
