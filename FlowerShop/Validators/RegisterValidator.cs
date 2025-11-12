@@ -32,28 +32,12 @@ public class RegisterValidator : AbstractValidator<RegisterViewModel>
             .NotEmpty().WithMessage("Korisničko ime je obavezno.")
             .MinimumLength(5).WithMessage("Korisničko ime mora imati najmanje 5 karaktera.")
             .MaximumLength(25).WithMessage("Korisničko ime može imati maksimalno 25 karaktera.")
-            .Matches(@"^[a-zA-Z0-9._]+$").WithMessage("Korisničko ime može sadržati samo slova, brojeve, tačku (.) i donju crtu (_).")
-            .MustAsync(async (username, token) =>
-            {
-                var exists = await _userManager.Users
-                    .AnyAsync(u => u.UserName == username, token);
-                return !exists;
-            })
-            .WithMessage("Korisnik sa navedenim korisničkim imenom već postoji");
+            .Matches(@"^[a-zA-Z0-9._]+$").WithMessage("Korisničko ime može sadržati samo slova, brojeve, tačku (.) i donju crtu (_).");
 
         RuleFor(p => p.Email)
             .NotEmpty().WithMessage("Email adresa je obavezna.")
             .EmailAddress().WithMessage("Unesite validnu email adresu.")
-            .MaximumLength(50).WithMessage("Email adresa je predugačka.")
-            .MustAsync(async (email, token) =>
-            {
-                var exists = await _userManager.Users
-                    .AnyAsync(u => u.Email == email, token);
-                return !exists;
-            })
-            .WithMessage("Korisnik sa navedenim emailom već postoji");
-        
-        
+            .MaximumLength(50).WithMessage("Email adresa je predugačka.");
 
         RuleFor(p => p.Password)
             .NotEmpty().WithMessage("Lozinka je obavezna.")

@@ -27,12 +27,18 @@ builder.Services.AddScoped<IProductService, MockProductService>()
                 .AddScoped<ICategoryService, MockCategoryService>()
                 .AddScoped<IOccasionService, MockOccasionService>();
 
+builder.Services.AddControllersWithViews()
+    .AddMvcOptions(options =>
+    {
+        options.ModelValidatorProviders.Clear();
+    });
+
+
 builder.Services
     .AddFluentValidationAutoValidation()
     .AddFluentValidationClientsideAdapters()
     .AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
 
-builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
 
