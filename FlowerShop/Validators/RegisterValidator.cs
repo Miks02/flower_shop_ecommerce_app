@@ -1,13 +1,21 @@
+using FlowerShop.Models;
 using FluentValidation;
-using FlowerShop.ViewModels.Components; 
+using FlowerShop.ViewModels.Components;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace FlowerShop.Validators;
 
 public class RegisterValidator : AbstractValidator<RegisterViewModel>
 {
-    public RegisterValidator()
+
+    private readonly UserManager<ApplicationUser> _userManager;
+    
+    public RegisterValidator(UserManager<ApplicationUser> userManager)
     {
 
+        _userManager = userManager;
+        
         RuleFor(p => p.FirstName)
             .NotEmpty().WithMessage("Ime je obavezno.")
             .MinimumLength(3).WithMessage("Ime mora imati najmanje 3 karaktera.")
@@ -18,18 +26,34 @@ public class RegisterValidator : AbstractValidator<RegisterViewModel>
             .NotEmpty().WithMessage("Prezime je obavezno.")
             .MinimumLength(3).WithMessage("Prezime mora imati najmanje 3 karaktera.")
             .MaximumLength(30).WithMessage("Prezime može imati maksimalno 30 karaktera.")
-            .Matches(@"^[\p{L}\s]+$").WithMessage("Prezime može sadržati samo slova."); 
-        
+            .Matches(@"^[\p{L}\s]+$").WithMessage("Prezime može sadržati samo slova.");
+
         RuleFor(p => p.UserName)
             .NotEmpty().WithMessage("Korisničko ime je obavezno.")
             .MinimumLength(5).WithMessage("Korisničko ime mora imati najmanje 5 karaktera.")
             .MaximumLength(25).WithMessage("Korisničko ime može imati maksimalno 25 karaktera.")
-            .Matches(@"^[a-zA-Z0-9._]+$").WithMessage("Korisničko ime može sadržati samo slova, brojeve, tačku (.) i donju crtu (_)."); 
+            .Matches(@"^[a-zA-Z0-9._]+$").WithMessage("Korisničko ime može sadržati samo slova, brojeve, tačku (.) i donju crtu (_).")
+            .MustAsync(async (username, token) =>
+            {
+                var exists = await _userManager.Users
+                    .AnyAsync(u => u.UserName == username, token);
+                return !exists;
+            })
+            .WithMessage("Korisnik sa navedenim korisničkim imenom već postoji");
 
         RuleFor(p => p.Email)
             .NotEmpty().WithMessage("Email adresa je obavezna.")
             .EmailAddress().WithMessage("Unesite validnu email adresu.")
-            .MaximumLength(50).WithMessage("Email adresa je predugačka.");
+            .MaximumLength(50).WithMessage("Email adresa je predugačka.")
+            .MustAsync(async (email, token) =>
+            {
+                var exists = await _userManager.Users
+                    .AnyAsync(u => u.Email == email, token);
+                return !exists;
+            })
+            .WithMessage("Korisnik sa navedenim emailom već postoji");
+        
+        
 
         RuleFor(p => p.Password)
             .NotEmpty().WithMessage("Lozinka je obavezna.")
