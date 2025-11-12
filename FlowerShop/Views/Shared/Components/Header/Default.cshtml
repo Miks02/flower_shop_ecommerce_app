@@ -4,7 +4,7 @@
             <button type="button" id="navbar-open" class="ml-2 text-2xl sm:hidden hover:text-red-200 duration-200">
                 <i class="fa-solid fa-bars"></i>
             </button>
-            <a asp-controller="Home" asp-action="Index" class="sm:mr-auto ml-[20.5px] sm:ml-0 p-3 hover:opacity-80 duration-200"><img src="../AppImages/Logo bez pozadine.png" alt="Logo" class="brightness-200 max-w-32 rounded-full"/></a>
+            <a asp-controller="Home" asp-action="Index" class="sm:mr-auto ml-[20.5px] sm:ml-0 p-3 hover:opacity-80 duration-200"><img src="~/AppImages/Logo bez pozadine.png" alt="Logo" class="brightness-200 max-w-32 rounded-full"/></a>
             <ul class="text-lg hidden sm:flex">
                 <li><a asp-controller="Home" asp-action="Index" class="mx-2 hover:text-red-200 duration-200">Početna</a></li>
                 <li><a href="#" class="mx-2 hover:text-red-200 duration-200">O nama</a></li>
@@ -37,7 +37,7 @@
         <nav class="flex flex-col h-full p-3 pb-1 sm:hidden relative">
             <div class="flex justify-between items-center content-center border-b border-b-red-100 mb-1">
                 <a href="#" class="hover:opacity-80 duration-200 mb-4">
-                    <img src="../AppImages/Logo bez pozadine.png" alt="Logo" class="brightness-200 w-36 rounded-full mx-auto" />
+                    <img src="~/AppImages/Logo bez pozadine.png" alt="Logo" class="brightness-200 w-36 rounded-full mx-auto" />
                 </a>
                 <button type="button" id="navbar-close" class="text-3xl pb-1 sm:hidden hover:text-red-200 duration-200">
                     <i class="fa-solid fa-close"></i>
@@ -95,7 +95,7 @@
     </div>
     
  
-        <div id="auth-menu" class="fixed top-0 right-0 h-screen w-screen sm:w-[300px] bg-red-900/85 shadow-all @(ViewBag.CloseMenu ? "translate-x-full" : "") backdrop-blur-xl transition-all duration-200">
+        <div id="auth-menu" class="fixed top-0 right-0 h-screen w-screen sm:w-[300px] bg-red-900/85 shadow-all translate-x-full backdrop-blur-xl transition-all duration-200">
         
             @await Component.InvokeAsync("Login")
             
