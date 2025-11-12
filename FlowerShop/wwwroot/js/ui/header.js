@@ -1,48 +1,49 @@
 import {toggleOverlay} from "../helpers.js";
 
 const heroSection = document.querySelector(".hero");
+const header = document.querySelector("header");
 const navbar = document.getElementById("navbar");
 const mobileNavbar = document.getElementById("mobile-navbar");
-
-const menuOpen = document.getElementById('navbar-open');
-const menuClose = document.getElementById('navbar-close');
-
-const searchButton = document.getElementById('searchButton');
+const authMenu = document.getElementById("auth-menu");
 const searchBar = document.getElementById('searchBar');
 const searchInput = document.getElementById('searchInput');
 
-menuOpen.addEventListener('click', () => {
-    mobileNavbar.classList.remove('-translate-x-full');
-    mobileNavbar.classList.add('translate-x-0');
-});
+header.addEventListener("click", handleHeaderInteractions)
 
-menuClose.addEventListener('click', () => {
-    mobileNavbar.classList.remove('translate-x-0');
-    mobileNavbar.classList.add('-translate-x-full');
-});
-
-
-
-searchButton.addEventListener('click', () => {
-    if(searchBar.classList.contains('invisible')) {
-        searchBar.classList.remove('invisible');
-        searchBar.classList.remove('h-0');
-        searchBar.classList.add('h-[50px]');
-        searchBar.classList.add('mb-4');
-        searchInput.classList.remove('opacity-0');
-
+function handleHeaderInteractions (e) {
+    if(e.target.closest("#navbar-open")) {
+        mobileNavbar.classList.remove('-translate-x-full');
+        mobileNavbar.classList.add('translate-x-0');
+    }
+    if(e.target.closest("#navbar-close")) {
+        mobileNavbar.classList.remove('translate-x-0');
+        mobileNavbar.classList.add('-translate-x-full');
+    }
+    if(e.target.closest("#searchButton")) {
+        if(searchBar.classList.contains('invisible')) {
+            searchBar.classList.remove('invisible');
+            searchBar.classList.remove('h-0');
+            searchBar.classList.add('h-[50px]');
+            searchBar.classList.add('mb-4');
+            searchInput.classList.remove('opacity-0');
+        }
+        else {
+            searchBar.classList.add('invisible');
+            searchBar.classList.add('h-0');
+            searchBar.classList.remove('h-[50px]');
+            searchBar.classList.remove('mb-4');
+            searchInput.classList.add('opacity-0');
+            navbar.classList.remove('bg-red-900/50');
+        }
+    }
+    if(e.target.closest(`button[data-menu="auth-open"]`) || e.target.closest(`button[data-menu="auth-close"]`))
+    {
+        e.preventDefault();
+        e.stopPropagation();
+        toggleOverlay(authMenu, "translate-x-full");
 
     }
-    else {
-        searchBar.classList.add('invisible');
-        searchBar.classList.add('h-0');
-        searchBar.classList.remove('h-[50px]');
-        searchBar.classList.remove('mb-4');
-        searchInput.classList.add('opacity-0');
-        navbar.classList.remove('bg-red-900/50');
-    }
-
-})
+}
 
 const updateNavbarClasses = (options) => {
     const { blur = false, shadow = false, bg = false } = options;
