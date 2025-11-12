@@ -79,23 +79,23 @@
 
             <ul class="text-lg flex flex-col w-full mt-auto space-y-1">
                 <li>
-                    <a href="#" class="group flex items-center mx-2 py-2 px-3 rounded-lg transition-all duration-300 hover:bg-yellow-500/10">
+                    <button data-menu="auth-open" hx-get="/Account/Login" hx-target="#auth-menu" hx-swap="innerHTML" class="group flex items-center mx-2 py-2 px-3 rounded-lg transition-all duration-300 hover:bg-yellow-500/10">
                         <i class="fa-solid fa-right-to-bracket mr-5 text-orange-400 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:text-yellow-300"></i>
                         <span class="transition-colors duration-300 group-hover:text-yellow-200">Prijava</span>
-                    </a>
+                    </button>
                 </li>
                 <li>
-                    <a href="#" class="group flex items-center mx-2 py-2 px-3 rounded-lg transition-all duration-300 hover:bg-blue-500/10">
+                    <button data-menu="auth-open" hx-get="/Account/Register" hx-target="#auth-menu" hx-swap="innerHTML" class="group flex items-center mx-2 py-2 px-3 rounded-lg transition-all duration-300 hover:bg-blue-500/10">
                         <i class="fa-solid fa-user-plus mr-5 text-orange-400 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:text-blue-300"></i>
                         <span class="transition-colors duration-300 group-hover:text-blue-200">Registracija</span>
-                    </a>
+                    </button>
                 </li>
             </ul>
         </nav>
     </div>
     
  
-        <div id="auth-menu" class="fixed top-0 right-0 h-screen w-screen sm:w-[300px] bg-red-900/85 shadow-all translate-x-full backdrop-blur-xl transition-all duration-200">
+        <div id="auth-menu" class="fixed top-0 right-0 h-screen w-screen sm:w-[300px] bg-red-900/85 shadow-all translate-x-full backdrop-blur-xl transition-all duration-200 z-50">
             
             @await Component.InvokeAsync("Login")
             
