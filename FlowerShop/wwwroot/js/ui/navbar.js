@@ -3,12 +3,10 @@ import {toggleOverlay} from "../helpers.js";
 const heroSection = document.querySelector(".hero");
 const navbar = document.getElementById("navbar");
 const mobileNavbar = document.getElementById("mobile-navbar");
-const loginMenu = document.getElementById("login-menu");
 
 const menuOpen = document.getElementById('navbar-open');
 const menuClose = document.getElementById('navbar-close');
-const loginOpen = document.getElementById("login-open");
-const loginClose = document.getElementById("login-close");
+
 const searchButton = document.getElementById('searchButton');
 const searchBar = document.getElementById('searchBar');
 const searchInput = document.getElementById('searchInput');
@@ -24,18 +22,6 @@ menuClose.addEventListener('click', () => {
 });
 
 
-loginOpen.addEventListener("click", (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    toggleOverlay(loginMenu, "translate-x-full");
-
-})
-
-loginClose.addEventListener("click", (e) => {
-    e.preventDefault();
-    toggleOverlay(loginMenu, "translate-x-full");
-
-})
 
 searchButton.addEventListener('click', () => {
     if(searchBar.classList.contains('invisible')) {
