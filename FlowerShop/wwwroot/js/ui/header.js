@@ -15,34 +15,29 @@ function handleHeaderInteractions (e) {
         mobileNavbar.classList.remove('-translate-x-full');
         mobileNavbar.classList.add('translate-x-0');
     }
-    if(e.target.closest("#navbar-close")) {
+    else if(e.target.closest("#navbar-close")) {
         mobileNavbar.classList.remove('translate-x-0');
         mobileNavbar.classList.add('-translate-x-full');
     }
-    if(e.target.closest("#searchButton")) {
-        if(searchBar.classList.contains('invisible')) {
-            searchBar.classList.remove('invisible');
-            searchBar.classList.remove('h-0');
-            searchBar.classList.add('h-[50px]');
-            searchBar.classList.add('mb-4');
-            searchInput.classList.remove('opacity-0');
-        }
-        else {
-            searchBar.classList.add('invisible');
-            searchBar.classList.add('h-0');
-            searchBar.classList.remove('h-[50px]');
-            searchBar.classList.remove('mb-4');
-            searchInput.classList.add('opacity-0');
-            navbar.classList.remove('bg-red-900/50');
-        }
+    else if(e.target.closest("#searchButton")) {
+        toggleSearch();
     }
-    if(e.target.closest(`button[data-menu="auth-open"]`) || e.target.closest(`button[data-menu="auth-close"]`))
+    else if(e.target.closest(`button[data-menu="auth-open"]`) || e.target.closest(`button[data-menu="auth-close"]`))
     {
         e.preventDefault();
         e.stopPropagation();
         toggleOverlay(authMenu, "translate-x-full");
 
     }
+}
+
+function toggleSearch() {
+    const isHidden = searchBar.classList.contains("invisible");
+    searchBar.classList.toggle('invisible', !isHidden);
+    searchBar.classList.toggle('h-0', !isHidden);
+    searchBar.classList.toggle('h-[50px]', isHidden);
+    searchBar.classList.toggle('mb-4', isHidden);
+    searchInput.classList.toggle('opacity-0', !isHidden);
 }
 
 const updateNavbarClasses = (options) => {
