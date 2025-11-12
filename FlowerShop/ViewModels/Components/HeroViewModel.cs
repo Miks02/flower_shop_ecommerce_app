@@ -6,4 +6,5 @@ public class HeroViewModel
     public string? Subtitle { get; set; } = null!;
     public string BackgroundImage { get; set; } = null!;
     public bool IsHome { get; set; }
+    public bool IsFullScreen { get; set; }
 }
