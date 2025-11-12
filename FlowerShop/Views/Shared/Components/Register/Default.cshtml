@@ -13,63 +13,76 @@
     </div>
 
     <div class="flex flex-col justify-center gap-5 ">
+        <form
+            hx-post="/Account/Register" 
+            hx-target="#auth-menu"
+            hx-swap="innerHTML"
+            >
+            <div class="flex flex-col relative gap-2 mt-2 pb-3">
 
-        <div class="flex flex-col relative gap-2 mt-2 pb-3">
+                <div class="flex flex-row gap-3 md:flex-col">
+                    <div class="flex flex-col gap-1">
+                        <label asp-for="FirstName" class="font-semibold">Ime</label>
+                        <input type="text" asp-for="FirstName" placeholder="Pera" class="text-red-900 font-semibold w-full p-2 border-2 shadow-2xl transition-all bg-red-200 placeholder-gray-500 border-red-500 rounded-md focus:outline-none focus:ring-4 focus:ring-red-400 focus:border-red-200">
+                        <span asp-validation-for="FirstName" class="text-red-200 text-sm font-medium mt-1 text-center"></span>
+                    </div>
 
-            <div class="flex flex-row gap-3 md:flex-col">
-                <div class="flex flex-col gap-1">
-                    <label asp-for="FirstName" class="font-semibold">Ime</label>
-                    <input type="text" asp-for="FirstName" placeholder="Pera" class="text-red-900 font-semibold w-full p-2 border-2 shadow-2xl transition-all bg-red-200 placeholder-gray-500 border-red-500 rounded-md focus:outline-none focus:ring-4 focus:ring-red-400 focus:border-red-200">
-                    <span asp-validation-for="FirstName" class="text-red-200 text-sm font-medium mt-1 text-center"></span>
+                    <div class="flex flex-col gap-1">
+                        <label asp-for="LastName" class="font-semibold">Prezime</label>
+                        <input type="text" asp-for="LastName" placeholder="Perić" class="text-red-900 font-semibold w-full p-2 border-2 shadow-2xl transition-all bg-red-200 placeholder-gray-500 border-red-500 rounded-md focus:outline-none focus:ring-4 focus:ring-red-400 focus:border-red-200">
+                        <span asp-validation-for="LastName" class="text-red-200 text-sm font-medium mt-1 text-center"></span>
+                    </div>
                 </div>
 
                 <div class="flex flex-col gap-1">
-                    <label asp-for="LastName" class="font-semibold">Prezime</label>
-                    <input type="text" asp-for="LastName" placeholder="Perić" class="text-red-900 font-semibold w-full p-2 border-2 shadow-2xl transition-all bg-red-200 placeholder-gray-500 border-red-500 rounded-md focus:outline-none focus:ring-4 focus:ring-red-400 focus:border-red-200">
-                    <span asp-validation-for="LastName" class="text-red-200 text-sm font-medium mt-1 text-center"></span>
+                    <label asp-for="UserName" class="font-semibold">Korisničko ime</label>
+                    <input type="text" asp-for="UserName" placeholder="Pera93" class="text-red-900 font-semibold w-full p-2 border-2 shadow-2xl transition-all bg-red-200 placeholder-gray-500 border-red-500 rounded-md focus:outline-none focus:ring-4 focus:ring-red-400 focus:border-red-200">
+                    <span asp-validation-for="UserName" class="text-red-200 text-sm font-medium mt-1 text-center"></span>
                 </div>
-            </div>
 
-            <div class="flex flex-col gap-1">
-                <label asp-for="UserName" class="font-semibold">Korisničko ime</label>
-                <input type="text" asp-for="UserName" placeholder="Pera93" class="text-red-900 font-semibold w-full p-2 border-2 shadow-2xl transition-all bg-red-200 placeholder-gray-500 border-red-500 rounded-md focus:outline-none focus:ring-4 focus:ring-red-400 focus:border-red-200">
-                <span asp-validation-for="UserName" class="text-red-200 text-sm font-medium mt-1 text-center"></span>
-            </div>
+                <div class="flex flex-col gap-1">
+                    <label asp-for="Email" class="font-semibold">Email adresa</label>
+                    <input type="text" asp-for="Email" placeholder="pera@gmail.com" class="text-red-900 font-semibold w-full p-2 border-2 shadow-2xl transition-all bg-red-200 placeholder-gray-500 border-red-500 rounded-md focus:outline-none focus:ring-4 focus:ring-red-400 focus:border-red-200">
+                    <span asp-validation-for="Email" class="text-red-200 text-sm font-medium mt-1 text-center"></span>
+                </div>
 
-            <div class="flex flex-col gap-1">
-                <label asp-for="Email" class="font-semibold">Email adresa</label>
-                <input type="text" asp-for="Email" placeholder="pera@gmail.com" class="text-red-900 font-semibold w-full p-2 border-2 shadow-2xl transition-all bg-red-200 placeholder-gray-500 border-red-500 rounded-md focus:outline-none focus:ring-4 focus:ring-red-400 focus:border-red-200">
-                <span asp-validation-for="Email" class="text-red-200 text-sm font-medium mt-1 text-center"></span>
-            </div>
+                <div class="flex flex-col gap-1">
+                    <label asp-for="PhoneNumber" class="font-semibold">Broj telefona</label>
+                    <input type="text" asp-for="PhoneNumber" placeholder="064 xxx xx xx" class="text-red-900 font-semibold w-full p-2 border-2 shadow-2xl transition-all bg-red-200 placeholder-gray-500 border-red-500 rounded-md focus:outline-none focus:ring-4 focus:ring-red-400 focus:border-red-200">
+                    <span asp-validation-for="PhoneNumber" class="text-red-200 text-sm font-medium mt-1 text-center"></span>
+                </div>
 
-            <div class="flex flex-col gap-1">
-                <label asp-for="PhoneNumber" class="font-semibold">Broj telefona</label>
-                <input type="text" asp-for="PhoneNumber" placeholder="064 xxx xx xx" class="text-red-900 font-semibold w-full p-2 border-2 shadow-2xl transition-all bg-red-200 placeholder-gray-500 border-red-500 rounded-md focus:outline-none focus:ring-4 focus:ring-red-400 focus:border-red-200">
-                <span asp-validation-for="PhoneNumber" class="text-red-200 text-sm font-medium mt-1 text-center"></span>
-            </div>
+                <div class="flex flex-col gap-1">
+                    <label asp-for="Password" class="font-semibold">Lozinka</label>
+                    <input type="password" asp-for="Password" placeholder="*****" class="text-red-900 font-semibold w-full p-2 border-2 shadow-2xl transition-all bg-red-200 placeholder-gray-500 border-red-500 rounded-md focus:outline-none focus:ring-4 focus:ring-red-400 focus:border-red-200">
+                    <span asp-validation-for="Password" class="text-red-200 text-sm font-medium mt-1 text-center"></span>
+                </div>
 
-            <div class="flex flex-col gap-1">
-                <label asp-for="Password" class="font-semibold">Lozinka</label>
-                <input type="password" asp-for="Password" placeholder="*****" class="text-red-900 font-semibold w-full p-2 border-2 shadow-2xl transition-all bg-red-200 placeholder-gray-500 border-red-500 rounded-md focus:outline-none focus:ring-4 focus:ring-red-400 focus:border-red-200">
-                <span asp-validation-for="Password" class="text-red-200 text-sm font-medium mt-1 text-center"></span>
-            </div>
-
-            <div class="flex flex-col gap-1">
-                <label asp-for="ConfirmPassword" class="font-semibold">Potvrdi lozinku</label>
-                <input type="password" asp-for="ConfirmPassword" placeholder="*****" class="text-red-900 font-semibold w-full p-2 border-2 shadow-2xl transition-all bg-red-200 placeholder-gray-500 border-red-500 rounded-md focus:outline-none focus:ring-4 focus:ring-red-400 focus:border-red-200">
-                <span asp-validation-for="ConfirmPassword" class="text-red-200 text-sm font-medium mt-1 text-center"></span>
-            </div>
-
-            <div class="flex flex-col mt-5">
-                <button class="btn bg-orange-400 ">Registruj se</button>
+                <div class="flex flex-col gap-1">
+                    <label asp-for="ConfirmPassword" class="font-semibold">Potvrdi lozinku</label>
+                    <input type="password" asp-for="ConfirmPassword" placeholder="*****" class="text-red-900 font-semibold w-full p-2 border-2 shadow-2xl transition-all bg-red-200 placeholder-gray-500 border-red-500 rounded-md focus:outline-none focus:ring-4 focus:ring-red-400 focus:border-red-200">
+                    <span asp-validation-for="ConfirmPassword" class="text-red-200 text-sm font-medium mt-1 text-center"></span>
+                </div>
 
                 <div class="flex flex-col mt-5">
-                    <a href="#" class="font-semibold text-orange-200 transition-all hover:opacity-60 duration-200">Imate nalog? Prijavite se</a>
+                    <button
+                        type="submit"
+                        class="btn bg-orange-400 ">Registruj se</button>
+
+                    <div class="flex flex-col mt-5">
+                        <button
+                            hx-get="/Account/Login"
+                            hx-target="#auth-menu"
+                            hx-swap="innerHTML"
+                            class="font-semibold text-orange-200 transition-all hover:opacity-60 duration-200">Imate nalog? Prijavite se</button>
+                    </div>
+
                 </div>
 
             </div>
-
-        </div>
+        </form>
+        
+        
 
         <div class="flex flex-col relative gap-2 pb-3">
 

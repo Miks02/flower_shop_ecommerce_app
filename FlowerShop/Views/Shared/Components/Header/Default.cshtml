@@ -34,73 +34,74 @@
     
     
     <div id="mobile-navbar" class=" md:hidden fixed top-0 left-0 h-screen w-full z-20 shadow-2xl backdrop-blur-3xl transform -translate-x-full transition-all duration-300">
-    <nav class="flex flex-col h-full p-3 pb-1 sm:hidden relative">
-        <div class="flex justify-between items-center content-center border-b border-b-red-100 mb-1">
-            <a href="#" class="hover:opacity-80 duration-200 mb-4">
-                <img src="../AppImages/Logo bez pozadine.png" alt="Logo" class="brightness-200 w-36 rounded-full mx-auto" />
-            </a>
-            <button type="button" id="navbar-close" class="text-3xl pb-1 sm:hidden hover:text-red-200 duration-200">
-                <i class="fa-solid fa-close"></i>
-            </button>
-        </div>
+        <nav class="flex flex-col h-full p-3 pb-1 sm:hidden relative">
+            <div class="flex justify-between items-center content-center border-b border-b-red-100 mb-1">
+                <a href="#" class="hover:opacity-80 duration-200 mb-4">
+                    <img src="../AppImages/Logo bez pozadine.png" alt="Logo" class="brightness-200 w-36 rounded-full mx-auto" />
+                </a>
+                <button type="button" id="navbar-close" class="text-3xl pb-1 sm:hidden hover:text-red-200 duration-200">
+                    <i class="fa-solid fa-close"></i>
+                </button>
+            </div>
 
-        <ul class="text-lg flex flex-col w-full space-y-1 text-center justify-center ">
-            <li>
-                <a asp-controller="Home" asp-action="Index" class="group flex items-center mx-2 py-2 px-3 rounded-lg transition-all duration-300 hover:bg-orange-500/10">
-                    <i class="fa-solid fa-house mr-5 text-white transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:text-orange-300"></i>
-                    <span class="transition-colors duration-300 group-hover:text-orange-200">Početna</span>
-                </a>
-            </li>
-            <li>
-                <a href="#" class="group flex items-center mx-2 py-2 px-3 rounded-lg transition-all duration-300 hover:bg-orange-500/10">
-                    <i class="fa-solid fa-users-rectangle mr-5 text-white transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:text-orange-300"></i>
-                    <span class="transition-colors duration-300 group-hover:text-orange-200">O nama</span>
-                </a>
-            </li>
-            <li>
-                <a asp-controller="Catalogue" asp-action="Index" class="group flex items-center mx-2 py-2 px-3 rounded-lg transition-all duration-300 hover:bg-orange-500/10">
-                    <i class="fa-solid fa-table mr-5 text-white transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:text-orange-300"></i>
-                    <span class="transition-colors duration-300 group-hover:text-orange-200">Katalog</span>
-                </a>
-            </li>
-            <li>
-                <a asp-controller="Contact" asp-action="Index" class="group flex items-center mx-2 py-2 px-3 rounded-lg transition-all duration-300 hover:bg-orange-500/10">
-                    <i class="fa-solid fa-address-card mr-5 text-white transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:text-orange-300"></i>
-                    <span class="transition-colors duration-300 group-hover:text-orange-200">Kontakt</span>
-                </a>
-            </li>
-            <li>
-                <a href="#" class="group flex items-center mx-2 py-2 px-3 rounded-lg transition-all duration-300 hover:bg-green-500/10">
-                    <i class="fa-solid fa-cart-shopping mr-5 text-green-400 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:text-green-300"></i>
-                    <span class="transition-colors duration-300 group-hover:text-green-200">Korpa</span>
-                </a>
-            </li>
-        </ul>
+            <ul class="text-lg flex flex-col w-full space-y-1 text-center justify-center ">
+                <li>
+                    <a asp-controller="Home" asp-action="Index" class="group flex items-center mx-2 py-2 px-3 rounded-lg transition-all duration-300 hover:bg-orange-500/10">
+                        <i class="fa-solid fa-house mr-5 text-white transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:text-orange-300"></i>
+                        <span class="transition-colors duration-300 group-hover:text-orange-200">Početna</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="group flex items-center mx-2 py-2 px-3 rounded-lg transition-all duration-300 hover:bg-orange-500/10">
+                        <i class="fa-solid fa-users-rectangle mr-5 text-white transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:text-orange-300"></i>
+                        <span class="transition-colors duration-300 group-hover:text-orange-200">O nama</span>
+                    </a>
+                </li>
+                <li>
+                    <a asp-controller="Catalogue" asp-action="Index" class="group flex items-center mx-2 py-2 px-3 rounded-lg transition-all duration-300 hover:bg-orange-500/10">
+                        <i class="fa-solid fa-table mr-5 text-white transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:text-orange-300"></i>
+                        <span class="transition-colors duration-300 group-hover:text-orange-200">Katalog</span>
+                    </a>
+                </li>
+                <li>
+                    <a asp-controller="Contact" asp-action="Index" class="group flex items-center mx-2 py-2 px-3 rounded-lg transition-all duration-300 hover:bg-orange-500/10">
+                        <i class="fa-solid fa-address-card mr-5 text-white transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:text-orange-300"></i>
+                        <span class="transition-colors duration-300 group-hover:text-orange-200">Kontakt</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="group flex items-center mx-2 py-2 px-3 rounded-lg transition-all duration-300 hover:bg-green-500/10">
+                        <i class="fa-solid fa-cart-shopping mr-5 text-green-400 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:text-green-300"></i>
+                        <span class="transition-colors duration-300 group-hover:text-green-200">Korpa</span>
+                    </a>
+                </li>
+            </ul>
 
-        <ul class="text-lg flex flex-col w-full mt-auto space-y-1">
-            <li>
-                <a href="#" class="group flex items-center mx-2 py-2 px-3 rounded-lg transition-all duration-300 hover:bg-yellow-500/10">
-                    <i class="fa-solid fa-right-to-bracket mr-5 text-orange-400 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:text-yellow-300"></i>
-                    <span class="transition-colors duration-300 group-hover:text-yellow-200">Prijava</span>
-                </a>
-            </li>
-            <li>
-                <a href="#" class="group flex items-center mx-2 py-2 px-3 rounded-lg transition-all duration-300 hover:bg-blue-500/10">
-                    <i class="fa-solid fa-user-plus mr-5 text-orange-400 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:text-blue-300"></i>
-                    <span class="transition-colors duration-300 group-hover:text-blue-200">Registracija</span>
-                </a>
-            </li>
-        </ul>
-    </nav>
-</div>
-
-    <div id="auth-bar ">
-        <div id="login-menu" class="fixed top-0 right-0 h-screen w-screen sm:w-[300px] bg-red-900/85 shadow-all translate-x-full backdrop-blur-xl transition-all duration-200">
+            <ul class="text-lg flex flex-col w-full mt-auto space-y-1">
+                <li>
+                    <a href="#" class="group flex items-center mx-2 py-2 px-3 rounded-lg transition-all duration-300 hover:bg-yellow-500/10">
+                        <i class="fa-solid fa-right-to-bracket mr-5 text-orange-400 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:text-yellow-300"></i>
+                        <span class="transition-colors duration-300 group-hover:text-yellow-200">Prijava</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="group flex items-center mx-2 py-2 px-3 rounded-lg transition-all duration-300 hover:bg-blue-500/10">
+                        <i class="fa-solid fa-user-plus mr-5 text-orange-400 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:text-blue-300"></i>
+                        <span class="transition-colors duration-300 group-hover:text-blue-200">Registracija</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+    
+ 
+        <div id="auth-menu" class="fixed top-0 right-0 h-screen w-screen sm:w-[300px] bg-red-900/85 shadow-all @(ViewBag.CloseMenu ? "translate-x-full" : "") backdrop-blur-xl transition-all duration-200">
         
             @await Component.InvokeAsync("Login")
             
-        </div>
-    </div>
+        </div>   
+    
+        
     
     
 </header>
