@@ -9,6 +9,7 @@
     <ItemGroup>
       <PackageReference Include="FluentValidation" Version="12.1.0" />
       <PackageReference Include="FluentValidation.AspNetCore" Version="11.3.1" />
+      <PackageReference Include="Htmx" Version="1.9.0" />
       <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.0" />
       <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="9.0.0" />
       <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="9.0.0">
@@ -20,6 +21,7 @@
     <ItemGroup>
       <Folder Include="Areas\Admin\Controllers\" />
       <Folder Include="Areas\Admin\Views\" />
+      <Folder Include="Areas\User\Views\" />
       <Folder Include="Data\Implementations\" />
       <Folder Include="Data\Interfaces\" />
       <Folder Include="Services\Implementations\" />
