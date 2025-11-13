@@ -175,17 +175,23 @@
             </ul>
         </nav>
     </div>
- 
+    
+    @if (isAuthenticated && !isStaff)
+    {
+        <div id="profile-menu" class="fixed top-0 right-0 h-screen w-screen sm:w-[300px] bg-red-900/85 shadow-all translate-x-full backdrop-blur-xl transition-all duration-200 z-50">
+                
+            @await Component.InvokeAsync("ProfileMenu")
+                
+        </div>  
+    }
+    else if (!isAuthenticated)
+    {
         <div id="auth-menu" class="fixed top-0 right-0 h-screen w-screen sm:w-[300px] bg-red-900/85 shadow-all translate-x-full backdrop-blur-xl transition-all duration-200 z-50">
             
             @await Component.InvokeAsync("Login")
             
-        </div>   
-    
-    <div id="profile-menu" class="fixed top-0 right-0 h-screen w-screen sm:w-[300px] bg-red-900/85 shadow-all translate-x-full backdrop-blur-xl transition-all duration-200 z-50">
-            
-        @await Component.InvokeAsync("ProfileMenu")
-            
-    </div>   
+        </div>  
+    }
+     
     
 </header>
