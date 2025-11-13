@@ -1,0 +1,62 @@
+
+
+<div class="flex flex-col p-4 h-full">
+    
+    <div class="flex justify-between items-center content-center border-b border-b-red-100 mb-1 pb-3">
+        <h4 class="text-xl font-semibold">@User.Identity!.Name</h4>
+        <button type="button" data-menu="profile-close"  class="text-3xl pb-1  hover:text-red-200 duration-200">
+            <i class="fa-solid fa-close"></i>
+        </button>
+    </div>
+
+    <div class="flex flex-col justify-between h-full">
+        <ul class="text-lg flex flex-col w-full space-y-1 mt-4">
+            <li>
+                <a href="#" class="group flex items-center py-2 px-3 rounded-lg transition-all duration-300 hover:bg-blue-500/10">
+                    <i class="fa-solid fa-chart-line mr-4 text-blue-300 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:text-blue-300"></i>
+                    <span class="transition-colors duration-300 group-hover:text-blue-200">Kontrolna tabla</span>
+                </a>
+            </li>
+            <li>
+                <a href="#" class="group flex items-center py-2 px-3 rounded-lg transition-all duration-300 hover:bg-orange-500/10">
+                    <i class="fa-solid fa-box mr-4 text-orange-400 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:text-orange-300"></i>
+                    <span class="transition-colors duration-300 group-hover:text-orange-200">Narudžbine</span>
+                </a>
+            </li>
+            <li>
+                <a href="#" class="group flex items-center py-2 px-3 rounded-lg transition-all duration-300 hover:bg-green-500/10">
+                    <i class="fa-solid fa-cart-shopping mr-4 text-green-400 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:text-green-300"></i>
+                    <span class="transition-colors duration-300 group-hover:text-green-200">Korpa</span>
+                </a>
+            </li>
+            <li>
+                <a href="#" class="group flex items-center py-2 px-3 rounded-lg transition-all duration-300 hover:bg-yellow-500/10">
+                    <i class="fa-solid fa-bell mr-4 text-yellow-400 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:text-yellow-300"></i>
+                    <span class="transition-colors duration-300 group-hover:text-yellow-200">Notifikacije</span>
+                </a>
+            </li>
+            <li>
+                <a href="#" class="group flex items-center py-2 px-3 rounded-lg transition-all duration-300 hover:bg-violet-500/10">
+                    <i class="fa-solid fa-heart mr-4 text-violet-400 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:text-violet-300"></i>
+                    <span class="transition-colors duration-300 group-hover:text-violet-200">Lista želja</span>
+                </a>
+            </li>
+            <li>
+                <a href="#" class="group flex items-center py-2 px-3 rounded-lg transition-all duration-300 hover:bg-gray-500/10">
+                    <i class="fa-solid fa-gear mr-4 text-gray-400 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:text-gray-300"></i>
+                    <span class="transition-colors duration-300 group-hover:text-gray-200">Podešavanje</span>
+                </a>
+            </li>
+        </ul>
+
+        <div class="mt-auto border-t border-t-red-100 pt-3">
+            <form asp-controller="Account" asp-action="Logout" method="post">
+                <button type="submit" class="group flex w-full items-center py-2 px-3 rounded-lg transition-all duration-300 hover:bg-red-500/10">
+                    <i class="bi bi-door-closed-fill mr-4 text-red-400 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:text-red-300"></i>
+                    <span class="transition-colors duration-300 group-hover:text-red-200">Odjava</span>
+                </button>
+            </form>
+        </div>
+    </div>
+
+</div>

@@ -35,11 +35,11 @@
                 
                 @if (isAuthenticated && !isStaff)
                 {
-                    <a href="#" class="fw-bolder text-xl md:text-lg hover:text-red-200 duration-200">
-                        <i class="fa-solid fa-cart-shopping text-green-400"></i>
+                    <a href="#" class="fw-bolder text-xl md:text-lg ">
+                        <i class="fa-solid fa-cart-shopping text-green-400 transition-all hover:text-green-600 duration-600"></i>
                     </a>
-                    <a href="#" class="hidden sm:block fw-bolder text-xl md:text-lg hover:text-red-200 duration-200">
-                        <i class="fa-solid fa-heart text-violet-400"></i>
+                    <a href="#" class="hidden sm:block fw-bolder text-xl md:text-lg ">
+                        <i class="fa-solid fa-heart text-violet-400 transition-all hover:text-violet-600 duration-600"></i>
                     </a>
                 }
                 else if (isAuthenticated && isStaff)
@@ -181,5 +181,11 @@
             @await Component.InvokeAsync("Login")
             
         </div>   
+    
+    <div id="profile-menu" class="fixed top-0 right-0 h-screen w-screen sm:w-[300px] bg-red-900/85 shadow-all translate-x-full backdrop-blur-xl transition-all duration-200 z-50">
+            
+        @await Component.InvokeAsync("ProfileMenu")
+            
+    </div>   
     
 </header>

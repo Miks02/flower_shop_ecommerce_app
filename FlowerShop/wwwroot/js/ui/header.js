@@ -5,6 +5,7 @@ const header = document.querySelector("header");
 const navbar = document.getElementById("navbar");
 const mobileNavbar = document.getElementById("mobile-navbar");
 const authMenu = document.getElementById("auth-menu");
+const profileMenu = document.getElementById("profile-menu");
 const searchBar = document.getElementById('searchBar');
 const searchInput = document.getElementById('searchInput');
 
@@ -27,6 +28,13 @@ function handleHeaderInteractions (e) {
         e.preventDefault();
         e.stopPropagation();
         toggleOverlay(authMenu, "translate-x-full");
+
+    }
+    else if(e.target.closest(`button[data-menu="profile-open"]`) || e.target.closest(`button[data-menu="profile-close"]`))
+    {
+        e.preventDefault();
+        e.stopPropagation();
+        toggleOverlay(profileMenu, "translate-x-full");
 
     }
 }
