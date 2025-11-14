@@ -18,10 +18,10 @@
             </button>
             <a asp-controller="Home" asp-action="Index" class="sm:mr-auto ml-[20.5px] sm:ml-0 p-3 hover:opacity-80 duration-200"><img src="~/AppImages/Logo bez pozadine.png" alt="Logo" class="brightness-200 max-w-32 rounded-full"/></a>
             <ul class="text-lg hidden sm:flex">
-                <li><a asp-controller="Home" asp-action="Index" class="mx-2 hover:text-red-200 duration-200">Početna</a></li>
-                <li><a href="#" class="mx-2 hover:text-red-200 duration-200">O nama</a></li>
-                <li><a asp-controller="Catalogue" asp-action="Index" class="mx-2 hover:text-red-200 duration-200">Asortiman</a></li>
-                <li><a asp-controller="Contact" asp-action="Index" class="mx-2 hover:text-red-200 duration-200">Kontakt</a></li>
+                <li><a asp-area="" asp-controller="Home" asp-action="Index" class="mx-2 hover:text-red-200 duration-200">Početna</a></li>
+                <li><a asp-area="" class="mx-2 hover:text-red-200 duration-200">O nama</a></li>
+                <li><a asp-area="" asp-controller="Catalogue" asp-action="Index" class="mx-2 hover:text-red-200 duration-200">Asortiman</a></li>
+                <li><a asp-area="" asp-controller="Contact" asp-action="Index" class="mx-2 hover:text-red-200 duration-200">Kontakt</a></li>
             </ul>
             <div class="sm:ml-auto flex gap-4 mr-2">
                 <button id="searchButton" type="button" class="text-xl md:text-lg  hover:text-red-200 duration-200">
@@ -68,7 +68,7 @@
     <div id="mobile-navbar" class=" md:hidden fixed top-0 left-0 h-screen w-full z-20 shadow-2xl backdrop-blur-3xl transform -translate-x-full transition-all duration-300">
         <nav class="flex flex-col h-full p-3 pb-1 sm:hidden relative">
             <div class="flex justify-between items-center content-center border-b border-b-red-100 mb-1">
-                <a asp-controller="Home" asp-action="Index" class="hover:opacity-80 duration-200 mb-4">
+                <a asp-area="" asp-controller="Home" asp-action="Index" class="hover:opacity-80 duration-200 mb-4">
                     <img src="~/AppImages/Logo bez pozadine.png" alt="Logo" class="brightness-200 w-36 rounded-full mx-auto" />
                 </a>
                 <button type="button" id="navbar-close" class="text-3xl pb-1 sm:hidden hover:text-red-200 duration-200">
@@ -78,25 +78,25 @@
 
             <ul class="text-lg flex flex-col w-full space-y-1 text-center justify-center ">
                 <li>
-                    <a asp-controller="Home" asp-action="Index" class="group flex items-center mx-2 py-2 px-3 rounded-lg transition-all duration-300 hover:bg-orange-500/10">
+                    <a asp-area="" asp-controller="Home" asp-action="Index" class="group flex items-center mx-2 py-2 px-3 rounded-lg transition-all duration-300 hover:bg-orange-500/10">
                         <i class="fa-solid fa-house mr-5 text-white transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:text-orange-300"></i>
                         <span class="transition-colors duration-300 group-hover:text-orange-200">Početna</span>
                     </a>
                 </li>
                 <li>
-                    <a href="#" class="group flex items-center mx-2 py-2 px-3 rounded-lg transition-all duration-300 hover:bg-orange-500/10">
+                    <a asp-area="" class="group flex items-center mx-2 py-2 px-3 rounded-lg transition-all duration-300 hover:bg-orange-500/10">
                         <i class="fa-solid fa-users-rectangle mr-5 text-white transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:text-orange-300"></i>
                         <span class="transition-colors duration-300 group-hover:text-orange-200">O nama</span>
                     </a>
                 </li>
                 <li>
-                    <a asp-controller="Catalogue" asp-action="Index" class="group flex items-center mx-2 py-2 px-3 rounded-lg transition-all duration-300 hover:bg-orange-500/10">
+                    <a asp-area="" asp-controller="Catalogue" asp-action="Index" class="group flex items-center mx-2 py-2 px-3 rounded-lg transition-all duration-300 hover:bg-orange-500/10">
                         <i class="fa-solid fa-table mr-5 text-white transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:text-orange-300"></i>
                         <span class="transition-colors duration-300 group-hover:text-orange-200">Asortiman</span>
                     </a>
                 </li>
                 <li>
-                    <a asp-controller="Contact" asp-action="Index" class="group flex items-center mx-2 py-2 px-3 rounded-lg transition-all duration-300 hover:bg-orange-500/10">
+                    <a asp-area="" asp-controller="Contact" asp-action="Index" class="group flex items-center mx-2 py-2 px-3 rounded-lg transition-all duration-300 hover:bg-orange-500/10">
                         <i class="fa-solid fa-address-card mr-5 text-white transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:text-orange-300"></i>
                         <span class="transition-colors duration-300 group-hover:text-orange-200">Kontakt</span>
                     </a>
@@ -104,14 +104,14 @@
                 @if (isAuthenticated && !isStaff)
                 {
                     <li>
-                        <a href="#" class="group flex items-center mx-2 py-2 px-3 rounded-lg transition-all duration-300 hover:bg-green-500/10">
+                        <a asp-area="" class="group flex items-center mx-2 py-2 px-3 rounded-lg transition-all duration-300 hover:bg-green-500/10">
                             <i class="fa-solid fa-cart-shopping mr-5 text-green-400 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:text-green-300"></i>
                             <span class="transition-colors duration-300 group-hover:text-green-200">Korpa</span>
                         </a>
                     </li> 
                     
                     <li>
-                        <a href="#" class="group flex items-center mx-2 py-2 px-3 rounded-lg transition-all duration-300 hover:bg-violet-500/10">
+                        <a asp-area="" class="group flex items-center mx-2 py-2 px-3 rounded-lg transition-all duration-300 hover:bg-violet-500/10">
                             <i class="fa-solid fa-heart mr-5 text-violet-400 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:text-violet-300"></i>
                             <span class="transition-colors duration-300 group-hover:text-violet-200">Lista želja</span>
                         </a>
