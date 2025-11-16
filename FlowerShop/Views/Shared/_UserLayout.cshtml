@@ -23,7 +23,7 @@
             <a  hx-get="/User/Profile/"
                 hx-target="#user-content"
                 hx-swap="innerHTML"
-                hx-url-push="true"
+                hx-push-url="true"
                 class="group flex cursor-pointer p-2 items-center rounded-lg transition-all duration-300 hover:bg-orange-500/10">
                 <i class="fa-solid fa-user mr-5 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:text-orange-300"></i>
                 <span class="transition-colors duration-300 group-hover:text-orange-200">Moj nalog</span>
@@ -33,7 +33,7 @@
             <a  hx-get="/User/Profile/Orders"
                 hx-target="#user-content"
                 hx-swap="innerHTML"
-                hx-url-push="true"
+                hx-push-url="true"
                 class="group flex cursor-pointer p-2 items-center rounded-lg transition-all duration-300 hover:bg-orange-500/10">
                 <i class="fa-solid fa-box mr-5 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:text-orange-300"></i>
                 <span class="transition-colors duration-300 group-hover:text-orange-200">Narudžbine</span>
@@ -44,7 +44,7 @@
             <a  hx-get="/User/Profile/Wishlist"
                 hx-target="#user-content"
                 hx-swap="innerHTML"
-                hx-url-push="true"
+                hx-push-url="true"
                 class="group flex cursor-pointer p-2 items-center rounded-lg transition-all duration-300 hover:bg-orange-500/10">
                 <i class="fa-solid fa-heart mr-5 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:text-orange-300"></i>
                 <span class="transition-colors duration-300 group-hover:text-orange-200">Lista želja</span>
@@ -54,7 +54,7 @@
             <a  hx-get="/User/Profile/Reviews"
                 hx-target="#user-content"
                 hx-swap="innerHTML"
-                hx-url-push="true"
+                hx-push-url="true"
                 class="group flex cursor-pointer p-2 items-center rounded-lg transition-all duration-300 hover:bg-orange-500/10">
                 <i class="fa-solid fa-star mr-4 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:text-orange-300"></i>
                 <span class="transition-colors duration-300 group-hover:text-orange-200">Recenzije</span>
@@ -64,17 +64,18 @@
             <a  hx-get="/User/Profile/Support"
                 hx-target="#user-content"
                 hx-swap="innerHTML"
-                hx-url-push="true"
+                hx-push-url="true"
                 class="group flex cursor-pointer p-2 items-center rounded-lg transition-all duration-300 hover:bg-orange-500/10">
                 <i class="fa-solid fa-handshake-angle mr-4 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:text-orange-300"></i>
                 <span class="transition-colors duration-300 group-hover:text-orange-200">Podrška</span>
             </a>
         </li>
         <li>
-            <a  hx-get="/User/Profile/Settings"
+            <a  href="/User/Profile/Settings"
+                hx-get="/User/Profile/Settings"
                 hx-target="#user-content"
                 hx-swap="innerHTML"
-                hx-url-push="true"
+                hx-push-url="/User/Profile/Settings"
                 class="group flex cursor-pointer p-2 items-center rounded-lg transition-all duration-300 hover:bg-orange-500/10">
                 <i class="fa-solid fa-gear mr-5 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:text-orange-300"></i>
                 <span class="transition-colors duration-300 group-hover:text-orange-200">Podešavanje</span>
@@ -116,7 +117,7 @@
         </div>
     </header>
     
-    <main role="main" class="mx-5 h-[92%] overflow-y-scroll ">
+    <main role="main" class="mx-5 h-[1000px] overflow-y-scroll ">
         
         @RenderBody()
         
