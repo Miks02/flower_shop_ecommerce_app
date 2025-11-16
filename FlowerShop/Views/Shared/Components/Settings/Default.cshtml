@@ -1,0 +1,131 @@
+@using FlowerShop.ViewModels.Components
+@model SettingsViewModel
+
+<div class="flex py-5 gap-5">
+    <form hx-post="/Account/Update"
+          hx-target="#user-content"
+          hx-swap="innerHTML"
+          class="w-full">
+        <div class="flex flex-col w-[95%] mx-auto gap-5">
+        <div class="flex flex-col shadow-xl bg-red-100 rounded-xl transition-all duration-200 hover:-translate-y-1">
+            <div class=" text-red-100 gradient-red top-0 px-4 py-2 left-0 rounded-t-xl w-full">
+                <h4 class="text-red-100">
+                    <i class="fa-solid fa-gear mr-2"></i>
+                    Podešavanje i informacije o nalogu
+                </h4>
+            </div>
+            <div class="flex flex-col p-5 px-16 ">
+            
+                <div class="pb-2 border-b border-red-900 w-full"></div>
+                
+                <div class="flex flex-col w-full py-6">
+                    <div class="flex justify-between">
+                        
+                        <div class="flex gap-5 w-full">
+                            <div class="shadow-xl w-32 h-32 font-bold bg-orange-400 text-red-100 rounded-full flex items-center justify-center text-3xl">
+                                @if (!string.IsNullOrEmpty(Model.ProfilePicture))
+                                {
+                                    <img class="h-32 rounded-full object-fit w-32" src="@Model.ProfilePicture" alt="Korisnik"/>
+                                }
+                                else
+                                {
+                                    @(Model.FirstName[0].ToString() + Model.LastName[0])
+                                }
+                            </div>
+                            
+                            <div class="flex flex-col self-center">
+                                <h4 class="text-lg font-semibold text-red-900">Profilna slika</h4>
+                                <p class="text-gray-600">Formati: PNG, JPG, JPEG</p>
+                            </div>
+                            
+                            <div class="flex self-center ml-auto gap-5">
+                                <button class="btn-classic gradient-red text-red-100 !px-4 text-sm">Promeni sliku</button>
+                                <button class="btn-classic bg-gray-400 text-white !px-4 text-sm">Obriši sliku</button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                
+                <div class="flex flex-col w-full py-5">
+                    <h4 class="text-xl font-semibold text-red-900 mb-2">Puno ime</h4>
+                    <div class="flex justify-between">
+                        <div class="flex gap-10 w-full">
+                            <div class="flex flex-col gap-1 w-full">
+                                <label asp-for="FirstName" class="font-semibold text-gray-600">Ime</label>
+                                <input type="text" asp-for="FirstName" placeholder="Pera" class="text-red-900 font-semibold w-full p-2 border-2 shadow-2xl transition-all bg-red-200 placeholder-gray-500 border-red-500 rounded-md focus:outline-none focus:ring-4 focus:ring-red-400 focus:border-red-200">
+                                <span asp-validation-for="FirstName" class="text-red-200 text-sm font-medium mt-1 text-center"></span>
+                            </div>
+
+                            <div class="flex flex-col gap-1 w-full">
+                                <label asp-for="LastName" class="font-semibold text-gray-600">Prezime</label>
+                                <input type="text" asp-for="LastName" placeholder="Perić" class="text-red-900 font-semibold w-full p-2 border-2 shadow-2xl transition-all bg-red-200 placeholder-gray-500 border-red-500 rounded-md focus:outline-none focus:ring-4 focus:ring-red-400 focus:border-red-200">
+                                <span asp-validation-for="LastName" class="text-red-200 text-sm font-medium mt-1 text-center"></span>
+                            </div>
+                            
+                            <div class="flex flex-col gap-1 w-full">
+                                <label asp-for="Username" class="font-semibold text-gray-600">Korisničko ime</label>
+                                <input type="text" asp-for="Username" placeholder="Perić" class="text-red-900 font-semibold w-full p-2 border-2 shadow-2xl transition-all bg-red-200 placeholder-gray-500 border-red-500 rounded-md focus:outline-none focus:ring-4 focus:ring-red-400 focus:border-red-200">
+                                <span asp-validation-for="Username" class="text-red-200 text-sm font-medium mt-1 text-center"></span>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                
+                <div class=" border-b border-red-900 w-full"></div>
+                
+                <div class="flex flex-col w-full py-5">
+                    <h4 class="text-xl font-semibold text-red-900 mb-2">Kontakt podaci</h4>
+                    <div class="flex justify-between">
+                        <div class="flex gap-10 w-full">
+                            <div class="flex flex-col gap-1 w-full">
+                                <label asp-for="Email" class="font-semibold text-gray-600">Email adresa</label>
+                                <input type="text" asp-for="Email" placeholder="Pera" class="text-red-900 font-semibold w-full p-2 border-2 shadow-2xl transition-all bg-red-200 placeholder-gray-500 border-red-500 rounded-md focus:outline-none focus:ring-4 focus:ring-red-400 focus:border-red-200">
+                                <span asp-validation-for="Email" class="text-red-200 text-sm font-medium mt-1 text-center"></span>
+                            </div>
+
+                            <div class="flex flex-col gap-1 w-full">
+                                <label asp-for="PhoneNumber" class="font-semibold text-gray-600">Telefon</label>
+                                <input type="text" asp-for="PhoneNumber" placeholder="Perić" class="text-red-900 font-semibold w-full p-2 border-2 shadow-2xl transition-all bg-red-200 placeholder-gray-500 border-red-500 rounded-md focus:outline-none focus:ring-4 focus:ring-red-400 focus:border-red-200">
+                                <span asp-validation-for="PhoneNumber" class="text-red-200 text-sm font-medium mt-1 text-center"></span>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                
+                <div class=" border-b border-red-900 w-full"></div>
+                
+                <div class="flex flex-col w-full py-5">
+                    <h4 class="text-xl font-semibold text-red-900 mb-2">Promena lozinke</h4>
+                    <div class="flex justify-between">
+                        <div class="flex gap-10 w-full">
+                            <div class="flex flex-col gap-1 w-full">
+                                <label asp-for="Password" class="font-semibold text-gray-600">Lozinka</label>
+                                <input type="password" asp-for="Password" placeholder="********" class="text-red-900 font-semibold w-full p-2 border-2 shadow-2xl transition-all bg-red-200 placeholder-gray-500 border-red-500 rounded-md focus:outline-none focus:ring-4 focus:ring-red-400 focus:border-red-200">
+                                <span asp-validation-for="Password" class="text-red-200 text-sm font-medium mt-1 text-center"></span>
+                            </div>
+
+                            <div class="flex flex-col gap-1 w-full">
+                                <label asp-for="ConfirmPassword" class="font-semibold text-gray-600">Potvrda lozinke</label>
+                                <input type="password" asp-for="ConfirmPassword" placeholder="********" class="text-red-900 font-semibold w-full p-2 border-2 shadow-2xl transition-all bg-red-200 placeholder-gray-500 border-red-500 rounded-md focus:outline-none focus:ring-4 focus:ring-red-400 focus:border-red-200">
+                                <span asp-validation-for="ConfirmPassword" class="text-red-200 text-sm font-medium mt-1 text-center"></span>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <button type="submit" class="btn-classic text-white bg-green-500 w-[200px] mx-auto">Sačuvaj</button>
+
+
+            </div>
+        </div>
+        
+        
+            
+    </div>
+    </form>
+    
+    
+</div>

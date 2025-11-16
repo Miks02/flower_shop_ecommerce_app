@@ -24,4 +24,15 @@ public class ProfileController : BaseController
         
         return View();
     }
+
+    [HttpGet]
+    public IActionResult Settings()
+    {
+        if (Request.IsHtmx())
+        {
+            return ViewComponent("Settings");
+        }
+
+        return View();
+    }
 }
