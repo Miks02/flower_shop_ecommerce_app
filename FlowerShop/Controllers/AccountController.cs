@@ -3,8 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Identity;
 using FlowerShop.Models;
 using FlowerShop.ViewModels.Components;
-using FluentValidation;
-using Microsoft.EntityFrameworkCore;
 
 namespace FlowerShop.Controllers;
 
@@ -79,9 +77,9 @@ namespace FlowerShop.Controllers;
             if (!ModelState.IsValid) 
                 return PartialView(_registerComponent, model);
 
-            if (await _userManager.FindByNameAsync(model.UserName) is not null)
+            if (await _userManager.FindByNameAsync(model.Username) is not null)
             {
-                ModelState.AddModelError(nameof(model.UserName), "Korisničko ime je zauzeto");
+                ModelState.AddModelError(nameof(model.Username), "Korisničko ime je zauzeto");
                 return PartialView(_registerComponent, model);
             }
             
@@ -95,7 +93,7 @@ namespace FlowerShop.Controllers;
             {
                 FirstName = model.FirstName,
                 LastName = model.LastName,
-                UserName = model.UserName,
+                UserName = model.Username,
                 Email = model.Email,
                 PhoneNumber = model.PhoneNumber
             };
