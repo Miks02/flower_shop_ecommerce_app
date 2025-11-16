@@ -28,7 +28,7 @@ public class RegisterValidator : AbstractValidator<RegisterViewModel>
             .MaximumLength(30).WithMessage("Prezime može imati maksimalno 30 karaktera.")
             .Matches(@"^[\p{L}\s]+$").WithMessage("Prezime može sadržati samo slova.");
 
-        RuleFor(p => p.UserName)
+        RuleFor(p => p.Username)
             .NotEmpty().WithMessage("Korisničko ime je obavezno.")
             .MinimumLength(5).WithMessage("Korisničko ime mora imati najmanje 5 karaktera.")
             .MaximumLength(25).WithMessage("Korisničko ime može imati maksimalno 25 karaktera.")
