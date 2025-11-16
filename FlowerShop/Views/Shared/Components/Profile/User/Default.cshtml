@@ -4,164 +4,164 @@
 
 <div class="flex py-10 gap-5">
         
-        <div class="flex flex-col w-full gap-5">
-            <div class="flex flex-col shadow-xl bg-red-100 rounded-xl transition-all duration-200 hover:-translate-y-1">
-                <div class=" text-red-100 gradient-red top-0 px-4 py-2 left-0 rounded-t-xl w-full">
-                    <h4 class="text-red-100">
-                        <i class="fa-solid fa-user mr-2"></i>
-                        Lične informacije
-                    </h4>
+    <div class="flex flex-col w-full gap-5">
+        <div class="flex flex-col shadow-xl bg-red-100 rounded-xl transition-all duration-200 hover:-translate-y-1">
+            <div class=" text-red-100 gradient-red top-0 px-4 py-2 left-0 rounded-t-xl w-full">
+                <h4 class="text-red-100">
+                    <i class="fa-solid fa-user mr-2"></i>
+                    Lične informacije
+                </h4>
+            </div>
+            <div class="flex flex-wrap p-2 gap-4 ">
+                <div class="flex flex-wrap w-full gap-5">
+                    <div class="flex flex-col gap-1  p-3 w-auto flex-1 bg-red-200 shadow-xl">
+                        <div class="text-gray-500">
+                            <i class="fa-solid fa-user mr-2"></i>
+                            <span>Ime</span>
+                        </div>
+                        <h5 class="text-red-900 font-semibold">@Model.FirstName</h5>
+                    </div>
+                    <div class="flex flex-col gap-1 p-3 w-auto bg-red-200 flex-1 shadow-xl w-25">
+                        <div class="text-gray-500">
+                            <i class="fa-solid fa-user mr-2"></i>
+                            <span>Prezime</span>
+                        </div>
+                        <h5 class="text-red-900 font-semibold">@Model.LastName</h5>
+                    </div>
                 </div>
-                <div class="flex flex-wrap p-2 gap-4 ">
-                    <div class="flex flex-wrap w-full gap-5">
-                        <div class="flex flex-col gap-1  p-3 w-auto flex-1 bg-red-200 shadow-xl">
-                            <div class="text-gray-500">
-                                <i class="fa-solid fa-user mr-2"></i>
-                                <span>Ime</span>
-                            </div>
-                            <h5 class="text-red-900 font-semibold">@Model.FirstName</h5>
+                <div class="flex flex-wrap  w-full gap-5">
+                    <div class="flex flex-col gap-1 p-3 w-auto flex-1 bg-red-200 shadow-xl">
+                        <div class="text-gray-500">
+                            <i class="fa-solid fa-at mr-2"></i>
+                            <span>Email adresa</span>
                         </div>
-                        <div class="flex flex-col gap-1 p-3 w-auto bg-red-200 flex-1 shadow-xl w-25">
-                            <div class="text-gray-500">
-                                <i class="fa-solid fa-user mr-2"></i>
-                                <span>Prezime</span>
-                            </div>
-                            <h5 class="text-red-900 font-semibold">@Model.LastName</h5>
-                        </div>
+                        <h5 class="text-red-900 font-semibold">@Model.Email</h5>
                     </div>
-                    <div class="flex flex-wrap  w-full gap-5">
-                        <div class="flex flex-col gap-1 p-3 w-auto flex-1 bg-red-200 shadow-xl">
-                            <div class="text-gray-500">
-                                <i class="fa-solid fa-at mr-2"></i>
-                                <span>Email adresa</span>
-                            </div>
-                            <h5 class="text-red-900 font-semibold">@Model.Email</h5>
+                    <div class="flex flex-col gap-1 p-3 w-auto bg-red-200 flex-1 shadow-xl w-25">
+                        <div class="text-gray-500">
+                            <i class="fa-solid fa-phone mr-2"></i>
+                            <span>Telefon</span>
                         </div>
-                        <div class="flex flex-col gap-1 p-3 w-auto bg-red-200 flex-1 shadow-xl w-25">
-                            <div class="text-gray-500">
-                                <i class="fa-solid fa-phone mr-2"></i>
-                                <span>Telefon</span>
-                            </div>
-                            <h5 class="text-red-900 font-semibold">@Model.PhoneNumber</h5>
-                        </div>
+                        <h5 class="text-red-900 font-semibold">@Model.PhoneNumber</h5>
                     </div>
-                    <div class="flex flex-wrap w-full gap-5">
-                        <div class="flex flex-col gap-1  p-3 w-auto flex-1 bg-red-200 shadow-xl">
-                            <div class="text-gray-500">
-                                <i class="fa-solid fa-user mr-2"></i>
-                                <span>Korisničko ime</span>
-                            </div>
-                            <h5 class="text-red-900 font-semibold">@Model.Username</h5>
+                </div>
+                <div class="flex flex-wrap w-full gap-5">
+                    <div class="flex flex-col gap-1  p-3 w-auto flex-1 bg-red-200 shadow-xl">
+                        <div class="text-gray-500">
+                            <i class="fa-solid fa-user mr-2"></i>
+                            <span>Korisničko ime</span>
                         </div>
-                        <div class="flex flex-col gap-1 p-3 w-auto bg-red-200 flex-1 shadow-xl w-25">
-                            <div class="text-gray-500 relative">
-                                <i class="fa-solid fa-location-pin mr-2"></i>
-                                <span>Adresa</span>
-                                <button class="absolute right-0 @(String.IsNullOrEmpty(Model.Address) ? "" : "hidden")" >
-                                    <i class="text-2xl fa-solid fa-plus text-blue-600 hover:text-blue-400 transition-colors duration-200"></i> 
-                                </button>
-                            </div>
+                        <h5 class="text-red-900 font-semibold">@Model.Username</h5>
+                    </div>
+                    <div class="flex flex-col gap-1 p-3 w-auto bg-red-200 flex-1 shadow-xl w-25">
+                        <div class="text-gray-500 relative">
+                            <i class="fa-solid fa-location-pin mr-2"></i>
+                            <span>Adresa</span>
+                            <button class="absolute right-0 @(String.IsNullOrEmpty(Model.Address) ? "" : "hidden")" >
+                                <i class="text-2xl fa-solid fa-plus text-blue-600 hover:text-blue-400 transition-colors duration-200"></i> 
+                            </button>
+                        </div>
                             
-                            @if (string.IsNullOrEmpty(Model.Address))
-                            {
-                                <div class="flex justify-between w-full">
-                                    <h5 class="text-red-900 font-semibold">Nemate podrazumevanu adresu</h5>
+                        @if (string.IsNullOrEmpty(Model.Address))
+                        {
+                            <div class="flex justify-between w-full">
+                                <h5 class="text-red-900 font-semibold">Nemate podrazumevanu adresu</h5>
                                     
-                                </div>
-                            }
-                            else
-                            {
-                                <h5 class="text-red-900 font-semibold">@Model.Address</h5>
-                            }
-                        </div>
-                    </div>
-                    
-                    
-
-                </div>
-            </div>
-            
-            <div class="flex flex-wrap w-full p-4 gap-5 ">
-                
-                <div class="flex flex-col flex-1 gap-3 p-4 justify-center items-center bg-red-200 rounded-xl shadow-xl font-semibold transition-all duration-200 hover:-translate-y-1">
-                    <i class="fa-solid fa-box text-4xl text-orange-600"></i>
-                    <h4 class="text-2xl text-red-700">@Model.TotalOrders</h4>
-                    <span class="text-gray-600">Broj porudžbina</span>
-                </div>
-                <div class="flex flex-col flex-1 gap-3 p-4 justify-center items-center bg-red-200 rounded-xl shadow-xl font-semibold transition-all duration-200 hover:-translate-y-1">
-                    <i class="fa-solid fa-gift text-4xl text-orange-600"></i>
-                    <h4 class="text-2xl text-red-700">@Model.LoyaltyPoints</h4>
-                    <span class="text-gray-600">Poeni lojalnosti</span>
-                </div>
-                <div class="flex flex-col flex-1 gap-3 p-4 justify-center items-center bg-red-200 rounded-xl shadow-xl font-semibold transition-all duration-200 hover:-translate-y-1">
-                    <i class="fa-solid fa-clipboard-list text-4xl text-orange-600"></i>
-                    <h4 class="text-2xl text-red-700">@Model.UpcomingOrders</h4>
-                    <span class="text-gray-600">Predstojeće porudžbine</span>
-                </div>
-
-                
-            </div>
-            
-        </div>
-        
-        <div class="flex flex-col w-[50%] gap-5">
-            
-            <div class="flex flex-col gap-3 p-5 shadow-xl bg-red-100 rounded-xl transition-all duration-200 hover:-translate-y-1">
-                <div class="flex flex-col gap-2 justify-center items-center">
-                    <div class="mx-auto shadow-xl w-32 h-32 font-bold bg-orange-400 text-red-100 rounded-full flex items-center justify-center text-3xl">
-                        @if (!string.IsNullOrEmpty(Model.ProfilePicture))
-                        {
-                            <img class="h-32 rounded-full object-fit w-32" src="@Model.ProfilePicture" alt="Korisnik"/>
+                            </div>
                         }
                         else
                         {
-                            @(Model.FirstName[0].ToString() + Model.LastName[0])
+                            <h5 class="text-red-900 font-semibold">@Model.Address</h5>
                         }
                     </div>
                 </div>
-                <h4 class="text-red-900 text-xl font-semibold text-center">@Model.FirstName @Model.LastName</h4>
+                    
+                    
 
-                <div class="flex flex-col gap-3">
-                    <button class="btn-classic gradient-red  text-white">
-                        <i class="fa-solid fa-user mr-2"></i>
-                        Izmeni profil
-                    </button>
-                    <button class="btn-classic hover:bg-gray-200 text-gray-700">
-                        <i class="fa-solid fa-box mr-2"></i>
-                        Pregled porudžbina
-                    </button>
-                </div>
             </div>
-            
-            <div class="flex flex-col shadow-xl bg-red-100 rounded-xl transition-all duration-200 hover:-translate-y-1">
-                <div class=" text-red-100 gradient-red top-0 px-4 py-2 left-0 rounded-t-xl w-full">
-                    <h4 class="text-red-100">
-                        <i class="fa-solid fa-info-circle mr-2"></i>
-                        Status
-                    </h4>
-                </div>
-                <div class="p-2 font-semibold">
-                    <div class="flex w-full justify-between p-2 items-center">
-                        <span class="text-gray-600">Status naloga: </span>
-                        @if (@Model.Status == AccountStatus.Active)
-                        {
-                            <div class="badge new p-2">Aktivan</div>
-
-                        }
-                        else
-                        {
-                            <div class="badge out-of-stock p-2">Neaktivan</div>
-
-                        }
-                    </div>
-                    <div class="flex w-full justify-between p-2 items-center ">
-                        <span class="text-gray-600">Datum registracije:</span>
-                        <span class="text-red-900">@Model.RegistrationDate</span>
-                    </div>
-                </div>
-                
-                
-            </div>
-            
         </div>
+            
+        <div class="flex flex-wrap w-full p-4 gap-5 ">
+                
+            <div class="flex flex-col flex-1 gap-3 p-4 justify-center items-center bg-red-200 rounded-xl shadow-xl font-semibold transition-all duration-200 hover:-translate-y-1">
+                <i class="fa-solid fa-box text-4xl text-orange-600"></i>
+                <h4 class="text-2xl text-red-700">@Model.TotalOrders</h4>
+                <span class="text-gray-600">Broj porudžbina</span>
+            </div>
+            <div class="flex flex-col flex-1 gap-3 p-4 justify-center items-center bg-red-200 rounded-xl shadow-xl font-semibold transition-all duration-200 hover:-translate-y-1">
+                <i class="fa-solid fa-gift text-4xl text-orange-600"></i>
+                <h4 class="text-2xl text-red-700">@Model.LoyaltyPoints</h4>
+                <span class="text-gray-600">Poeni lojalnosti</span>
+            </div>
+            <div class="flex flex-col flex-1 gap-3 p-4 justify-center items-center bg-red-200 rounded-xl shadow-xl font-semibold transition-all duration-200 hover:-translate-y-1">
+                <i class="fa-solid fa-clipboard-list text-4xl text-orange-600"></i>
+                <h4 class="text-2xl text-red-700">@Model.UpcomingOrders</h4>
+                <span class="text-gray-600">Predstojeće porudžbine</span>
+            </div>
+
+                
+        </div>
+            
     </div>
+        
+    <div class="flex flex-col w-[50%] gap-5">
+            
+        <div class="flex flex-col gap-3 p-5 shadow-xl bg-red-100 rounded-xl transition-all duration-200 hover:-translate-y-1">
+            <div class="flex flex-col gap-2 justify-center items-center">
+                <div class="mx-auto shadow-xl w-32 h-32 font-bold bg-orange-400 text-red-100 rounded-full flex items-center justify-center text-3xl">
+                    @if (!string.IsNullOrEmpty(Model.ProfilePicture))
+                    {
+                        <img class="h-32 rounded-full object-fit w-32" src="@Model.ProfilePicture" alt="Korisnik"/>
+                    }
+                    else
+                    {
+                        @(Model.FirstName[0].ToString() + Model.LastName[0])
+                    }
+                </div>
+            </div>
+            <h4 class="text-red-900 text-xl font-semibold text-center">@Model.FirstName @Model.LastName</h4>
+
+            <div class="flex flex-col gap-3">
+                <button class="btn-classic gradient-red  text-white">
+                    <i class="fa-solid fa-user mr-2"></i>
+                    Izmeni profil
+                </button>
+                <button class="btn-classic hover:bg-gray-200 text-gray-700">
+                    <i class="fa-solid fa-box mr-2"></i>
+                    Pregled porudžbina
+                </button>
+            </div>
+        </div>
+            
+        <div class="flex flex-col shadow-xl bg-red-100 rounded-xl transition-all duration-200 hover:-translate-y-1">
+            <div class=" text-red-100 gradient-red top-0 px-4 py-2 left-0 rounded-t-xl w-full">
+                <h4 class="text-red-100">
+                    <i class="fa-solid fa-info-circle mr-2"></i>
+                    Status
+                </h4>
+            </div>
+            <div class="p-2 font-semibold">
+                <div class="flex w-full justify-between p-2 items-center">
+                    <span class="text-gray-600">Status naloga: </span>
+                    @if (@Model.Status == AccountStatus.Active)
+                    {
+                        <div class="badge new p-2">Aktivan</div>
+
+                    }
+                    else
+                    {
+                        <div class="badge out-of-stock p-2">Neaktivan</div>
+
+                    }
+                </div>
+                <div class="flex w-full justify-between p-2 items-center ">
+                    <span class="text-gray-600">Datum registracije:</span>
+                    <span class="text-red-900">@Model.RegistrationDate</span>
+                </div>
+            </div>
+                
+                
+        </div>
+            
+    </div>
+</div>
