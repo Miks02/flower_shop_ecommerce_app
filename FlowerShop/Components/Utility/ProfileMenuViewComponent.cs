@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace FlowerShop.Components;
+namespace FlowerShop.Components.Utility;
 
 [Authorize(Roles = "User")]
 public class ProfileMenuViewComponent : ViewComponent

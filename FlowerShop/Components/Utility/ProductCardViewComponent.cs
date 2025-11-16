@@ -2,7 +2,7 @@ using FlowerShop.Enums;
 using FlowerShop.ViewModels.Components;
 using Microsoft.AspNetCore.Mvc;
 
-namespace FlowerShop.Components;
+namespace FlowerShop.Components.Utility;
 
 public class ProductCardViewComponent : ViewComponent
 {

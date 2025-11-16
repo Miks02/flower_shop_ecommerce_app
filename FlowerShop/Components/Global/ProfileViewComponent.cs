@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
-namespace FlowerShop.Components;
+namespace FlowerShop.Components.Global;
 
 [Authorize]
 public class ProfileViewComponent : ViewComponent

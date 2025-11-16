@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 
-namespace FlowerShop.Components;
+namespace FlowerShop.Components.Utility;
 
 public class FooterViewComponent : ViewComponent
 {
