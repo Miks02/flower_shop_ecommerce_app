@@ -28,6 +28,15 @@
     background-color: #991b1b;
 }
 
+.btn-classic {
+    @apply relative overflow-hidden cursor-pointer px-10 py-3 font-semibold rounded-lg shadow-all transition-all duration-300;
+
+}
+
+.btn-classic:hover {
+    @apply opacity-90 bg-opacity-70;
+}
+
 .btn {
     @apply relative overflow-hidden cursor-pointer px-10 py-3 font-semibold text-white rounded-lg shadow-all transition-all duration-300;
     
