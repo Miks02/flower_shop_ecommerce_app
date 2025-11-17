@@ -11,7 +11,7 @@ public class BaseController : Controller
         _logger = logger;          
     }
 
-    protected void HandleError(Exception? ex = null, string? message = null)
+    protected void SetErrorMessage(string? message = null, Exception? ex = null)
     {
         if (ex != null && message != null)
         {
@@ -40,7 +40,7 @@ public class BaseController : Controller
        
     }
     
-    protected void HandleSuccess(string? message = null)
+    protected void SetSuccessMessage(string? message = null)
     {
 
         if (message != null)
@@ -49,7 +49,7 @@ public class BaseController : Controller
             return;
         }
         
-        TempData["Success"] = "USPEH!";
+        TempData["Success"] = "Operacija izvršena uspešno!";
        
     }
     
