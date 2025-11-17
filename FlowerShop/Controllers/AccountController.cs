@@ -132,7 +132,6 @@ namespace FlowerShop.Controllers;
         public async Task<IActionResult> UpdateProfile(SettingsPageViewModel vm)
         {
             
-
             if (!ModelState.IsValid)
                 return PartialView(_profileSettingsComponent, vm);
             
@@ -149,18 +148,30 @@ namespace FlowerShop.Controllers;
             var updateResult = await _userManager.UpdateAsync(user);
 
             if (!updateResult.Succeeded)
+            {
+                SetErrorMessage("Došlo je do greške prilikom ažuriranja podataka");
                 return PartialView(_profileSettingsComponent, vm);
+            }
 
             var currentPassword = vm.ChangePasswordVm.CurrentPassword;
             var newPassword = vm.ChangePasswordVm.NewPassword;
 
             if (!string.IsNullOrEmpty(currentPassword))
             {
+                bool isPasswordValid = await _userManager.CheckPasswordAsync(user, currentPassword);
+
+                if (!isPasswordValid)
+                {
+                    _logger.LogError("Uneta je netačna lozinka");
+                    ModelState.AddModelError("ChangePasswordVm.CurrentPassword", "Netačna lozinka.");
+                    return PartialView(_profileSettingsComponent, vm);
+                }
+                
                 var changePasswordResult = await _userManager.ChangePasswordAsync(user, currentPassword, newPassword);
 
                 if (!changePasswordResult.Succeeded)
                 {
-                    ViewBag.Message("Došlo je do greške prilikom izmene lozinke");
+                    TempData["Error"] = "Došlo je do greške prilikom izmene lozinke";
                     return PartialView(_profileSettingsComponent, vm);
                 }
 
@@ -169,7 +180,9 @@ namespace FlowerShop.Controllers;
             await _signInManager.RefreshSignInAsync(user);
             
             Response.Headers.Append("HX-Redirect", "/User/Profile/Settings");
-            ViewBag.Message = "Promene su uspešno sačuvane";
+            TempData["Success"] = "Promene su uspešno sačuvane";
+            _logger.LogInformation("Podaci su uspešno sačuvani");
+           
             return Ok();
 
         }

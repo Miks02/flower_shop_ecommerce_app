@@ -54,21 +54,28 @@
                         <div class="flex justify-between">
                             <div class="flex gap-10 w-full">
                                 <div class="flex flex-col gap-1 w-full">
-                                    <label asp-for="ProfileVm.FirstName" class="font-semibold text-gray-600">Ime</label>
+                                    <div class="flex flex-wrap justify-between w-full items-center">
+                                        <label asp-for="ProfileVm.FirstName" class="font-semibold text-gray-600">Ime</label>
+                                        <span asp-validation-for="ProfileVm.FirstName" class="text-red-700 font-medium mt-1"></span>
+                                    </div>
                                     <input type="text" asp-for="ProfileVm.FirstName" placeholder="Pera" class="text-red-900 font-semibold w-full p-2 border-2 shadow-2xl transition-all bg-red-200 placeholder-gray-500 border-red-500 rounded-md focus:outline-none focus:ring-4 focus:ring-red-400 focus:border-red-200">
-                                    <span asp-validation-for="ProfileVm.FirstName" class="text-red-200 text-sm font-medium mt-1 text-center"></span>
                                 </div>
 
                                 <div class="flex flex-col gap-1 w-full">
-                                    <label asp-for="ProfileVm.LastName" class="font-semibold text-gray-600">Prezime</label>
+                                    <div class="flex flex-wrap justify-between w-full items-center">
+                                        <label asp-for="ProfileVm.LastName" class="font-semibold text-gray-600">Prezime</label>
+                                        <span asp-validation-for="ProfileVm.LastName" class="text-red-700 font-medium mt-1"></span>
+                                    </div>
                                     <input type="text" asp-for="ProfileVm.LastName" placeholder="Perić" class="text-red-900 font-semibold w-full p-2 border-2 shadow-2xl transition-all bg-red-200 placeholder-gray-500 border-red-500 rounded-md focus:outline-none focus:ring-4 focus:ring-red-400 focus:border-red-200">
-                                    <span asp-validation-for="ProfileVm.LastName" class="text-red-200 text-sm font-medium mt-1 text-center"></span>
+              
                                 </div>
 
                                 <div class="flex flex-col gap-1 w-full">
-                                    <label asp-for="ProfileVm.UserName" class="font-semibold text-gray-600">Korisničko ime</label>
+                                    <div class="flex flex-wrap justify-between w-full items-center">
+                                        <label asp-for="ProfileVm.UserName" class="font-semibold text-gray-600">Korisničko ime</label>
+                                        <span asp-validation-for="ProfileVm.UserName" class="text-red-700 font-medium mt-1"></span>
+                                    </div>
                                     <input type="text" asp-for="ProfileVm.UserName" placeholder="Perić" class="text-red-900 font-semibold w-full p-2 border-2 shadow-2xl transition-all bg-red-200 placeholder-gray-500 border-red-500 rounded-md focus:outline-none focus:ring-4 focus:ring-red-400 focus:border-red-200">
-                                    <span asp-validation-for="ProfileVm.UserName" class="text-red-200 text-sm font-medium mt-1 text-center"></span>
                                 </div>
                             </div>
 
@@ -82,15 +89,20 @@
                         <div class="flex justify-between">
                             <div class="flex gap-10 w-full">
                                 <div class="flex flex-col gap-1 w-full">
-                                    <label asp-for="ProfileVm.Email" class="font-semibold text-gray-600">Email adresa</label>
+                                    <div class="flex flex-wrap justify-between w-full items-center">
+                                        <label asp-for="ProfileVm.Email" class="font-semibold text-gray-600">Email adresa</label>
+                                        <span asp-validation-for="ProfileVm.Email" class="text-red-700 font-medium mt-1"></span>
+                                    </div>
                                     <input type="text" asp-for="ProfileVm.Email" placeholder="Pera" class="text-red-900 font-semibold w-full p-2 border-2 shadow-2xl transition-all bg-red-200 placeholder-gray-500 border-red-500 rounded-md focus:outline-none focus:ring-4 focus:ring-red-400 focus:border-red-200">
                                     <span asp-validation-for="ProfileVm.Email" class="text-red-200 text-sm font-medium mt-1 text-center"></span>
                                 </div>
 
                                 <div class="flex flex-col gap-1 w-full">
-                                    <label asp-for="ProfileVm.PhoneNumber" class="font-semibold text-gray-600">Telefon</label>
+                                    <div class="flex flex-wrap justify-between w-full items-center">
+                                        <label asp-for="ProfileVm.PhoneNumber" class="font-semibold text-gray-600">Telefon</label>
+                                        <span asp-validation-for="ProfileVm.PhoneNumber" class="text-red-700 font-medium mt-1"></span>
+                                    </div>
                                     <input type="text" asp-for="ProfileVm.PhoneNumber" placeholder="Perić" class="text-red-900 font-semibold w-full p-2 border-2 shadow-2xl transition-all bg-red-200 placeholder-gray-500 border-red-500 rounded-md focus:outline-none focus:ring-4 focus:ring-red-400 focus:border-red-200">
-                                    <span asp-validation-for="ProfileVm.PhoneNumber" class="text-red-200 text-sm font-medium mt-1 text-center"></span>
                                 </div>
                             </div>
 
@@ -104,29 +116,40 @@
                         <div class="flex justify-between">
                             <div class="flex gap-10 w-full">
                                 <div class="flex flex-col gap-1 w-full">
-                                    <label asp-for="ChangePasswordVm.CurrentPassword" class="font-semibold text-gray-600">Lozinka</label>
+                                    <div class="flex flex-wrap justify-between w-full items-center">
+                                        <label asp-for="ChangePasswordVm.CurrentPassword" class="font-semibold text-gray-600">Trenutna lozinka</label>
+                                        <span asp-validation-for="ChangePasswordVm.CurrentPassword" class="text-red-700 font-medium mt-1"></span>
+                                    </div>
                                     <input type="password" asp-for="ChangePasswordVm.CurrentPassword" placeholder="********" class="text-red-900 font-semibold w-full p-2 border-2 shadow-2xl transition-all bg-red-200 placeholder-gray-500 border-red-500 rounded-md focus:outline-none focus:ring-4 focus:ring-red-400 focus:border-red-200">
-                                    <span asp-validation-for="ChangePasswordVm.CurrentPassword" class="text-red-200 text-sm font-medium mt-1 text-center"></span>
                                 </div>
 
                                 <div class="flex flex-col gap-1 w-full">
-                                    <label asp-for="ChangePasswordVm.NewPassword" class="font-semibold text-gray-600">Nova lozinka</label>
+                                    <div class="flex flex-wrap justify-between w-full items-center">
+                                        <label asp-for="ChangePasswordVm.NewPassword" class="font-semibold text-gray-600">Nova lozinka</label>
+                                        <span asp-validation-for="ChangePasswordVm.NewPassword" class="text-red-700 font-medium mt-1"></span>
+                                    </div>
                                     <input type="password" asp-for="ChangePasswordVm.NewPassword" placeholder="********" class="text-red-900 font-semibold w-full p-2 border-2 shadow-2xl transition-all bg-red-200 placeholder-gray-500 border-red-500 rounded-md focus:outline-none focus:ring-4 focus:ring-red-400 focus:border-red-200">
-                                    <span asp-validation-for="ChangePasswordVm.NewPassword" class="text-red-200 text-sm font-medium mt-1 text-center"></span>
                                 </div>
 
                                 <div class="flex flex-col gap-1 w-full">
-                                    <label asp-for="ChangePasswordVm.ConfirmPassword" class="font-semibold text-gray-600">Potvrda lozinke</label>
+                                    <div class="flex flex-wrap justify-between w-full items-center">
+                                        <label asp-for="ChangePasswordVm.ConfirmPassword" class="font-semibold text-gray-600">Potvrda lozinke</label>
+                                        <span asp-validation-for="@Model.ChangePasswordVm.ConfirmPassword" class="text-red-700 font-medium mt-1"></span>
+                                    </div>
                                     <input type="password" asp-for="ChangePasswordVm.ConfirmPassword" placeholder="********" class="text-red-900 font-semibold w-full p-2 border-2 shadow-2xl transition-all bg-red-200 placeholder-gray-500 border-red-500 rounded-md focus:outline-none focus:ring-4 focus:ring-red-400 focus:border-red-200">
-                                    <span asp-validation-for="ChangePasswordVm.ConfirmPassword" class="text-red-200 text-sm font-medium mt-1 text-center"></span>
                                 </div>
                             </div>
 
                         </div>
                     </div>
-                    @if (ViewBag.Message is not null)
+                    @if (TempData["Success"] is not null)
                     {
-                        <span class="text-green-600 font-semibold">@ViewBag.Message</span>
+                        <span class="text-green-600 font-semibold">@TempData["Success"]</span>
+                    }
+                    else if (TempData["Error"] is not null)
+                    {
+                        <span class="text-red-600 font-semibold">@TempData["Success"]</span>
+
                     }
                     <button type="submit" class="btn-classic text-white bg-green-500 w-[200px] mx-auto">Sačuvaj</button>
 
