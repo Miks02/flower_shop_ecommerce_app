@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Identity;
 using FlowerShop.Models;
 using FlowerShop.ViewModels.Components;
+using Microsoft.AspNetCore.Authorization;
 
 namespace FlowerShop.Controllers;
 
@@ -14,6 +15,7 @@ namespace FlowerShop.Controllers;
 
         private readonly string _loginComponent = "Components/Login/Default";
         private readonly string _registerComponent = "Components/Register/Default";
+        private readonly string _profileSettingsComponent = "~/Views/Shared/Components/Settings/Default.cshtml";
 
         public AccountController(
             UserManager<ApplicationUser> userManager, 
@@ -123,6 +125,53 @@ namespace FlowerShop.Controllers;
             }
 
             return PartialView(_registerComponent, model);
+        }
+
+        [Authorize]
+        [HttpPost]
+        public async Task<IActionResult> UpdateProfile(SettingsPageViewModel vm)
+        {
+            
+
+            if (!ModelState.IsValid)
+                return PartialView(_profileSettingsComponent, vm);
+            
+            var user = await _userManager.FindByNameAsync(User.Identity!.Name!);
+
+            if (user is null)
+                return ViewComponent("NotFound");
+
+            if (user.UserName != vm.ProfileVm.UserName)
+                user.UserName = vm.ProfileVm.UserName;
+            if (user.Email != vm.ProfileVm.Email)
+                user.Email = vm.ProfileVm.Email;
+            
+            var updateResult = await _userManager.UpdateAsync(user);
+
+            if (!updateResult.Succeeded)
+                return PartialView(_profileSettingsComponent, vm);
+
+            var currentPassword = vm.ChangePasswordVm.CurrentPassword;
+            var newPassword = vm.ChangePasswordVm.NewPassword;
+
+            if (!string.IsNullOrEmpty(currentPassword))
+            {
+                var changePasswordResult = await _userManager.ChangePasswordAsync(user, currentPassword, newPassword);
+
+                if (!changePasswordResult.Succeeded)
+                {
+                    ViewBag.Message("Došlo je do greške prilikom izmene lozinke");
+                    return PartialView(_profileSettingsComponent, vm);
+                }
+
+            }
+            
+            await _signInManager.RefreshSignInAsync(user);
+            
+            Response.Headers.Append("HX-Redirect", "/User/Profile/Settings");
+            ViewBag.Message = "Promene su uspešno sačuvane";
+            return Ok();
+
         }
 
         [HttpPost]

@@ -30,14 +30,20 @@ public class SettingsViewComponent : ViewComponent
         if (user is null)
             return View("Error");
 
-        var vm = new SettingsViewModel()
+        var profileVm = new ProfileSettingsViewModel()
         {
             FirstName = user.FirstName,
             LastName = user.LastName,
-            Username = user.UserName!,
+            UserName = user.UserName!,
             Email = user.Email!,
             PhoneNumber = user.PhoneNumber!,
-            ProfilePicture = user.ImagePath,
+            FullNameInitials = user.FirstName[0].ToString() + user.LastName[0]
+        };
+
+        var vm = new SettingsPageViewModel()
+        {
+            ProfileVm = profileVm,
+            ChangePasswordVm = new ChangePasswordViewModel()
         };
         
         return await Task.FromResult(View(vm));
