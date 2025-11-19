@@ -37,7 +37,8 @@ public class SettingsViewComponent : ViewComponent
             UserName = user.UserName!,
             Email = user.Email!,
             PhoneNumber = user.PhoneNumber!,
-            FullNameInitials = user.FirstName[0].ToString() + user.LastName[0]
+            FullNameInitials = user.FirstName[0].ToString() + user.LastName[0],
+            ImagePath = user.ImagePath
         };
 
         var vm = new SettingsPageViewModel()

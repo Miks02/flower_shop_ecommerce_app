@@ -26,6 +26,7 @@
       <Folder Include="Services\Implementations\" />
       <Folder Include="Views\Account\" />
       <Folder Include="wwwroot\AppImages\" />
+      <Folder Include="wwwroot\uploads\user\" />
     </ItemGroup>
 
     <ItemGroup>
