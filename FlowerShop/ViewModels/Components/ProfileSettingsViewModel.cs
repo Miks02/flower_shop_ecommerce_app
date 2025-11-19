@@ -14,5 +14,7 @@ public class ProfileSettingsViewModel
     
     public string PhoneNumber { get; set; } = null!;
     
+    public IFormFile? ProfilePicture { get; set; }
+    
     public string? ImagePath { get; set; }
 }

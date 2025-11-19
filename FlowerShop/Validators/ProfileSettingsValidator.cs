@@ -1,3 +1,4 @@
+using System.ComponentModel;
 using FlowerShop.ViewModels.Components;
 using FluentValidation;
 
@@ -32,8 +33,21 @@ public class ProfileSettingsValidator : AbstractValidator<ProfileSettingsViewMod
         
         RuleFor(p => p.PhoneNumber)
             .NotEmpty().WithMessage("Broj telefona je obavezan.")
-            .Matches(@"^\+?(\d[\s-]?){7,15}$").WithMessage("Unesite validan broj telefona."); 
-        
-        
+            .Matches(@"^\+?(\d[\s-]?){7,15}$").WithMessage("Unesite validan broj telefona.");
+
+        RuleFor(p => p.ProfilePicture)
+            .Must(file => file.Length <= 5 * 1024 * 1024)
+            .WithMessage("Maksimalna dužina fajla je 5 MB.")
+            .Must(file => IsSupportedContentType(file.ContentType))
+            .WithMessage("Dozvoljeni formati su: JPG, JPEG i PNG.")
+            .When(file => file.ProfilePicture is not null);
+
     }
+
+    public bool IsSupportedContentType(string contentType)
+    {
+        return contentType.Equals("image/jpg") ||
+               contentType.Equals("image/jpeg") ||
+               contentType.Equals("image/png");
+    } 
 }
