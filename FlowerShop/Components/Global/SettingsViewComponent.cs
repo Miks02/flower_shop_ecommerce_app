@@ -46,6 +46,8 @@ public class SettingsViewComponent : ViewComponent
             ProfileVm = profileVm,
             ChangePasswordVm = new ChangePasswordViewModel()
         };
+
+        ViewBag.Disabled = string.IsNullOrEmpty(user.ImagePath);
         
         return await Task.FromResult(View(vm));
     }
