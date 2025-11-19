@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Identity;
 using FlowerShop.Models;
 using FlowerShop.ViewModels.Components;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.EntityFrameworkCore;
 
 namespace FlowerShop.Controllers;
 
@@ -217,6 +218,47 @@ namespace FlowerShop.Controllers;
             _logger.LogInformation("Podaci su uspešno sačuvani");
            
             return Ok();
+
+        }
+
+        [Authorize]
+        [HttpGet]
+        public async Task<IActionResult> RemoveProfilePicture()
+        {
+            var user = await _userManager.FindByNameAsync(User.Identity!.Name!);
+
+            if (user is null)
+            {
+                SetErrorMessage("Došlo je do greške. Korisnik nije pronadjen");
+                return ViewComponent("Settings");
+            }
+
+            var imagePath = user.ImagePath;
+            user.ImagePath = null;
+
+            var result = await _userManager.UpdateAsync(user);
+
+            if (!result.Succeeded)
+            {
+                _logger.LogError("An error has occurred while removing the profile picture. ");
+                foreach (var error in result.Errors)
+                {
+                    _logger.LogError("Error: " + error);
+                }
+                SetErrorMessage("Došlo je do greške prilikom brisanja profilne slike");
+                return ViewComponent("Settings");
+            }
+
+            if (!string.IsNullOrEmpty(imagePath))
+            {
+                var oldImagePath = Path.Combine(_environment.WebRootPath, imagePath.TrimStart('/').Replace('/', Path.DirectorySeparatorChar));
+                
+                if (System.IO.File.Exists(oldImagePath))
+                    System.IO.File.Delete(oldImagePath);
+            }
+
+            SetSuccessMessage("Slika je uspešno obrisana");
+            return ViewComponent("Settings");
 
         }
 
