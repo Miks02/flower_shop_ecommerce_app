@@ -5,8 +5,10 @@
     <form hx-post="/Account/UpdateProfile"
           hx-target="#user-content"
           hx-swap="innerHTML"
+          enctype="multipart/form-data"
           class="w-full">
         <input type="hidden" asp-for="ProfileVm.FullNameInitials"/>
+        <input type="hidden" asp-for="ProfileVm.ImagePath"/>
         <div class="flex flex-col w-[95%] mx-auto gap-5">
             <div class="flex flex-col shadow-xl bg-red-100 rounded-xl transition-all duration-200 hover:-translate-y-1">
                 <div class=" text-red-100 gradient-red top-0 px-4 py-2 left-0 rounded-t-xl w-full">
@@ -26,22 +28,26 @@
                                 <div class="shadow-xl w-32 h-32 font-bold bg-orange-400 text-red-100 rounded-full flex items-center justify-center text-3xl">
                                     @if (!string.IsNullOrEmpty(Model.ProfileVm.ImagePath))
                                     {
-                                        <img class="h-32 rounded-full object-fit w-32" src="@Model.ProfileVm.ImagePath" alt="Korisnik"/>
+                                    <img class="h-32 rounded-full object-fit w-32" src="@Model.ProfileVm.ImagePath" alt="Korisnik"/>
                                     }
                                     else
                                     {
                                         @Model.ProfileVm.FullNameInitials
-                                        ;
+                                        
                                     }
                                 </div>
 
                                 <div class="flex flex-col self-center">
                                     <h4 class="text-lg font-semibold text-red-900">Profilna slika</h4>
                                     <p class="text-gray-600">Formati: PNG, JPG, JPEG</p>
+                                    <span asp-validation-for="ProfileVm.ProfilePicture" class="text-red-700 font-medium mt-1"></span>
+
                                 </div>
 
                                 <div class="flex self-center ml-auto gap-5">
-                                    <button class="btn-classic gradient-red text-red-100 !px-4 text-sm">Promeni sliku</button>
+                                    <input asp-for="ProfileVm.ProfilePicture" type="file" accept="image/jpg, image/jpeg, image/png" class="hidden" >
+                                    <label asp-for="ProfileVm.ProfilePicture" class="btn-classic gradient-red text-red-100 !px-4 text-sm">Promeni sliku</label>
+
                                     <button class="btn-classic bg-gray-400 text-white !px-4 text-sm">Obriši sliku</button>
                                 </div>
                             </div>
@@ -120,7 +126,8 @@
                                         <label asp-for="ChangePasswordVm.CurrentPassword" class="font-semibold text-gray-600">Trenutna lozinka</label>
                                         <span asp-validation-for="ChangePasswordVm.CurrentPassword" class="text-red-700 font-medium mt-1"></span>
                                     </div>
-                                    <input type="password" asp-for="ChangePasswordVm.CurrentPassword" placeholder="********" class="text-red-900 font-semibold w-full p-2 border-2 shadow-2xl transition-all bg-red-200 placeholder-gray-500 border-red-500 rounded-md focus:outline-none focus:ring-4 focus:ring-red-400 focus:border-red-200">
+                                    <input type="password" class="hidden">
+                                    <input type="password" asp-for="ChangePasswordVm.CurrentPassword" placeholder="********" class="text-red-900 font-semibold w-full p-2 border-2 shadow-2xl transition-all bg-red-200 placeholder-gray-500 border-red-500 rounded-md focus:outline-none focus:ring-4 focus:ring-red-400 focus:border-red-200" autocomplete="false">
                                 </div>
 
                                 <div class="flex flex-col gap-1 w-full">
@@ -144,11 +151,11 @@
                     </div>
                     @if (TempData["Success"] is not null)
                     {
-                        <span class="text-green-600 font-semibold">@TempData["Success"]</span>
+                        <span class="text-green-700 font-semibold">@TempData["Success"]</span>
                     }
                     else if (TempData["Error"] is not null)
                     {
-                        <span class="text-red-600 font-semibold">@TempData["Success"]</span>
+                        <span class="text-red-700 font-semibold">@TempData["Success"]</span>
 
                     }
                     <button type="submit" class="btn-classic text-white bg-green-500 w-[200px] mx-auto">Sačuvaj</button>

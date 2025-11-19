@@ -12,6 +12,7 @@ namespace FlowerShop.Controllers;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly IWebHostEnvironment _environment;
 
         private readonly string _loginComponent = "Components/Login/Default";
         private readonly string _registerComponent = "Components/Register/Default";
@@ -21,12 +22,14 @@ namespace FlowerShop.Controllers;
             UserManager<ApplicationUser> userManager, 
             SignInManager<ApplicationUser> signInManager, 
             RoleManager<IdentityRole> roleManager,
+            IWebHostEnvironment environment,
             ILogger<BaseController> logger
             ) : base(logger)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _roleManager = roleManager;
+            _environment = environment;
         }
 
         [HttpGet]
@@ -144,6 +147,36 @@ namespace FlowerShop.Controllers;
                 user.UserName = vm.ProfileVm.UserName;
             if (user.Email != vm.ProfileVm.Email)
                 user.Email = vm.ProfileVm.Email;
+
+            user.FirstName = vm.ProfileVm.FirstName;
+            user.LastName = vm.ProfileVm.LastName;
+            user.PhoneNumber = vm.ProfileVm.PhoneNumber;
+
+            if (vm.ProfileVm.ProfilePicture is not null && vm.ProfileVm.ProfilePicture.Length > 0)
+            {
+                var uploadsFolder = Path.Combine(_environment.WebRootPath, "uploads", "user");
+
+                if (!Directory.Exists(uploadsFolder))
+                    Directory.CreateDirectory(uploadsFolder);
+
+                var uniqueFileName = Guid.NewGuid() + "_" + vm.ProfileVm.ProfilePicture.FileName;
+                var filePath = Path.Combine(uploadsFolder, uniqueFileName);
+
+                await using var fileStream = new FileStream(filePath, FileMode.Create);
+                
+                await vm.ProfileVm.ProfilePicture.CopyToAsync(fileStream);
+                
+                if (!string.IsNullOrEmpty(user.ImagePath))
+                {
+                    var oldImagePath = Path.Combine(_environment.WebRootPath, user.ImagePath.TrimStart('/').Replace('/', Path.DirectorySeparatorChar));
+
+                    if (System.IO.File.Exists(oldImagePath))
+                        System.IO.File.Delete(oldImagePath);
+                    
+                }
+
+                user.ImagePath = "/uploads/user/" + uniqueFileName;
+            }
             
             var updateResult = await _userManager.UpdateAsync(user);
 
