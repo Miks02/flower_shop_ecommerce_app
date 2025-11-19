@@ -1,5 +1,10 @@
 @using FlowerShop.ViewModels.Components
 @model SettingsPageViewModel
+
+@{
+    ViewBag.Disabled = string.IsNullOrEmpty(@Model.ProfileVm.ImagePath);
+}
+
 <div class="flex py-5 gap-5">
     <form hx-post="/Account/UpdateProfile"
           hx-target="#user-content"
@@ -60,7 +65,7 @@
                                     <button hx-get="/Account/RemoveProfilePicture"
                                        hx-target="#user-content"
                                        hx-swap="innerHTML"
-                                       id="delete-pic-btn" type="submit" class="btn-classic bg-gray-400 text-white !px-4 text-sm @(ViewBag.Disabled ? "opacity-50 pointer-events-none" : "")">Obriši sliku</button>
+                                       id="delete-pic-btn" type="submit" class="btn-classic bg-gray-400 text-white !px-4 text-sm @(ViewBag.Disabled != null && ViewBag.Disabled ? "opacity-50 pointer-events-none" : "")">Obriši sliku</button>
                                     
                                 </div>
                             </div>
