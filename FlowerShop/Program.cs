@@ -9,8 +9,34 @@ using FluentValidation;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using FluentValidation.AspNetCore;
+using Microsoft.Extensions.Logging.Console;
+using Serilog;
+using Serilog.Debugging;
+using Serilog.Events;
+
+SelfLog.Enable(Console.Error);
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Host.UseSerilog((context, configuration) => configuration
+    .MinimumLevel.Information()
+    .MinimumLevel.Override("System", LogEventLevel.Warning)
+
+    .Enrich.FromLogContext() 
+
+    .WriteTo.Console(outputTemplate: 
+        "[{Timestamp:HH:mm:ss} {Level:u3}] {SourceContext} {Scope} {Message:lj}{NewLine}{Exception}",
+        restrictedToMinimumLevel: LogEventLevel.Debug 
+    )
+    
+    .WriteTo.File(
+        path: "logs/service_logs.txt",
+        rollingInterval: RollingInterval.Day,
+        outputTemplate: "[{Timestamp:HH:mm:ss} {Level:u3}] {SourceContext} {Scope} {Message:lj}{NewLine}{Exception}",
+        restrictedToMinimumLevel: LogEventLevel.Information
+    )
+
+);
 
 builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
@@ -23,6 +49,7 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
     options.Password.RequiredUniqueChars = 0;
     options.User.RequireUniqueEmail = true;
 }).AddEntityFrameworkStores<ApplicationDbContext>();
+
 
 
 builder.Services.AddScoped<IProductService, MockProductService>()
@@ -44,6 +71,13 @@ builder.Services
     .AddValidatorsFromAssembly(Assembly.GetExecutingAssembly())
     .AddHttpContextAccessor();
 
+
+
+builder.Host.UseDefaultServiceProvider(options =>
+{
+    options.ValidateScopes = true;
+    options.ValidateOnBuild = true; 
+});
 
 var app = builder.Build();
 
