@@ -6,10 +6,12 @@ public class FileService : IFileService
 {
 
     private readonly IWebHostEnvironment _environment;
+    private readonly ILogger<FileService> _logger;
 
-    public FileService(IWebHostEnvironment environment)
+    public FileService(IWebHostEnvironment environment, ILogger<FileService> logger)
     {
         _environment = environment;
+        _logger = logger;
     }
     
     
@@ -33,8 +35,7 @@ public class FileService : IFileService
         var filePath = Path.Combine(uploadsDirPath, uniqueFileName);
 
         if (!string.IsNullOrEmpty(uploadedFilePath))
-            DeleteFile(filePath);
-        
+            DeleteFile(uploadedFilePath);
 
         await using var fileStream = new FileStream(filePath, FileMode.Create);
         await file.CopyToAsync(fileStream);
