@@ -2,16 +2,14 @@ using FlowerShop.Services.Interfaces;
 
 namespace FlowerShop.Services.Implementations;
 
-public class FileService : IFileService
+public class FileService : BaseService<FileService>, IFileService
 {
 
     private readonly IWebHostEnvironment _environment;
-    private readonly ILogger<FileService> _logger;
 
-    public FileService(IWebHostEnvironment environment, ILogger<FileService> logger)
+    public FileService(IWebHostEnvironment environment, HttpContextAccessor http, ILogger<FileService> logger) : base(http, logger)
     {
         _environment = environment;
-        _logger = logger;
     }
     
     

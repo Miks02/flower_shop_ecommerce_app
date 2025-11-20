@@ -8,26 +8,20 @@ using Microsoft.AspNetCore.Identity;
 
 namespace FlowerShop.Services.Implementations;
 
-public class UserService : IUserService
+public class UserService : BaseService<UserService>, IUserService
 {
     
-    private readonly IHttpContextAccessor _httpContextAccessor;
     private readonly UserManager<ApplicationUser> _userManager;
     private readonly IFileService _fileService;
-    private readonly ILogger<UserService> _logger;
     
-    public UserService(IHttpContextAccessor httpContextAccessor,
+    public UserService(IHttpContextAccessor http,
         UserManager<ApplicationUser> userManager,
         IFileService fileService,
-        ILogger<UserService> logger)
+        ILogger<UserService> logger) : base(http, logger)
     {
-        _httpContextAccessor = httpContextAccessor;
         _userManager = userManager;
         _fileService = fileService;
-        _logger = logger;
     }
-
-    private string? CurrentUserId => _httpContextAccessor?.HttpContext?.User.FindFirstValue(ClaimTypes.NameIdentifier);
     
     public async Task<ApplicationUser?> GetCurrentUser()
     {
@@ -90,14 +84,15 @@ public class UserService : IUserService
             if (!updateResult.Succeeded)
             {
                 result.Errors.Add("Došlo je do greške prilikom ažuriranja podataka");
+                LogError("Error happened while updating user data");
                 foreach (var error in updateResult.Errors)
                 {
-                    _logger.LogError("ERROR: " + error);
+                    LogError("ERROR: " + error);
                 }
                 return result;
             }
             
-            _logger.LogInformation("Profile updated successfully for user: " + user.UserName);
+            LogInfo("Profile updated successfully");
             result.ProfileUpdated = true;
         }
         
@@ -108,6 +103,7 @@ public class UserService : IUserService
             if (!passwordValid)
             {
                 result.Errors.Add("Uneta trenutna lozinka nije ispravna.");
+                LogError("Password changing failed. Incorrect current password entered");
                 return result;
             }
 
@@ -121,14 +117,14 @@ public class UserService : IUserService
             {
                 result.Errors.Add("Došlo je do greške prilikom ažuriranja lozinke");
                 
-                _logger.LogError("Unexpected error happened while changing password for user: " + user.UserName);
+                LogError("Changing password failed. Unexpected error happened");
                 foreach (var error in passwordResult.Errors)
                 {
-                    _logger.LogError("ERROR: " + error);
+                    LogError("ERROR: " + error);
                 }
                 return result;
             }
-            _logger.LogInformation("Password updated successfully for user: " + user.UserName);
+            LogInfo("Password changed successfully");
             result.PasswordChanged = true;
         }
 
