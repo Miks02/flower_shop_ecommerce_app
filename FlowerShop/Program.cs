@@ -2,6 +2,7 @@ using System.Reflection;
 using FlowerShop.Models;
 using FlowerShop.Data;
 using FlowerShop.Helpers;
+using FlowerShop.Services.Implementations;
 using FlowerShop.Services.Interfaces;
 using FlowerShop.Services.Mock;
 using FluentValidation;
@@ -23,9 +24,13 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
     options.User.RequireUniqueEmail = true;
 }).AddEntityFrameworkStores<ApplicationDbContext>();
 
+builder.Services.AddHttpContextAccessor();
+
 builder.Services.AddScoped<IProductService, MockProductService>()
                 .AddScoped<ICategoryService, MockCategoryService>()
-                .AddScoped<IOccasionService, MockOccasionService>();
+                .AddScoped<IOccasionService, MockOccasionService>()
+                .AddScoped<IUserService, UserService>()
+                .AddScoped<IFileService, FileService>();
 
 builder.Services.AddControllersWithViews()
     .AddMvcOptions(options =>
