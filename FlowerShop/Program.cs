@@ -24,7 +24,6 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
     options.User.RequireUniqueEmail = true;
 }).AddEntityFrameworkStores<ApplicationDbContext>();
 
-builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddScoped<IProductService, MockProductService>()
                 .AddScoped<ICategoryService, MockCategoryService>()
@@ -42,7 +41,8 @@ builder.Services.AddControllersWithViews()
 builder.Services
     .AddFluentValidationAutoValidation()
     .AddFluentValidationClientsideAdapters()
-    .AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
+    .AddValidatorsFromAssembly(Assembly.GetExecutingAssembly())
+    .AddHttpContextAccessor();
 
 
 var app = builder.Build();

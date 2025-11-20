@@ -25,6 +25,7 @@
       <Folder Include="Data\Interfaces\" />
       <Folder Include="Views\Account\" />
       <Folder Include="wwwroot\AppImages\" />
+      <Folder Include="wwwroot\Uploads\Users\" />
     </ItemGroup>
 
     <ItemGroup>

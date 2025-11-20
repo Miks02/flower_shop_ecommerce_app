@@ -144,27 +144,37 @@ namespace FlowerShop.Controllers;
             if (!ModelState.IsValid)
                 return PartialView(_profileSettingsComponent, model);
 
+            var user = await _userService.GetCurrentUser();
+            if (user is null)
+            {
+                SetErrorMessage("Došlo je do nepredvidjene greške. Korisnik nije pronadjen");
+                return PartialView(_profileSettingsComponent, model);
+            }
 
             var result = await _userService.UpdateProfileAsync(model);
-
-            if (!result.ProfileUpdated && !result.PasswordChanged && result.Errors.Count == 0)
+            
+            string message = (result.ProfileUpdated, result.PasswordChanged) switch
             {
-                SetSuccessMessage("Nema izmenjenih podataka za čuvanje.");
-                return PartialView(_profileSettingsComponent, model);
-            }
+                (false, false) => "Nema izmenjenih podataka za čuvanje.",
+                (true,  false) => "Profil je uspešno ažuriran.",
+                (false, true ) => "Lozinka je uspešno ažurirana.",
+                (true,  true ) => "Profil i lozinka su uspešno ažurirani."
+            };
 
-            if (result.Errors.Count > 0)
+            if (!result.Success)
             {
+                string errorMessage = string.Empty;
                 foreach (var error in result.Errors)
-                    ModelState.AddModelError(string.Empty, error);
-
-                return PartialView(_profileSettingsComponent, model);
-
+                    errorMessage += " " + error;
+                
+                SetErrorMessage(errorMessage);
             }
-
+            
+            if(result.ProfileUpdated || result.PasswordChanged)
+                await _signInManager.RefreshSignInAsync(user);
+            
+            SetSuccessMessage(message);
             Response.Headers.Append("HX-Redirect", "/User/Profile/Settings");
-            SetSuccessMessage("Profil je uspešno ažuriran.");
-           
             return Ok();
         }
 

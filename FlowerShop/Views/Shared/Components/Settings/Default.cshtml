@@ -51,11 +51,10 @@
                                     {
                                         <span class="text-green-700 font-semibold">@TempData["Success"]</span>
                                     }
-                                    else if (TempData["Error"] is not null)
+                                    @if (TempData["Error"] is not null)
                                     {
                                         <span class="text-red-700 font-semibold">@TempData["Error"]</span>
                                     }
-                                    <div asp-validation-summary="All" class="text-red-700 font-semibold"></div>
 
                                 </div>
 
