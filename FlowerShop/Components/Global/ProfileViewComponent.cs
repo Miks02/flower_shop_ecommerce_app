@@ -1,4 +1,5 @@
 using FlowerShop.Models;
+using FlowerShop.Services.Interfaces;
 using FlowerShop.ViewModels.Components;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -10,21 +11,17 @@ namespace FlowerShop.Components.Global;
 public class ProfileViewComponent : ViewComponent
 {
 
-    private readonly UserManager<ApplicationUser> _userManager;
+    private readonly IUserService _userService;
     
-    public ProfileViewComponent(UserManager<ApplicationUser> userManager)
+    public ProfileViewComponent(UserManager<ApplicationUser> userManager, IUserService userService)
     {
-        _userManager = userManager;
+        _userService = userService;
     }
 
     public async Task<IViewComponentResult> InvokeAsync()
     {
-        var userName = User.Identity?.Name;
-        if (string.IsNullOrEmpty(userName))
-            return View("Error");
-        
-        
-        var user = await _userManager.FindByNameAsync(userName);
+
+        var user = await _userService.GetCurrentUser();
         if (user is null)
             return View("Error");
         
