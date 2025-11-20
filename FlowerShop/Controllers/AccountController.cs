@@ -2,9 +2,11 @@ using FlowerShop.Helpers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Identity;
 using FlowerShop.Models;
+using FlowerShop.Services.Interfaces;
 using FlowerShop.ViewModels.Components;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Identity.Client;
 
 namespace FlowerShop.Controllers;
 
@@ -14,6 +16,7 @@ namespace FlowerShop.Controllers;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly IWebHostEnvironment _environment;
+        private readonly IUserService _userService;
 
         private readonly string _loginComponent = "Components/Login/Default";
         private readonly string _registerComponent = "Components/Register/Default";
@@ -24,6 +27,7 @@ namespace FlowerShop.Controllers;
             SignInManager<ApplicationUser> signInManager, 
             RoleManager<IdentityRole> roleManager,
             IWebHostEnvironment environment,
+            IUserService userService,
             ILogger<BaseController> logger
             ) : base(logger)
         {
@@ -31,6 +35,7 @@ namespace FlowerShop.Controllers;
             _signInManager = signInManager;
             _roleManager = roleManager;
             _environment = environment;
+            _userService = userService;
         }
 
         [HttpGet]
@@ -130,95 +135,37 @@ namespace FlowerShop.Controllers;
 
             return PartialView(_registerComponent, model);
         }
+        
 
         [Authorize]
         [HttpPost]
-        public async Task<IActionResult> UpdateProfile(SettingsPageViewModel vm)
+        public async Task<IActionResult> UpdateProfile(SettingsPageViewModel model)
         {
-            
             if (!ModelState.IsValid)
-                return PartialView(_profileSettingsComponent, vm);
-            
-            var user = await _userManager.FindByNameAsync(User.Identity!.Name!);
+                return PartialView(_profileSettingsComponent, model);
 
-            if (user is null)
-                return ViewComponent("NotFound");
 
-            if (user.UserName != vm.ProfileVm.UserName)
-                user.UserName = vm.ProfileVm.UserName;
-            if (user.Email != vm.ProfileVm.Email)
-                user.Email = vm.ProfileVm.Email;
+            var result = await _userService.UpdateProfileAsync(model);
 
-            user.FirstName = vm.ProfileVm.FirstName;
-            user.LastName = vm.ProfileVm.LastName;
-            user.PhoneNumber = vm.ProfileVm.PhoneNumber;
-
-            if (vm.ProfileVm.ProfilePicture is not null && vm.ProfileVm.ProfilePicture.Length > 0)
+            if (!result.ProfileUpdated && !result.PasswordChanged && result.Errors.Count == 0)
             {
-                var uploadsFolder = Path.Combine(_environment.WebRootPath, "uploads", "user");
-
-                if (!Directory.Exists(uploadsFolder))
-                    Directory.CreateDirectory(uploadsFolder);
-
-                var uniqueFileName = Guid.NewGuid() + "_" + vm.ProfileVm.ProfilePicture.FileName;
-                var filePath = Path.Combine(uploadsFolder, uniqueFileName);
-
-                await using var fileStream = new FileStream(filePath, FileMode.Create);
-                
-                await vm.ProfileVm.ProfilePicture.CopyToAsync(fileStream);
-                
-                if (!string.IsNullOrEmpty(user.ImagePath))
-                {
-                    var oldImagePath = Path.Combine(_environment.WebRootPath, user.ImagePath.TrimStart('/').Replace('/', Path.DirectorySeparatorChar));
-
-                    if (System.IO.File.Exists(oldImagePath))
-                        System.IO.File.Delete(oldImagePath);
-                    
-                }
-
-                user.ImagePath = "/uploads/user/" + uniqueFileName;
-            }
-            
-            var updateResult = await _userManager.UpdateAsync(user);
-
-            if (!updateResult.Succeeded)
-            {
-                SetErrorMessage("Došlo je do greške prilikom ažuriranja podataka");
-                return PartialView(_profileSettingsComponent, vm);
+                SetSuccessMessage("Nema izmenjenih podataka za čuvanje.");
+                return PartialView(_profileSettingsComponent, model);
             }
 
-            var currentPassword = vm.ChangePasswordVm.CurrentPassword;
-            var newPassword = vm.ChangePasswordVm.NewPassword;
-
-            if (!string.IsNullOrEmpty(currentPassword))
+            if (result.Errors.Count > 0)
             {
-                bool isPasswordValid = await _userManager.CheckPasswordAsync(user, currentPassword);
+                foreach (var error in result.Errors)
+                    ModelState.AddModelError(string.Empty, error);
 
-                if (!isPasswordValid)
-                {
-                    _logger.LogError("Uneta je netačna lozinka");
-                    ModelState.AddModelError("ChangePasswordVm.CurrentPassword", "Netačna lozinka.");
-                    return PartialView(_profileSettingsComponent, vm);
-                }
-                
-                var changePasswordResult = await _userManager.ChangePasswordAsync(user, currentPassword, newPassword);
-
-                if (!changePasswordResult.Succeeded)
-                {
-                    TempData["Error"] = "Došlo je do greške prilikom izmene lozinke";
-                    return PartialView(_profileSettingsComponent, vm);
-                }
+                return PartialView(_profileSettingsComponent, model);
 
             }
-            
-            await _signInManager.RefreshSignInAsync(user);
-            
+
             Response.Headers.Append("HX-Redirect", "/User/Profile/Settings");
-            TempData["Success"] = "Promene su uspešno sačuvane";
-            _logger.LogInformation("Podaci su uspešno sačuvani");
+            SetSuccessMessage("Profil je uspešno ažuriran.");
            
             return Ok();
-
         }
 
         [Authorize]

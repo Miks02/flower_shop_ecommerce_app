@@ -53,9 +53,10 @@
                                     }
                                     else if (TempData["Error"] is not null)
                                     {
-                                        <span class="text-red-700 font-semibold">@TempData["Success"]</span>
-
+                                        <span class="text-red-700 font-semibold">@TempData["Error"]</span>
                                     }
+                                    <div asp-validation-summary="All" class="text-red-700 font-semibold"></div>
+
                                 </div>
 
                                 <div class="flex self-center ml-auto gap-5">
