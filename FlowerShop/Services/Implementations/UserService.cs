@@ -31,6 +31,16 @@ public class UserService : BaseService<UserService>, IUserService
         return await _userManager.FindByIdAsync(CurrentUserId);
     }
 
+    public async Task<ApplicationUser?> GetUserByIdAsync(string userId)
+    {
+        return await _userManager.FindByIdAsync(userId);
+    }
+
+    public async Task<ApplicationUser?> GetUserByNameAsync(string userName)
+    {
+        return await _userManager.FindByNameAsync(userName);
+    }
+
     public async Task<ProfileUpdateResult> UpdateProfileAsync(SettingsPageViewModel model)
     {
         var result = new ProfileUpdateResult();
@@ -129,7 +139,47 @@ public class UserService : BaseService<UserService>, IUserService
         }
 
         return result;
+    }
+
+    public async Task<OperationResult> RemoveProfilePictureAsync(string userId)
+    {
+        var user = await GetUserByIdAsync(userId);
+        var result = new OperationResult();
+        
+        if (user is null)
+            throw new KeyNotFoundException("User not found.");
+
+        if (user.ImagePath is null)
+        {
+            result.Errors.Add("Korisnik nema profilnu sliku za brisanje");
+            return result;
+        }
+
+        string oldImagePath = user.ImagePath;
+
+        user.ImagePath = null;
+
+        var updateResult = await _userManager.UpdateAsync(user);
+
+        if (!updateResult.Succeeded)
+        {
+            result.Errors.Add("Došlo je do greške prilikom brisanja profilne slike.");
             
+            LogError("Unexpected error happened while deleting profile picture");
+            foreach (var error in  updateResult.Errors)
+            {
+                LogError("ERROR: " + error);
+            }
+
+            return result;
+
+        }
+
+        if(!_fileService.DeleteFile(oldImagePath))
+            LogError("User's old profile picture could not be removed from system's files.");
+        
+        LogInfo("User's profile picture has been removed from the application successfully.");
+        return result;
 
     }
     
