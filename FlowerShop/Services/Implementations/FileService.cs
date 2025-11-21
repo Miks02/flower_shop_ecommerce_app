@@ -7,7 +7,7 @@ public class FileService : BaseService<FileService>, IFileService
 
     private readonly IWebHostEnvironment _environment;
 
-    public FileService(IWebHostEnvironment environment, HttpContextAccessor http, ILogger<FileService> logger) : base(http, logger)
+    public FileService(IWebHostEnvironment environment, IHttpContextAccessor http, ILogger<FileService> logger) : base(http, logger)
     {
         _environment = environment;
     }
@@ -41,13 +41,27 @@ public class FileService : BaseService<FileService>, IFileService
         return uploadDir + uniqueFileName;
     }   
 
-    public void DeleteFile(string filePath)
+    public bool DeleteFile(string filePath)
     {
         var oldFilePath = Path.Combine(_environment.WebRootPath, 
             filePath.TrimStart('/').Replace('/', Path.DirectorySeparatorChar));
-        
-        if(System.IO.File.Exists(oldFilePath))
+
+        if (!System.IO.File.Exists(oldFilePath))
+        {
+            LogInfo("No file to delete");
+            return true;
+        }
+
+        try
+        {
             System.IO.File.Delete(oldFilePath);
+            return true;
+        }
+        catch (IOException ex)
+        {
+            LogError("Unexpected error happened while trying to delete the file. " + ex);
+            return false;
+        }
         
     }
 }
