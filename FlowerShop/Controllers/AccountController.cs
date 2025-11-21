@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using FlowerShop.Helpers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Identity;
@@ -182,39 +183,23 @@ namespace FlowerShop.Controllers;
         [HttpGet]
         public async Task<IActionResult> RemoveProfilePicture()
         {
-            var user = await _userManager.FindByNameAsync(User.Identity!.Name!);
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-            if (user is null)
+            if (userId is null)
             {
-                SetErrorMessage("Došlo je do greške. Korisnik nije pronadjen");
+                SetErrorMessage("Došlo je do neočekivane greške. Korisnik nije pronadjen");
                 return ViewComponent("Settings");
             }
 
-            var imagePath = user.ImagePath;
-            user.ImagePath = null;
+            var result = await _userService.RemoveProfilePictureAsync(userId);
 
-            var result = await _userManager.UpdateAsync(user);
-
-            if (!result.Succeeded)
+            if (!result.Success)
             {
-                _logger.LogError("An error has occurred while removing the profile picture. ");
-                foreach (var error in result.Errors)
-                {
-                    _logger.LogError("Error: " + error);
-                }
                 SetErrorMessage("Došlo je do greške prilikom brisanja profilne slike");
                 return ViewComponent("Settings");
             }
-
-            if (!string.IsNullOrEmpty(imagePath))
-            {
-                var oldImagePath = Path.Combine(_environment.WebRootPath, imagePath.TrimStart('/').Replace('/', Path.DirectorySeparatorChar));
-                
-                if (System.IO.File.Exists(oldImagePath))
-                    System.IO.File.Delete(oldImagePath);
-            }
-
-            SetSuccessMessage("Slika je uspešno obrisana");
+            
+            SetSuccessMessage("Profilna slika je uspešno obrisana!");
             return ViewComponent("Settings");
 
         }
