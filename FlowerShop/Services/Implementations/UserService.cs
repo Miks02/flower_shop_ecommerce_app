@@ -1,5 +1,3 @@
-using System.Net;
-using System.Security.Claims;
 using FlowerShop.Models;
 using FlowerShop.Services.Interfaces;
 using FlowerShop.Services.Results;
@@ -12,14 +10,17 @@ public class UserService : BaseService<UserService>, IUserService
 {
     
     private readonly UserManager<ApplicationUser> _userManager;
+    private readonly RoleManager<IdentityRole> _roleManager;
     private readonly IFileService _fileService;
     
     public UserService(IHttpContextAccessor http,
         UserManager<ApplicationUser> userManager,
+        RoleManager<IdentityRole> roleManager,
         IFileService fileService,
         ILogger<UserService> logger) : base(http, logger)
     {
         _userManager = userManager;
+        _roleManager = roleManager;
         _fileService = fileService;
     }
     
@@ -39,6 +40,63 @@ public class UserService : BaseService<UserService>, IUserService
     public async Task<ApplicationUser?> GetUserByNameAsync(string userName)
     {
         return await _userManager.FindByNameAsync(userName);
+    }
+
+    public async Task<ApplicationUser?> GetUserByEmailAsync(string email)
+    {
+        return await _userManager.FindByEmailAsync(email);
+    }
+
+    public async Task<OperationResult<ApplicationUser>> CreateUserAsync(RegisterViewModel model, string role)
+    {
+        var result = new OperationResult<ApplicationUser>();
+
+        var credentialsCheckResult = await IsUserTaken(model.Username, model.Email);
+
+        if (!credentialsCheckResult.Succeeded)
+        {
+            result.Errors.AddRange(credentialsCheckResult.Errors);
+            LogError("Creating user has failed. Credentials check failed");
+            return result;
+        }
+
+        var user = new ApplicationUser()
+        {
+            FirstName = model.FirstName,
+            LastName = model.LastName,
+            UserName = model.Username,
+            Email = model.Email,
+            PhoneNumber = model.PhoneNumber,
+        };
+
+        var userCreateResult = await _userManager.CreateAsync(user, model.Password);
+
+        if (!userCreateResult.Succeeded)
+        {
+            result.Errors.Add("Došlo je do greške prilikom registracije korisnika.");
+            LogError("Creating user has failed. Unexpected error happened");
+
+            foreach (var error in userCreateResult.Errors)
+                LogError("ERROR: " + error.Description);
+            return result;
+        }
+        
+        var roleAssignResult = await AssignRole(user, role);
+
+        if (!roleAssignResult.Succeeded)
+        {
+            result.Errors.AddRange(roleAssignResult.Errors);
+            LogError("Creating user succeeded. But assigning role failed.");
+            LogInfo("Attempting to delete newly created user from the database...");
+            
+            await DeleteUserAsync(user);
+            
+            return result;
+        }
+        
+        LogInfo($"User \"{user.UserName}\" has been creating successfully!");
+        result.Payload = user;
+        return result;
     }
 
     public async Task<ProfileUpdateResult> UpdateProfileAsync(SettingsPageViewModel model)
@@ -141,10 +199,10 @@ public class UserService : BaseService<UserService>, IUserService
         return result;
     }
 
-    public async Task<OperationResult> RemoveProfilePictureAsync(string userId)
+    public async Task<OperationResult<ApplicationUser>> RemoveProfilePictureAsync(string userId)
     {
         var user = await GetUserByIdAsync(userId);
-        var result = new OperationResult();
+        var result = new OperationResult<ApplicationUser>();
         
         if (user is null)
             throw new KeyNotFoundException("User not found.");
@@ -164,7 +222,6 @@ public class UserService : BaseService<UserService>, IUserService
         if (!updateResult.Succeeded)
         {
             result.Errors.Add("Došlo je do greške prilikom brisanja profilne slike.");
-            
             LogError("Unexpected error happened while deleting profile picture");
             foreach (var error in  updateResult.Errors)
             {
@@ -172,7 +229,6 @@ public class UserService : BaseService<UserService>, IUserService
             }
 
             return result;
-
         }
 
         if(!_fileService.DeleteFile(oldImagePath))
@@ -182,6 +238,97 @@ public class UserService : BaseService<UserService>, IUserService
         return result;
 
     }
+
+    public async Task<OperationResult<ApplicationUser>> DeleteUserAsync(ApplicationUser user)
+    {
+        var result = new OperationResult<ApplicationUser>();
+        
+        var deleteResult = await _userManager.DeleteAsync(user);
+        if (!deleteResult.Succeeded)
+        {
+            result.Errors.Add("Došlo je do greške prilikom brisanja korisnika.");
+            LogError("Unexpected error happened while deleting user from database");
+            foreach (var error in deleteResult.Errors)
+                LogError("ERROR: " + error);
+        }
+        
+        LogInfo("User has been deleted successfully.");
+        return result;
+    }
+
+    public async Task<OperationResult<ApplicationUser>> DeleteUserAsync(string userId)
+    {
+        var result = new OperationResult<ApplicationUser>();
+        var user = await GetUserByIdAsync(userId);
+
+        if (user is null)
+        {
+            result.Errors.Add("Korisnik nije pronadjen");
+            LogError("User not found");
+            return result;       
+        }
+        
+        return await DeleteUserAsync(user);
+    }
     
-    
+    private bool IsValidRole(string role)
+    {
+        string[] allowedRoles = ["User", "DeliveryPerson"];
+
+        if (!allowedRoles.Contains(role))
+            return false;
+
+        return true;
+    }
+
+    private async Task<OperationResult<ApplicationUser>> AssignRole(ApplicationUser user, string role)
+    {
+        var result = new OperationResult<ApplicationUser>();
+        
+        if (!IsValidRole(role))
+        {
+            result.Errors.Add("Nevalidna korisnička rola");
+            LogError("Invalid user role entered");
+            return result;
+        }
+        
+        if (!await _roleManager.RoleExistsAsync(role))
+            await _roleManager.CreateAsync(new IdentityRole(role));
+            
+        var roleCreateResult = await _userManager.AddToRoleAsync(user, role);
+
+        if (!roleCreateResult.Succeeded)
+        {
+            result.Errors.Add("Došlo je do greške prilikom dodavanja korisnika u rolu.");
+            LogError("Unexpected error happened while assigning user role");
+            foreach (var error in roleCreateResult.Errors)
+                LogError("ERROR: " + error.Description);
+            
+            return result;
+        }
+        LogInfo("User assigned to role successfully.");
+        return result;
+    }
+
+    private async Task<OperationResult<ApplicationUser>> IsUserTaken(string username, string email)
+    {
+        var result = new OperationResult<ApplicationUser>();
+        
+        if (await GetUserByEmailAsync(email) is not null)
+        {
+            LogError("Email address is taken");
+            result.Errors.Add("Email adresa je zauzeta");
+            return result;
+        }
+        
+        if (await GetUserByNameAsync(username) is not null)
+        {
+            result.Errors.Add("Korisničko ime je zauzeto");
+            LogError("Username is taken");
+            return result;
+        }
+
+        LogInfo("Credentials check passed successfully.");
+        return result;
+    }
 }
