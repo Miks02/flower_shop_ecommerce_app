@@ -13,10 +13,7 @@ namespace FlowerShop.Controllers;
 
  public class AccountController : BaseController
     {
-        private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
-        private readonly RoleManager<IdentityRole> _roleManager;
-        private readonly IWebHostEnvironment _environment;
         private readonly IUserService _userService;
 
         private readonly string _loginComponent = "Components/Login/Default";
@@ -24,18 +21,12 @@ namespace FlowerShop.Controllers;
         private readonly string _profileSettingsComponent = "~/Views/Shared/Components/Settings/Default.cshtml";
 
         public AccountController(
-            UserManager<ApplicationUser> userManager, 
             SignInManager<ApplicationUser> signInManager, 
-            RoleManager<IdentityRole> roleManager,
-            IWebHostEnvironment environment,
             IUserService userService,
             ILogger<BaseController> logger
             ) : base(logger)
         {
-            _userManager = userManager;
             _signInManager = signInManager;
-            _roleManager = roleManager;
-            _environment = environment;
             _userService = userService;
         }
 
@@ -89,52 +80,19 @@ namespace FlowerShop.Controllers;
             if (!ModelState.IsValid) 
                 return PartialView(_registerComponent, model);
 
-            if (await _userManager.FindByNameAsync(model.Username) is not null)
+            var result = await _userService.CreateUserAsync(model, "User");
+
+            if (!result.Succeeded)
             {
-                ModelState.AddModelError(nameof(model.Username), "Korisničko ime je zauzeto");
+                foreach (var error in result.Errors)
+                    ModelState.AddModelError(nameof(model.ConfirmPassword), error);
                 return PartialView(_registerComponent, model);
             }
             
-            if (await _userManager.FindByEmailAsync(model.Email) is not null)
-            {
-                ModelState.AddModelError(nameof(model.Email), "Email adresa je zauzeta");
-                return PartialView(_registerComponent, model);
-            }
-
-            var user = new ApplicationUser
-            {
-                FirstName = model.FirstName,
-                LastName = model.LastName,
-                UserName = model.Username,
-                Email = model.Email,
-                PhoneNumber = model.PhoneNumber
-            };
-
-            var result = await _userManager.CreateAsync(user, model.Password);
-            if (result.Succeeded)
-            {
-                if (!await _roleManager.RoleExistsAsync("User"))
-                {
-                    await _roleManager.CreateAsync(new IdentityRole("User"));
-                }
-
-                await _userManager.AddToRoleAsync(user, "User");
-
-                await _signInManager.SignInAsync(user, isPersistent: false);
-                Response.Headers.Append("HX-Redirect", "/Home/Index");
-                return Ok();
-            }
-
-
-            ModelState.AddModelError(nameof(model.ConfirmPassword), "Došlo je do greške prilikom registracije");
-
-            foreach (var error in result.Errors)
-            {
-                LogHelper.LogModelErrors(ModelState, _logger, error.Description);
-                
-            }
-
-            return PartialView(_registerComponent, model);
+            await _signInManager.SignInAsync(result.Payload!, isPersistent: false);
+            
+            Response.Headers.Append("HX-Redirect", "/Home/Index");
+            return Ok();
         }
         
 
@@ -162,7 +120,7 @@ namespace FlowerShop.Controllers;
                 (true,  true ) => "Profil i lozinka su uspešno ažurirani."
             };
 
-            if (!result.Success)
+            if (!result.Succeeded)
             {
                 string errorMessage = string.Empty;
                 foreach (var error in result.Errors)
@@ -193,7 +151,7 @@ namespace FlowerShop.Controllers;
 
             var result = await _userService.RemoveProfilePictureAsync(userId);
 
-            if (!result.Success)
+            if (!result.Succeeded)
             {
                 SetErrorMessage("Došlo je do greške prilikom brisanja profilne slike");
                 return ViewComponent("Settings");
