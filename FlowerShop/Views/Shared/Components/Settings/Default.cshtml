@@ -5,7 +5,7 @@
     ViewBag.Disabled = string.IsNullOrEmpty(@Model.ProfileVm.ImagePath);
 }
 
-<div class="flex py-5 gap-5">
+<div class="flex gap-5">
     <form hx-post="/Account/UpdateProfile"
           hx-target="#user-content"
           hx-swap="innerHTML"
@@ -29,7 +29,7 @@
                         <div class="flex justify-between">
 
                             <div class="flex gap-5 w-full">
-                                <div class="shadow-xl w-32 h-32 font-bold bg-orange-400 text-red-100 rounded-full flex items-center justify-center text-3xl">
+                                <div class="mx-auto md:mx-0 shadow-xl w-32 h-32 font-bold bg-orange-400 text-red-100 rounded-full flex items-center justify-center text-3xl">
                                     @if (!string.IsNullOrEmpty(Model.ProfileVm.ImagePath))
                                     {
                                         <div>
@@ -43,7 +43,7 @@
                                     }
                                 </div>
 
-                                <div class="flex flex-col self-center">
+                                <div class="hidden md:flex flex-col self-center">
                                     <h4 class="text-lg font-semibold text-red-900">Profilna slika</h4>
                                     <p class="text-gray-600">Formati: PNG, JPG, JPEG</p>
                                     <span asp-validation-for="ProfileVm.ProfilePicture" class="text-red-700 font-medium mt-1"></span>
@@ -58,7 +58,7 @@
 
                                 </div>
 
-                                <div class="flex self-center ml-auto gap-5">
+                                <div class="hidden md:flex self-center ml-auto gap-5">
                                     <input asp-for="ProfileVm.ProfilePicture" type="file" accept="image/jpg, image/jpeg, image/png" class="hidden" >
                                     <label asp-for="ProfileVm.ProfilePicture" class="btn-classic gradient-red text-red-100 !px-4 text-sm">Promeni sliku</label>
 
@@ -76,7 +76,7 @@
                     <div class="flex flex-col w-full py-5">
                         <h4 class="text-xl font-semibold text-red-900 mb-2">Puno ime</h4>
                         <div class="flex justify-between">
-                            <div class="flex gap-10 w-full">
+                            <div class="flex flex-col md:flex-row gap-10 w-full">
                                 <div class="flex flex-col gap-1 w-full">
                                     <div class="flex flex-wrap justify-between w-full items-center">
                                         <label asp-for="ProfileVm.FirstName" class="font-semibold text-gray-600">Ime</label>
@@ -111,7 +111,7 @@
                     <div class="flex flex-col w-full py-5">
                         <h4 class="text-xl font-semibold text-red-900 mb-2">Kontakt podaci</h4>
                         <div class="flex justify-between">
-                            <div class="flex gap-10 w-full">
+                            <div class="flex flex-col md:flex-row gap-10 w-full">
                                 <div class="flex flex-col gap-1 w-full">
                                     <div class="flex flex-wrap justify-between w-full items-center">
                                         <label asp-for="ProfileVm.Email" class="font-semibold text-gray-600">Email adresa</label>
@@ -138,7 +138,7 @@
                     <div class="flex flex-col w-full py-5">
                         <h4 class="text-xl font-semibold text-red-900 mb-2">Promena lozinke</h4>
                         <div class="flex justify-between">
-                            <div class="flex gap-10 w-full">
+                            <div class="flex flex-col md:flex-row gap-10 w-full">
                                 <div class="flex flex-col gap-1 w-full">
                                     <div class="flex flex-wrap justify-between w-full items-center">
                                         <label asp-for="ChangePasswordVm.CurrentPassword" class="font-semibold text-gray-600">Trenutna lozinka</label>
