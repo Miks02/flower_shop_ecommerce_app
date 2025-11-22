@@ -57,7 +57,7 @@ public abstract class BaseService<T> where T : class
         }
     }
     
-    protected void LogCritical(string message, Exception? ex, params object[] args)
+    protected void LogCritical(string message, Exception? ex = null, params object[] args)
     {
         using (BeginUserScope())
         {

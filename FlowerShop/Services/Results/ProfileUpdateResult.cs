@@ -1,6 +1,8 @@
+using FlowerShop.Models;
+
 namespace FlowerShop.Services.Results;
 
-public class ProfileUpdateResult : OperationResult
+public class ProfileUpdateResult : OperationResult<ApplicationUser>
 {
     public bool ProfileUpdated { get; set; }
     
