@@ -2,7 +2,7 @@
 @using FlowerShop.ViewModels.Components
 @model UserProfileViewModel
 
-<div class="flex py-5 gap-5">
+<div class="flex flex-col md:flex-row py-5 gap-5">
         
     <div class="flex flex-col w-full gap-5">
         <div class="flex flex-col shadow-xl bg-red-100 rounded-xl transition-all duration-200 hover:-translate-y-1">
@@ -86,17 +86,17 @@
             <div class="flex flex-col flex-1 gap-3 p-4 justify-center items-center bg-red-200 rounded-xl shadow-xl font-semibold transition-all duration-200 hover:-translate-y-1">
                 <i class="fa-solid fa-box text-4xl text-orange-600"></i>
                 <h4 class="text-2xl text-red-700">@Model.TotalOrders</h4>
-                <span class="text-gray-600">Broj porudžbina</span>
+                <span class="text-center text-gray-600">Broj porudžbina</span>
             </div>
             <div class="flex flex-col flex-1 gap-3 p-4 justify-center items-center bg-red-200 rounded-xl shadow-xl font-semibold transition-all duration-200 hover:-translate-y-1">
                 <i class="fa-solid fa-gift text-4xl text-orange-600"></i>
                 <h4 class="text-2xl text-red-700">@Model.LoyaltyPoints</h4>
-                <span class="text-gray-600">Poeni lojalnosti</span>
+                <span class="text-center text-gray-600">Poeni lojalnosti</span>
             </div>
             <div class="flex flex-col flex-1 gap-3 p-4 justify-center items-center bg-red-200 rounded-xl shadow-xl font-semibold transition-all duration-200 hover:-translate-y-1">
                 <i class="fa-solid fa-clipboard-list text-4xl text-orange-600"></i>
                 <h4 class="text-2xl text-red-700">@Model.UpcomingOrders</h4>
-                <span class="text-gray-600">Predstojeće porudžbine</span>
+                <span class="text-center text-gray-600">Predstojeće porudžbine</span>
             </div>
 
                 
@@ -104,7 +104,7 @@
             
     </div>
         
-    <div class="flex flex-col w-[50%] gap-5">
+    <div class="flex flex-col w-full lg:w-[50%] gap-5">
             
         <div class="flex flex-col gap-3 p-5 shadow-xl bg-red-100 rounded-xl transition-all duration-200 hover:-translate-y-1">
             <div class="flex flex-col gap-2 justify-center items-center">
