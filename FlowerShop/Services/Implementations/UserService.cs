@@ -1,3 +1,4 @@
+using FlowerShop.Dto.User;
 using FlowerShop.Models;
 using FlowerShop.Services.Interfaces;
 using FlowerShop.Services.Results;
@@ -94,18 +95,20 @@ public class UserService : BaseService<UserService>, IUserService
             return result;
         }
         
-        LogInfo($"User \"{user.UserName}\" has been creating successfully!");
+        LogInfo($"User \"{user.UserName}\" has been created successfully!");
         result.Payload = user;
         return result;
     }
 
-    public async Task<ProfileUpdateResult> UpdateProfileAsync(SettingsPageViewModel model)
+    public async Task<ServiceResult<ProfileUpdateDto>> UpdateProfileAsync(SettingsPageViewModel model)
     {
-        var result = new ProfileUpdateResult();
+        var profileUpdateResult = new ProfileUpdateDto();
         var user = await GetCurrentUser();
 
         if (user is null)
-            throw new KeyNotFoundException("Korisnik nije pronadjen");
+            return ServiceResult<ProfileUpdateDto>.Failure(Error.User.NotFound());
+
+        profileUpdateResult.User = user;
         
         bool requiresUserUpdate =
             user.UserName != model.ProfileVm.UserName ||
@@ -122,8 +125,7 @@ public class UserService : BaseService<UserService>, IUserService
                 var existingEmailUser = await _userManager.FindByEmailAsync(model.ProfileVm.Email);
                 if (existingEmailUser is not null && existingEmailUser.Id != user.Id)
                 {
-                    result.Errors.Add("Email adresa je zauzeta");
-                    return result;
+                    return ServiceResult<ProfileUpdateDto>.Failure(Error.User.EmailAlreadyExists());
                 }
             }
 
@@ -132,8 +134,7 @@ public class UserService : BaseService<UserService>, IUserService
                 var existingUserNameUser = await _userManager.FindByNameAsync(model.ProfileVm.UserName);
                 if (existingUserNameUser is not null && existingUserNameUser.Id != user.Id)
                 {
-                    result.Errors.Add("Korisničko ime je zauzeto");
-                    return result;
+                    return ServiceResult<ProfileUpdateDto>.Failure(Error.User.UsernameAlreadyExists(model.ProfileVm.UserName));
                 }
             }
             
@@ -151,17 +152,16 @@ public class UserService : BaseService<UserService>, IUserService
 
             if (!updateResult.Succeeded)
             {
-                result.Errors.Add("Došlo je do greške prilikom ažuriranja podataka");
                 LogError("Error happened while updating user data");
                 foreach (var error in updateResult.Errors)
                 {
-                    LogError("ERROR: " + error);
+                    LogError("ERROR: " + error.Description);
                 }
-                return result;
+                return ServiceResult<ProfileUpdateDto>.Failure(Error.Database.QueryError("Došlo je do greške prilikom ažuriranja podataka."));
             }
             
             LogInfo("Profile updated successfully");
-            result.ProfileUpdated = true;
+            profileUpdateResult.ProfileUpdated = true;
         }
         
         if (!string.IsNullOrWhiteSpace(model.ChangePasswordVm.CurrentPassword))
@@ -170,9 +170,8 @@ public class UserService : BaseService<UserService>, IUserService
 
             if (!passwordValid)
             {
-                result.Errors.Add("Uneta trenutna lozinka nije ispravna.");
                 LogError("Password changing failed. Incorrect current password entered");
-                return result;
+                return ServiceResult<ProfileUpdateDto>.Failure(Error.Validation.InvalidInput("Uneta trenutna lozinka nije validna"));
             }
 
             var passwordResult = await _userManager.ChangePasswordAsync(
@@ -183,20 +182,18 @@ public class UserService : BaseService<UserService>, IUserService
 
             if (!passwordResult.Succeeded)
             {
-                result.Errors.Add("Došlo je do greške prilikom ažuriranja lozinke");
-                
                 LogError("Changing password failed. Unexpected error happened");
                 foreach (var error in passwordResult.Errors)
                 {
-                    LogError("ERROR: " + error);
+                    LogError("ERROR: " + error.Description);
                 }
-                return result;
+                return ServiceResult<ProfileUpdateDto>.Failure(Error.Database.QueryError("Došlo je do greške prilikom promene lozinke."));
             }
             LogInfo("Password changed successfully");
-            result.PasswordChanged = true;
+            profileUpdateResult.PasswordChanged = true;
         }
 
-        return result;
+        return ServiceResult<ProfileUpdateDto>.Success(profileUpdateResult);
     }
 
     public async Task<OperationResult<ApplicationUser>> RemoveProfilePictureAsync(string userId)
@@ -225,7 +222,7 @@ public class UserService : BaseService<UserService>, IUserService
             LogError("Unexpected error happened while deleting profile picture");
             foreach (var error in  updateResult.Errors)
             {
-                LogError("ERROR: " + error);
+                LogError("ERROR: " + error.Description);
             }
 
             return result;
@@ -249,7 +246,7 @@ public class UserService : BaseService<UserService>, IUserService
             result.Errors.Add("Došlo je do greške prilikom brisanja korisnika.");
             LogError("Unexpected error happened while deleting user from database");
             foreach (var error in deleteResult.Errors)
-                LogError("ERROR: " + error);
+                LogError("ERROR: " + error.Description);
         }
         
         LogInfo("User has been deleted successfully.");

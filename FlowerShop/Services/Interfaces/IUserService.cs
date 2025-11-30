@@ -1,3 +1,4 @@
+using FlowerShop.Dto.User;
 using FlowerShop.Models;
 using FlowerShop.Services.Results;
 using FlowerShop.ViewModels.Components;
@@ -16,7 +17,7 @@ public interface IUserService
     
     Task<OperationResult<ApplicationUser>> CreateUserAsync(RegisterViewModel model, string role);
 
-    Task<ProfileUpdateResult> UpdateProfileAsync(SettingsPageViewModel model);
+    Task<ServiceResult<ProfileUpdateDto>> UpdateProfileAsync(SettingsPageViewModel model);
 
     Task<OperationResult<ApplicationUser>> DeleteUserAsync(ApplicationUser user);
     
