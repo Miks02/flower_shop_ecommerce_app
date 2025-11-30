@@ -106,59 +106,52 @@ public class UserService : BaseService<UserService>, IUserService
 
         profileUpdateResult.User = user;
         
-        bool requiresUserUpdate =
-            user.UserName != model.ProfileVm.UserName ||
-            user.Email != model.ProfileVm.Email ||
-            user.FirstName != model.ProfileVm.FirstName ||
-            user.LastName != model.ProfileVm.LastName ||
-            user.PhoneNumber != model.ProfileVm.PhoneNumber ||
-            model.ProfileVm.ProfilePicture != null;
-
-        if (requiresUserUpdate)
+        if(!RequiresUserUpdate(model.ProfileVm, user))
+            return ServiceResult<ProfileUpdateDto>.Success(profileUpdateResult);
+        
+        if (user.Email != model.ProfileVm.Email)
         {
-            if (user.Email != model.ProfileVm.Email)
+            var existingEmailUser = await _userManager.FindByEmailAsync(model.ProfileVm.Email);
+            if (existingEmailUser is not null && existingEmailUser.Id != user.Id)
             {
-                var existingEmailUser = await _userManager.FindByEmailAsync(model.ProfileVm.Email);
-                if (existingEmailUser is not null && existingEmailUser.Id != user.Id)
-                {
-                    return ServiceResult<ProfileUpdateDto>.Failure(Error.User.EmailAlreadyExists());
-                }
+                return ServiceResult<ProfileUpdateDto>.Failure(Error.User.EmailAlreadyExists());
             }
-
-            if (user.UserName != model.ProfileVm.UserName)
-            {
-                var existingUserNameUser = await _userManager.FindByNameAsync(model.ProfileVm.UserName);
-                if (existingUserNameUser is not null && existingUserNameUser.Id != user.Id)
-                {
-                    return ServiceResult<ProfileUpdateDto>.Failure(Error.User.UsernameAlreadyExists(model.ProfileVm.UserName));
-                }
-            }
-            
-            user.FirstName = model.ProfileVm.FirstName;
-            user.LastName = model.ProfileVm.LastName;
-            user.Email = model.ProfileVm.Email;
-            user.UserName = model.ProfileVm.UserName;
-            user.PhoneNumber = model.ProfileVm.PhoneNumber;
-
-            if (model.ProfileVm.ProfilePicture != null && model.ProfileVm.ProfilePicture.Length > 0)
-                user.ImagePath = await _fileService.UploadFile(model.ProfileVm.ProfilePicture, user.ImagePath, "Users");
-            
-            
-            var updateResult = await _userManager.UpdateAsync(user);
-
-            if (!updateResult.Succeeded)
-            {
-                LogError("Error happened while updating user data");
-                foreach (var error in updateResult.Errors)
-                {
-                    LogError("ERROR: " + error.Description);
-                }
-                return ServiceResult<ProfileUpdateDto>.Failure(Error.Database.QueryError("Došlo je do greške prilikom ažuriranja podataka."));
-            }
-            
-            LogInfo("Profile updated successfully");
-            profileUpdateResult.ProfileUpdated = true;
         }
+
+        if (user.UserName != model.ProfileVm.UserName)
+        {
+            var existingUserNameUser = await _userManager.FindByNameAsync(model.ProfileVm.UserName);
+            if (existingUserNameUser is not null && existingUserNameUser.Id != user.Id)
+            {
+                return ServiceResult<ProfileUpdateDto>.Failure(Error.User.UsernameAlreadyExists(model.ProfileVm.UserName));
+            }
+        }
+            
+        user.FirstName = model.ProfileVm.FirstName;
+        user.LastName = model.ProfileVm.LastName;
+        user.Email = model.ProfileVm.Email;
+        user.UserName = model.ProfileVm.UserName;
+        user.PhoneNumber = model.ProfileVm.PhoneNumber;
+
+        if (model.ProfileVm.ProfilePicture != null && model.ProfileVm.ProfilePicture.Length > 0)
+            user.ImagePath = await _fileService.UploadFile(model.ProfileVm.ProfilePicture, user.ImagePath, "Users");
+            
+            
+        var updateResult = await _userManager.UpdateAsync(user);
+
+        if (!updateResult.Succeeded)
+        {
+            LogError("Error happened while updating user data");
+            foreach (var error in updateResult.Errors)
+            {
+                LogError("ERROR: " + error.Description);
+            }
+            return ServiceResult<ProfileUpdateDto>.Failure(Error.Database.QueryError("Došlo je do greške prilikom ažuriranja podataka."));
+        }
+            
+        LogInfo("Profile updated successfully");
+        profileUpdateResult.ProfileUpdated = true;
+        
         
         if (!string.IsNullOrWhiteSpace(model.ChangePasswordVm.CurrentPassword))
         {
@@ -310,5 +303,15 @@ public class UserService : BaseService<UserService>, IUserService
 
         LogInfo("Credentials check passed successfully.");
         return ServiceResult.Success();
+    }
+
+    private bool RequiresUserUpdate(ProfileSettingsViewModel model, ApplicationUser user)
+    {
+        return user.UserName != model.UserName ||
+               user.Email != model.Email ||
+               user.FirstName != model.FirstName ||
+               user.LastName != model.LastName ||
+               user.PhoneNumber != model.PhoneNumber ||
+               model.ProfilePicture != null;
     }
 }
