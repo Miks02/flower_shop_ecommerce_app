@@ -1,10 +1,13 @@
 using FlowerShop.Models;
 
-namespace FlowerShop.Services.Results;
+namespace FlowerShop.Dto.User;
 
-public class ProfileUpdateResult : OperationResult<ApplicationUser>
+public class ProfileUpdateDto
 {
     public bool ProfileUpdated { get; set; }
     
     public bool PasswordChanged { get; set; }
+
+    public ApplicationUser User { get; set; } = null!;
+
 }
