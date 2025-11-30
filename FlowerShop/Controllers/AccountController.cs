@@ -1,13 +1,10 @@
 using System.Security.Claims;
-using FlowerShop.Helpers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Identity;
 using FlowerShop.Models;
 using FlowerShop.Services.Interfaces;
 using FlowerShop.ViewModels.Components;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Identity.Client;
 
 namespace FlowerShop.Controllers;
 
@@ -103,34 +100,28 @@ namespace FlowerShop.Controllers;
             if (!ModelState.IsValid)
                 return PartialView(_profileSettingsComponent, model);
 
-            var user = await _userService.GetCurrentUser();
-            if (user is null)
-            {
-                SetErrorMessage("Došlo je do nepredvidjene greške. Korisnik nije pronadjen");
-                return PartialView(_profileSettingsComponent, model);
-            }
-
             var result = await _userService.UpdateProfileAsync(model);
             
-            string message = (result.ProfileUpdated, result.PasswordChanged) switch
+            if (!result.IsSucceeded)
+            {
+                string errorMessage = string.Empty;
+                foreach (var error in result.Errors!)
+                    errorMessage += " " + error.Description;
+                
+                SetErrorMessage(errorMessage);
+                return PartialView(_profileSettingsComponent, model);
+            }
+            
+            string message = (result.Payload!.ProfileUpdated, result.Payload.PasswordChanged) switch
             {
                 (false, false) => "Nema izmenjenih podataka za čuvanje.",
                 (true,  false) => "Profil je uspešno ažuriran.",
                 (false, true ) => "Lozinka je uspešno ažurirana.",
                 (true,  true ) => "Profil i lozinka su uspešno ažurirani."
             };
-
-            if (!result.Succeeded)
-            {
-                string errorMessage = string.Empty;
-                foreach (var error in result.Errors)
-                    errorMessage += " " + error;
-                
-                SetErrorMessage(errorMessage);
-            }
             
-            if(result.ProfileUpdated || result.PasswordChanged)
-                await _signInManager.RefreshSignInAsync(user);
+            if(result.Payload.ProfileUpdated || result.Payload.PasswordChanged)
+                await _signInManager.RefreshSignInAsync(result.Payload.User);
             
             SetSuccessMessage(message);
             Response.Headers.Append("HX-Redirect", "/User/Profile/Settings");
