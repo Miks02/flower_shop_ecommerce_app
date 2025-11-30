@@ -15,14 +15,14 @@ public interface IUserService
 
     Task<ApplicationUser?> GetUserByEmailAsync(string email);
     
-    Task<OperationResult<ApplicationUser>> CreateUserAsync(RegisterViewModel model, string role);
+    Task<ServiceResult<ApplicationUser>> CreateUserAsync(RegisterViewModel model, string role);
 
     Task<ServiceResult<ProfileUpdateDto>> UpdateProfileAsync(SettingsPageViewModel model);
 
-    Task<OperationResult<ApplicationUser>> DeleteUserAsync(ApplicationUser user);
+    Task<ServiceResult> DeleteUserAsync(ApplicationUser user);
     
-    Task<OperationResult<ApplicationUser>> DeleteUserAsync(string userId);
+    Task<ServiceResult> DeleteUserAsync(string userId);
 
-    Task<OperationResult<ApplicationUser>> RemoveProfilePictureAsync(string userId);
+    Task<ServiceResult> RemoveProfilePictureAsync(string userId);
 
 }
