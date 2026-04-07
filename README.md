@@ -51,7 +51,7 @@ Current state: work in progress — core models, controllers, views, and migrati
 
 ## Architecture recommendation (refactor)
 
-For this ASP.NET Core MVC (.NET 8) student e-commerce project (roles like `Admin`, `Dostavljac`, `User`, notifications, ordering flow), the recommended path is:
+For this ASP.NET Core MVC (.NET 8) student e-commerce project (roles like `Admin`, `Dostavljac` (Delivery), `User`, notifications, ordering flow), the recommended path is:
 
 **Modular Monolith** as the system architecture, with **Clean Architecture principles inside each module**.
 
@@ -156,4 +156,3 @@ FlowerShop
 <img width="800" height="918" alt="image" src="https://github.com/user-attachments/assets/de88d959-c426-47ce-b143-3f7da0be478b" />
 
 <img width="800" height="922" alt="image" src="https://github.com/user-attachments/assets/bdde25d6-5d2c-49a9-a87a-3fc69e4716e7" />
-
