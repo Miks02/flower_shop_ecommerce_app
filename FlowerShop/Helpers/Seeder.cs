@@ -10,6 +10,7 @@ public static class Seeder
         using var scope = serviceProvider.CreateScope();
         var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
         var userManager = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
+        var configuration = scope.ServiceProvider.GetRequiredService<IConfiguration>();
    
         string[] roleNames = { "Admin", "Deliverer", "User" };
         foreach (var roleName in roleNames)
@@ -18,18 +19,23 @@ public static class Seeder
                 await roleManager.CreateAsync(new IdentityRole(roleName));
         }
 
-        var adminEmail = "milan.miki.nikolic2002@gmail.com";
-        if (await userManager.FindByEmailAsync(adminEmail) == null)
+        var adminEmail = configuration["AdminData:Email"];
+
+        if (string.IsNullOrWhiteSpace(adminEmail))
+            throw new ArgumentNullException(nameof(adminEmail), "Pass in a valid email address for an administrator");
+        
+        if (await userManager.FindByEmailAsync(adminEmail) is null)
         {
             var adminUser = new ApplicationUser
             {
-                UserName = "Admin",
+                UserName = configuration["AdminData:Username"],
                 Email = adminEmail,
-                FirstName = "Admin",
-                LastName = "Admin",
+                FirstName = configuration["AdminData:FirstName"]!,
+                LastName = configuration["AdminData:LastName"]!,
+                PhoneNumber = configuration["AdminData:PhoneNumber"]!,
                 EmailConfirmed = true
             };
-            await userManager.CreateAsync(adminUser, "123456");
+            await userManager.CreateAsync(adminUser, configuration["AdminData:Password"]!);
             await userManager.AddToRoleAsync(adminUser, "Admin");
         }
 

@@ -9,43 +9,23 @@ using FluentValidation;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using FluentValidation.AspNetCore;
-using Microsoft.Extensions.Logging.Console;
 using Serilog;
 using Serilog.Debugging;
-using Serilog.Events;
 
 SelfLog.Enable(Console.Error);
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Host.UseSerilog((context, configuration) => configuration
-    .MinimumLevel.Information()
-    .MinimumLevel.Override("System", LogEventLevel.Warning)
-
-    .Enrich.FromLogContext() 
-
-    .WriteTo.Console(outputTemplate: 
-        "[{Timestamp:HH:mm:ss} {Level:u3}] {SourceContext} {Scope} {Message:lj}{NewLine}{Exception}",
-        restrictedToMinimumLevel: LogEventLevel.Debug 
-    )
-    
-    .WriteTo.File(
-        path: "logs/service_logs.txt",
-        rollingInterval: RollingInterval.Day,
-        outputTemplate: "[{Timestamp:HH:mm:ss} {Level:u3}] {SourceContext} {Scope} {Message:lj}{NewLine}{Exception}",
-        restrictedToMinimumLevel: LogEventLevel.Information
-    )
-
-);
+builder.Host.UseSerilog((context, config) => config.ReadFrom.Configuration(context.Configuration));
 
 builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
 {
-    options.Password.RequireDigit = true;
+    options.Password.RequireDigit = false;
     options.Password.RequireNonAlphanumeric = false;
-    options.Password.RequireUppercase = true;
-    options.Password.RequireLowercase = true;
-    options.Password.RequiredLength = 8;
+    options.Password.RequireUppercase = false;
+    options.Password.RequireLowercase = false;
+    options.Password.RequiredLength = 6;
     options.Password.RequiredUniqueChars = 0;
     options.User.RequireUniqueEmail = true;
 }).AddEntityFrameworkStores<ApplicationDbContext>();
@@ -53,11 +33,11 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
 builder.Services.AddHttpContextAccessor();
 
 builder.Services
-                .AddScoped<IProductService, MockProductService>()
-                .AddScoped<ICategoryService, MockCategoryService>()
-                .AddScoped<IOccasionService, MockOccasionService>()
-                .AddScoped<IUserService, UserService>()
-                .AddScoped<IFileService, FileService>();
+    .AddScoped<IProductService, MockProductService>()
+    .AddScoped<ICategoryService, MockCategoryService>()
+    .AddScoped<IOccasionService, MockOccasionService>()
+    .AddScoped<IUserService, UserService>()
+    .AddScoped<IFileService, FileService>();
 
 builder.Services.AddControllersWithViews()
     .AddMvcOptions(options =>
@@ -65,15 +45,10 @@ builder.Services.AddControllersWithViews()
         options.ModelValidatorProviders.Clear();
     });
 
-
-
 builder.Services
     .AddFluentValidationAutoValidation()
     .AddFluentValidationClientsideAdapters()
     .AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
-    
-
-
 
 builder.Host.UseDefaultServiceProvider(options =>
 {
@@ -83,11 +58,9 @@ builder.Host.UseDefaultServiceProvider(options =>
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
 
