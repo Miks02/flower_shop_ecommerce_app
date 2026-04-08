@@ -5,9 +5,9 @@ public sealed class Error
 {
     public string Code { get; } 
     
-    public string Description { get; } 
+    public string Description { get; }
 
-    private Error(string code, string description)
+    public Error(string code, string description)
     {
         if (string.IsNullOrWhiteSpace(code))
             throw new ArgumentException("Code cannot be null or whitespace", nameof(code));

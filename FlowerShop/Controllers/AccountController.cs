@@ -79,7 +79,7 @@ namespace FlowerShop.Controllers;
 
             var result = await _userService.CreateUserAsync(model, "User");
 
-            if (!result.IsSucceeded)
+            if (!result.IsSuccess)
             {
                 foreach (var error in result.Errors!)
                     ModelState.AddModelError(nameof(model.ConfirmPassword), error.Description);
@@ -102,7 +102,7 @@ namespace FlowerShop.Controllers;
 
             var result = await _userService.UpdateProfileAsync(model);
             
-            if (!result.IsSucceeded)
+            if (!result.IsSuccess)
             {
                 string errorMessage = string.Empty;
                 foreach (var error in result.Errors!)
@@ -142,7 +142,7 @@ namespace FlowerShop.Controllers;
 
             var result = await _userService.RemoveProfilePictureAsync(userId);
 
-            if (!result.IsSucceeded)
+            if (!result.IsSuccess)
             {
                 SetErrorMessage("Došlo je do greške prilikom brisanja profilne slike");
                 return ViewComponent("Settings");

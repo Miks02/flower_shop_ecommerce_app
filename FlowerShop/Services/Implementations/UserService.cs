@@ -44,7 +44,7 @@ public class UserService(
     {
         var credentialsCheckResult = await IsUserTaken(model.Username, model.Email);
 
-        if (!credentialsCheckResult.IsSucceeded)
+        if (!credentialsCheckResult.IsSuccess)
         {
             logger.LogError("Creating user has failed. Credentials check failed");
             return Result<ApplicationUser>.Failure(Error.Auth.InvalidCredentials(credentialsCheckResult.Errors![0].Description));
@@ -72,7 +72,7 @@ public class UserService(
         
         var roleAssignResult = await AssignRole(user, role);
 
-        if (!roleAssignResult.IsSucceeded)
+        if (!roleAssignResult.IsSuccess)
         {
             var errors = roleAssignResult.Errors!;
             logger.LogError("Creating user succeeded. But assigning role failed.");
