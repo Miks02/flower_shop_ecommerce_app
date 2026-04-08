@@ -32,10 +32,6 @@ packages/
 
 ## App settings with secrets
 appsettings.Development.json
-appsettings.Local.json
-appsettings.*.json.user
-appsettings.json
-
 
 # ==============================
 # Node 
