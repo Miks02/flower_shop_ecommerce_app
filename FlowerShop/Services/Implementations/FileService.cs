@@ -2,17 +2,8 @@ using FlowerShop.Services.Interfaces;
 
 namespace FlowerShop.Services.Implementations;
 
-public class FileService : BaseService<FileService>, IFileService
+public class FileService(IWebHostEnvironment environment, ILogger<FileService> logger) : IFileService
 {
-
-    private readonly IWebHostEnvironment _environment;
-
-    public FileService(IWebHostEnvironment environment, IHttpContextAccessor http, ILogger<FileService> logger) : base(http, logger)
-    {
-        _environment = environment;
-    }
-    
-    
     public async Task<string> UploadFile(IFormFile file, string? uploadedFilePath, string uploadSubDir = "")
     {
         string uploadDir = "/Uploads/";
@@ -23,7 +14,7 @@ public class FileService : BaseService<FileService>, IFileService
             uploadDir = Path.Combine(uploadDir, uploadSubDir).Replace('\\', '/') + '/';
         }
         
-        var uploadsDirPath = Path.Combine(_environment.WebRootPath, uploadDir.TrimStart('/'));
+        var uploadsDirPath = Path.Combine(environment.WebRootPath, uploadDir.TrimStart('/'));
 
         if (!Directory.Exists(uploadsDirPath))
             Directory.CreateDirectory(uploadsDirPath);
@@ -43,23 +34,23 @@ public class FileService : BaseService<FileService>, IFileService
 
     public bool DeleteFile(string filePath)
     {
-        var oldFilePath = Path.Combine(_environment.WebRootPath, 
+        var oldFilePath = Path.Combine(environment.WebRootPath, 
             filePath.TrimStart('/').Replace('/', Path.DirectorySeparatorChar));
 
-        if (!System.IO.File.Exists(oldFilePath))
+        if (!File.Exists(oldFilePath))
         {
-            LogInfo("No file to delete");
+            logger.LogInformation("No file to delete");
             return true;
         }
 
         try
         {
-            System.IO.File.Delete(oldFilePath);
+            File.Delete(oldFilePath);
             return true;
         }
         catch (IOException ex)
         {
-            LogError("Unexpected error happened while trying to delete the file. " + ex);
+            logger.LogError("Unexpected error happened while trying to delete the file. {ex}", ex);
             return false;
         }
         

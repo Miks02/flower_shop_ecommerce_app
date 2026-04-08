@@ -1,4 +1,4 @@
-using System.Runtime.InteropServices.JavaScript;
+using System.Security.Claims;
 using FlowerShop.Dto.User;
 using FlowerShop.Models;
 using FlowerShop.Services.Interfaces;
@@ -8,45 +8,36 @@ using Microsoft.AspNetCore.Identity;
 
 namespace FlowerShop.Services.Implementations;
 
-public class UserService : BaseService<UserService>, IUserService
+public class UserService(
+    IHttpContextAccessor http,
+    UserManager<ApplicationUser> userManager,
+    RoleManager<IdentityRole> roleManager,
+    IFileService fileService,
+    ILogger<UserService> logger) : IUserService
 {
-    
-    private readonly UserManager<ApplicationUser> _userManager;
-    private readonly RoleManager<IdentityRole> _roleManager;
-    private readonly IFileService _fileService;
-    
-    public UserService(IHttpContextAccessor http,
-        UserManager<ApplicationUser> userManager,
-        RoleManager<IdentityRole> roleManager,
-        IFileService fileService,
-        ILogger<UserService> logger) : base(http, logger)
-    {
-        _userManager = userManager;
-        _roleManager = roleManager;
-        _fileService = fileService;
-    }
-    
+    private string? CurrentUserId => http.HttpContext?.User.FindFirstValue(ClaimTypes.NameIdentifier);
+
     public async Task<ApplicationUser?> GetCurrentUser()
     {
         if (CurrentUserId is null)
             return null;
         
-        return await _userManager.FindByIdAsync(CurrentUserId);
+        return await userManager.FindByIdAsync(CurrentUserId);
     }
 
     public async Task<ApplicationUser?> GetUserByIdAsync(string userId)
     {
-        return await _userManager.FindByIdAsync(userId);
+        return await userManager.FindByIdAsync(userId);
     }
 
     public async Task<ApplicationUser?> GetUserByNameAsync(string userName)
     {
-        return await _userManager.FindByNameAsync(userName);
+        return await userManager.FindByNameAsync(userName);
     }
 
     public async Task<ApplicationUser?> GetUserByEmailAsync(string email)
     {
-        return await _userManager.FindByEmailAsync(email);
+        return await userManager.FindByEmailAsync(email);
     }
 
     public async Task<ServiceResult<ApplicationUser>> CreateUserAsync(RegisterViewModel model, string role)
@@ -55,7 +46,7 @@ public class UserService : BaseService<UserService>, IUserService
 
         if (!credentialsCheckResult.IsSucceeded)
         {
-            LogError("Creating user has failed. Credentials check failed");
+            logger.LogError("Creating user has failed. Credentials check failed");
             return ServiceResult<ApplicationUser>.Failure(Error.Auth.InvalidCredentials(credentialsCheckResult.Errors![0].Description));
         }
 
@@ -68,14 +59,14 @@ public class UserService : BaseService<UserService>, IUserService
             PhoneNumber = model.PhoneNumber,
         };
 
-        var userCreateResult = await _userManager.CreateAsync(user, model.Password);
+        var userCreateResult = await userManager.CreateAsync(user, model.Password);
 
         if (!userCreateResult.Succeeded)
         {
-            LogError("Creating user has failed. Unexpected error happened");
+            logger.LogError("Creating user has failed. Unexpected error happened");
 
-            foreach (var error in userCreateResult.Errors)
-                LogError("ERROR: " + error.Description);
+            foreach (var error in userCreateResult.Errors) 
+                logger.LogError("ERROR: {err}", error.Description);
             return ServiceResult<ApplicationUser>.Failure(Error.Database.QueryError("Došlo je do greške prilikom registracije korisnika."));
         }
         
@@ -84,15 +75,15 @@ public class UserService : BaseService<UserService>, IUserService
         if (!roleAssignResult.IsSucceeded)
         {
             var errors = roleAssignResult.Errors!;
-            LogError("Creating user succeeded. But assigning role failed.");
-            LogInfo("Attempting to delete newly created user from the database...");
+            logger.LogError("Creating user succeeded. But assigning role failed.");
+            logger.LogInformation("Attempting to delete newly created user from the database...");
             
             await DeleteUserAsync(user);
             
             return ServiceResult<ApplicationUser>.Failure(errors.ToArray());
         }
         
-        LogInfo($"User \"{user.UserName}\" has been created successfully!");
+        logger.LogInformation("User \"{username}\" has been created successfully!", user.UserName);
         return ServiceResult<ApplicationUser>.Success(user);
     }
 
@@ -111,7 +102,7 @@ public class UserService : BaseService<UserService>, IUserService
         
         if (user.Email != model.ProfileVm.Email)
         {
-            var existingEmailUser = await _userManager.FindByEmailAsync(model.ProfileVm.Email);
+            var existingEmailUser = await userManager.FindByEmailAsync(model.ProfileVm.Email);
             if (existingEmailUser is not null && existingEmailUser.Id != user.Id)
             {
                 return ServiceResult<ProfileUpdateDto>.Failure(Error.User.EmailAlreadyExists());
@@ -120,7 +111,7 @@ public class UserService : BaseService<UserService>, IUserService
 
         if (user.UserName != model.ProfileVm.UserName)
         {
-            var existingUserNameUser = await _userManager.FindByNameAsync(model.ProfileVm.UserName);
+            var existingUserNameUser = await userManager.FindByNameAsync(model.ProfileVm.UserName);
             if (existingUserNameUser is not null && existingUserNameUser.Id != user.Id)
             {
                 return ServiceResult<ProfileUpdateDto>.Failure(Error.User.UsernameAlreadyExists(model.ProfileVm.UserName));
@@ -134,36 +125,36 @@ public class UserService : BaseService<UserService>, IUserService
         user.PhoneNumber = model.ProfileVm.PhoneNumber;
 
         if (model.ProfileVm.ProfilePicture != null && model.ProfileVm.ProfilePicture.Length > 0)
-            user.ImagePath = await _fileService.UploadFile(model.ProfileVm.ProfilePicture, user.ImagePath, "Users");
+            user.ImagePath = await fileService.UploadFile(model.ProfileVm.ProfilePicture, user.ImagePath, "Users");
             
             
-        var updateResult = await _userManager.UpdateAsync(user);
+        var updateResult = await userManager.UpdateAsync(user);
 
         if (!updateResult.Succeeded)
         {
-            LogError("Error happened while updating user data");
+            logger.LogError("Error happened while updating user data");
             foreach (var error in updateResult.Errors)
             {
-                LogError("ERROR: " + error.Description);
+                logger.LogError("ERROR: {err}", error.Description);
             }
             return ServiceResult<ProfileUpdateDto>.Failure(Error.Database.QueryError("Došlo je do greške prilikom ažuriranja podataka."));
         }
             
-        LogInfo("Profile updated successfully");
+        logger.LogInformation("Profile updated successfully");
         profileUpdateResult.ProfileUpdated = true;
         
         
         if (!string.IsNullOrWhiteSpace(model.ChangePasswordVm.CurrentPassword))
         {
-            var passwordValid = await _userManager.CheckPasswordAsync(user, model.ChangePasswordVm.CurrentPassword);
+            var passwordValid = await userManager.CheckPasswordAsync(user, model.ChangePasswordVm.CurrentPassword);
 
             if (!passwordValid)
             {
-                LogError("Password changing failed. Incorrect current password entered");
+                logger.LogError("Password changing failed. Incorrect current password entered");
                 return ServiceResult<ProfileUpdateDto>.Failure(Error.Validation.InvalidInput("Uneta trenutna lozinka nije validna"));
             }
 
-            var passwordResult = await _userManager.ChangePasswordAsync(
+            var passwordResult = await userManager.ChangePasswordAsync(
                 user,
                 model.ChangePasswordVm.CurrentPassword,
                 model.ChangePasswordVm.NewPassword
@@ -171,14 +162,14 @@ public class UserService : BaseService<UserService>, IUserService
 
             if (!passwordResult.Succeeded)
             {
-                LogError("Changing password failed. Unexpected error happened");
+                logger.LogError("Changing password failed. Unexpected error happened");
                 foreach (var error in passwordResult.Errors)
                 {
-                    LogError("ERROR: " + error.Description);
+                    logger.LogError("ERROR: {err}", error.Description);
                 }
                 return ServiceResult<ProfileUpdateDto>.Failure(Error.Database.QueryError("Došlo je do greške prilikom promene lozinke."));
             }
-            LogInfo("Password changed successfully");
+            logger.LogInformation("Password changed successfully");
             profileUpdateResult.PasswordChanged = true;
         }
 
@@ -200,23 +191,23 @@ public class UserService : BaseService<UserService>, IUserService
 
         user.ImagePath = null;
 
-        var updateResult = await _userManager.UpdateAsync(user);
+        var updateResult = await userManager.UpdateAsync(user);
 
         if (!updateResult.Succeeded)
         {
-            LogError("Unexpected error happened while deleting profile picture");
+            logger.LogError("Unexpected error happened while deleting profile picture");
             foreach (var error in  updateResult.Errors)
             {
-                LogError("ERROR: " + error.Description);
+                logger.LogError("ERROR: {err}", error.Description);
             }
 
             return ServiceResult.Failure(Error.Database.QueryError("Došlo je do greške prilikom brisanja profilne slike."));
         }
 
-        if(!_fileService.DeleteFile(oldImagePath))
-            LogError("User's old profile picture could not be removed from system's files.");
+        if(!fileService.DeleteFile(oldImagePath))
+            logger.LogError("User's old profile picture could not be removed from system's files.");
         
-        LogInfo("User's profile picture has been removed from the application successfully.");
+        logger.LogInformation("User's profile picture has been removed from the application successfully.");
         return ServiceResult.Success();
 
     }
@@ -224,16 +215,16 @@ public class UserService : BaseService<UserService>, IUserService
     public async Task<ServiceResult> DeleteUserAsync(ApplicationUser user)
     {
         
-        var deleteResult = await _userManager.DeleteAsync(user);
+        var deleteResult = await userManager.DeleteAsync(user);
         if (!deleteResult.Succeeded)
         {
-            LogError("Unexpected error happened while deleting user from database");
+            logger.LogError("Unexpected error happened while deleting user from database");
             foreach (var error in deleteResult.Errors)
-                LogError("ERROR: " + error.Description);
+                logger.LogError("ERROR: {err}", error.Description);
             return ServiceResult.Failure(Error.Database.QueryError("Došlo je do greške prilikom brisanja korisnika."));
         }
         
-        LogInfo("User has been deleted successfully.");
+        logger.LogInformation("User has been deleted successfully.");
         return ServiceResult.Success();
     }
 
@@ -243,7 +234,7 @@ public class UserService : BaseService<UserService>, IUserService
 
         if (user is null)
         {
-            LogError("User not found");
+            logger.LogError("User not found");
             return ServiceResult.Failure(Error.User.NotFound());       
         }
         
@@ -265,24 +256,24 @@ public class UserService : BaseService<UserService>, IUserService
         
         if (!IsValidRole(role))
         {
-            LogError("Invalid user role entered");
+            logger.LogError("Invalid user role entered");
             return ServiceResult.Failure(Error.Validation.InvalidInput("Nevažeća korisnička rola"));
         }
         
-        if (!await _roleManager.RoleExistsAsync(role))
-            await _roleManager.CreateAsync(new IdentityRole(role));
+        if (!await roleManager.RoleExistsAsync(role))
+            await roleManager.CreateAsync(new IdentityRole(role));
             
-        var roleCreateResult = await _userManager.AddToRoleAsync(user, role);
+        var roleCreateResult = await userManager.AddToRoleAsync(user, role);
 
         if (!roleCreateResult.Succeeded)
         {
-            LogError("Unexpected error happened while assigning user role");
+            logger.LogError("Unexpected error happened while assigning user role");
             foreach (var error in roleCreateResult.Errors)
-                LogError("ERROR: " + error.Description);
+                logger.LogError("ERROR: {err}", error.Description);
             
             return ServiceResult.Failure(Error.Database.QueryError("Došlo je do greške prilikom dodavanja korisnika u rolu."));
         }
-        LogInfo("User assigned to role successfully.");
+        logger.LogInformation("User assigned to role successfully.");
         return ServiceResult.Success();
     }
 
@@ -291,21 +282,21 @@ public class UserService : BaseService<UserService>, IUserService
         
         if (await GetUserByEmailAsync(email) is not null)
         {
-            LogError("Email address is taken");
+            logger.LogError("Email address is taken");
             return ServiceResult.Failure(Error.User.EmailAlreadyExists());
         }
         
         if (await GetUserByNameAsync(username) is not null)
         {
-            LogError("Username is taken");
+            logger.LogError("Username is taken");
             return ServiceResult.Failure(Error.User.UsernameAlreadyExists(username)); 
         }
 
-        LogInfo("Credentials check passed successfully.");
+        logger.LogInformation("Credentials check passed successfully.");
         return ServiceResult.Success();
     }
 
-    private bool RequiresUserUpdate(ProfileSettingsViewModel model, ApplicationUser user)
+    private static bool RequiresUserUpdate(ProfileSettingsViewModel model, ApplicationUser user)
     {
         return user.UserName != model.UserName ||
                user.Email != model.Email ||
