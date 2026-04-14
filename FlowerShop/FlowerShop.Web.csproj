@@ -37,4 +37,8 @@
       <_ContentIncludedByDefault Remove="Views\Shared\Components\User\User\Default.cshtml" />
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\FlowerShop.SharedKernel\FlowerShop.SharedKernel.csproj" />
+    </ItemGroup>
+
 </Project>
