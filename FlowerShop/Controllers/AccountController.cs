@@ -1,12 +1,12 @@
 using System.Security.Claims;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Identity;
-using FlowerShop.Models;
-using FlowerShop.Services.Interfaces;
-using FlowerShop.ViewModels.Components;
+using FlowerShop.Web.Models;
+using FlowerShop.Web.Services.Interfaces;
+using FlowerShop.Web.ViewModels.Components;
 using Microsoft.AspNetCore.Authorization;
 
-namespace FlowerShop.Controllers;
+namespace FlowerShop.Web.Controllers;
 
  public class AccountController : BaseController
     {

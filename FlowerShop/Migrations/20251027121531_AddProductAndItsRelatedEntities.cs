@@ -1,9 +1,9 @@
-﻿using System;
+using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace FlowerShop.Migrations
+namespace FlowerShop.Web.Migrations
 {
     /// <inheritdoc />
     public partial class AddProductAndItsRelatedEntities : Migration

@@ -1,8 +1,8 @@
-using FlowerShop.Models;
+using FlowerShop.Web.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace FlowerShop.Data.Configurations;
+namespace FlowerShop.Web.Data.Configurations;
 
 public class CategoryConfiguration : IEntityTypeConfiguration<Category>
 {

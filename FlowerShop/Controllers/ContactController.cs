@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 
-namespace FlowerShop.Controllers;
+namespace FlowerShop.Web.Controllers;
 
 public class ContactController : Controller
 {

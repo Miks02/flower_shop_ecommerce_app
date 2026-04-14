@@ -1,9 +1,9 @@
-using FlowerShop.Dto.User;
-using FlowerShop.Models;
-using FlowerShop.Services.Results;
-using FlowerShop.ViewModels.Components;
+using FlowerShop.Web.Dto.User;
+using FlowerShop.Web.Models;
+using FlowerShop.Web.Services.Results;
+using FlowerShop.Web.ViewModels.Components;
 
-namespace FlowerShop.Services.Interfaces;
+namespace FlowerShop.Web.Services.Interfaces;
 
 public interface IUserService
 {

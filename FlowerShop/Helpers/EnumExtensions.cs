@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.Reflection;
 
-namespace FlowerShop.Helpers;
+namespace FlowerShop.Web.Helpers;
 
 public static class EnumExtensions
 {

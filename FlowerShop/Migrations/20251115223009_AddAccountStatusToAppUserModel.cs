@@ -1,8 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace FlowerShop.Migrations
+namespace FlowerShop.Web.Migrations
 {
     /// <inheritdoc />
     public partial class AddAccountStatusToAppUserModel : Migration

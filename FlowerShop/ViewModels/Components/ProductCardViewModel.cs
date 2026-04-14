@@ -1,6 +1,6 @@
-using FlowerShop.Enums;
+using FlowerShop.Web.Enums;
 
-namespace FlowerShop.ViewModels.Components;
+namespace FlowerShop.Web.ViewModels.Components;
 
 public class ProductCardViewModel
 {

@@ -1,8 +1,8 @@
 using System.ComponentModel;
-using FlowerShop.ViewModels.Components;
+using FlowerShop.Web.ViewModels.Components;
 using FluentValidation;
 
-namespace FlowerShop.Validators;
+namespace FlowerShop.Web.Validators;
 
 public class ProfileSettingsValidator : AbstractValidator<ProfileSettingsViewModel>
 {

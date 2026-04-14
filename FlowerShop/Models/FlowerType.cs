@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
-using FlowerShop.Enums;
+using FlowerShop.Web.Enums;
 
-namespace FlowerShop.Models;
+namespace FlowerShop.Web.Models;
 
 public class FlowerType
 {

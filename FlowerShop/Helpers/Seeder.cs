@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Identity;
-using FlowerShop.Models;
+using FlowerShop.Web.Models;
 
-namespace FlowerShop.Helpers;
+namespace FlowerShop.Web.Helpers;
 
 public static class Seeder
 {

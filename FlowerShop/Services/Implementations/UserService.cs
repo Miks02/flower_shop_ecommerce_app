@@ -1,12 +1,12 @@
 using System.Security.Claims;
-using FlowerShop.Dto.User;
-using FlowerShop.Models;
-using FlowerShop.Services.Interfaces;
-using FlowerShop.Services.Results;
-using FlowerShop.ViewModels.Components;
+using FlowerShop.Web.Dto.User;
+using FlowerShop.Web.Models;
+using FlowerShop.Web.Services.Interfaces;
+using FlowerShop.Web.Services.Results;
+using FlowerShop.Web.ViewModels.Components;
 using Microsoft.AspNetCore.Identity;
 
-namespace FlowerShop.Services.Implementations;
+namespace FlowerShop.Web.Services.Implementations;
 
 public class UserService(
     IHttpContextAccessor http,

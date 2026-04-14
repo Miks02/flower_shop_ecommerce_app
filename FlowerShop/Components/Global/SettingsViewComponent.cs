@@ -1,12 +1,12 @@
 using System.Runtime.InteropServices.JavaScript;
-using FlowerShop.Models;
-using FlowerShop.Services.Interfaces;
-using FlowerShop.ViewModels.Components;
+using FlowerShop.Web.Models;
+using FlowerShop.Web.Services.Interfaces;
+using FlowerShop.Web.ViewModels.Components;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
-namespace FlowerShop.Components.Global;
+namespace FlowerShop.Web.Components.Global;
 
 [Authorize]
 public class SettingsViewComponent : ViewComponent

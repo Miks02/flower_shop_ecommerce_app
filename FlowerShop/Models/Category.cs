@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace FlowerShop.Models;
+namespace FlowerShop.Web.Models;
 
 public class Category
 {

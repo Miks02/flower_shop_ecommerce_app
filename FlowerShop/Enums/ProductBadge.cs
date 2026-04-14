@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace FlowerShop.Enums;
+namespace FlowerShop.Web.Enums;
 
 public enum ProductBadge
 {

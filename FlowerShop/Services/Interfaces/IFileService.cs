@@ -1,4 +1,4 @@
-namespace FlowerShop.Services.Interfaces;
+namespace FlowerShop.Web.Services.Interfaces;
 
 public interface IFileService
 {

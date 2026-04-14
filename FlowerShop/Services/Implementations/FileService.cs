@@ -1,6 +1,6 @@
-using FlowerShop.Services.Interfaces;
+using FlowerShop.Web.Services.Interfaces;
 
-namespace FlowerShop.Services.Implementations;
+namespace FlowerShop.Web.Services.Implementations;
 
 public class FileService(IWebHostEnvironment environment, ILogger<FileService> logger) : IFileService
 {

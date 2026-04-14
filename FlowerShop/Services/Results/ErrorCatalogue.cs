@@ -1,5 +1,5 @@
 
-namespace FlowerShop.Services.Results;
+namespace FlowerShop.Web.Services.Results;
 
 public sealed class Error
 {

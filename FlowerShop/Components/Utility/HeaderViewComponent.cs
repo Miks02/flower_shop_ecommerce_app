@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 
-namespace FlowerShop.Components.Utility;
+namespace FlowerShop.Web.Components.Utility;
 
 public class HeaderViewComponent : ViewComponent
 {

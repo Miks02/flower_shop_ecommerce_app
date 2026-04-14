@@ -1,4 +1,4 @@
-namespace FlowerShop.Models;
+namespace FlowerShop.Web.Models;
 
 public class ProductFlower
 {

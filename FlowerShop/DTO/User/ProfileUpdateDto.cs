@@ -1,6 +1,6 @@
-using FlowerShop.Models;
+using FlowerShop.Web.Models;
 
-namespace FlowerShop.Dto.User;
+namespace FlowerShop.Web.Dto.User;
 
 public class ProfileUpdateDto
 {

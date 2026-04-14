@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Identity;
 
-namespace FlowerShop.Services.Results;
+namespace FlowerShop.Web.Services.Results;
 
 public class Result
 {

@@ -1,6 +1,6 @@
-using FlowerShop.Models;
+using FlowerShop.Web.Models;
 
-namespace FlowerShop.Services.Interfaces;
+namespace FlowerShop.Web.Services.Interfaces;
 
 public interface ICategoryService
 {

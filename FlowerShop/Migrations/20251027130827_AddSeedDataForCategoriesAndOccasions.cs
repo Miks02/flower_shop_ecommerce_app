@@ -1,10 +1,10 @@
-Ôªøusing Microsoft.EntityFrameworkCore.Migrations;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
 #pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
 
-namespace FlowerShop.Migrations
+namespace FlowerShop.Web.Migrations
 {
     /// <inheritdoc />
     public partial class AddSeedDataForCategoriesAndOccasions : Migration
@@ -18,12 +18,12 @@ namespace FlowerShop.Migrations
                 values: new object[,]
                 {
                     { 1, "Buketi" },
-                    { 2, "Aran≈æmani" },
+                    { 2, "Aranûmani" },
                     { 3, "Specijalni pokloni" },
-                    { 4, "101 Ru≈æa" },
-                    { 5, "Saksijsko cveƒáe" },
+                    { 4, "101 Ruûa" },
+                    { 5, "Saksijsko cvece" },
                     { 6, "Box mede" },
-                    { 7, "Dehidrirane ru≈æe" },
+                    { 7, "Dehidrirane ruûe" },
                     { 8, "Venci i suze" }
                 });
 
@@ -33,9 +33,9 @@ namespace FlowerShop.Migrations
                 values: new object[,]
                 {
                     { 1, "Dan zaljubljenih" },
-                    { 2, "8. Mart - Dan ≈æena" },
+                    { 2, "8. Mart - Dan ûena" },
                     { 3, "Rodjendan" },
-                    { 4, "Svadba i venƒçanje" }
+                    { 4, "Svadba i vencanje" }
                 });
 
             migrationBuilder.CreateIndex(

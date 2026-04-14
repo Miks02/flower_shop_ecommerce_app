@@ -1,10 +1,10 @@
 using System.Reflection;
-using FlowerShop.Models;
-using FlowerShop.Data;
-using FlowerShop.Helpers;
-using FlowerShop.Services.Implementations;
-using FlowerShop.Services.Interfaces;
-using FlowerShop.Services.Mock;
+using FlowerShop.Web.Models;
+using FlowerShop.Web.Data;
+using FlowerShop.Web.Helpers;
+using FlowerShop.Web.Services.Implementations;
+using FlowerShop.Web.Services.Interfaces;
+using FlowerShop.Web.Services.Mock;
 using FluentValidation;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;

@@ -1,9 +1,9 @@
-using FlowerShop.Controllers;
+using FlowerShop.Web.Controllers;
 using Htmx;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace FlowerShop.Areas.User.Controllers;
+namespace FlowerShop.Web.Areas.User.Controllers;
 
 [Area("User")]
 [Authorize(Roles = "User")]

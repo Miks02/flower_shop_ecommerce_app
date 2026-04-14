@@ -1,7 +1,7 @@
-using FlowerShop.ViewModels.Components;
+using FlowerShop.Web.ViewModels.Components;
 using Microsoft.AspNetCore.Mvc;
 
-namespace FlowerShop.Components.Utility;
+namespace FlowerShop.Web.Components.Utility;
 
 public class LoginViewComponent : ViewComponent
 {

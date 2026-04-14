@@ -1,10 +1,10 @@
-using FlowerShop.Models;
+using FlowerShop.Web.Models;
 using FluentValidation;
-using FlowerShop.ViewModels.Components;
+using FlowerShop.Web.ViewModels.Components;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
-namespace FlowerShop.Validators;
+namespace FlowerShop.Web.Validators;
 
 public class RegisterValidator : AbstractValidator<RegisterViewModel>
 {

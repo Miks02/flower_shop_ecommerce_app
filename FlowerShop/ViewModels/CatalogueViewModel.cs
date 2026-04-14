@@ -1,6 +1,6 @@
-using FlowerShop.Models;
+using FlowerShop.Web.Models;
 
-namespace FlowerShop.ViewModels;
+namespace FlowerShop.Web.ViewModels;
 
 public class CatalogueViewModel
 {

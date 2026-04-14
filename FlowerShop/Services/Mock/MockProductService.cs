@@ -1,7 +1,7 @@
-using FlowerShop.Models;
-using FlowerShop.Services.Interfaces;
+using FlowerShop.Web.Models;
+using FlowerShop.Web.Services.Interfaces;
 
-namespace FlowerShop.Services.Mock;
+namespace FlowerShop.Web.Services.Mock;
 
 public class MockProductService : IProductService
 {

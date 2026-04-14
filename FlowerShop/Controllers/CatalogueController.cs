@@ -1,11 +1,11 @@
 using System.Collections;
-using FlowerShop.Models;
-using FlowerShop.Services.Interfaces;
-using FlowerShop.ViewModels;
+using FlowerShop.Web.Models;
+using FlowerShop.Web.Services.Interfaces;
+using FlowerShop.Web.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
-namespace FlowerShop.Controllers;
+namespace FlowerShop.Web.Controllers;
 
 public class CatalogueController : BaseController
 {

@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 
-namespace FlowerShop.Helpers;
+namespace FlowerShop.Web.Helpers;
 
 public static class LogHelper
 {

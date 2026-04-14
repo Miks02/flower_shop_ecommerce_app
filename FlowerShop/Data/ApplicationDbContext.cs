@@ -1,10 +1,10 @@
 using System.Reflection;
-using FlowerShop.Models;
+using FlowerShop.Web.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 
-namespace FlowerShop.Data;
+namespace FlowerShop.Web.Data;
 
 public class ApplicationDbContext :  IdentityDbContext<ApplicationUser>
 {

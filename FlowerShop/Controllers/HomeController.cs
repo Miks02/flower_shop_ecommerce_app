@@ -1,8 +1,8 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
-using FlowerShop.Models;
+using FlowerShop.Web.Models;
 
-namespace FlowerShop.Controllers;
+namespace FlowerShop.Web.Controllers;
 
 public class HomeController : Controller
 {

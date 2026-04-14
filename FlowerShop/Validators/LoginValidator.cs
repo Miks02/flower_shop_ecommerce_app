@@ -1,7 +1,7 @@
 using FluentValidation;
-using FlowerShop.ViewModels.Components;
+using FlowerShop.Web.ViewModels.Components;
 
-namespace FlowerShop.Validators;
+namespace FlowerShop.Web.Validators;
 
 public class LoginValidator : AbstractValidator<LoginViewModel>
 {

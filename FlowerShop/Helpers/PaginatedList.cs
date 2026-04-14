@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 
-namespace FlowerShop.Helpers;
+namespace FlowerShop.Web.Helpers;
 
 public class PaginatedList<T> : List<T>
 {
