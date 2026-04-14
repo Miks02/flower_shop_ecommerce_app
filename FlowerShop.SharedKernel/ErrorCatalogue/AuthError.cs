@@ -31,4 +31,7 @@ public class AuthError
 
     public static Error AccountLocked(string message = "Account is locked")
         => new("Auth.AccountLocked", message);
+    
+    public static Error InvalidRole(string message = "Invalid role has been entered")
+        => new("Auth.InvalidRole", message);
 }

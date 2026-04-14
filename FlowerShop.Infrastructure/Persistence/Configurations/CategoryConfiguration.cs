@@ -1,4 +1,4 @@
-using FlowerShop.Web.Models;
+using FlowerShop.Domain.Entities.Categories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
