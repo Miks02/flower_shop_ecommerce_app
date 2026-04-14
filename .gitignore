@@ -12,14 +12,16 @@ out/
 *.suo
 *.userosscache
 *.sln.docstates
+*.logs
 
 ## Rider / JetBrains
 .idea/
 *.sublime-workspace
 *.sublime-project
 
-## Visual Studio Code
+## Visual Studio Code / Visual Studio
 .vscode/
+.vs
 
 ## NuGet
 *.nupkg
@@ -34,7 +36,7 @@ packages/
 appsettings.Development.json
 
 # ==============================
-# Node 
+# Node
 # ==============================
 
 node_modules/
