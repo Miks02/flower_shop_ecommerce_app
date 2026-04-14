@@ -1,6 +1,6 @@
 using FlowerShop.SharedKernel.Results;
 
-namespace FlowerShop.Domain.Entities.Users;
+namespace FlowerShop.Domain.Entities.IdentityUser;
 
 public class UserError
 {

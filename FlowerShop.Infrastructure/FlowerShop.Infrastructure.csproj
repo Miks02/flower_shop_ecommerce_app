@@ -18,8 +18,11 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\FlowerShop.Application\FlowerShop.Application.csproj" />
       <ProjectReference Include="..\FlowerShop.Domain\FlowerShop.Domain.csproj" />
       <ProjectReference Include="..\FlowerShop.SharedKernel\FlowerShop.SharedKernel.csproj" />
     </ItemGroup>
+
+    
 
 </Project>

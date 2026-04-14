@@ -1,9 +1,8 @@
 using FlowerShop.Domain.Enums;
-using Microsoft.AspNetCore.Identity;
 
-namespace FlowerShop.Domain.Entities.Users;
+namespace FlowerShop.Domain.Entities.IdentityUser;
 
-public class User : IdentityUser
+public class User : Microsoft.AspNetCore.Identity.IdentityUser
 {
     public string FirstName { get; set; } = null!;
     

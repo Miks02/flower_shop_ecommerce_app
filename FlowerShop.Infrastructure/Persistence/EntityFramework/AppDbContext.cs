@@ -1,4 +1,4 @@
-using FlowerShop.Domain.Entities.Users;
+using FlowerShop.Domain.Entities.IdentityUser;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;

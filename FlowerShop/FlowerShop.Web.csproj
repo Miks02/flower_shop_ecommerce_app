@@ -38,6 +38,8 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\FlowerShop.Application\FlowerShop.Application.csproj" />
+      <ProjectReference Include="..\FlowerShop.Infrastructure\FlowerShop.Infrastructure.csproj" />
       <ProjectReference Include="..\FlowerShop.SharedKernel\FlowerShop.SharedKernel.csproj" />
     </ItemGroup>
 
