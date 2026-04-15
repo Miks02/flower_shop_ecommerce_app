@@ -1,4 +1,6 @@
-using FlowerShop.Web.Models;
+using FlowerShop.Domain.Entities.Categories;
+using FlowerShop.Domain.Entities.Ocassions;
+using FlowerShop.Domain.Entities.Products;
 using FlowerShop.Web.Services.Interfaces;
 
 namespace FlowerShop.Web.Services.Mock;
@@ -11,20 +13,20 @@ public class MockProductService : IProductService
     
     public MockProductService()
     {
-        _categories = new List<Category>()
+        _categories = new List<Category>
         {
             new Category { Id = 1, Name = "Buketi" },
             new Category { Id = 2, Name = "Aranžmani" }
         };
 
-        _occasions = new List<Occasion>()
+        _occasions = new List<Occasion>
         {
             new Occasion { Id = 1, Name = "Dan zaljubljenih" },
             new Occasion { Id = 2, Name = "8. Mart - Dan žena" },
             new Occasion { Id = 3, Name = "Rodjendan" },
         };
 
-        _products = new List<Product>()
+        _products = new List<Product>
         {
             new Product { Id = 1, Name = "Ljubavno Crveno", Price = 5999, Stock = 100, Description = "Buket za sve prilike", ImageUrl = "./AppImages/Proizvodi/Buketi/Buket crvenih ruza.jpg", Category = _categories[0], Occasions = _occasions },
             new Product { Id = 2, Name = "Nebeska Magija", Price = 9999, Stock = 100, Description = "Buket za svadbe i rodjenje deteta", ImageUrl = "./AppImages/Proizvodi/Buketi/Buket Sky.jpg", Category = _categories[0], Occasions = _occasions },

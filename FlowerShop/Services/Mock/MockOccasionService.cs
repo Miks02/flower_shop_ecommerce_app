@@ -1,4 +1,4 @@
-using FlowerShop.Web.Models;
+using FlowerShop.Domain.Entities.Ocassions;
 using FlowerShop.Web.Services.Interfaces;
 
 namespace FlowerShop.Web.Services.Mock;

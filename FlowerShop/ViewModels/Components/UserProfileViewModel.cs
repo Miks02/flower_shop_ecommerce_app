@@ -1,4 +1,4 @@
-using FlowerShop.Web.Enums;
+using FlowerShop.Domain.Enums;
 
 namespace FlowerShop.Web.ViewModels.Components;
 

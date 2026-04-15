@@ -1,4 +1,6 @@
-using FlowerShop.Web.Models;
+using FlowerShop.Domain.Entities.Categories;
+using FlowerShop.Domain.Entities.Ocassions;
+using FlowerShop.Domain.Entities.Products;
 
 namespace FlowerShop.Web.ViewModels;
 

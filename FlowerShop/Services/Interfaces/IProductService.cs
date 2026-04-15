@@ -1,4 +1,5 @@
-using FlowerShop.Web.Models;
+
+using FlowerShop.Domain.Entities.Products;
 
 namespace FlowerShop.Web.Services.Interfaces;
 

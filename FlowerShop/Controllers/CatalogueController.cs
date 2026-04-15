@@ -1,9 +1,6 @@
-using System.Collections;
-using FlowerShop.Web.Models;
 using FlowerShop.Web.Services.Interfaces;
 using FlowerShop.Web.ViewModels;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace FlowerShop.Web.Controllers;
 

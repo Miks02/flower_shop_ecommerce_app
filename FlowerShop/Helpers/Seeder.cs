@@ -1,5 +1,6 @@
+using FlowerShop.Domain.Entities.IdentityUser;
 using Microsoft.AspNetCore.Identity;
-using FlowerShop.Web.Models;
+
 
 namespace FlowerShop.Web.Helpers;
 
@@ -9,7 +10,7 @@ public static class Seeder
     {
         using var scope = serviceProvider.CreateScope();
         var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
-        var userManager = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
+        var userManager = scope.ServiceProvider.GetRequiredService<UserManager<User>>();
         var configuration = scope.ServiceProvider.GetRequiredService<IConfiguration>();
    
         string[] roleNames = { "Admin", "Deliverer", "User" };
@@ -26,7 +27,7 @@ public static class Seeder
         
         if (await userManager.FindByEmailAsync(adminEmail) is null)
         {
-            var adminUser = new ApplicationUser
+            var adminUser = new User
             {
                 UserName = configuration["AdminData:Username"],
                 Email = adminEmail,

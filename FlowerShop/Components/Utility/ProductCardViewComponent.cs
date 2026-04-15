@@ -1,4 +1,4 @@
-using FlowerShop.Web.Enums;
+using FlowerShop.Domain.Enums;
 using FlowerShop.Web.ViewModels.Components;
 using Microsoft.AspNetCore.Mvc;
 

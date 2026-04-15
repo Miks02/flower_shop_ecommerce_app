@@ -5,6 +5,14 @@ VisualStudioVersion = 18.4.11626.88 stable
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlowerShop.Web", "FlowerShop\FlowerShop.Web.csproj", "{29AB5D28-6093-4BDC-A299-DE870B5EEF67}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlowerShop.SharedKernel", "FlowerShop.SharedKernel\FlowerShop.SharedKernel.csproj", "{2C0D8046-7087-4216-96A0-5AFBF552658E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlowerShop.Domain", "FlowerShop.Domain\FlowerShop.Domain.csproj", "{3C1EDDCA-FAF2-4317-A1F0-44FE99635C2A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlowerShop.Infrastructure", "FlowerShop.Infrastructure\FlowerShop.Infrastructure.csproj", "{3F51113C-0B5B-4095-A90C-BF2BF6FFEFCB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlowerShop.Application", "FlowerShop.Application\FlowerShop.Application.csproj", "{B4D42CDC-DFCD-46C8-B5D3-7556D83A9E99}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +23,22 @@ Global
 		{29AB5D28-6093-4BDC-A299-DE870B5EEF67}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{29AB5D28-6093-4BDC-A299-DE870B5EEF67}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{29AB5D28-6093-4BDC-A299-DE870B5EEF67}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2C0D8046-7087-4216-96A0-5AFBF552658E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2C0D8046-7087-4216-96A0-5AFBF552658E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2C0D8046-7087-4216-96A0-5AFBF552658E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2C0D8046-7087-4216-96A0-5AFBF552658E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3C1EDDCA-FAF2-4317-A1F0-44FE99635C2A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3C1EDDCA-FAF2-4317-A1F0-44FE99635C2A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3C1EDDCA-FAF2-4317-A1F0-44FE99635C2A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3C1EDDCA-FAF2-4317-A1F0-44FE99635C2A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3F51113C-0B5B-4095-A90C-BF2BF6FFEFCB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3F51113C-0B5B-4095-A90C-BF2BF6FFEFCB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3F51113C-0B5B-4095-A90C-BF2BF6FFEFCB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3F51113C-0B5B-4095-A90C-BF2BF6FFEFCB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B4D42CDC-DFCD-46C8-B5D3-7556D83A9E99}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B4D42CDC-DFCD-46C8-B5D3-7556D83A9E99}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B4D42CDC-DFCD-46C8-B5D3-7556D83A9E99}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B4D42CDC-DFCD-46C8-B5D3-7556D83A9E99}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
