@@ -21,7 +21,7 @@ public class UpdatePasswordHandler(UserManager<User> userManager, ILogger<Update
 
         if (!result.Succeeded)
         {
-            logger.LogWarning("Greška prilikom promene lozinke za korisnika {UserId}", command.UserId);
+            logger.LogWarning("An error occurred while trying to update user's password. UserID: {UserId}", command.UserId);
             
             var errors = result.Errors
                 .Select(e => new Error(e.Code, e.Description))
