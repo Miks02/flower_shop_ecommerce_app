@@ -5,7 +5,7 @@ using FlowerShop.SharedKernel.Results;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
 
-namespace FlowerShop.Application.Features.Users.Commands;
+namespace FlowerShop.Application.Features.Users.Commands.UpdateProfile;
 
 public class UpdateProfileHandler(UserManager<User> userManager, ILogger<UpdateProfileHandler> logger, IFileService fileService) : IHandler
 {

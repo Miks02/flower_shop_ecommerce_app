@@ -1,6 +1,6 @@
 using FluentValidation;
 
-namespace FlowerShop.Application.Features.Users.Commands;
+namespace FlowerShop.Application.Features.Users.Commands.UpdateProfile;
 
 public class UpdateProfileValidator : AbstractValidator<UpdateProfileCommand>
 {

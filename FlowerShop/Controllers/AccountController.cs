@@ -5,6 +5,7 @@ using FlowerShop.Application.Features.Auth.Commands.Login;
 using FlowerShop.Application.Features.Auth.Commands.Logout;
 using FlowerShop.Application.Features.Auth.Commands.RegisterUser;
 using FlowerShop.Application.Features.Users.Commands;
+using FlowerShop.Application.Features.Users.Commands.UpdateProfile;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Identity;
 using FlowerShop.Web.Models;

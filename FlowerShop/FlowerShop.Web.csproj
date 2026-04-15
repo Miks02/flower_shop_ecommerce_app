@@ -20,6 +20,7 @@
       <PackageReference Include="Serilog.Enrichers.Thread" Version="4.0.0" />
       <PackageReference Include="Serilog.Settings.Configuration" Version="10.0.0" />
       <PackageReference Include="Serilog.Sinks.Console" Version="6.1.1" />
+      <PackageReference Include="Serilog.Sinks.Debug" Version="3.0.0" />
     </ItemGroup>
 
     <ItemGroup>
@@ -27,12 +28,14 @@
       <Folder Include="Areas\Admin\Views\" />
       <Folder Include="Views\Account\" />
       <Folder Include="wwwroot\AppImages\" />
-      <Folder Include="wwwroot\Uploads\" />
+      <Folder Include="wwwroot\uploads\" />
     </ItemGroup>
 
     <ItemGroup>
       <_ContentIncludedByDefault Remove="wwwroot\js\assets\main-BhkP5e4l.css" />
       <_ContentIncludedByDefault Remove="Views\Shared\Components\User\User\Default.cshtml" />
+      <_ContentIncludedByDefault Remove="wwwroot\uploads\uploads\user-images\04fde9c0-997b-4bb3-96fa-34b589a275b9_Screenshot 2026-04-09 153451.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\uploads\uploads\user-images\d0ed4dd4-23e7-43e0-9af3-b39305d97b26_Screenshot 2026-04-09 153451.png" />
     </ItemGroup>
 
     <ItemGroup>
