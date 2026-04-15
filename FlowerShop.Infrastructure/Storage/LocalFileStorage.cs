@@ -52,7 +52,7 @@ public class LocalFileStorage(ILogger<LocalFileStorage> logger, IConfiguration c
 
     public Task<Result> DeleteFile(string filePath)
     {
-        var oldFilePath = Path.Combine(absoluteUploadDir,
+        var oldFilePath = Path.Combine(config["images"]!,
             filePath.TrimStart('/').Replace('/', Path.DirectorySeparatorChar));
 
         if (!File.Exists(oldFilePath))
