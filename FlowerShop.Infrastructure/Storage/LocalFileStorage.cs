@@ -20,7 +20,7 @@ public class LocalFileStorage(ILogger<LocalFileStorage> logger, IConfiguration c
             return Result<string>.Failure(FileError.ValidationFailed());
         }
 
-        var absoluteUploadDir = config["images"]!;
+        var absoluteUploadDir = config["Storage:Images"]!;
         var uploadDir = "uploads";
 
         if (!string.IsNullOrEmpty(uploadSubDir))
@@ -44,13 +44,13 @@ public class LocalFileStorage(ILogger<LocalFileStorage> logger, IConfiguration c
         await using var fileStream = new FileStream(filePath, FileMode.Create);
         await file.CopyToAsync(fileStream);
 
-        return Result<string>.Success(uploadDir + uniqueFileName);
+        return Result<string>.Success('/' + uploadDir + uniqueFileName);
 
     }
 
     public Task<Result> DeleteFile(string filePath)
     {
-        var oldFilePath = Path.Combine(config["images"]!,
+        var oldFilePath = Path.Combine(config["Storage:Images"]!,
             filePath.TrimStart('/').Replace('/', Path.DirectorySeparatorChar));
 
         if (!File.Exists(oldFilePath))
