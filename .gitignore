@@ -21,7 +21,7 @@ out/
 
 ## Visual Studio Code / Visual Studio
 .vscode/
-.vs
+.vs/
 
 ## NuGet
 *.nupkg
