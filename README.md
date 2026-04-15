@@ -1,129 +1,87 @@
-# Flower shop - Ecommerce application - WORK IN PROGRESS
+# Flower Shop - Ecommerce Application (Work in Progress)
 
-A web-based flower shop application (work in progress).
+A web-based flower shop application currently being refactored from a standard MVC structure into Clean Architecture.
 
-**Tagline:**  
-Beautifully crafted flowers, coming soon — this project is under active development.
-
-**Status:**  
-Work in progress — expect ongoing changes to structure, models, and database migrations.
+**Status:** Work in progress - the architecture migration is ongoing, so expect structural changes, new layers, and updated migrations over time.
 
 ---
 
 ## Table of Contents
 
-- [About](#about)  
-- [Tech Stack](#tech-stack)  
-- [Folder Structure](#folder-structure)
-- [Screenshots](#screenshots)  
+- [About](#about)
+- [Tech Stack](#tech-stack)
+- [Project Structure](#project-structure)
+- [Screenshots](#screenshots)
 
 ---
 
 ## About
 
-FlowerShop is a web-based e-commerce application built with ASP.NET Core MVC and .NET 8.  
-It is designed to provide:
+FlowerShop is a web-based e-commerce application built with ASP.NET Core and .NET 8. The project was originally a monolithic MVC application and is being migrated to Clean Architecture, splitting responsibilities across dedicated projects.
 
-- A catalogue of products (flowers)  
-- Categories and occasions  
-- User accounts and authentication  
-- Interactive cart and checkout system  
-- Real-time notifications and order tracking  
-- Custom orders, discounts, and more  
-
-The application uses HTMX for dynamic interactivity and Tailwind CSS for styling.  
-Current state: work in progress — core models, controllers, views, and migrations are present.
+The web layer uses Razor views with Tailwind CSS for styling and HTMX for partial page updates without full reloads.
 
 ---
 
 ## Tech Stack
 
-- **Platform:** ASP.NET Core MVC (.NET 8)  
-- **ORM:** Entity Framework Core 8  
-- **Frontend:** Razor views + Tailwind CSS, HTMX for interactivity  
-- **Language:** C#  
-- **Database:** SQL Server or SQLite (development) via EF Core migrations  
-- **Tooling:** `dotnet CLI`, PowerShell (Windows) / POSIX shell (macOS/Linux), optional `dotnet-ef` for migrations  
-- **Other:** `package.json` for npm tooling (Tailwind, frontend utilities)  
+- **Platform:** ASP.NET Core MVC (.NET 8)
+- **Architecture:** Clean Architecture (in progress)
+- **ORM:** Entity Framework Core 8
+- **Frontend:** Razor views, Tailwind CSS, HTMX
+- **Language:** C#
+- **Database:** SQL Server (EF Core migrations)
+- **Tooling:** dotnet CLI, dotnet-ef, npm (Tailwind build)
 
 ---
 
-## Folder Structure
+## Project Structure
+
+The solution is split into five projects, each with a distinct responsibility:
 
 ```text
-FlowerShop
-├─ FlowerShop.csproj
-├─ FlowerShop.sln
-├─ Program.cs
-├─ tailwind.config.js
-├─ Areas
-│  └─ User
-├─ bin
-│  └─ Debug
-├─ Components
-├─ Controllers
-│  ├─ AccountController.cs
-│  ├─ BaseController.cs
-│  ├─ CatalogueController.cs
-│  ├─ ContactController.cs
-│  └─ HomeController.cs
-├─ Data
-│  ├─ ApplicationDbContext.cs
-│  └─ Configurations
-├─ DTO
-│  └─ User
-├─ Enums
-│  ├─ AccountStatus.cs
-│  ├─ FlowerCategory.cs
-│  └─ ProductBadge.cs
-├─ Helpers
-│  ├─ EnumExtensions.cs
-│  ├─ LogHelper.cs
-│  ├─ PaginatedList.cs
-│  └─ Seeder.cs
-├─ Models
-│  ├─ ApplicationUser.cs
-│  ├─ Category.cs
-│  ├─ ErrorViewModel.cs
-│  ├─ FlowerType.cs
-│  ├─ Occasion.cs
-│  ├─ Product.cs
-│  └─ ProductFlower.cs
-├─ Properties
-│  └─ launchSettings.json
-├───Services
-│   ├───Implementations
-│   ├───Interfaces
-│   ├───Mock
-│   └───Results
-├─ Validators
-──ViewModels
-│   └───Components
-├───Views
-│   ├───Account
-│   ├───Catalogue
-│   │   └───Partial
-│   ├───Contact
-│   ├───Home
-│   └───Shared
-─wwwroot
-    ├───AppImages
-    │   ├───Kategorije
-    │   ├───Ostalo
-    │   └───Proizvodi
-    │       └───Buketi
-    ├───css
-    ├───js
-    │   └───ui
-    ├───lib
-    │   ├───bootstrap
-    │   │   └───dist
-    │   │       ├───css
-    │   │       └───js
-    └───Uploads
-        └───Users
-
+FlowerShop.sln
+|
++-- FlowerShop                    # Presentation layer (ASP.NET Core MVC web app)
+|   +-- Controllers               # MVC controllers (Account, Catalogue, Contact, Home)
+|   +-- Views                     # Razor views and partials
+|   +-- ViewModels                # View-specific models
+|   +-- Components                # View components
+|   +-- Areas                     # Feature areas (e.g. User)
+|   +-- Helpers                   # Utility classes (pagination, seeder, logging)
+|   +-- wwwroot                   # Static assets (CSS, JS, images, uploads)
+|   +-- Program.cs
+|
++-- FlowerShop.Application        # Application layer - use cases and business logic
+|   +-- Features
+|   |   +-- Auth                  # Authentication commands/handlers
+|   |   +-- Users                 # User-related commands/handlers
+|   +-- Common
+|   |   +-- Abstractions          # Interfaces (IFileService, IUserProvider)
+|   |   +-- Dto                   # Shared data transfer objects
+|   |   +-- IHandler.cs           # Base handler contract
+|
++-- FlowerShop.Domain             # Domain layer - core entities and enums
+|   +-- Entities                  # Domain entities (Product, Category, Occasion, etc.)
+|   +-- Enums                     # Domain enumerations
+|
++-- FlowerShop.Infrastructure     # Infrastructure layer - EF Core, identity, storage
+|   +-- Persistence
+|   |   +-- EntityFramework       # DbContext
+|   |   +-- Configurations        # EF entity configurations
+|   +-- Identity                  # ASP.NET Core Identity setup and user provider
+|   +-- Migrations                # EF Core database migrations
+|   +-- Storage                   # Local file storage implementation
+|   +-- Extensions                # DI registration (DependencyInjection.cs)
+|   +-- InfrastructureErrors      # Infrastructure-specific error definitions
+|
++-- FlowerShop.SharedKernel       # Shared primitives used across all layers
+    +-- Results                   # Result<T>, Error, PagedResult
+    +-- ErrorCatalogue            # Centralised error definitions (Auth, General)
+    +-- Extensions                # Shared extension methods
 ```
+
+---
 
 ## Screenshots
 
