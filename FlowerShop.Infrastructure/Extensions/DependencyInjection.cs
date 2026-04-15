@@ -1,6 +1,7 @@
 using FlowerShop.Application.Common.Abstractions;
 using FlowerShop.Infrastructure.Identity;
 using FlowerShop.Infrastructure.Persistence.EntityFramework;
+using FlowerShop.Infrastructure.Storage;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -13,6 +14,7 @@ public static class DependencyInjection
         services.AddPersistence(configuration);
         services.AddIdentity();
         services.AddHandlers();
+        services.AddScoped<IFileService, LocalFileStorage>();
     }
 
     public static void AddHandlers(this IServiceCollection services)
