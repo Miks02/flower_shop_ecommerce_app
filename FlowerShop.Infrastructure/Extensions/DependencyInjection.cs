@@ -14,7 +14,7 @@ public static class DependencyInjection
         services.AddPersistence(configuration);
         services.AddIdentity();
         services.AddHandlers();
-        services.AddScoped<IFileService, LocalFileStorage>();
+        services.AddInfrastructureServices();
     }
 
     public static void AddHandlers(this IServiceCollection services)
@@ -26,5 +26,11 @@ public static class DependencyInjection
         foreach (var handler in handlers)
             services.AddScoped(handler);
         
+    }
+
+    public static void AddInfrastructureServices(this IServiceCollection services)
+    {
+        services.AddScoped<IFileService, LocalFileStorage>();
+        services.AddScoped<IUserProvider, UserProvider>();
     }
 }
