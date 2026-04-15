@@ -1,8 +1,10 @@
 using System.Security.Claims;
 using Azure;
+using FlowerShop.Application.Common.Abstractions;
 using FlowerShop.Application.Features.Auth.Commands.Login;
 using FlowerShop.Application.Features.Auth.Commands.Logout;
 using FlowerShop.Application.Features.Auth.Commands.RegisterUser;
+using FlowerShop.Application.Features.Users.Commands;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Identity;
 using FlowerShop.Web.Models;
@@ -17,6 +19,8 @@ namespace FlowerShop.Web.Controllers;
         private readonly RegisterUserHandler _registerUserHandler;
         private readonly LoginHandler _loginHandler;
         private readonly LogoutHandler _logoutHandler;
+        private readonly UpdateProfileHandler _updateProfileHandler;
+        private readonly IUserProvider _userProvider;
 
         private readonly string _loginComponent = "Components/Login/Default";
         private readonly string _registerComponent = "Components/Register/Default";
@@ -26,12 +30,16 @@ namespace FlowerShop.Web.Controllers;
             ILogger<BaseController> logger,
             LoginHandler loginHandler,
             RegisterUserHandler registerUserHandler,
-            LogoutHandler logoutHandler
+            LogoutHandler logoutHandler,
+            UpdateProfileHandler updateProfileHandler,
+            IUserProvider userProvider
             ) : base(logger)
         {
             _registerUserHandler = registerUserHandler;
             _loginHandler = loginHandler;
             _logoutHandler = logoutHandler;
+            _updateProfileHandler = updateProfileHandler;
+            _userProvider = userProvider;
         }
 
         [HttpGet]
@@ -118,41 +126,52 @@ namespace FlowerShop.Web.Controllers;
         }
         
 
-        // [Authorize]
-        // [HttpPost]
-        // public async Task<IActionResult> UpdateProfile(SettingsPageViewModel model)
-        // {
-        //     if (!ModelState.IsValid)
-        //         return PartialView(_profileSettingsComponent, model);
-        //
-        //     var result = await _userService.UpdateProfileAsync(model);
-        //     
-        //     if (!result.IsSuccess)
-        //     {
-        //         string errorMessage = string.Empty;
-        //         foreach (var error in result.Errors!)
-        //             errorMessage += " " + error.Description;
-        //         
-        //         SetErrorMessage(errorMessage);
-        //         return PartialView(_profileSettingsComponent, model);
-        //     }
-        //     
-        //     string message = (result.Payload!.ProfileUpdated, result.Payload.PasswordChanged) switch
-        //     {
-        //         (false, false) => "Nema izmenjenih podataka za čuvanje.",
-        //         (true,  false) => "Profil je uspešno ažuriran.",
-        //         (false, true ) => "Lozinka je uspešno ažurirana.",
-        //         (true,  true ) => "Profil i lozinka su uspešno ažurirani."
-        //     };
-        //     
-        //     if(result.Payload.ProfileUpdated || result.Payload.PasswordChanged)
-        //         await _signInManager.RefreshSignInAsync(result.Payload.User);
-        //     
-        //     SetSuccessMessage(message);
-        //     Response.Headers.Append("HX-Redirect", "/User/Profile/Settings");
-        //     return Ok();
-        // }
-        //
+        [Authorize]
+        [HttpPost]
+        public async Task<IActionResult> UpdateProfile(SettingsPageViewModel model)
+        {
+            if (!ModelState.IsValid)
+                return PartialView(_profileSettingsComponent, model);
+
+            var command = new UpdateProfileCommand
+            {
+                UserId = _userProvider.GetCurrentUserId(),
+                UserName = model.ProfileVm.UserName,
+                FirstName = model.ProfileVm.FirstName,
+                LastName = model.ProfileVm.LastName,
+                Email = model.ProfileVm.Email,
+                ProfilePicture = model.ProfileVm.ProfilePicture,
+                PhoneNumber = model.ProfileVm.PhoneNumber
+            };
+        
+            var result = await _updateProfileHandler.Handle(command);
+            
+            if (!result.IsSuccess)
+            {
+                string errorMessage = string.Empty;
+                foreach (var error in result.Errors!)
+                    errorMessage += " " + error.Description;
+                
+                SetErrorMessage(errorMessage);
+                return PartialView(_profileSettingsComponent, model);
+            }
+            
+            // string message = (result.Payload!.ProfileUpdated, result.Payload.PasswordChanged) switch
+            // {
+            //     (false, false) => "Nema izmenjenih podataka za čuvanje.",
+            //     (true,  false) => "Profil je uspešno ažuriran.",
+            //     (false, true ) => "Lozinka je uspešno ažurirana.",
+            //     (true,  true ) => "Profil i lozinka su uspešno ažurirani."
+            // };
+            
+            // if(result.Payload.ProfileUpdated || result.Payload.PasswordChanged)
+            //     await _signInManager.RefreshSignInAsync(result.Payload.User);
+            
+            SetSuccessMessage("Profil je uspesno ažuriran");
+            Response.Headers.Append("HX-Redirect", "/User/Profile/Settings");
+            return Ok();
+        }
+        
         // [Authorize]
         // [HttpGet]
         // public async Task<IActionResult> RemoveProfilePicture()

@@ -1,43 +1,29 @@
-using System.Runtime.InteropServices.JavaScript;
-using FlowerShop.Web.Models;
-using FlowerShop.Web.Services.Interfaces;
+using FlowerShop.Application.Common.Abstractions;
 using FlowerShop.Web.ViewModels.Components;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FlowerShop.Web.Components.Global;
 
 [Authorize]
-public class SettingsViewComponent : ViewComponent
+public class SettingsViewComponent(IUserProvider userProvider) : ViewComponent
 {
-
-    private readonly IUserService _userService;
-
-    public SettingsViewComponent(IUserService userService)
-    {
-        _userService = userService;
-    }
     
     public async Task<IViewComponentResult> InvokeAsync()
     {
-
-        var user = await _userService.GetCurrentUser();
-
-        if (user is null)
-            return View("Error");
-
-        var profileVm = new ProfileSettingsViewModel()
+        var user = await userProvider.GetCurrentUserDetails(userProvider.GetCurrentUserId());
+        
+        var profileVm = new ProfileSettingsViewModel
         {
             FirstName = user.FirstName,
             LastName = user.LastName,
-            UserName = user.UserName!,
-            Email = user.Email!,
-            PhoneNumber = user.PhoneNumber!,
+            UserName = user.Username,
+            Email = user.Email,
+            PhoneNumber = user.PhoneNumber,
             FullNameInitials = user.FirstName[0].ToString() + user.LastName[0],
-            ImagePath = user.ImagePath
+            ImagePath = user.ProfilePicture
         };
-
+        
         var vm = new SettingsPageViewModel()
         {
             ProfileVm = profileVm,
