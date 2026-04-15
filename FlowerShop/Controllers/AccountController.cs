@@ -5,6 +5,7 @@ using FlowerShop.Application.Features.Auth.Commands.Login;
 using FlowerShop.Application.Features.Auth.Commands.Logout;
 using FlowerShop.Application.Features.Auth.Commands.RegisterUser;
 using FlowerShop.Application.Features.Users.Commands;
+using FlowerShop.Application.Features.Users.Commands.RemoveProfilePicture;
 using FlowerShop.Application.Features.Users.Commands.UpdateProfile;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Identity;
@@ -21,7 +22,9 @@ namespace FlowerShop.Web.Controllers;
         private readonly LoginHandler _loginHandler;
         private readonly LogoutHandler _logoutHandler;
         private readonly UpdateProfileHandler _updateProfileHandler;
+        private readonly RemoveProfilePictureHandler _removeProfilePictureHandler;
         private readonly IUserProvider _userProvider;
+        
 
         private readonly string _loginComponent = "Components/Login/Default";
         private readonly string _registerComponent = "Components/Register/Default";
@@ -33,7 +36,8 @@ namespace FlowerShop.Web.Controllers;
             RegisterUserHandler registerUserHandler,
             LogoutHandler logoutHandler,
             UpdateProfileHandler updateProfileHandler,
-            IUserProvider userProvider
+            IUserProvider userProvider,
+            RemoveProfilePictureHandler removeProfilePictureHandler
             ) : base(logger)
         {
             _registerUserHandler = registerUserHandler;
@@ -41,6 +45,7 @@ namespace FlowerShop.Web.Controllers;
             _logoutHandler = logoutHandler;
             _updateProfileHandler = updateProfileHandler;
             _userProvider = userProvider;
+            _removeProfilePictureHandler = removeProfilePictureHandler;
         }
 
         [HttpGet]
@@ -157,46 +162,27 @@ namespace FlowerShop.Web.Controllers;
                 return PartialView(_profileSettingsComponent, model);
             }
             
-            // string message = (result.Payload!.ProfileUpdated, result.Payload.PasswordChanged) switch
-            // {
-            //     (false, false) => "Nema izmenjenih podataka za čuvanje.",
-            //     (true,  false) => "Profil je uspešno ažuriran.",
-            //     (false, true ) => "Lozinka je uspešno ažurirana.",
-            //     (true,  true ) => "Profil i lozinka su uspešno ažurirani."
-            // };
-            
-            // if(result.Payload.ProfileUpdated || result.Payload.PasswordChanged)
-            //     await _signInManager.RefreshSignInAsync(result.Payload.User);
-            
             SetSuccessMessage("Profil je uspesno ažuriran");
             Response.Headers.Append("HX-Redirect", "/User/Profile/Settings");
             return Ok();
         }
         
-        // [Authorize]
-        // [HttpGet]
-        // public async Task<IActionResult> RemoveProfilePicture()
-        // {
-        //     var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-        //
-        //     if (userId is null)
-        //     {
-        //         SetErrorMessage("Došlo je do neočekivane greške. Korisnik nije pronadjen");
-        //         return ViewComponent("Settings");
-        //     }
-        //
-        //     var result = await _userService.RemoveProfilePictureAsync(userId);
-        //
-        //     if (!result.IsSuccess)
-        //     {
-        //         SetErrorMessage("Došlo je do greške prilikom brisanja profilne slike");
-        //         return ViewComponent("Settings");
-        //     }
-        //     
-        //     SetSuccessMessage("Profilna slika je uspešno obrisana!");
-        //     return ViewComponent("Settings");
-        //
-        // }
+        [Authorize]
+        [HttpGet]
+        public async Task<IActionResult> RemoveProfilePicture()
+        {
+            var result = await _removeProfilePictureHandler.Handle(new RemoveProfilePictureCommand{ UserId = _userProvider.GetCurrentUserId() });
+        
+            if (!result.IsSuccess)
+            {
+                SetErrorMessage("Došlo je do greške prilikom brisanja profilne slike");
+                return ViewComponent("Settings");
+            }
+            
+            SetSuccessMessage("Profilna slika je uspešno obrisana!");
+            return ViewComponent("Settings");
+        
+        }
 
         [HttpPost]
         public async Task<IActionResult> Logout()
