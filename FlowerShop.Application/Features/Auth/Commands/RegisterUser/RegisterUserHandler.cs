@@ -1,3 +1,4 @@
+using FlowerShop.Application.Common.Abstractions;
 using FlowerShop.Domain.Entities.IdentityUser;
 using FlowerShop.SharedKernel.ErrorCatalogue;
 using FlowerShop.SharedKernel.Results;
@@ -5,7 +6,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace FlowerShop.Application.Features.Auth.Commands.RegisterUser;
 
-public class RegisterUserHandler(UserManager<User> userManager, RoleManager<IdentityRole> roleManager)
+public class RegisterUserHandler(UserManager<User> userManager, RoleManager<IdentityRole> roleManager) : IHandler
 {
     public async Task<Result> Handle(RegisterUserCommand command)
     {
