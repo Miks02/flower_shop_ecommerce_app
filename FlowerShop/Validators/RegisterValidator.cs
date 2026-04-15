@@ -8,13 +8,9 @@ namespace FlowerShop.Web.Validators;
 
 public class RegisterValidator : AbstractValidator<RegisterViewModel>
 {
-
-    private readonly UserManager<ApplicationUser> _userManager;
     
-    public RegisterValidator(UserManager<ApplicationUser> userManager)
+    public RegisterValidator()
     {
-
-        _userManager = userManager;
         
         RuleFor(p => p.FirstName)
             .NotEmpty().WithMessage("Ime je obavezno.")

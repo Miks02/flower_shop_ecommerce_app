@@ -1,4 +1,8 @@
 using System.Reflection;
+using FlowerShop.Application.Common.Abstractions;
+using FlowerShop.Infrastructure.Extensions;
+using FlowerShop.Infrastructure.Identity;
+using FlowerShop.Infrastructure.Persistence.EntityFramework;
 using FlowerShop.Web.Models;
 using FlowerShop.Web.Data;
 using FlowerShop.Web.Helpers;
@@ -11,6 +15,7 @@ using Microsoft.EntityFrameworkCore;
 using FluentValidation.AspNetCore;
 using Serilog;
 using Serilog.Debugging;
+using IUserService = FlowerShop.Web.Services.Interfaces.IUserService;
 
 SelfLog.Enable(Console.Error);
 
@@ -18,17 +23,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Host.UseSerilog((context, config) => config.ReadFrom.Configuration(context.Configuration));
 
-builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
-builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
-{
-    options.Password.RequireDigit = false;
-    options.Password.RequireNonAlphanumeric = false;
-    options.Password.RequireUppercase = false;
-    options.Password.RequireLowercase = false;
-    options.Password.RequiredLength = 6;
-    options.Password.RequiredUniqueChars = 0;
-    options.User.RequireUniqueEmail = true;
-}).AddEntityFrameworkStores<ApplicationDbContext>();
+builder.Services.AddInfrastructure(builder.Configuration);
 
 builder.Services.AddHttpContextAccessor();
 
@@ -36,7 +31,6 @@ builder.Services
     .AddScoped<IProductService, MockProductService>()
     .AddScoped<ICategoryService, MockCategoryService>()
     .AddScoped<IOccasionService, MockOccasionService>()
-    .AddScoped<IUserService, UserService>()
     .AddScoped<IFileService, FileService>();
 
 builder.Services.AddControllersWithViews()
