@@ -1,21 +1,12 @@
 using System.Reflection;
-using FlowerShop.Application.Common.Abstractions;
 using FlowerShop.Infrastructure.Extensions;
-using FlowerShop.Infrastructure.Identity;
-using FlowerShop.Infrastructure.Persistence.EntityFramework;
-using FlowerShop.Web.Models;
-using FlowerShop.Web.Data;
 using FlowerShop.Web.Helpers;
-using FlowerShop.Web.Services.Implementations;
 using FlowerShop.Web.Services.Interfaces;
 using FlowerShop.Web.Services.Mock;
 using FluentValidation;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using FluentValidation.AspNetCore;
 using Serilog;
 using Serilog.Debugging;
-using IUserService = FlowerShop.Web.Services.Interfaces.IUserService;
 
 SelfLog.Enable(Console.Error);
 
@@ -30,8 +21,7 @@ builder.Services.AddHttpContextAccessor();
 builder.Services
     .AddScoped<IProductService, MockProductService>()
     .AddScoped<ICategoryService, MockCategoryService>()
-    .AddScoped<IOccasionService, MockOccasionService>()
-    .AddScoped<IFileService, FileService>();
+    .AddScoped<IOccasionService, MockOccasionService>();
 
 builder.Services.AddControllersWithViews()
     .AddMvcOptions(options =>

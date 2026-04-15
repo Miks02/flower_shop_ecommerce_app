@@ -8,6 +8,6 @@ public class ProfileUpdateDto
     
     public bool PasswordChanged { get; set; }
 
-    public ApplicationUser User { get; set; } = null!;
+    //public ApplicationUser User { get; set; } = null!;
 
 }
