@@ -1,12 +1,7 @@
-using System.Security.Claims;
 using FlowerShop.Application.Common.Abstractions;
 using FlowerShop.Application.Common.Abstractions.Dto;
-using FlowerShop.Domain.Entities.IdentityUser;
-using FlowerShop.Web.Models;
-using FlowerShop.Web.Services.Interfaces;
 using FlowerShop.Web.ViewModels.Components;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FlowerShop.Web.Components.Global;

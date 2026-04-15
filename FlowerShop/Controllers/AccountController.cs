@@ -4,13 +4,10 @@ using FlowerShop.Application.Common.Abstractions;
 using FlowerShop.Application.Features.Auth.Commands.Login;
 using FlowerShop.Application.Features.Auth.Commands.Logout;
 using FlowerShop.Application.Features.Auth.Commands.RegisterUser;
-using FlowerShop.Application.Features.Users.Commands;
 using FlowerShop.Application.Features.Users.Commands.RemoveProfilePicture;
+using FlowerShop.Application.Features.Users.Commands.UpdatePassword;
 using FlowerShop.Application.Features.Users.Commands.UpdateProfile;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Identity;
-using FlowerShop.Web.Models;
-using FlowerShop.Web.Services.Interfaces;
 using FlowerShop.Web.ViewModels.Components;
 using Microsoft.AspNetCore.Authorization;
 
@@ -22,6 +19,7 @@ namespace FlowerShop.Web.Controllers;
         private readonly LoginHandler _loginHandler;
         private readonly LogoutHandler _logoutHandler;
         private readonly UpdateProfileHandler _updateProfileHandler;
+        private readonly UpdatePasswordHandler _updatePasswordHandler;
         private readonly RemoveProfilePictureHandler _removeProfilePictureHandler;
         private readonly IUserProvider _userProvider;
         
@@ -36,6 +34,7 @@ namespace FlowerShop.Web.Controllers;
             RegisterUserHandler registerUserHandler,
             LogoutHandler logoutHandler,
             UpdateProfileHandler updateProfileHandler,
+            UpdatePasswordHandler updatePasswordHandler,
             IUserProvider userProvider,
             RemoveProfilePictureHandler removeProfilePictureHandler
             ) : base(logger)
@@ -44,6 +43,7 @@ namespace FlowerShop.Web.Controllers;
             _loginHandler = loginHandler;
             _logoutHandler = logoutHandler;
             _updateProfileHandler = updateProfileHandler;
+            _updatePasswordHandler = updatePasswordHandler;
             _userProvider = userProvider;
             _removeProfilePictureHandler = removeProfilePictureHandler;
         }
@@ -160,6 +160,29 @@ namespace FlowerShop.Web.Controllers;
                 
                 SetErrorMessage(errorMessage);
                 return PartialView(_profileSettingsComponent, model);
+            }
+
+            if (!string.IsNullOrEmpty(model.ChangePasswordVm.CurrentPassword))
+            {
+                var passwordCommand = new UpdatePasswordCommand
+                {
+                    UserId = _userProvider.GetCurrentUserId(),
+                    CurrentPassword = model.ChangePasswordVm.CurrentPassword,
+                    NewPassword = model.ChangePasswordVm.NewPassword,
+                    ConfirmPassword = model.ChangePasswordVm.ConfirmPassword
+                };
+
+                var passwordResult = await _updatePasswordHandler.Handle(passwordCommand);
+
+                if (!passwordResult.IsSuccess)
+                {
+                    string errorMessage = string.Empty;
+                    foreach (var error in passwordResult.Errors!)
+                        errorMessage += " " + error.Description;
+                    
+                    SetErrorMessage(errorMessage);
+                    return PartialView(_profileSettingsComponent, model);
+                }
             }
             
             SetSuccessMessage("Profil je uspesno ažuriran");
