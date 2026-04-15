@@ -2,10 +2,8 @@ using FlowerShop.Application.Common.Abstractions;
 using FlowerShop.Infrastructure.InfrastructureErrors;
 using FlowerShop.SharedKernel.ErrorCatalogue;
 using FlowerShop.SharedKernel.Results;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
 namespace FlowerShop.Infrastructure.Storage;
