@@ -1,3 +1,6 @@
+using FlowerShop.Domain.Entities.Categories;
+using FlowerShop.Domain.Entities.Flowers;
+using FlowerShop.Infrastructure.Persistence.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -10,5 +13,8 @@ public static class DbContextRegistration
     {
         services.AddDbContext<AppDbContext>(options =>
             options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
+
+        services.AddScoped<IFlowerRepository, FlowerRepository>();
+        services.AddScoped<ICategoryRepository, CategoryRepository>();
     }
 }

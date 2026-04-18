@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using FlowerShop.Domain.Entities.Categories;
+using FlowerShop.Domain.Entities.IdentityUser;
 using FlowerShop.Domain.Entities.Ocassions;
 using FlowerShop.Domain.Entities.ProductFlowers;
 
@@ -28,6 +29,11 @@ public class Product
     public int Stock { get; set; }
 
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+
+    public string CreatedBy { get; set; } = null!;
+    public User User { get; set; } = null!;
+
+    public bool IsDeleted { get; set; }
     
     public int CategoryId { get; set; }
     public Category Category { get; set; } = null!;
