@@ -9,7 +9,7 @@ public class ProductFlower
     public Product Product { get; set; } = null!;
     
     public int FlowerId { get; set; }
-    public FlowerType FlowerType { get; set; } = null!;
+    public Flower Flower { get; set; } = null!;
     
     public int Quantity { get; set; } = 1;
 }

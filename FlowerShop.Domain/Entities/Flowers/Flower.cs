@@ -3,7 +3,7 @@ using FlowerShop.Domain.Enums;
 
 namespace FlowerShop.Domain.Entities.FlowerTypes;
 
-public class FlowerType
+public class Flower
 {
     public int Id { get; set; }
     

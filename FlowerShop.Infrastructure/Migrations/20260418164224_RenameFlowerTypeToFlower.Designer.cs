@@ -4,6 +4,7 @@ using FlowerShop.Infrastructure.Persistence.EntityFramework;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FlowerShop.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260418164224_RenameFlowerTypeToFlower")]
+    partial class RenameFlowerTypeToFlower
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -41,7 +44,7 @@ namespace FlowerShop.Infrastructure.Migrations
                         .IsUnique()
                         .HasDatabaseName("UX_Categorys_Name");
 
-                    b.ToTable("Categories");
+                    b.ToTable("Category");
 
                     b.HasData(
                         new
@@ -120,7 +123,7 @@ namespace FlowerShop.Infrastructure.Migrations
                         .IsUnique()
                         .HasDatabaseName("UX_Flowers_Name_Color");
 
-                    b.ToTable("Flowers", t =>
+                    b.ToTable("Flower", t =>
                         {
                             t.HasCheckConstraint("CK_Flowers_Stock_Positive", "Stock >= 0");
                         });
@@ -227,7 +230,7 @@ namespace FlowerShop.Infrastructure.Migrations
                         .IsUnique()
                         .HasDatabaseName("UX_Occasions_Name");
 
-                    b.ToTable("Occasions");
+                    b.ToTable("Occasion");
 
                     b.HasData(
                         new
@@ -269,7 +272,7 @@ namespace FlowerShop.Infrastructure.Migrations
 
                     b.HasIndex("FlowerId");
 
-                    b.ToTable("ProductFlowers", t =>
+                    b.ToTable("ProductFlower", t =>
                         {
                             t.HasCheckConstraint("CK_ProductFlowers_Quantity_Positive", "Quantity >= 0");
                         });
@@ -328,7 +331,7 @@ namespace FlowerShop.Infrastructure.Migrations
 
                     b.HasIndex("CategoryId", "Price");
 
-                    b.ToTable("Products", t =>
+                    b.ToTable("Product", t =>
                         {
                             t.HasCheckConstraint("CK_Products_Price_Positive", "Price > 0");
 
