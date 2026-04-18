@@ -22,4 +22,12 @@ public class OccasionRepository : Repository<Occasion>, IOccasionRepository
         
         return occasionIds.Except(validIs).ToList();
     }
+    
+    public async Task<IReadOnlyList<Occasion>> GetOccasionsByIdsAsync(IReadOnlyList<int> occasionIds, CancellationToken ct = default)
+    {
+        return await _context.Occasions
+            .Where(o => occasionIds.Contains(o.Id))
+            .ToListAsync(ct);
+        
+    }
 }
