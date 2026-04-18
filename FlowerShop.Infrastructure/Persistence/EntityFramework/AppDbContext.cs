@@ -1,5 +1,5 @@
 using FlowerShop.Domain.Entities.Categories;
-using FlowerShop.Domain.Entities.FlowerTypes;
+using FlowerShop.Domain.Entities.Flowers;
 using FlowerShop.Domain.Entities.IdentityUser;
 using FlowerShop.Domain.Entities.Ocassions;
 using FlowerShop.Domain.Entities.ProductFlowers;

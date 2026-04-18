@@ -1,4 +1,4 @@
-using FlowerShop.Domain.Entities.FlowerTypes;
+using FlowerShop.Domain.Entities.Flowers;
 using FlowerShop.Domain.Entities.Products;
 
 namespace FlowerShop.Domain.Entities.ProductFlowers;

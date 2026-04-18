@@ -1,7 +1,7 @@
 using FlowerShop.Domain.Entities.ProductFlowers;
 using FlowerShop.Domain.Enums;
 
-namespace FlowerShop.Domain.Entities.FlowerTypes;
+namespace FlowerShop.Domain.Entities.Flowers;
 
 public class Flower
 {
