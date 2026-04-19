@@ -6,5 +6,4 @@ public interface IFlowerRepository
     void Add(Flower flower);
     void Update(Flower flower);
     void Remove(Flower flower);
-    Task SaveChangesAsync(CancellationToken ct = default);
 }
