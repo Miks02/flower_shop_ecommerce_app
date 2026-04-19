@@ -32,9 +32,9 @@ public class AddProductValidator : AbstractValidator<AddProductCommand>
             .GreaterThan(0)
             .WithMessage("Kategorija je obavezna.");
 
-        RuleFor(x => x.OccasionId)
-            .GreaterThan(0)
-            .WithMessage("Povod je obavezan.");
+        RuleFor(x => x.Occasions)
+            .NotEmpty()
+            .WithMessage("Proizvod mora biti povezan sa bar jednom prilikom.");
 
         RuleFor(p => p.ProductImage)
             .Must(file => file.Length <= 5 * 1024 * 1024)

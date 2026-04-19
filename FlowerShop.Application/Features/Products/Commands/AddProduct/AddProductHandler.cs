@@ -43,6 +43,7 @@ public class AddProductHandler (
         
         var newProduct = new Product
         {
+            CreatedBy = command.UserId,
             Name = command.Name,
             Description = command.Description,
             Price = command.Price,
