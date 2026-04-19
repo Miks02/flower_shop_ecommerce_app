@@ -4,6 +4,7 @@ using FlowerShop.Infrastructure.Persistence.EntityFramework;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FlowerShop.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260418164720_AddDbSets")]
+    partial class AddDbSets
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -86,7 +89,7 @@ namespace FlowerShop.Infrastructure.Migrations
                         });
                 });
 
-            modelBuilder.Entity("FlowerShop.Domain.Entities.Flowers.Flower", b =>
+            modelBuilder.Entity("FlowerShop.Domain.Entities.FlowerTypes.Flower", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -120,158 +123,9 @@ namespace FlowerShop.Infrastructure.Migrations
                         .IsUnique()
                         .HasDatabaseName("UX_Flowers_Name_Color");
 
-                    b.HasIndex("Name", "FlowerCategory", "Color")
-                        .IsUnique();
-
                     b.ToTable("Flowers", t =>
                         {
                             t.HasCheckConstraint("CK_Flowers_Stock_Positive", "Stock >= 0");
-                        });
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Color = "Red",
-                            FlowerCategory = 0,
-                            Name = "Ruža",
-                            Stock = 100
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Color = "Yellow",
-                            FlowerCategory = 1,
-                            Name = "Lala",
-                            Stock = 150
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Color = "White",
-                            FlowerCategory = 2,
-                            Name = "Ljiljan",
-                            Stock = 80
-                        },
-                        new
-                        {
-                            Id = 4,
-                            Color = "Pink",
-                            FlowerCategory = 0,
-                            Name = "Bela rada",
-                            Stock = 120
-                        },
-                        new
-                        {
-                            Id = 5,
-                            Color = "Red",
-                            FlowerCategory = 0,
-                            Name = "Karanfil",
-                            Stock = 200
-                        },
-                        new
-                        {
-                            Id = 6,
-                            Color = "Orange",
-                            FlowerCategory = 0,
-                            Name = "Gerber",
-                            Stock = 90
-                        },
-                        new
-                        {
-                            Id = 7,
-                            Color = "Purple",
-                            FlowerCategory = 0,
-                            Name = "Orhideja",
-                            Stock = 50
-                        },
-                        new
-                        {
-                            Id = 8,
-                            Color = "Blue",
-                            FlowerCategory = 0,
-                            Name = "Iris",
-                            Stock = 70
-                        },
-                        new
-                        {
-                            Id = 9,
-                            Color = "Yellow",
-                            FlowerCategory = 0,
-                            Name = "Narcis",
-                            Stock = 110
-                        },
-                        new
-                        {
-                            Id = 10,
-                            Color = "Yellow",
-                            FlowerCategory = 0,
-                            Name = "Suncokret",
-                            Stock = 60
-                        },
-                        new
-                        {
-                            Id = 11,
-                            Color = "Purple",
-                            FlowerCategory = 0,
-                            Name = "Jorgovan",
-                            Stock = 40
-                        },
-                        new
-                        {
-                            Id = 12,
-                            Color = "White",
-                            FlowerCategory = 0,
-                            Name = "Magnolija",
-                            Stock = 30
-                        },
-                        new
-                        {
-                            Id = 13,
-                            Color = "Yellow",
-                            FlowerCategory = 0,
-                            Name = "Hrizantema",
-                            Stock = 100
-                        },
-                        new
-                        {
-                            Id = 14,
-                            Color = "Pink",
-                            FlowerCategory = 0,
-                            Name = "Božur",
-                            Stock = 45
-                        },
-                        new
-                        {
-                            Id = 15,
-                            Color = "White",
-                            FlowerCategory = 0,
-                            Name = "Jasmin",
-                            Stock = 85
-                        },
-                        new
-                        {
-                            Id = 16,
-                            Color = "Purple",
-                            FlowerCategory = 1,
-                            Name = "Lavanda",
-                            Stock = 300
-                        },
-                        new
-                        {
-                            Id = 17,
-                            Color = "Yellow",
-                            FlowerCategory = 0,
-                            Name = "Mimoza",
-                            Stock = 55
-                        },
-                        new
-                        {
-                            Id = 18,
-                            Color = "White",
-                            FlowerCategory = 1,
-                            Name = "Ruža",
-                            Stock = 40
                         });
                 });
 
@@ -440,10 +294,6 @@ namespace FlowerShop.Infrastructure.Migrations
                         .HasColumnType("datetime2")
                         .HasDefaultValueSql("GETUTCDATE()");
 
-                    b.Property<string>("CreatedBy")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<string>("Description")
                         .HasMaxLength(750)
                         .HasColumnType("nvarchar(750)");
@@ -452,9 +302,6 @@ namespace FlowerShop.Infrastructure.Migrations
                         .IsRequired()
                         .HasMaxLength(750)
                         .HasColumnType("nvarchar(750)");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -475,8 +322,6 @@ namespace FlowerShop.Infrastructure.Migrations
                         .HasDefaultValue(0);
 
                     b.HasKey("Id");
-
-                    b.HasIndex("CreatedBy");
 
                     b.HasIndex("Name")
                         .IsUnique()
@@ -644,7 +489,7 @@ namespace FlowerShop.Infrastructure.Migrations
 
             modelBuilder.Entity("FlowerShop.Domain.Entities.ProductFlowers.ProductFlower", b =>
                 {
-                    b.HasOne("FlowerShop.Domain.Entities.Flowers.Flower", "Flower")
+                    b.HasOne("FlowerShop.Domain.Entities.FlowerTypes.Flower", "Flower")
                         .WithMany("ProductFlowers")
                         .HasForeignKey("FlowerId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -669,15 +514,7 @@ namespace FlowerShop.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("FlowerShop.Domain.Entities.IdentityUser.User", "User")
-                        .WithMany("Products")
-                        .HasForeignKey("CreatedBy")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
                     b.Navigation("Category");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -751,14 +588,9 @@ namespace FlowerShop.Infrastructure.Migrations
                     b.Navigation("Products");
                 });
 
-            modelBuilder.Entity("FlowerShop.Domain.Entities.Flowers.Flower", b =>
+            modelBuilder.Entity("FlowerShop.Domain.Entities.FlowerTypes.Flower", b =>
                 {
                     b.Navigation("ProductFlowers");
-                });
-
-            modelBuilder.Entity("FlowerShop.Domain.Entities.IdentityUser.User", b =>
-                {
-                    b.Navigation("Products");
                 });
 
             modelBuilder.Entity("FlowerShop.Domain.Entities.Products.Product", b =>

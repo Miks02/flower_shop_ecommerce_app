@@ -4,6 +4,7 @@ using FlowerShop.Infrastructure.Persistence.EntityFramework;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FlowerShop.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260418165904_AddSeedDataForFlowersAndUniqueCompositeIndeksOnNameAndType")]
+    partial class AddSeedDataForFlowersAndUniqueCompositeIndeksOnNameAndType
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -86,7 +89,7 @@ namespace FlowerShop.Infrastructure.Migrations
                         });
                 });
 
-            modelBuilder.Entity("FlowerShop.Domain.Entities.Flowers.Flower", b =>
+            modelBuilder.Entity("FlowerShop.Domain.Entities.FlowerTypes.Flower", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -120,7 +123,7 @@ namespace FlowerShop.Infrastructure.Migrations
                         .IsUnique()
                         .HasDatabaseName("UX_Flowers_Name_Color");
 
-                    b.HasIndex("Name", "FlowerCategory", "Color")
+                    b.HasIndex("Name", "FlowerCategory")
                         .IsUnique();
 
                     b.ToTable("Flowers", t =>
@@ -440,10 +443,6 @@ namespace FlowerShop.Infrastructure.Migrations
                         .HasColumnType("datetime2")
                         .HasDefaultValueSql("GETUTCDATE()");
 
-                    b.Property<string>("CreatedBy")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<string>("Description")
                         .HasMaxLength(750)
                         .HasColumnType("nvarchar(750)");
@@ -452,9 +451,6 @@ namespace FlowerShop.Infrastructure.Migrations
                         .IsRequired()
                         .HasMaxLength(750)
                         .HasColumnType("nvarchar(750)");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -475,8 +471,6 @@ namespace FlowerShop.Infrastructure.Migrations
                         .HasDefaultValue(0);
 
                     b.HasKey("Id");
-
-                    b.HasIndex("CreatedBy");
 
                     b.HasIndex("Name")
                         .IsUnique()
@@ -644,7 +638,7 @@ namespace FlowerShop.Infrastructure.Migrations
 
             modelBuilder.Entity("FlowerShop.Domain.Entities.ProductFlowers.ProductFlower", b =>
                 {
-                    b.HasOne("FlowerShop.Domain.Entities.Flowers.Flower", "Flower")
+                    b.HasOne("FlowerShop.Domain.Entities.FlowerTypes.Flower", "Flower")
                         .WithMany("ProductFlowers")
                         .HasForeignKey("FlowerId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -669,15 +663,7 @@ namespace FlowerShop.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("FlowerShop.Domain.Entities.IdentityUser.User", "User")
-                        .WithMany("Products")
-                        .HasForeignKey("CreatedBy")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
                     b.Navigation("Category");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -751,14 +737,9 @@ namespace FlowerShop.Infrastructure.Migrations
                     b.Navigation("Products");
                 });
 
-            modelBuilder.Entity("FlowerShop.Domain.Entities.Flowers.Flower", b =>
+            modelBuilder.Entity("FlowerShop.Domain.Entities.FlowerTypes.Flower", b =>
                 {
                     b.Navigation("ProductFlowers");
-                });
-
-            modelBuilder.Entity("FlowerShop.Domain.Entities.IdentityUser.User", b =>
-                {
-                    b.Navigation("Products");
                 });
 
             modelBuilder.Entity("FlowerShop.Domain.Entities.Products.Product", b =>

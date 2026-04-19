@@ -16,7 +16,7 @@ public class ProductFlowerConfiguration : IEntityTypeConfiguration<ProductFlower
             .WithMany(p => p.ProductFlowers)
             .OnDelete(DeleteBehavior.Cascade);
         
-        builder.HasOne(pf => pf.FlowerType)
+        builder.HasOne(pf => pf.Flower)
             .WithMany(f => f.ProductFlowers)
             .OnDelete(DeleteBehavior.Cascade);
         

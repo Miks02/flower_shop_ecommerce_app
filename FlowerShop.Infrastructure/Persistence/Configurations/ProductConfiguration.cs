@@ -16,6 +16,11 @@ public class ProductConfiguration : IEntityTypeConfiguration<Product>
             .HasForeignKey(p => p.CategoryId)
             .OnDelete(DeleteBehavior.Restrict);
         
+        builder.HasOne(p => p.User)
+            .WithMany(u => u.Products)
+            .HasForeignKey(p => p.CreatedBy)
+            .OnDelete(DeleteBehavior.Restrict);
+        
         builder.HasIndex(p => p.Name)
             .IsUnique()
             .HasDatabaseName($"UX_{nameof(Product)}s_{nameof(Product.Name)}_{nameof(Product.CategoryId)}");
