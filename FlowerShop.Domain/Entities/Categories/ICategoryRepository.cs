@@ -6,5 +6,4 @@ public interface ICategoryRepository
     void Add(Category category);
     void Update(Category category);
     void Remove(Category category);
-    Task SaveChangesAsync(CancellationToken ct = default);
 }

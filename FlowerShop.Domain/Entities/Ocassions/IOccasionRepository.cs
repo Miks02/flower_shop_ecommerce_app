@@ -7,5 +7,4 @@ public interface IOccasionRepository
     void Add(Occasion occasion);
     void Update(Occasion occasion);
     void Remove(Occasion occasion);
-    Task SaveChangesAsync(CancellationToken ct = default);
 }

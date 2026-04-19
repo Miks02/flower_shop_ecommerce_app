@@ -20,10 +20,5 @@ public abstract class Repository<TEntity>(AppDbContext context)
     {
         context.Set<TEntity>().Remove(entity);
     }
-
-    public async Task SaveChangesAsync(CancellationToken ct = default)
-    {
-        await context.SaveChangesAsync(ct);
-    }
     
 }
