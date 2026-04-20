@@ -9,7 +9,7 @@ public class GetProductsHandler(IProductRepository productRepo) : IHandler
     public async Task<PagedResult<ProductDto>> Handle(GetProductsQuery request, CancellationToken ct = default)
     {
         return await productRepo.GetPagedProductsAsync(
-            request.Name,
+            request.SearchBy,
             request.SortBy,
             request.CategoryId,
             request.IsDeleted,

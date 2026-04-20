@@ -13,6 +13,17 @@ public class OccasionRepository : Repository<Occasion>, IOccasionRepository
         _context = context;   
     }
     
+    public async Task<IReadOnlyList<OccasionDto>> GetAllAsync(CancellationToken ct = default)
+    {
+        return await _context.Occasions
+            .Select(o => new OccasionDto
+            {
+                Id = o.Id,
+                Name = o.Name
+            })
+            .ToListAsync(ct);
+    }
+    
     public async Task<IReadOnlyList<int>> GetInvalidOccasionIdsAsync(IReadOnlyList<int> occasionIds, CancellationToken ct = default)
     {
         var validIs = await _context.Occasions

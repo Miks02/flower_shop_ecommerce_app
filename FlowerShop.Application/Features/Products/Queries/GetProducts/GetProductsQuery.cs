@@ -2,7 +2,7 @@ namespace FlowerShop.Application.Features.Products.Queries.GetProducts;
 
 public record GetProductsQuery
 {
-    public string? Name { get; set; }
+    public string? SearchBy { get; set; }
     public string? SortBy { get; set; }
     public int? CategoryId { get; set; }
     public bool IsDeleted { get; set; }
