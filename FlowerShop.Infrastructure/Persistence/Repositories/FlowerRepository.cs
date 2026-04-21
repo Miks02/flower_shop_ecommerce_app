@@ -12,6 +12,19 @@ public class FlowerRepository : Repository<Flower>, IFlowerRepository
     {
         _context = context;
     }
+
+    public async Task<IReadOnlyList<FlowerDto>> GetAllAsync(CancellationToken ct = default)
+    {
+        return await _context.Flowers
+            .Select(f => new FlowerDto
+            {
+                Id = f.Id,
+                Name = f.Name,
+                Stock = f.Stock,
+                Color = f.Color
+            })
+            .ToListAsync(ct);
+    }
     
     public async Task<IReadOnlyList<int>> GetInvalidFlowerIdsAsync(IReadOnlyList<int> flowerIds, CancellationToken ct = default)
     {
