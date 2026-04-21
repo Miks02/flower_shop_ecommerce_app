@@ -22,7 +22,7 @@ public class AddProductHandler (
         if(!await categoryRepo.ExistsAsync(command.CategoryId, ct))
             return Result.Failure(CategoryError.CategoryNotFound(command.CategoryId.ToString()));
         
-        var flowerIds = command.Flowers.Select(f => f.id).ToList();
+        var flowerIds = command.Flowers.Select(f => f.Id).ToList();
         
         var invalidFlowerIds = await flowerRepo.GetInvalidFlowerIdsAsync(flowerIds, ct);
         
@@ -51,8 +51,8 @@ public class AddProductHandler (
             CategoryId = command.CategoryId,
             ProductFlowers = command.Flowers.Select(f => new ProductFlower
             {
-                FlowerId = f.id,
-                Quantity = f.quantity
+                FlowerId = f.Id,
+                Quantity = f.Quantity
             }).ToList(),
             Occasions = occasions.ToList()
         };
