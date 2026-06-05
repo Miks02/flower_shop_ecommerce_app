@@ -79,5 +79,17 @@ public class ProductRepository : Repository<Product>, IProductRepository
 
         return new PagedResult<ProductDto>(productList, page, pageSize, totalCount, productList.Count);
 
-    } 
+    }
+
+    public async Task<Product?> GetByIdAsync(int id, CancellationToken ct = default)
+    {
+        return await _context.Products
+            .AsSplitQuery()
+            .Include(p => p.User)
+            .Include(p => p.Category)
+            .Include(p => p.Occasions)
+            .Include(p => p.ProductFlowers)
+                .ThenInclude(pf => pf.Flower)
+            .FirstOrDefaultAsync(p => p.Id == id, ct);
+    }
 }
