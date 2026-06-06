@@ -13,6 +13,7 @@ public class AddProductHandler (
     IFlowerRepository flowerRepo,
     ICategoryRepository categoryRepo, 
     IOccasionRepository occasionRepo,
+    IFileService fileService,
     IUnitOfWork unitOfWork) : IHandler
 {
     
@@ -40,6 +41,11 @@ public class AddProductHandler (
         if (invalidOccasionIds.Any())
             return Result.Failure(OccasionError.OccasionsNotFound(invalidOccasionIds));
         
+        var imagePath = await fileService.UploadFile(command.ProductImage, "", "product-images");
+
+        if (!imagePath.IsSuccess)
+            return Result.Failure(imagePath.Errors.ToArray());
+        
         
         var newProduct = new Product
         {
@@ -54,6 +60,7 @@ public class AddProductHandler (
                 FlowerId = f.Id,
                 Quantity = f.Quantity
             }).ToList(),
+            ImageUrl = imagePath.Payload!,
             Occasions = occasions.ToList()
         };
         
