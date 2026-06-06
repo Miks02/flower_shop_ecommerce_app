@@ -156,6 +156,7 @@ public class ProductsController(
         {
             Id = product.Id,
             Name = product.Name,
+            ProductImageUrl = product.ImageUrl,
             Description = product.Description ?? string.Empty,
             Price = product.Price,
             Stock = product.Stock,
@@ -196,7 +197,6 @@ public class ProductsController(
         {
             if (request.ProductImage.Length > 0)
                 ModelState.AddModelError("ProductImage", "Molimo vas ponovo unesite sliku proizvoda");
-            
 
             var productRefData = await getRefDataHandler.Handle(ct);
             var flowers = await getFlowersHandler.Handle(ct);

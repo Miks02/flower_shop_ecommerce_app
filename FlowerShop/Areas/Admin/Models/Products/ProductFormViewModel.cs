@@ -11,6 +11,7 @@ public record ProductFormViewModel
     public string Name { get; init; } = string.Empty;
     public string Description { get; init; } = string.Empty;
     public IFormFile ProductImage { get; set; } = null!;
+    public string? ProductImageUrl { get; set; }
     public decimal Price { get; init; }
     public int Stock { get; init; }
     public int CategoryId { get; init; }
