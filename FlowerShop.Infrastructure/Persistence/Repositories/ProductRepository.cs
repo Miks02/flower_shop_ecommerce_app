@@ -71,6 +71,7 @@ public class ProductRepository : Repository<Product>, IProductRepository
                     FlowerName = pf.Flower.Name,
                     Quantity = pf.Quantity
                 }).ToList(),
+                ProductImage = p.ImageUrl,
                 IsDeleted = p.IsDeleted
             })
             .ToListAsync(ct);
