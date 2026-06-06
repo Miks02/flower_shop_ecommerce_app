@@ -1,0 +1,10 @@
+@using FlowerShop.Web.Areas.Admin.Views.Products
+@model ProductFormViewModel
+@{
+    ViewBag.Title = "Izmeni proizvod";
+    Layout = "_AdminLayout";
+}
+
+<div id="user-content" class="p-4">
+    @await Html.PartialAsync("_ProductsForm", Model)
+</div>

@@ -10,7 +10,7 @@ public record ProductFormViewModel
     public int Id { get; init; }
     public string Name { get; init; } = string.Empty;
     public string Description { get; init; } = string.Empty;
-    public IFormFile? ProductImage { get; set; } 
+    public IFormFile ProductImage { get; set; } = null!;
     public decimal Price { get; init; }
     public int Stock { get; init; }
     public int CategoryId { get; init; }

@@ -10,7 +10,7 @@
     var categoryCount = categories.Count;
 }
 
-<div class="flex flex-col gap-8 p-4">
+<div class="flex flex-col gap-8">
 
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
 
@@ -60,7 +60,11 @@
                     <i class="fa-solid fa-layer-group"></i>
                     Kategorije
                 </a>
-                <a href="#" class="flex items-center justify-center gap-2 text-xs bg-orange-500 hover:bg-orange-600 text-white font-semibold px-4 py-2 rounded-lg transition-colors shadow-md">
+                <a  hx-get="@Url.Action("Create", "Products", new { area = "Admin" })"
+                    hx-target="#user-content"
+                    hx-swap="innerHTML"
+                    hx-push-url="true"
+                    class="flex items-center cursor-pointer justify-center gap-2 text-xs bg-orange-500 hover:bg-orange-600 text-white font-semibold px-4 py-2 rounded-lg transition-colors shadow-md">
                     <i class="fa-solid fa-plus"></i>
                     Dodaj proizvod
                 </a>
