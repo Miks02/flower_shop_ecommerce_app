@@ -5,13 +5,13 @@ using FlowerShop.Application.Features.Products.Queries.GetProducts;
 using FlowerShop.Application.Features.Products.Queries.GetProductsSummary;
 using FlowerShop.Domain.Entities.Products;
 using FlowerShop.SharedKernel.Results;
-using FlowerShop.Web.Areas.Admin.Views.Products;
 using FluentValidation;
 using Htmx;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using FlowerShop.Domain.Entities.Flowers;
+using FlowerShop.Web.Areas.Admin.Models.Products;
 
 namespace FlowerShop.Web.Areas.Admin.Controllers;
 
@@ -140,7 +140,7 @@ public class ProductsController(
         if(Request.IsHtmx())
             return PartialView("_ProductsForm", vm);
         
-        return View("_ProductsForm", vm);
+        return View(vm);
     }
 
     [HttpGet]
@@ -195,10 +195,8 @@ public class ProductsController(
         if (!ModelState.IsValid)
         {
             if (request.ProductImage.Length > 0)
-            {
                 ModelState.AddModelError("ProductImage", "Molimo vas ponovo unesite sliku proizvoda");
-                request.ProductImage = null;
-            }
+            
 
             var productRefData = await getRefDataHandler.Handle(ct);
             var flowers = await getFlowersHandler.Handle(ct);
@@ -248,10 +246,8 @@ public class ProductsController(
         if (!ModelState.IsValid)
         {
             if (request.ProductImage.Length > 0)
-            {
                 ModelState.AddModelError("ProductImage", "Molimo vas ponovo unesite sliku proizvoda");
-                request.ProductImage = null;
-            }
+            
 
             var productRefData = await getRefDataHandler.Handle(ct);
             var flowers = await getFlowersHandler.Handle(ct);

@@ -1,4 +1,4 @@
-namespace FlowerShop.Web.Areas.Admin.Views.Products;
+namespace FlowerShop.Web.Areas.Admin.Models.Products;
 
 public record ProductListViewModel
 {

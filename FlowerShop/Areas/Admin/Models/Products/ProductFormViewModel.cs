@@ -3,7 +3,7 @@ using FlowerShop.Domain.Entities.Categories;
 using FlowerShop.Domain.Entities.Flowers;
 using FlowerShop.Domain.Entities.Ocassions;
 
-namespace FlowerShop.Web.Areas.Admin.Views.Products;
+namespace FlowerShop.Web.Areas.Admin.Models.Products;
 
 public record ProductFormViewModel
 {

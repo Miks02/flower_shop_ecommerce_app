@@ -1,6 +1,5 @@
 @using FlowerShop.SharedKernel.Results
-@using FlowerShop.Web.Areas.Admin.Views.Products
-@model PagedResult<ProductListViewModel>
+@model PagedResult<FlowerShop.Web.Areas.Admin.Models.Products.ProductListViewModel>
 
 <div class="overflow-x-auto w-full bg-red-100/40">
     <table class="w-full text-left">
@@ -38,7 +37,7 @@
             <tr class="hover:bg-red-50/50 transition-colors">
                 <td class="p-4">
                     <div class="flex items-center gap-3">
-                        <img src="@product.ProductImage" alt="@product.Name" class="w-12 h-12 rounded-lg object-cover border border-red-200 shadow-sm" onerror="this.src='/AppImages/placeholder.png'" />
+                        <img src="@product.ProductImage" alt="@product.Name" class="w-12 h-12 rounded-lg object-cover border border-red-200 shadow-sm" />
                         <div>
                             <p class="font-semibold text-red-900">@product.Name</p>
                             <p class="text-xs text-gray-400 mt-0.5 max-w-[180px] truncate">@product.Description</p>
@@ -105,7 +104,11 @@
                 </td>
                 <td class="p-4 text-center">
                     <div class="flex justify-center gap-2">
-                        <a href="#" title="Izmeni" class="p-2 rounded-lg bg-orange-100 hover:bg-orange-200 text-orange-700 transition-colors">
+                        <a hx-get="@Url.Action("Edit", "Products", new { area = "Admin", id = product.Id })"
+                           hx-target="#user-content"
+                           hx-push-url="true"
+                           title="Izmeni" 
+                           class="p-2 rounded-lg bg-orange-100 hover:bg-orange-200 text-orange-700 transition-colors cursor-pointer">
                             <i class="fa-solid fa-pen text-xs"></i>
                         </a>
                         <a href="#" title="Detalji" class="p-2 rounded-lg bg-red-100 hover:bg-red-200 text-red-700 transition-colors">

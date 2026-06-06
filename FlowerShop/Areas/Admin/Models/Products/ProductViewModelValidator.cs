@@ -1,4 +1,3 @@
-using FlowerShop.Web.Areas.Admin.Views.Products;
 using FluentValidation;
 
 namespace FlowerShop.Web.Areas.Admin.Models.Products;

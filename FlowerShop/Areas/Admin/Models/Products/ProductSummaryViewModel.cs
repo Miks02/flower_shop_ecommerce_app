@@ -2,7 +2,7 @@ using FlowerShop.Domain.Entities.Categories;
 using FlowerShop.Domain.Entities.Ocassions;
 using FlowerShop.SharedKernel.Results;
 
-namespace FlowerShop.Web.Areas.Admin.Views.Products;
+namespace FlowerShop.Web.Areas.Admin.Models.Products;
 
 public class ProductSummaryViewModel
 {
