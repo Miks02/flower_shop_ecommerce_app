@@ -26,7 +26,7 @@ public class UnitOfWork(AppDbContext context) : IUnitOfWork
         _transaction = null;
     }
 
-    public async Task RollbackAksync(CancellationToken ct = default)
+    public async Task RollbackAsync(CancellationToken ct = default)
     {
         if (_transaction is null)
             return;
