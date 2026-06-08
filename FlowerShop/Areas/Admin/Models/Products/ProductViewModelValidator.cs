@@ -42,7 +42,7 @@ public class ProductViewModelValidator : AbstractValidator<ProductFormViewModel>
 
         RuleFor(p => p.ProductImage)
             .Must(file => file != null && file.Length > 0)
-            .When(x => x.Id == 0) // Samo za nove proizvode
+            .When(x => x.Id == 0) 
             .WithMessage("Slika je obavezna.")
             .Must(file => file == null || file.Length <= 5 * 1024 * 1024)
             .WithMessage("Maksimalna dužina fajla je 5 MB.")

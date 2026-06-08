@@ -30,7 +30,7 @@ public class AddProductHandler (
             if(!await categoryRepo.ExistsAsync(command.CategoryId, ct))
                 return Result.Failure(CategoryError.CategoryNotFound(command.CategoryId.ToString()));
 
-            var flowerOperationResult = await ValidateAndUpdateFlowersStockAsync(command.Flowers, ct);
+            var flowerOperationResult = await ValidateAndUpdateFlowersStockAsync(command.Flowers, command.Stock, ct);
             if (!flowerOperationResult.IsSuccess)
                 return flowerOperationResult;
         
@@ -87,7 +87,7 @@ public class AddProductHandler (
         return Result.Success();
     }
     
-    private async Task<Result> ValidateAndUpdateFlowersStockAsync(IReadOnlyList<FlowerItemDto> inputFlowers, CancellationToken ct = default)
+    private async Task<Result> ValidateAndUpdateFlowersStockAsync(IReadOnlyList<FlowerItemDto> inputFlowers, int productStock = 1, CancellationToken ct = default)
     {
         var flowerIds = inputFlowers.Select(f => f.Id).ToList();
         
@@ -97,12 +97,15 @@ public class AddProductHandler (
         if(invalidFlowers.Any())
             return Result.Failure(FlowerError.FlowersNotFound(invalidFlowers));
 
+        if (productStock <= 0)
+            return Result.Success();
+
         var insufficientStockFlowersIds = new List<int>();
 
         foreach (var flower in inputFlowers)
         {
             var checkedFlower = flowers.First(f => f.Id == flower.Id);
-            if (checkedFlower.Stock < flower.Quantity)
+            if (checkedFlower.Stock < flower.Quantity * productStock)
                 insufficientStockFlowersIds.Add(flower.Id);
         }
 
@@ -112,7 +115,7 @@ public class AddProductHandler (
         foreach (var flower in inputFlowers)
         {
             var checkedFlower = flowers.First(f => f.Id == flower.Id);
-            checkedFlower.Stock -= flower.Quantity;
+            checkedFlower.Stock -= flower.Quantity * productStock;
         }
 
         return Result.Success();
