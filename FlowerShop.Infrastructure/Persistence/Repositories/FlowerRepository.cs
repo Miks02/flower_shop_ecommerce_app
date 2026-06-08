@@ -1,3 +1,4 @@
+using FlowerShop.Application.Features.Products.Commands.AddProduct;
 using FlowerShop.Domain.Entities.Flowers;
 using FlowerShop.Infrastructure.Persistence.EntityFramework;
 using Microsoft.EntityFrameworkCore;
@@ -23,6 +24,13 @@ public class FlowerRepository : Repository<Flower>, IFlowerRepository
                 Stock = f.Stock,
                 Color = f.Color
             })
+            .ToListAsync(ct);
+    }
+
+    public async Task<IReadOnlyList<Flower>> GetFlowersByIdsAsync(IReadOnlyList<int> flowerIds, CancellationToken ct = default)
+    {
+        return await _context.Flowers
+            .Where(f => flowerIds.Contains(f.Id))
             .ToListAsync(ct);
     }
     
