@@ -28,6 +28,11 @@ public static class FlowerError
         string message = $"Insufficient stock for flower '{flowerName}'. Requested: {requestedQuantity}, Available: {availableStock}.";
         return new Error("FlowerError_InsufficientStock", message);
     }
+    public static Error InsufficientStock(IReadOnlyList<int> flowerIds)
+    {
+        string message = $"Insufficient stock for flowers with identifiers {string.Join(", ", flowerIds)}.";
+        return new Error("FlowerError_InsufficientStock", message);
+    }
 
     public static Error FlowersNotFound(IReadOnlyList<int> flowerIds)
     {
