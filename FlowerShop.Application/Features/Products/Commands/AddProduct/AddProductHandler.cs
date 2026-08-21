@@ -51,7 +51,7 @@ public class AddProductHandler (
                 return Result.Failure(imagePath.Errors.ToArray());
         
             uploadedFilePath = imagePath.Payload!;
-
+ 
             var newProduct = new Product
             {
                 CreatedBy = command.UserId,

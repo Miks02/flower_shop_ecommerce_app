@@ -1,5 +1,6 @@
 using FlowerShop.Application.Features.Flowers.Queries;
 using FlowerShop.Application.Features.Products.Commands.AddProduct;
+using FlowerShop.Application.Features.Products.Commands.UpdateProduct;
 using FlowerShop.Application.Features.Products.Queries.GetProductReferenceData;
 using FlowerShop.Application.Features.Products.Queries.GetProducts;
 using FlowerShop.Application.Features.Products.Queries.GetProductsSummary;
@@ -10,8 +11,11 @@ using Htmx;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
+using FlowerShop.Application.Features.Products.Queries.GetProductById;
 using FlowerShop.Domain.Entities.Flowers;
 using FlowerShop.Web.Areas.Admin.Models.Products;
+using AddFlowerItemDto = FlowerShop.Application.Features.Products.Commands.AddProduct.FlowerItemDto;
+using UpdateFlowerItemDto = FlowerShop.Application.Features.Products.Commands.UpdateProduct.FlowerItemDto;
 
 namespace FlowerShop.Web.Areas.Admin.Controllers;
 
@@ -19,11 +23,14 @@ namespace FlowerShop.Web.Areas.Admin.Controllers;
 [Authorize(Roles = "Admin")]
 public class ProductsController(
     GetProductsHandler getProductsHandler,
+    GetProductByIdHandler getProductByIdHandler,
     GetProductsSummaryHandler getSummaryHandler,
     GetProductReferenceDataHandler getRefDataHandler,
     GetFlowersHandler getFlowersHandler,
     AddProductHandler addProductHandler,
-    IProductRepository productRepo) : Controller
+    UpdateProductHandler updateProductHandler,
+    IProductRepository productRepo
+    ) : Controller
 {
     
     [HttpGet]
@@ -131,7 +138,7 @@ public class ProductsController(
 
         var vm = new ProductFormViewModel
         {
-            SelectedFlowers = new List<FlowerItemDto>(),
+            SelectedFlowers = new List<AddFlowerItemDto>(),
             AvailableFlowers = flowers.Flowers,
             AvailableCategories = productRefData.Categories,
             AvailableOccasions = productRefData.Occasions
@@ -146,24 +153,27 @@ public class ProductsController(
     [HttpGet]
     public async Task<IActionResult> Edit(int id, CancellationToken ct = default)
     {
-        var product = await productRepo.GetByIdAsync(id, ct);
-        if (product == null) return NotFound();
+        var productResult = await getProductByIdHandler.Handle(id, ct);
+        if(!productResult.IsSuccess)
+            return NotFound();
+
+        var product = productResult.Payload;
 
         var productRefData = await getRefDataHandler.Handle(ct);
         var flowers = await getFlowersHandler.Handle(ct);
 
         var vm = new ProductFormViewModel
         {
-            Id = product.Id,
+            Id = product!.Id,
             Name = product.Name,
             ProductImageUrl = product.ImageUrl,
             Description = product.Description ?? string.Empty,
             Price = product.Price,
             Stock = product.Stock,
             CategoryId = product.CategoryId,
-            OccasionIds = product.Occasions.Select(o => o.Id).ToList(),
-            SelectedFlowers = product.ProductFlowers.Select(pf => new FlowerItemDto(pf.FlowerId, pf.Quantity)).ToList(),
-            CreatedByName = product.User?.UserName ?? "N/A",
+            OccasionIds = product.OccasionIds.ToList(),
+            SelectedFlowers = product.Flowers.ToList(),
+            CreatedByName = product.CreatedBy,
             CreatedAt = product.CreatedAt,
             IsDeleted = product.IsDeleted,
             AvailableFlowers = flowers.Flowers,
@@ -195,7 +205,7 @@ public class ProductsController(
         
         if (!ModelState.IsValid)
         {
-            if (request.ProductImage.Length > 0)
+            if (request.ProductImage != null && request.ProductImage.Length > 0)
                 ModelState.AddModelError("ProductImage", "Molimo vas ponovo unesite sliku proizvoda");
 
             var productRefData = await getRefDataHandler.Handle(ct);
@@ -214,16 +224,16 @@ public class ProductsController(
         
         if (!result.IsSuccess)
         {
+            if (request.ProductImage != null && request.ProductImage.Length > 0)
+                ModelState.AddModelError("ProductImage", "Molimo vas ponovo unesite sliku proizvoda");
             foreach (var error in result.Errors)
             {
-                var key = error.Code switch
-                {
-                    var c when c.Contains("Category") => "CategoryId",
-                    var c when c.Contains("Occasion") => "OccasionIds",
-                    var c when c.Contains("Flower") => "SelectedFlowers",
-                    _ => ""
-                };
-                ModelState.AddModelError(key, error.Description);
+                if (error.Code.Equals("FlowerError_InsufficientStock")) 
+                    ModelState.AddModelError("SelectedFlowers", "Neki od izabranih cvetova nisu na stanju");
+                else if (error.Code.Equals("ProductError_ProductAlreadyExists"))
+                    ModelState.AddModelError("Name", "Proizvod sa navedenim imenom već postoji");
+                else
+                    ModelState.AddModelError(string.Empty, error.Description);
             }
             var productRefData = await getRefDataHandler.Handle(ct);
             var flowers = await getFlowersHandler.Handle(ct);
@@ -243,11 +253,23 @@ public class ProductsController(
     [HttpPost]
     public async Task<IActionResult> Edit(ProductFormViewModel request, CancellationToken ct = default)
     {
+        var command = new UpdateProductCommand
+        {
+            Id = request.Id,
+            Name = request.Name,
+            Description = request.Description,
+            Price = request.Price,
+            Stock = request.Stock,
+            CategoryId = request.CategoryId,
+            Occasions = request.OccasionIds,
+            Flowers = request.SelectedFlowers.Select(f => new UpdateFlowerItemDto(f.Id, f.Quantity)).ToList(),
+            ProductImage = request.ProductImage
+        };
+
         if (!ModelState.IsValid)
         {
-            if (request.ProductImage.Length > 0)
+            if (request.ProductImage != null && request.ProductImage.Length > 0)
                 ModelState.AddModelError("ProductImage", "Molimo vas ponovo unesite sliku proizvoda");
-            
 
             var productRefData = await getRefDataHandler.Handle(ct);
             var flowers = await getFlowersHandler.Handle(ct);
@@ -260,7 +282,35 @@ public class ProductsController(
             return PartialView("_ProductsForm", vm);
         }
 
-        return await List(false, [], ct: ct);
+        var result = await updateProductHandler.Handle(command, ct);
+
+        if (!result.IsSuccess)
+        {
+            if (request.ProductImage != null && request.ProductImage.Length > 0)
+                ModelState.AddModelError("ProductImage", "Molimo vas ponovo unesite sliku proizvoda");
+            foreach (var error in result.Errors)
+            {
+                if (error.Code.Equals("FlowerError_InsufficientStock"))
+                    ModelState.AddModelError("SelectedFlowers", "Neki od izabranih cvetova nisu na stanju");
+                else if (error.Code.Equals("ProductError_ProductNotFound")) 
+                    return RedirectToAction("Index", "Home");
+                else if (error.Code.Equals("ProductError_ProductAlreadyExists"))
+                    ModelState.AddModelError("Name", "Proizvod sa navedenim imenom već postoji");
+                else
+                    ModelState.AddModelError(string.Empty, error.Description);
+            }
+            var productRefData = await getRefDataHandler.Handle(ct);
+            var flowers = await getFlowersHandler.Handle(ct);
+            var vm = request with
+            {
+                AvailableFlowers = flowers.Flowers,
+                AvailableCategories = productRefData.Categories,
+                AvailableOccasions = productRefData.Occasions
+            };
+            return PartialView("_ProductsForm", vm);
+        }
+
+        return RedirectToAction("Index");
     }
     
 }
