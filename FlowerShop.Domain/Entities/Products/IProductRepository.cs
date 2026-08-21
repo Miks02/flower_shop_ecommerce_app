@@ -17,4 +17,6 @@ public interface IProductRepository
     void Add(Product product);
     void Update(Product product);
     void Remove(Product product);
+    Task<bool> ExistsAsync(int id, CancellationToken ct = default);
+    Task<bool> ExistsByNameAsync(string name, CancellationToken ct = default);
 }

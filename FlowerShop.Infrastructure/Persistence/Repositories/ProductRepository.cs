@@ -93,4 +93,14 @@ public class ProductRepository : Repository<Product>, IProductRepository
                 .ThenInclude(pf => pf.Flower)
             .FirstOrDefaultAsync(p => p.Id == id, ct);
     }
+
+    public async Task<bool> ExistsAsync(int id, CancellationToken ct = default)
+    {
+        return await _context.Products.AnyAsync(p => p.Id == id, ct);   
+    }
+
+    public async Task<bool> ExistsByNameAsync(string name, CancellationToken ct = default)
+    {
+        return await _context.Products.AnyAsync(p => p.Name == name, ct);
+    }
 }
