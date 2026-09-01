@@ -1,5 +1,6 @@
 using FlowerShop.Application.Features.Products.Commands.AddProduct;
 using FlowerShop.Domain.Entities.Flowers;
+using FlowerShop.Domain.Enums;
 using FlowerShop.Infrastructure.Persistence.EntityFramework;
 using Microsoft.EntityFrameworkCore;
 
@@ -46,5 +47,21 @@ public class FlowerRepository : Repository<Flower>, IFlowerRepository
         
         return flowerIds.Except(validIds).ToList();
     }
-    
+
+    public async Task<Flower?> GetByIdAsync(int id, CancellationToken ct = default)
+    {
+        return await _context.Flowers.FirstOrDefaultAsync(f => f.Id == id, ct);
+    }
+
+    public async Task<bool> ExistsAsync(string name, string color, FlowerCategory flowerCategory, CancellationToken ct = default)
+    {
+        return await _context.Flowers.AnyAsync(f =>
+            f.Name == name && f.Color == color && f.FlowerCategory == flowerCategory, ct);
+    }
+
+    public async Task<bool> IsUsedInProductsAsync(int id, CancellationToken ct = default)
+    {
+        return await _context.ProductFlowers.AnyAsync(pf => pf.FlowerId == id, ct);
+    }
+
 }
