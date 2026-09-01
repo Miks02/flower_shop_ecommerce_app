@@ -1,0 +1,126 @@
+<div class="flex flex-col gap-8">
+    
+    <div class="flex flex-col xl:flex-row gap-5">
+        <div class="flex flex-col flex-1 shadow-xl bg-red-100/90 backdrop-blur-sm rounded-xl transition-all duration-200 hover:-translate-y-1">
+            <div class="text-red-100 gradient-red px-4 py-3 rounded-t-xl w-full">
+                <h4 class="text-red-100 font-semibold text-lg flex items-center">
+                    <i class="fa-solid fa-chart-line mr-3"></i>
+                    Pregled prodaje (Danas)
+                </h4>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 p-5 gap-5">
+                <div class="flex flex-col gap-2 p-4 bg-red-200/50 shadow-md rounded-lg border-l-4 border-red-500">
+                    <div class="text-gray-600 text-sm font-medium flex items-center">
+                        <i class="fa-solid fa-coins mr-2 text-red-600"></i>
+                        <span>Ukupna prodaja</span>
+                    </div>
+                    <h5 class="text-red-900 font-bold text-2xl">12,450 RSD</h5>
+                </div>
+                <div class="flex flex-col gap-2 p-4 bg-red-200/50 shadow-md rounded-lg border-l-4 border-red-500">
+                    <div class="text-gray-600 text-sm font-medium flex items-center">
+                        <i class="fa-solid fa-receipt mr-2 text-red-600"></i>
+                        <span>Nove porudžbine</span>
+                    </div>
+                    <h5 class="text-red-900 font-bold text-2xl">18</h5>
+                </div>
+            </div>
+        </div>
+
+        <div class="flex flex-col w-full xl:w-[350px] shadow-xl bg-red-100/90 backdrop-blur-sm rounded-xl transition-all duration-200 hover:-translate-y-1">
+            <div class="text-red-100 gradient-red px-4 py-3 rounded-t-xl w-full">
+                <h4 class="text-red-100 font-semibold text-lg flex items-center">
+                    <i class="fa-solid fa-bell mr-3"></i>
+                    Brzi Status
+                </h4>
+            </div>
+            <div class="p-5 flex flex-col gap-4">
+                <div class="flex justify-between items-center font-semibold text-gray-700 pb-2 border-b border-red-200">
+                    <span class="flex items-center"><i class="fa-solid fa-server mr-2 text-sm text-gray-400"></i> Sistem:</span>
+                    <span class="badge new p-1 px-3 text-xs">Online</span>
+                </div>
+                <div class="flex justify-between items-center font-semibold text-gray-700">
+                    <span class="flex items-center"><i class="fa-solid fa-warehouse mr-2 text-sm text-gray-400"></i> Zalihe:</span>
+                    <span class="text-red-900 font-bold">U redu</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        
+        <div class="flex flex-col gap-3 p-6 justify-center items-center bg-red-200/90 backdrop-blur-sm rounded-xl shadow-xl font-semibold transition-all duration-200 hover:-translate-y-1 border-b-4 border-orange-500 group">
+            <div class="p-4 bg-orange-100 rounded-full group-hover:scale-110 transition-transform duration-200">
+                <i class="fa-solid fa-truck-fast text-3xl text-orange-600"></i>
+            </div>
+            <h4 class="text-4xl text-red-900 font-bold mt-2">24</h4>
+            <span class="text-center text-gray-500 uppercase text-xs tracking-wider">Aktivnih porudžbina</span>
+        </div>
+
+        <div class="flex flex-col gap-3 p-6 justify-center items-center bg-red-200/90 backdrop-blur-sm rounded-xl shadow-xl font-semibold transition-all duration-200 hover:-translate-y-1 border-b-4 border-orange-500 group">
+            <div class="p-4 bg-orange-100 rounded-full group-hover:scale-110 transition-transform duration-200">
+                <i class="fa-solid fa-seedling text-3xl text-orange-600"></i>
+            </div>
+            <h4 class="text-4xl text-red-900 font-bold mt-2">142</h4>
+            <span class="text-center text-gray-500 uppercase text-xs tracking-wider">Dostupnih proizvoda</span>
+        </div>
+
+        <div class="flex flex-col gap-3 p-6 justify-center items-center bg-red-200/90 backdrop-blur-sm rounded-xl shadow-xl font-semibold transition-all duration-200 hover:-translate-y-1 border-b-4 border-orange-500 group">
+            <div class="p-4 bg-orange-100 rounded-full group-hover:scale-110 transition-transform duration-200">
+                <i class="fa-solid fa-user-ninja text-3xl text-orange-600"></i>
+            </div>
+            <h4 class="text-4xl text-red-900 font-bold mt-2">8</h4>
+            <span class="text-center text-gray-500 uppercase text-xs tracking-wider">Dostavljača na terenu</span>
+        </div>
+
+        <div class="flex flex-col gap-3 p-6 justify-center items-center bg-red-200/90 backdrop-blur-sm rounded-xl shadow-xl font-semibold transition-all duration-200 hover:-translate-y-1 border-b-4 border-orange-500 group">
+            <div class="p-4 bg-orange-100 rounded-full group-hover:scale-110 transition-transform duration-200">
+                <i class="fa-solid fa-users text-3xl text-orange-600"></i>
+            </div>
+            <h4 class="text-4xl text-red-900 font-bold mt-2">856</h4>
+            <span class="text-center text-gray-500 uppercase text-xs tracking-wider">Registrovanih kupaca</span>
+        </div>
+
+    </div>
+
+    <div class="flex flex-col shadow-xl bg-white/90 backdrop-blur-sm rounded-xl w-full overflow-hidden">
+        <div class="text-red-100 gradient-red px-5 py-4 w-full flex justify-between items-center">
+            <h4 class="text-red-100 font-semibold text-lg flex items-center">
+                <i class="fa-solid fa-clock-rotate-left mr-3"></i>
+                Poslednje akcije
+            </h4>
+            <button class="text-xs bg-white/20 hover:bg-white/30 px-3 py-1 rounded-lg transition-colors">Pogledaj sve</button>
+        </div>
+        <div class="overflow-x-auto w-full bg-red-100">
+            <table class="w-full text-left overflow-x-auto">
+                <thead class="bg-red-200/60 text-red-900 uppercase text-[10px] font-bold tracking-widest">
+                    <tr>
+                        <th class="p-4">Porudžbina</th>
+                        <th class="p-4">Kupac</th>
+                        <th class="p-4 text-right">Iznos</th>
+                        <th class="p-4 text-center">Status</th>
+                    </tr>
+                </thead>
+                <tbody class="text-gray-700 divide-y divide-red-200 text-sm">
+                    <tr class="hover:bg-red-50/50 transition-colors">
+                        <td class="p-4 font-mono font-bold text-red-800">#ORD-5542</td>
+                        <td class="p-4 font-medium">Marko Marković</td>
+                        <td class="p-4 text-right font-bold">3,200 RSD</td>
+                        <td class="p-4 text-center"><span class="badge new text-[10px] p-1 px-3">Nova</span></td>
+                    </tr>
+                    <tr class="hover:bg-red-50/50 transition-colors">
+                        <td class="p-4 font-mono font-bold text-red-800">#ORD-5541</td>
+                        <td class="p-4 font-medium">Jelena Jović</td>
+                        <td class="p-4 text-right font-bold">4,500 RSD</td>
+                        <td class="p-4 text-center"><span class="badge new text-[10px] p-1 px-3">Nova</span></td>
+                    </tr>
+                    <tr class="hover:bg-red-50/50 transition-colors">
+                        <td class="p-4 font-mono font-bold text-red-800">#ORD-5540</td>
+                        <td class="p-4 font-medium">Nikola Nikolić</td>
+                        <td class="p-4 text-right font-bold">1,800 RSD</td>
+                        <td class="p-4 text-center"><span class="badge out-of-stock text-[10px] p-1 px-3">Otkazano</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

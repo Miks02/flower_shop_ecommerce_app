@@ -2,6 +2,7 @@ namespace FlowerShop.Domain.Entities.Ocassions;
 
 public interface IOccasionRepository
 {
+    Task<IReadOnlyList<OccasionDto>> GetAllAsync(CancellationToken ct = default);
     Task<IReadOnlyList<int>> GetInvalidOccasionIdsAsync(IReadOnlyList<int> occasionIds, CancellationToken ct = default);
     Task<IReadOnlyList<Occasion>> GetOccasionsByIdsAsync(IReadOnlyList<int> occasionIds, CancellationToken ct = default);
     void Add(Occasion occasion);

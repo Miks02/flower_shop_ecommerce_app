@@ -1,0 +1,258 @@
+@model FlowerShop.Web.Areas.Admin.Models.Products.ProductFormViewModel
+
+<div class="flex flex-col shadow-xl bg-white/80 backdrop-blur-sm rounded-xl w-full overflow-hidden">
+    <div class="gradient-red px-5 py-4 w-full flex justify-between items-center">
+        <h4 class="text-red-100 font-semibold text-lg flex items-center">
+            <i class="fa-solid @(Model.Id == 0 ? "fa-plus" : "fa-pen-to-square") mr-3"></i>
+            @(Model.Id == 0 ? "Dodaj novi proizvod" : "Izmeni proizvod")
+        </h4>
+        <a hx-get="@Url.Action("Index", "Products", new { area = "Admin" })"
+           hx-target="#user-content"
+           hx-push-url="true"
+           class="cursor-pointer text-white/80 hover:text-white transition-colors">
+            <i class="fa-solid fa-xmark text-xl"></i>
+        </a>
+    </div>
+
+    @{
+        var action = Model.Id == 0 ? "Create" : "Edit";
+    }
+    @using (Html.BeginForm(action, "Products", new { area = "Admin" }, FormMethod.Post, true, new { hx_post = Url.Action(action, "Products", new { area = "Admin" }), hx_target = "#user-content", hx_encoding = "multipart/form-data", enctype = "multipart/form-data", @class = "p-6 space-y-6" }))
+    {
+        @if (!ViewData.ModelState.IsValid)
+        {
+            @Html.ValidationSummary(false, "", new { @class = "p-4 text-sm text-red-700 bg-red-100 rounded-lg border border-red-300 font-medium list-disc list-inside" })
+        }
+
+        @Html.HiddenFor(m => m.Id)
+        @Html.HiddenFor(m => m.ProductImageUrl)
+        @Html.HiddenFor(m => m.CreatedByName)
+        @Html.HiddenFor(m => m.CreatedById)
+        @Html.HiddenFor(m => m.CreatedAt)
+        @Html.HiddenFor(m => m.IsDeleted)
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="space-y-4">
+                <div>
+                    @Html.LabelFor(m => m.Name, "Naziv proizvoda", new { @class = "block text-sm font-semibold text-red-900 mb-1 font-secondary tracking-wide uppercase text-[10px]" })
+                    @Html.TextBoxFor(m => m.Name, new { @class = "w-full px-4 py-2 rounded-lg border border-red-200 focus:outline-none focus:ring-2 focus:ring-red-300 text-gray-700 bg-white/50", placeholder = "Unesite naziv...", })
+                    @Html.ValidationMessageFor(m => m.Name, "", new { @class = "text-red-500 text-xs mt-1" })
+                </div>
+
+                <div>
+                    @Html.LabelFor(m => m.Description, "Opis", new { @class = "block text-sm font-semibold text-red-900 mb-1 font-secondary tracking-wide uppercase text-[10px]" })
+                    @Html.TextAreaFor(m => m.Description, new { @class = "w-full px-4 py-2 rounded-lg border border-red-200 focus:outline-none focus:ring-2 focus:ring-red-300 text-gray-700 bg-white/50", rows = "4", placeholder = "Unesite detaljan opis proizvoda..." })
+                    @Html.ValidationMessageFor(m => m.Description, "", new { @class = "text-red-500 text-xs mt-1" })
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        @Html.LabelFor(m => m.Price, "Cena (RSD)", new { @class = "block text-sm font-semibold text-red-900 mb-1 font-secondary tracking-wide uppercase text-[10px]" })
+                        <div class="relative">
+                            @Html.TextBoxFor(m => m.Price, new { @class = "w-full pl-4 pr-12 py-2 rounded-lg border border-red-200 focus:outline-none focus:ring-2 focus:ring-red-300 text-gray-700 bg-white/50", type = "number", step = "0.01", })
+                            <span class="absolute right-3 top-1/2 -translate-y-1/2 text-[10px] font-bold text-red-300">RSD</span>
+                        </div>
+                        @Html.ValidationMessageFor(m => m.Price, "", new { @class = "text-red-500 text-xs mt-1" })
+                    </div>
+                    <div>
+                        @Html.LabelFor(m => m.Stock, "Zaliha", new { @class = "block text-sm font-semibold text-red-900 mb-1 font-secondary tracking-wide uppercase text-[10px]" })
+                        @Html.TextBoxFor(m => m.Stock, new { @class = "w-full px-4 py-2 rounded-lg border border-red-200 focus:outline-none focus:ring-2 focus:ring-red-300 text-gray-700 bg-white/50", type = "number", })
+                        @Html.ValidationMessageFor(m => m.Stock, "", new { @class = "text-red-500 text-xs mt-1" })
+                    </div>
+                </div>
+            </div>
+
+            <div class="space-y-4">
+                <div>
+                    @Html.LabelFor(m => m.ProductImage, "Slika proizvoda", new { @class = "block text-sm font-semibold text-red-900 mb-1 font-secondary tracking-wide uppercase text-[10px]" })
+                    <div class="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-red-200 border-dashed rounded-lg hover:border-red-400 transition-colors bg-red-50/30" id="image-upload-container">
+                        <div class="@(Model.ProductImageUrl != null ? "hidden" : "block") space-y-1 text-center" id="upload-placeholder">
+                            <i class="fa-solid fa-cloud-arrow-up text-4xl text-red-200 mb-3"></i>
+                            <div class="flex text-sm text-gray-600 justify-center">
+                                <label asp-for="ProductImage" class="relative cursor-pointer bg-white rounded-md font-medium text-orange-600 hover:text-orange-500 px-2 py-0.5 border border-orange-100 shadow-sm transition-all">
+                                    <span>Pretraži fajlove</span>
+                                    @Html.TextBoxFor(m => m.ProductImage, new { type = "file", @class = "sr-only", accept = "image/*", id = "ProductImage" })
+                                </label>
+                            </div>
+                            @Html.ValidationMessageFor(m => m.ProductImage, "", new { @class = "text-red-500 text-xs mt-1 block" })
+                            <p class="text-[10px] text-gray-500 mt-2 tracking-tighter">Podržani formati: PNG, JPG, WEBP (maks. 10MB)</p>
+                        </div>
+                        <div id="image-preview" class="@(Model.ProductImageUrl != null ? "flex" : "hidden") relative w-full h-full flex flex-col items-center">
+                            <img id="preview-img" alt="@Model.Name" src="@(Model.ProductImageUrl ?? "#")" class="max-h-44 rounded-lg shadow-md object-contain mb-2"/>
+                            <p id="preview-filename" class="text-[10px] text-gray-500 font-semibold uppercase"></p>
+                            <button type="button" onclick="resetImage()" class="mt-2 text-red-500 hover:text-red-700 text-xs font-bold uppercase tracking-tighter">
+                                <i class="fa-solid fa-trash-can mr-1"></i> Ukloni sliku
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    @Html.LabelFor(m => m.CategoryId, "Kategorija", new { @class = "block text-sm font-semibold text-red-900 mb-1 font-secondary tracking-wide uppercase text-[10px]" })
+                    <div class="relative">
+                        @Html.DropDownListFor(m => m.CategoryId, new SelectList(Model.AvailableCategories, "Id", "Name"), "Odaberite kategoriju", new { @class = "w-full px-4 py-2 rounded-lg border border-red-200 focus:outline-none focus:ring-2 focus:ring-red-300 text-gray-700 appearance-none bg-white/50 cursor-pointer", })
+                        <i class="fa-solid fa-chevron-down absolute right-3 top-1/2 -translate-y-1/2 text-red-200 text-xs pointer-events-none"></i>
+                    </div>
+                    @Html.ValidationMessageFor(m => m.CategoryId, "", new { @class = "text-red-500 text-xs mt-1" })
+                </div>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+                @Html.LabelFor(m => m.OccasionIds, "Prilike", new { @class = "block text-sm font-semibold text-red-900 mb-1 font-secondary tracking-wide uppercase text-[10px]" })
+                @Html.ListBoxFor(m => m.OccasionIds, new SelectList(Model.AvailableOccasions, "Id", "Name"), new { @class = "w-full px-2 py-2 rounded-lg border border-red-200 focus:outline-none focus:ring-2 focus:ring-red-300 text-gray-700 bg-white/50 min-h-[150px] text-sm scrollbar-thin scrollbar-thumb-red-200" })
+                @Html.ValidationMessageFor(m => m.OccasionIds, "", new { @class = "text-red-500 text-xs mt-1" })
+                <div class="flex items-center gap-1.5 mt-2 px-1">
+                    <i class="fa-solid fa-circle-info text-[10px] text-orange-400"></i>
+                    <p class="text-[10px] text-gray-400 italic">Držite Ctrl (ili Cmd) za odabir više stavki</p>
+                </div>
+            </div>
+            <div>
+                @Html.LabelFor(m => m.SelectedFlowers, "Cveće", new { @class = "block text-sm font-semibold text-red-900 mb-1 font-secondary tracking-wide uppercase text-[10px]" })
+                <div id="product-list" class="space-y-3 bg-white/50 p-4 rounded-lg border border-red-200 max-h-[250px] overflow-y-auto scrollbar-thin scrollbar-thumb-red-200">
+                    @foreach (var flower in Model.AvailableFlowers)
+                    {
+                        var selectedFlower = Model.SelectedFlowers.FirstOrDefault(sf => sf.Id == flower.Id);
+                        var isSelected = selectedFlower != null;
+                        var quantity = isSelected ? selectedFlower!.Quantity : 1;
+
+                        <div class="flex items-center justify-between gap-4 bg-red-100 p-3 rounded-lg border border-red-300 transition-all hover:border-red-500 group">
+                            <div class="flex items-center gap-3">
+                                <input type="checkbox"
+                                       class="flower-checkbox w-5 h-5 rounded border-red-400 text-red-600 focus:ring-red-500 cursor-pointer"
+                                       @(isSelected ? "checked" : "")
+                                       data-index="@flower.Id"
+                                       onchange="toggleFlower(@flower.Id, this)"/>
+                                <div>
+                                    <p class="font-bold text-red-900 leading-none">@flower.Name</p>
+                                    <span class="text-[10px] font-semibold text-orange-600 uppercase tracking-tighter">Zaliha: @flower.Stock kom</span>
+                                </div>
+                            </div>
+
+                            <div id="quantity-container-@flower.Id" class="flex items-center gap-2 @(isSelected ? "" : "opacity-40 pointer-events-none") transition-all">
+                                <label class="text-[10px] font-bold text-gray-500 uppercase">Kol:</label>
+                                <input type="hidden"
+                                       name="SelectedFlowers.Index"
+                                       value="@flower.Id"
+                                       id="flower-index-@flower.Id"
+                                       @(isSelected ? "" : "disabled")/>
+                                <input type="hidden" name="SelectedFlowers[@flower.Id].Id" value="@flower.Id" @(isSelected ? "" : "disabled") id="flower-id-@flower.Id"/>
+                                <input type="number"
+                                       name="SelectedFlowers[@flower.Id].Quantity"
+                                       value="@quantity"
+                                       min="1"
+                                       max="1000"
+                                       class="w-16 p-1 text-center bg-white border-2 border-red-300 rounded-md text-red-900 font-bold focus:outline-none focus:ring-2 focus:ring-red-400 focus:border-red-200 transition-all"
+                                       @(isSelected ? "" : "disabled")
+                                       id="flower-quantity-@flower.Id"/>
+                            </div>
+                        </div>
+                    }
+                </div>
+                @Html.ValidationMessageFor(m => m.SelectedFlowers, "", new { @class = "text-red-500 text-xs mt-1" })
+            </div>
+        </div>
+
+        @if (Model.Id > 0 && !string.IsNullOrEmpty(Model.CreatedByName))
+        {
+            <div class="bg-red-50/50 p-4 rounded-xl border border-red-100/50 flex flex-col sm:flex-row justify-between text-[11px] text-gray-500 gap-4 shadow-sm">
+                <div class="flex items-center gap-3">
+                    <div class="w-8 h-8 rounded-full bg-red-100 flex items-center justify-center text-red-600 font-bold border border-red-200">
+                        @Model.CreatedByName.Substring(0, 1).ToUpper()
+                    </div>
+                    <div class="flex flex-col">
+                        <span class="text-gray-400 uppercase tracking-tighter font-bold text-[9px]">Kreirao korisnik</span>
+                        <span class="font-bold text-red-900">@Model.CreatedByName</span>
+                    </div>
+                </div>
+                <div class="flex items-center gap-3 sm:text-right">
+                    <div class="flex flex-col sm:items-end">
+                        <span class="text-gray-400 uppercase tracking-tighter font-bold text-[9px]">Datum kreiranja</span>
+                        <span class="font-bold text-red-900">@Model.CreatedAt.ToString("dd. MMM yyyy. HH:mm")</span>
+                    </div>
+                    <div class="w-8 h-8 rounded-full bg-orange-100 flex items-center justify-center text-orange-600 border border-orange-200">
+                        <i class="fa-solid fa-calendar-check"></i>
+                    </div>
+                </div>
+            </div>
+        }
+
+        <div class="flex flex-col sm:flex-row justify-end gap-3 pt-6 border-t border-red-100">
+            <button type="button"
+                    hx-get="@Url.Action("Index", "Products", new { area = "Admin" })"
+                    hx-target="#user-content"
+                    hx-push-url="true"
+                    class="order-2 sm:order-1 px-8 py-2.5 rounded-lg border border-red-200 text-red-700 font-bold hover:bg-red-50 transition-all text-[11px] uppercase tracking-widest">
+                Otkaži
+            </button>
+            <button type="submit" class="order-1 sm:order-2 px-8 py-2.5 rounded-lg bg-orange-500 hover:bg-orange-600 text-white font-bold shadow-lg shadow-orange-200 transition-all flex items-center justify-center gap-2 text-[11px] uppercase tracking-widest">
+                <i class="fa-solid @(Model.Id == 0 ? "fa-plus" : "fa-save")"></i>
+                @(Model.Id == 0 ? "Sačuvaj proizvod" : "Sačuvaj izmene")
+            </button>
+        </div>
+    }
+</div>
+
+<script>
+    function toggleFlower(index, checkbox) {
+        const container = document.getElementById(`quantity-container-${index}`);
+        const idInput = document.getElementById(`flower-id-${index}`);
+        const quantityInput = document.getElementById(`flower-quantity-${index}`);
+        const indexInput = document.getElementById(`flower-index-${index}`); 
+
+        if (checkbox.checked) {
+            container.classList.remove('opacity-40', 'pointer-events-none');
+            idInput.disabled = false;
+            quantityInput.disabled = false;
+            indexInput.disabled = false; 
+        } else {
+            container.classList.add('opacity-40', 'pointer-events-none');
+            idInput.disabled = true;
+            quantityInput.disabled = true;
+            indexInput.disabled = true; 
+        }
+    }
+    
+    document.getElementById('ProductImage').addEventListener('change', function (e) {
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function (event) {
+                const placeholder = document.getElementById('upload-placeholder');
+                const preview = document.getElementById('image-preview');
+                const previewImg = document.getElementById('preview-img');
+                const previewFilename = document.getElementById('preview-filename');
+                const container = document.getElementById('image-upload-container');
+
+                previewImg.src = event.target.result;
+                previewFilename.textContent = file.name;
+                
+                placeholder.classList.add('hidden');
+                preview.classList.remove('hidden');
+                
+                container.classList.remove('border-dashed');
+                container.classList.add('border-solid', 'border-red-300');
+            };
+            reader.readAsDataURL(file);
+        }
+    });
+
+    function resetImage() {
+        const input = document.getElementById('ProductImage');
+        input.value = '';
+        
+        const placeholder = document.getElementById('upload-placeholder');
+        const preview = document.getElementById('image-preview');
+        const container = document.getElementById('image-upload-container');
+
+        preview.classList.add('hidden');
+        placeholder.classList.remove('hidden');
+        
+        container.classList.add('border-dashed');
+        container.classList.remove('border-solid', 'border-red-300');
+    }
+</script>
+
+
+

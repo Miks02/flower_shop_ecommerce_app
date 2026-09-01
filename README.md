@@ -87,8 +87,8 @@ FlowerShop.sln
 
 <img width="800" alt="image" src="https://github.com/user-attachments/assets/c3a0fe98-ab12-42fa-9374-ec579cc93172" />
 
-<img width="800" height="918" alt="image" src="https://github.com/user-attachments/assets/de88d959-c426-47ce-b143-3f7da0be478b" />
+<img width="800" alt="image" src="https://github.com/user-attachments/assets/de88d959-c426-47ce-b143-3f7da0be478b" />
 
-<img width="800" height="922" alt="image" src="https://github.com/user-attachments/assets/bdde25d6-5d2c-49a9-a87a-3fc69e4716e7" />
+<img width="800" alt="image" src="https://github.com/user-attachments/assets/bdde25d6-5d2c-49a9-a87a-3fc69e4716e7" />
 
 

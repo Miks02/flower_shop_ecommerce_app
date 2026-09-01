@@ -1,0 +1,148 @@
+@model FlowerShop.Web.Areas.Admin.Models.Products.ProductSummaryViewModel
+
+@{
+    var totalProducts = Model.PagedProducts.TotalCount;
+    var categories = Model.Categories;
+    var occasions = Model.Occasions;
+    var activeCount = Model.PagedProducts.Items.Count(p => !p.IsDeleted);
+    var archivedCount = Model.PagedProducts.Items.Count(p => p.IsDeleted);
+    var categoryCount = categories.Count;
+}
+
+<div class="flex flex-col gap-8">
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+
+        <div class="flex flex-col gap-3 p-6 justify-center items-center bg-red-200/90 backdrop-blur-sm rounded-xl shadow-xl font-semibold transition-all duration-200 hover:-translate-y-1 border-b-4 border-orange-500 group">
+            <div class="p-4 bg-orange-100 rounded-full group-hover:scale-110 transition-transform duration-200">
+                <i class="fa-solid fa-seedling text-3xl text-orange-600"></i>
+            </div>
+            <h4 class="text-4xl text-red-900 font-bold mt-2">@totalProducts</h4>
+            <span class="text-center text-gray-500 uppercase text-xs tracking-wider">Ukupno proizvoda</span>
+        </div>
+
+        <div class="flex flex-col gap-3 p-6 justify-center items-center bg-red-200/90 backdrop-blur-sm rounded-xl shadow-xl font-semibold transition-all duration-200 hover:-translate-y-1 border-b-4 border-orange-500 group">
+            <div class="p-4 bg-orange-100 rounded-full group-hover:scale-110 transition-transform duration-200">
+                <i class="fa-solid fa-circle-check text-3xl text-orange-600"></i>
+            </div>
+            <h4 class="text-4xl text-red-900 font-bold mt-2">@activeCount</h4>
+            <span class="text-center text-gray-500 uppercase text-xs tracking-wider">Aktivnih proizvoda</span>
+        </div>
+
+        <div class="flex flex-col gap-3 p-6 justify-center items-center bg-red-200/90 backdrop-blur-sm rounded-xl shadow-xl font-semibold transition-all duration-200 hover:-translate-y-1 border-b-4 border-orange-500 group">
+            <div class="p-4 bg-orange-100 rounded-full group-hover:scale-110 transition-transform duration-200">
+                <i class="fa-solid fa-ban text-3xl text-orange-600"></i>
+            </div>
+            <h4 class="text-4xl text-red-900 font-bold mt-2">@archivedCount</h4>
+            <span class="text-center text-gray-500 uppercase text-xs tracking-wider">Arhiviranih proizvoda</span>
+        </div>
+
+        <div class="flex flex-col gap-3 p-6 justify-center items-center bg-red-200/90 backdrop-blur-sm rounded-xl shadow-xl font-semibold transition-all duration-200 hover:-translate-y-1 border-b-4 border-orange-500 group">
+            <div class="p-4 bg-orange-100 rounded-full group-hover:scale-110 transition-transform duration-200">
+                <i class="fa-solid fa-tags text-3xl text-orange-600"></i>
+            </div>
+            <h4 class="text-4xl text-red-900 font-bold mt-2">@categoryCount</h4>
+            <span class="text-center text-gray-500 uppercase text-xs tracking-wider">Kategorija</span>
+        </div>
+
+    </div>
+
+    <div class="flex flex-col shadow-xl bg-white/90 backdrop-blur-sm rounded-xl w-full overflow-hidden">
+
+        <div class="gradient-red px-5 py-4 w-full flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
+            <h4 class="text-red-100 font-semibold text-lg flex items-center">
+                <i class="fa-solid fa-leaf mr-3"></i>
+                Pregled proizvoda
+            </h4>
+            <div class="flex flex-col md:flex-row gap-2 w-full sm:w-auto">
+
+                <a  hx-get="@Url.Action("Create", "Products", new { area = "Admin" })"
+                    hx-target="#user-content"
+                    hx-swap="innerHTML"
+                    hx-push-url="true"
+                    class="flex items-center cursor-pointer justify-center gap-2 text-xs bg-orange-500 hover:bg-orange-600 text-white font-semibold px-4 py-2 rounded-lg transition-colors shadow-md">
+                    <i class="fa-solid fa-plus"></i>
+                    Dodaj proizvod
+                </a>
+            </div>
+        </div>
+
+        <div class="p-4 bg-red-50 border-b border-red-100 grid grid-cols-1 md:grid-cols-4 gap-3">
+            <div class="relative w-full">
+                <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm pointer-events-none"></i>
+                <input type="text"
+                       name="searchBy"
+                       placeholder="Pretraži proizvode..."
+                       class="w-full pl-9 pr-4 py-2 text-sm rounded-lg border border-red-200 bg-white focus:outline-none focus:ring-2 focus:ring-red-300 text-gray-700"
+                       hx-get="@Url.Action("List", "Products", new { area = "Admin" })"
+                       hx-target="#products-table-container"
+                       hx-trigger="keyup changed delay:400ms"
+                       hx-include="[data-filter]"
+                       hx-push-url="true" />
+            </div>
+            <div class="relative w-full">
+                <select name="categoryId"
+                        data-filter
+                        class="w-full text-sm rounded-lg border border-red-200 bg-white px-3 py-2 pr-8 focus:outline-none focus:ring-2 focus:ring-red-300 text-gray-700 appearance-none"
+                        hx-get="@Url.Action("List", "Products", new { area = "Admin" })"
+                        hx-target="#products-table-container"
+                        hx-trigger="change"
+                        hx-include="[data-filter]"
+                        hx-push-url="true">
+                    <option value="">Sve kategorije</option>
+                    @foreach (var cat in categories)
+                    {
+                        <option value="@cat.Id">@cat.Name</option>
+                    }
+                </select>
+                <i class="fa-solid fa-chevron-down absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs pointer-events-none"></i>
+            </div>
+            <div class="relative w-full">
+                <select name="occasionIds"
+                        data-filter
+                        class="w-full text-sm rounded-lg border border-red-200 bg-white px-3 py-2 pr-8 focus:outline-none focus:ring-2 focus:ring-red-300 text-gray-700 appearance-none"
+                        hx-get="@Url.Action("List", "Products", new { area = "Admin" })"
+                        hx-target="#products-table-container"
+                        hx-trigger="change"
+                        hx-include="[data-filter]"
+                        hx-push-url="true">
+                    <option value="">Sve prilike</option>
+                    @foreach (var occ in occasions)
+                    {
+                        <option value="@occ.Id">@occ.Name</option>
+                    }
+                </select>
+                <i class="fa-solid fa-chevron-down absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs pointer-events-none"></i>
+            </div>
+            <div class="relative w-full">
+                <select name="isDeleted"
+                        data-filter
+                        class="w-full text-sm rounded-lg border border-red-200 bg-white px-3 py-2 pr-8 focus:outline-none focus:ring-2 focus:ring-red-300 text-gray-700 appearance-none"
+                        hx-get="@Url.Action("List", "Products", new { area = "Admin" })"
+                        hx-target="#products-table-container"
+                        hx-trigger="change"
+                        hx-include="[data-filter]"
+                        hx-push-url="true">
+                    <option value="false">Aktivni proizvodi</option>
+                    <option value="true">Arhivirani proizvodi</option>
+                </select>
+                <i class="fa-solid fa-chevron-down absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs pointer-events-none"></i>
+            </div>
+        </div>
+
+
+        <div id="products-table-container" class="relative overflow-y-auto max-h-30">
+            <div id="filter-spinner" class="htmx-indicator absolute inset-0 bg-white/70 flex items-center justify-center z-10 rounded-b-xl">
+                <div class="flex items-center gap-3 text-red-700">
+                <i class="fa-solid fa-spinner fa-spin text-2xl"></i>
+                    <span class="text-sm font-medium">Učitavanje...</span>
+                </div>
+            </div>
+            @await Html.PartialAsync("_ProductsList", Model.PagedProducts)
+        </div>
+
+    </div>
+
+    <div id="modal-container"></div>
+</div>
+

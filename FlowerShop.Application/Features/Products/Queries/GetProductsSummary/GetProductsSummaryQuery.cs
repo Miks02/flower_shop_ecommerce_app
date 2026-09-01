@@ -1,6 +1,6 @@
-namespace FlowerShop.Application.Features.Products.Queries.GetProducts;
+namespace FlowerShop.Application.Features.Products.Queries.GetProductsSummary;
 
-public record GetProductsQuery
+public record GetProductsSummaryQuery
 {
     public string? SearchBy { get; set; }
     public string? SortBy { get; set; }

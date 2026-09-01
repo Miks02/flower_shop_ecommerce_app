@@ -71,6 +71,7 @@ public class ProductRepository : Repository<Product>, IProductRepository
                     FlowerName = pf.Flower.Name,
                     Quantity = pf.Quantity
                 }).ToList(),
+                ProductImage = p.ImageUrl,
                 IsDeleted = p.IsDeleted
             })
             .ToListAsync(ct);
@@ -79,5 +80,27 @@ public class ProductRepository : Repository<Product>, IProductRepository
 
         return new PagedResult<ProductDto>(productList, page, pageSize, totalCount, productList.Count);
 
-    } 
+    }
+
+    public async Task<Product?> GetByIdAsync(int id, CancellationToken ct = default)
+    {
+        return await _context.Products
+            .AsSplitQuery()
+            .Include(p => p.User)
+            .Include(p => p.Category)
+            .Include(p => p.Occasions)
+            .Include(p => p.ProductFlowers)
+                .ThenInclude(pf => pf.Flower)
+            .FirstOrDefaultAsync(p => p.Id == id, ct);
+    }
+
+    public async Task<bool> ExistsAsync(int id, CancellationToken ct = default)
+    {
+        return await _context.Products.AnyAsync(p => p.Id == id, ct);   
+    }
+
+    public async Task<bool> ExistsByNameAsync(string name, CancellationToken ct = default)
+    {
+        return await _context.Products.AnyAsync(p => p.Name == name, ct);
+    }
 }
