@@ -10,7 +10,7 @@ namespace FlowerShop.Infrastructure.Storage;
 
 public class LocalFileStorage(ILogger<LocalFileStorage> logger, IConfiguration config) : IFileService
 {
-     public async Task<Result<string>> UploadFile(IFormFile file, string? uploadedFilePath, string? uploadSubDir)
+     public async Task<Result<string>> UploadFile(IFormFile file, string? uploadedFilePath, string? uploadSubDir = "/")
     { 
         var fileValidationResult = IsFileValid(file);
 

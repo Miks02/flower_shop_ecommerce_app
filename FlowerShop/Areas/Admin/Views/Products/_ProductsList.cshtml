@@ -2,7 +2,7 @@
 @model PagedResult<FlowerShop.Web.Areas.Admin.Models.Products.ProductListViewModel>
 
 <div class="overflow-x-auto w-full bg-red-100/40">
-    <table class="w-full text-left">
+    <table class="w-full text-left overflow-y-auto max-h-50">
         <thead class="bg-red-200/60 text-red-900 uppercase text-[10px] font-bold tracking-widest">
         <tr>
             <th class="p-4">Proizvod</th>
@@ -126,6 +126,14 @@
                                 <i class="fa-solid fa-rotate-left text-xs"></i>
                             </a>
                         }
+                        <button type="button"
+                                hx-get="@Url.Action("DeleteModal", "Products", new { area = "Admin", id = product.Id })"
+                                hx-target="#modal-container"
+                                hx-swap="innerHTML"
+                                title="Obriši" 
+                                class="p-2 rounded-lg bg-red-100 hover:bg-red-200 text-red-700 transition-colors cursor-pointer">
+                            <i class="fa-solid fa-trash text-xs"></i>
+                        </button>
                     </div>
                 </td>
             </tr>

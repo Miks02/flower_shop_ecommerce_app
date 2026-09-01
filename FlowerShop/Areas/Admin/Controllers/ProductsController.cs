@@ -1,5 +1,6 @@
 using FlowerShop.Application.Features.Flowers.Queries;
 using FlowerShop.Application.Features.Products.Commands.AddProduct;
+using FlowerShop.Application.Features.Products.Commands.DeleteProduct;
 using FlowerShop.Application.Features.Products.Commands.UpdateProduct;
 using FlowerShop.Application.Features.Products.Queries.GetProductReferenceData;
 using FlowerShop.Application.Features.Products.Queries.GetProducts;
@@ -29,6 +30,7 @@ public class ProductsController(
     GetFlowersHandler getFlowersHandler,
     AddProductHandler addProductHandler,
     UpdateProductHandler updateProductHandler,
+    DeleteProductHandler deleteProductHandler,
     IProductRepository productRepo
     ) : Controller
 {
@@ -312,5 +314,42 @@ public class ProductsController(
 
         return RedirectToAction("Index");
     }
-    
+
+    [HttpGet]
+    public async Task<IActionResult> DeleteModal(int id, CancellationToken ct = default)
+    {
+        var productResult = await getProductByIdHandler.Handle(id, ct);
+        if (!productResult.IsSuccess)
+            return NotFound();
+
+        return PartialView("_DeleteProductModal", productResult.Payload);
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Delete(
+        int id,
+        bool isDeleted,
+        IReadOnlyList<int> occasionIds,
+        string searchBy = "",
+        string sortBy = "name",
+        int? categoryId = null,
+        CancellationToken ct = default)
+    {
+        var command = new DeleteProductCommand(id);
+        var result = await deleteProductHandler.Handle(command, ct);
+
+        if (!result.IsSuccess)
+        {
+            if (result.Errors.Any(e => e.Code.Equals("ProductError_ProductNotFound")))
+                return NotFound();
+        }
+
+        if (Request.IsHtmx())
+        {
+            return await List(isDeleted, occasionIds, searchBy, sortBy, categoryId, ct);
+        }
+
+        return RedirectToAction("Index");
+    }
 }

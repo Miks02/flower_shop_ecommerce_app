@@ -20,7 +20,14 @@
     @using (Html.BeginForm(action, "Products", new { area = "Admin" }, FormMethod.Post, true, new { hx_post = Url.Action(action, "Products", new { area = "Admin" }), hx_target = "#user-content", hx_encoding = "multipart/form-data", enctype = "multipart/form-data", @class = "p-6 space-y-6" }))
     {
 
+        @Html.ValidationSummary(false, "", new { @class = "p-4 text-sm text-red-700 bg-red-100 rounded-lg border border-red-300 font-medium list-disc list-inside" })
+
         @Html.HiddenFor(m => m.Id)
+        @Html.HiddenFor(m => m.ProductImageUrl)
+        @Html.HiddenFor(m => m.CreatedByName)
+        @Html.HiddenFor(m => m.CreatedById)
+        @Html.HiddenFor(m => m.CreatedAt)
+        @Html.HiddenFor(m => m.IsDeleted)
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div class="space-y-4">
@@ -133,7 +140,7 @@
                                        name="SelectedFlowers[@flower.Id].Quantity"
                                        value="@quantity"
                                        min="1"
-                                       max="@flower.Stock"
+                                       max="1000"
                                        class="w-16 p-1 text-center bg-white border-2 border-red-300 rounded-md text-red-900 font-bold focus:outline-none focus:ring-2 focus:ring-red-400 focus:border-red-200 transition-all"
                                        @(isSelected ? "" : "disabled")
                                        id="flower-quantity-@flower.Id"/>
