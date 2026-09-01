@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FlowerShop.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260901123535_AddCorrectSeedDataForFlowers")]
+    [Migration("20260901130618_AddCorrectSeedDataForFlowers")]
     partial class AddCorrectSeedDataForFlowers
     {
         /// <inheritdoc />
@@ -271,7 +271,7 @@ namespace FlowerShop.Infrastructure.Migrations
                         new
                         {
                             Id = 18,
-                            Color = "White",
+                            Color = "Bela",
                             FlowerCategory = 1,
                             Name = "Ruža",
                             Stock = 40

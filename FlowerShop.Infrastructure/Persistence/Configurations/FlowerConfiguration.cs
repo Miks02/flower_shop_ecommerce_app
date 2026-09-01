@@ -42,7 +42,7 @@ public class FlowerConfiguration : IEntityTypeConfiguration<Flower>
             new Flower { Id = 15, Name = "Jasmin", Color = "Bela", FlowerCategory = FlowerCategory.Fresh, Stock = 85 },
             new Flower { Id = 16, Name = "Lavanda", Color = "Ljubičasta", FlowerCategory = FlowerCategory.Dehydrated, Stock = 300 },
             new Flower { Id = 17, Name = "Mimoza", Color = "Žuta", FlowerCategory = FlowerCategory.Fresh, Stock = 55 },
-            new Flower { Id = 18, Name = "Ruža", Color = "White", FlowerCategory = FlowerCategory.Dehydrated, Stock = 40 }
+            new Flower { Id = 18, Name = "Ruža", Color = "Bela", FlowerCategory = FlowerCategory.Dehydrated, Stock = 40 }
         );
 
     }
