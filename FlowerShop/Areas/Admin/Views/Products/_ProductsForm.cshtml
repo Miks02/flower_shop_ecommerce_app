@@ -1,3 +1,4 @@
+@using FlowerShop.Web.Areas.Admin.Models.Flowers
 @model FlowerShop.Web.Areas.Admin.Models.Products.ProductFormViewModel
 
 <div class="flex flex-col shadow-xl bg-white/80 backdrop-blur-sm rounded-xl w-full overflow-hidden">
@@ -109,47 +110,25 @@
                 </div>
             </div>
             <div>
-                @Html.LabelFor(m => m.SelectedFlowers, "Cveće", new { @class = "block text-sm font-semibold text-red-900 mb-1 font-secondary tracking-wide uppercase text-[10px]" })
-                <div id="product-list" class="space-y-3 bg-white/50 p-4 rounded-lg border border-red-200 max-h-[250px] overflow-y-auto scrollbar-thin scrollbar-thumb-red-200">
-                    @foreach (var flower in Model.AvailableFlowers)
-                    {
-                        var selectedFlower = Model.SelectedFlowers.FirstOrDefault(sf => sf.Id == flower.Id);
-                        var isSelected = selectedFlower != null;
-                        var quantity = isSelected ? selectedFlower!.Quantity : 1;
-
-                        <div class="flex items-center justify-between gap-4 bg-red-100 p-3 rounded-lg border border-red-300 transition-all hover:border-red-500 group">
-                            <div class="flex items-center gap-3">
-                                <input type="checkbox"
-                                       class="flower-checkbox w-5 h-5 rounded border-red-400 text-red-600 focus:ring-red-500 cursor-pointer"
-                                       @(isSelected ? "checked" : "")
-                                       data-index="@flower.Id"
-                                       onchange="toggleFlower(@flower.Id, this)"/>
-                                <div>
-                                    <p class="font-bold text-red-900 leading-none">@flower.Name</p>
-                                    <span class="text-[10px] font-semibold text-orange-600 uppercase tracking-tighter">Zaliha: @flower.Stock kom</span>
-                                </div>
-                            </div>
-
-                            <div id="quantity-container-@flower.Id" class="flex items-center gap-2 @(isSelected ? "" : "opacity-40 pointer-events-none") transition-all">
-                                <label class="text-[10px] font-bold text-gray-500 uppercase">Kol:</label>
-                                <input type="hidden"
-                                       name="SelectedFlowers.Index"
-                                       value="@flower.Id"
-                                       id="flower-index-@flower.Id"
-                                       @(isSelected ? "" : "disabled")/>
-                                <input type="hidden" name="SelectedFlowers[@flower.Id].Id" value="@flower.Id" @(isSelected ? "" : "disabled") id="flower-id-@flower.Id"/>
-                                <input type="number"
-                                       name="SelectedFlowers[@flower.Id].Quantity"
-                                       value="@quantity"
-                                       min="1"
-                                       max="1000"
-                                       class="w-16 p-1 text-center bg-white border-2 border-red-300 rounded-md text-red-900 font-bold focus:outline-none focus:ring-2 focus:ring-red-400 focus:border-red-200 transition-all"
-                                       @(isSelected ? "" : "disabled")
-                                       id="flower-quantity-@flower.Id"/>
-                            </div>
-                        </div>
-                    }
+                <div class="flex items-center justify-between mb-1">
+                    @Html.LabelFor(m => m.SelectedFlowers, "Cveće", new { @class = "block text-sm font-semibold text-red-900 font-secondary tracking-wide uppercase text-[10px]" })
+                    <button type="button"
+                            hx-get="@Url.Action("AddModal", "Flowers", new { area = "Admin" })"
+                            hx-target="#modal-container"
+                            hx-vals="js:{selectedFlowersJson: JSON.stringify(getSelectedFlowersState())}"
+                            class="text-[10px] font-bold uppercase tracking-tighter text-orange-600 hover:text-orange-700 flex items-center gap-1 cursor-pointer">
+                        <i class="fa-solid fa-circle-plus"></i>
+                        Upravljaj cvećem
+                    </button>
                 </div>
+                @{
+                    var flowerSelectionListVm = new FlowerSelectionListViewModel
+                    {
+                        AvailableFlowers = Model.AvailableFlowers,
+                        SelectedFlowers = Model.SelectedFlowers.Select(f => new SelectedFlowerDto(f.Id, f.Quantity)).ToList()
+                    };
+                }
+                @await Html.PartialAsync("_FlowerSelectionList", flowerSelectionListVm)
                 @Html.ValidationMessageFor(m => m.SelectedFlowers, "", new { @class = "text-red-500 text-xs mt-1" })
             </div>
         </div>
@@ -194,6 +173,8 @@
     }
 </div>
 
+<div id="modal-container"></div>
+
 <script>
     function toggleFlower(index, checkbox) {
         const container = document.getElementById(`quantity-container-${index}`);
@@ -212,6 +193,19 @@
             quantityInput.disabled = true;
             indexInput.disabled = true; 
         }
+    }
+
+    function getSelectedFlowersState() {
+        const state = [];
+        document.querySelectorAll('.flower-checkbox').forEach(checkbox => {
+            if (checkbox.checked) {
+                const id = parseInt(checkbox.dataset.index, 10);
+                const quantityInput = document.getElementById(`flower-quantity-${id}`);
+                const quantity = quantityInput ? parseInt(quantityInput.value, 10) || 1 : 1;
+                state.push({ Id: id, Quantity: quantity });
+            }
+        });
+        return state;
     }
     
     document.getElementById('ProductImage').addEventListener('change', function (e) {

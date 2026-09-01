@@ -1,0 +1,5 @@
+@model FlowerShop.Web.Areas.Admin.Models.Flowers.FlowerSelectionListViewModel
+
+<div id="product-list" class="space-y-3 bg-white/50 p-4 rounded-lg border border-red-200 max-h-[250px] overflow-y-auto scrollbar-thin scrollbar-thumb-red-200">
+    @await Html.PartialAsync("_FlowerRows", Model)
+</div>

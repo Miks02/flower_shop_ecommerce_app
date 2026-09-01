@@ -1,0 +1,51 @@
+@model FlowerShop.Web.Areas.Admin.Models.Flowers.FlowerSelectionListViewModel
+
+@foreach (var flower in Model.AvailableFlowers)
+{
+    var selectedFlower = Model.SelectedFlowers.FirstOrDefault(sf => sf.Id == flower.Id);
+    var isSelected = selectedFlower != null;
+    var quantity = isSelected ? selectedFlower!.Quantity : 1;
+
+    <div class="flex items-center justify-between gap-4 bg-red-100 p-3 rounded-lg border border-red-300 transition-all hover:border-red-500 group">
+        <div class="flex items-center gap-3">
+            <input type="checkbox"
+                   class="flower-checkbox w-5 h-5 rounded border-red-400 text-red-600 focus:ring-red-500 cursor-pointer"
+                   @(isSelected ? "checked" : "")
+                   data-index="@flower.Id"
+                   onchange="toggleFlower(@flower.Id, this)"/>
+            <div>
+                <p class="font-bold text-red-900 leading-none">@flower.Name <span class="font-normal text-gray-400">- (@flower.Color)</span></p>
+                <span class="text-[10px] font-semibold text-orange-600 uppercase tracking-tighter">Zaliha: @flower.Stock kom</span>
+            </div>
+        </div>
+
+        <div class="flex items-center gap-2">
+            <div id="quantity-container-@flower.Id" class="flex items-center gap-2 @(isSelected ? "" : "opacity-40 pointer-events-none") transition-all">
+                <label class="text-[10px] font-bold text-gray-500 uppercase">Kol:</label>
+                <input type="hidden"
+                       name="SelectedFlowers.Index"
+                       value="@flower.Id"
+                       id="flower-index-@flower.Id"
+                       @(isSelected ? "" : "disabled")/>
+                <input type="hidden" name="SelectedFlowers[@flower.Id].Id" value="@flower.Id" @(isSelected ? "" : "disabled") id="flower-id-@flower.Id"/>
+                <input type="number"
+                       name="SelectedFlowers[@flower.Id].Quantity"
+                       value="@quantity"
+                       min="1"
+                       max="1000"
+                       class="w-16 p-1 text-center bg-white border-2 border-red-300 rounded-md text-red-900 font-bold focus:outline-none focus:ring-2 focus:ring-red-400 focus:border-red-200 transition-all"
+                       @(isSelected ? "" : "disabled")
+                       id="flower-quantity-@flower.Id"/>
+            </div>
+
+            <button type="button"
+                    title="Ažuriraj zalihu"
+                    hx-get="@Url.Action("UpdateStockModal", "Flowers", new { area = "Admin", id = flower.Id })"
+                    hx-target="#modal-container"
+                    hx-vals="js:{selectedFlowersJson: JSON.stringify(getSelectedFlowersState())}"
+                    class="p-2 rounded-lg bg-orange-100 hover:bg-orange-200 text-orange-700 transition-colors cursor-pointer flex-shrink-0">
+                <i class="fa-solid fa-boxes-stacked text-xs"></i>
+            </button>
+        </div>
+    </div>
+}

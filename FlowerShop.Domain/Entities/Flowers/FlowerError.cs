@@ -39,4 +39,13 @@ public static class FlowerError
         string message = $"Flowers with identifiers {string.Join(", ", flowerIds)} not found.";
         return new Error("FlowerError_NotFound", message);
     }
+
+    public static Error FlowerInUse(string identifier = "")
+    {
+        string message = string.IsNullOrWhiteSpace(identifier)
+            ? "The flower is used by one or more products and cannot be deleted."
+            : $"The flower '{identifier}' is used by one or more products and cannot be deleted.";
+
+        return new Error("FlowerError_InUse", message);
+    }
 }
