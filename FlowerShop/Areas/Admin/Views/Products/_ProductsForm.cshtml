@@ -19,8 +19,10 @@
     }
     @using (Html.BeginForm(action, "Products", new { area = "Admin" }, FormMethod.Post, true, new { hx_post = Url.Action(action, "Products", new { area = "Admin" }), hx_target = "#user-content", hx_encoding = "multipart/form-data", enctype = "multipart/form-data", @class = "p-6 space-y-6" }))
     {
-
-        @Html.ValidationSummary(false, "", new { @class = "p-4 text-sm text-red-700 bg-red-100 rounded-lg border border-red-300 font-medium list-disc list-inside" })
+        @if (!ViewData.ModelState.IsValid)
+        {
+            @Html.ValidationSummary(false, "", new { @class = "p-4 text-sm text-red-700 bg-red-100 rounded-lg border border-red-300 font-medium list-disc list-inside" })
+        }
 
         @Html.HiddenFor(m => m.Id)
         @Html.HiddenFor(m => m.ProductImageUrl)

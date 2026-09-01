@@ -1,5 +1,6 @@
 using FlowerShop.Application.Features.Flowers.Queries;
 using FlowerShop.Application.Features.Products.Commands.AddProduct;
+using FlowerShop.Application.Features.Products.Commands.ArchiveProduct;
 using FlowerShop.Application.Features.Products.Commands.DeleteProduct;
 using FlowerShop.Application.Features.Products.Commands.UpdateProduct;
 using FlowerShop.Application.Features.Products.Queries.GetProductReferenceData;
@@ -31,6 +32,7 @@ public class ProductsController(
     AddProductHandler addProductHandler,
     UpdateProductHandler updateProductHandler,
     DeleteProductHandler deleteProductHandler,
+    ArchiveProductHandler archiveProductHandler,
     IProductRepository productRepo
     ) : Controller
 {
@@ -341,7 +343,39 @@ public class ProductsController(
 
         if (!result.IsSuccess)
         {
-            if (result.Errors.Any(e => e.Code.Equals("ProductError_ProductNotFound")))
+            if (result.Errors.Any(e => e.Code.Equals("ProductError_ProductNotFound") || e.Code.Equals("ProductError_NotFound")))
+                return NotFound();
+        }
+
+        if (Request.IsHtmx())
+        {
+            return await List(isDeleted, occasionIds, searchBy, sortBy, categoryId, ct);
+        }
+
+        return RedirectToAction("Index");
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Archive(
+        int id,
+        bool isDeleted,
+        IReadOnlyList<int> occasionIds,
+        string searchBy = "",
+        string sortBy = "name",
+        int? categoryId = null,
+        CancellationToken ct = default)
+    {
+        var command = new ArchiveProductCommand
+        {
+            Id = id
+        };
+        
+        var result = await archiveProductHandler.Handle(command, ct);
+
+        if (!result.IsSuccess)
+        {
+            if (result.Errors.Any(e => e.Code.Equals("ProductError_NotFound") || e.Code.Equals("ProductError_ProductNotFound")))
                 return NotFound();
         }
 

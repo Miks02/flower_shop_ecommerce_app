@@ -103,7 +103,7 @@
                     }
                 </td>
                 <td class="p-4 text-center">
-                    <div class="flex justify-center gap-2">
+                    <div class="flex justify-center items-center gap-2">
                         <a hx-get="@Url.Action("Edit", "Products", new { area = "Admin", id = product.Id })"
                            hx-target="#user-content"
                            hx-push-url="true"
@@ -111,20 +111,35 @@
                            class="p-2 rounded-lg bg-orange-100 hover:bg-orange-200 text-orange-700 transition-colors cursor-pointer">
                             <i class="fa-solid fa-pen text-xs"></i>
                         </a>
-                        <a href="#" title="Detalji" class="p-2 rounded-lg bg-red-100 hover:bg-red-200 text-red-700 transition-colors">
-                            <i class="fa-solid fa-eye text-xs"></i>
-                        </a>
                         @if (!product.IsDeleted)
                         {
-                            <a href="#" title="Arhiviraj" class="p-2 rounded-lg bg-gray-100 hover:bg-gray-200 text-gray-600 transition-colors">
-                                <i class="fa-solid fa-box-archive text-xs"></i>
-                            </a>
+                            <form hx-post="@Url.Action("Archive", "Products", new { area = "Admin", id = product.Id })"
+                                  hx-target="#products-table-container"
+                                  hx-include="[data-filter]"
+                                  hx-swap="innerHTML"
+                                  class="inline">
+                                @Html.AntiForgeryToken()
+                                <button type="submit" 
+                                        title="Arhiviraj" 
+                                        class="p-2 rounded-lg bg-gray-100 hover:bg-gray-200 text-gray-600 transition-colors cursor-pointer">
+                                    <i class="fa-solid fa-box-archive text-xs"></i>
+                                </button>
+                            </form>
                         }
                         else
                         {
-                            <a href="#" title="Vrati" class="p-2 rounded-lg bg-green-100 hover:bg-green-200 text-green-700 transition-colors">
-                                <i class="fa-solid fa-rotate-left text-xs"></i>
-                            </a>
+                            <form hx-post="@Url.Action("Archive", "Products", new { area = "Admin", id = product.Id })"
+                                  hx-target="#products-table-container"
+                                  hx-include="[data-filter]"
+                                  hx-swap="innerHTML"
+                                  class="inline">
+                                @Html.AntiForgeryToken()
+                                <button type="submit" 
+                                        title="Vrati iz arhive" 
+                                        class="p-2 rounded-lg bg-emerald-100 hover:bg-emerald-200 text-emerald-600 transition-colors cursor-pointer">
+                                    <i class="fa-solid fa-box-archive text-xs"></i>
+                                </button>
+                            </form>
                         }
                         <button type="button"
                                 hx-get="@Url.Action("DeleteModal", "Products", new { area = "Admin", id = product.Id })"
