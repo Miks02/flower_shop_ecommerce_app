@@ -59,6 +59,8 @@ public class ProductRepository : Repository<Product>, IProductRepository
                 Id = p.Id,
                 Name = p.Name,
                 Price = p.Price,
+                PromoPrice = p.PromoPrice,
+                DiscountType = p.DiscountType,
                 Stock = p.Stock,
                 Description = p.Description,
                 CategoryName = p.Category.Name,

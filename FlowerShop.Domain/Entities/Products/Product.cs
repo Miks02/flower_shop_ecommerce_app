@@ -24,6 +24,8 @@ public class Product
     
     [Range(0.01, (double) decimal.MaxValue)]
     public decimal? PromoPrice { get; set; }
+
+    public DiscountType DiscountType { get; set; } = DiscountType.None;
     
     [Range(0, int.MaxValue)]
     public int Stock { get; set; }

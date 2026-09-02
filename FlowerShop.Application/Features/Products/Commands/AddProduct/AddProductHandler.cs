@@ -58,6 +58,8 @@ public class AddProductHandler (
                 Name = command.Name,
                 Description = command.Description,
                 Price = command.Price,
+                PromoPrice = command.PromoPrice,
+                DiscountType = command.DiscountType,
                 Stock = command.Stock,
                 CategoryId = command.CategoryId,
                 ProductFlowers = command.Flowers.Select(f => new ProductFlower

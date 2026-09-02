@@ -1,4 +1,5 @@
 @using FlowerShop.SharedKernel.Results
+@using FlowerShop.Web.Helpers
 @model PagedResult<FlowerShop.Web.Areas.Admin.Models.Products.ProductListViewModel>
 
 <div class="overflow-x-auto w-full bg-red-100/40">
@@ -75,7 +76,18 @@
                     </div>
                 </td>
                 <td class="p-4 text-right font-bold text-red-900 whitespace-nowrap">
-                    <div>@product.Price.ToString("N2") RSD</div>
+                    @if (product.IsDiscounted)
+                    {
+                        <div class="flex flex-col items-end">
+                            <span class="badge sale text-[9px] px-2 py-0.5 mb-0.5">@product.DiscountType.GetDisplayName()</span>
+                            <span class="text-xs text-gray-400 line-through">@product.Price.ToString("N2") RSD</span>
+                            <span>@product.PromoPrice!.Value.ToString("N2") RSD</span>
+                        </div>
+                    }
+                    else
+                    {
+                        <div>@product.Price.ToString("N2") RSD</div>
+                    }
                     <div class="sm:hidden text-[10px] font-medium text-gray-400">@product.Stock na stanju</div>
                 </td>
                 <td class="p-4 text-center hidden sm:table-cell">

@@ -9,6 +9,8 @@ public record ProductDto
     public string? Description { get; set; }
     public string ProductImage { get; set; } = null!;
     public decimal Price { get; set; }
+    public decimal? PromoPrice { get; set; }
+    public DiscountType DiscountType { get; set; } = DiscountType.None;
     public int Stock { get; set; }
     public string CreatedBy { get; set; } = null!;
     
