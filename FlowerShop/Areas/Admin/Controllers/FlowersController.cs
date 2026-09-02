@@ -17,9 +17,7 @@ public class FlowersController(
     GetFlowerByIdHandler getFlowerByIdHandler,
     AddFlowerHandler addFlowerHandler,
     UpdateFlowerStockHandler updateFlowerStockHandler,
-    DeleteFlowerHandler deleteFlowerHandler,
-    IValidator<AddFlowerCommand> addFlowerValidator,
-    IValidator<UpdateFlowerStockCommand> updateFlowerStockValidator) : Controller
+    DeleteFlowerHandler deleteFlowerHandler) : Controller
 {
     [HttpGet]
     public IActionResult AddModal(string? selectedFlowersJson)
@@ -44,14 +42,22 @@ public class FlowersController(
             Stock = request.Stock
         };
 
-        var validationResult = await addFlowerValidator.ValidateAsync(command, ct);
-        if (!validationResult.IsValid)
+        if (!ModelState.IsValid)
         {
-            foreach (var error in validationResult.Errors)
-                ModelState.AddModelError(error.PropertyName, error.ErrorMessage);
+            foreach (var error in ModelState.Values.SelectMany(v => v.Errors))
+                ModelState.AddModelError(string.Empty, error.ErrorMessage);
 
             return PartialView("_AddFlowerModal", request);
         }
+
+        //var validationResult = await addFlowerValidator.ValidateAsync(command, ct);
+        //if (!validationResult.IsValid)
+        //{
+        //    foreach (var error in validationResult.Errors)
+        //        ModelState.AddModelError(error.PropertyName, error.ErrorMessage);
+
+        //    return PartialView("_AddFlowerModal", request);
+        //}
 
         var result = await addFlowerHandler.Handle(command, ct);
 
@@ -94,20 +100,19 @@ public class FlowersController(
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> UpdateStock(UpdateFlowerStockViewModel request, CancellationToken ct = default)
     {
+        if (!ModelState.IsValid)
+        {
+            foreach (var error in ModelState.Values.SelectMany(v => v.Errors))
+                ModelState.AddModelError(string.Empty, error.ErrorMessage);
+
+            return PartialView("_UpdateFlowerStockModal", request);
+        }
+
         var command = new UpdateFlowerStockCommand
         {
             Id = request.Id,
             Quantity = request.Quantity
         };
-
-        var validationResult = await updateFlowerStockValidator.ValidateAsync(command, ct);
-        if (!validationResult.IsValid)
-        {
-            foreach (var error in validationResult.Errors)
-                ModelState.AddModelError(error.PropertyName, error.ErrorMessage);
-
-            return PartialView("_UpdateFlowerStockModal", request);
-        }
 
         var result = await updateFlowerStockHandler.Handle(command, ct);
 

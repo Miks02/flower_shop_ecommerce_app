@@ -1,10 +1,10 @@
 using FluentValidation;
 
-namespace FlowerShop.Application.Features.Flowers.Commands.UpdateFlowerStock;
+namespace FlowerShop.Web.Areas.Admin.Models.Flowers;
 
-public class UpdateFlowerStockValidator : AbstractValidator<UpdateFlowerStockCommand>
+public class UpdateFlowerStockViewModelValidator : AbstractValidator<UpdateFlowerStockViewModel>
 {
-    public UpdateFlowerStockValidator()
+    public UpdateFlowerStockViewModelValidator()
     {
         RuleFor(x => x.Id)
             .GreaterThan(0)

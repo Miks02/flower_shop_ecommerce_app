@@ -24,8 +24,8 @@ namespace FlowerShop.Web.Controllers;
         private readonly IUserProvider _userProvider;
         
 
-        private readonly string _loginComponent = "Components/Login/Default";
-        private readonly string _registerComponent = "Components/Register/Default";
+        private readonly string _loginComponent = "_Login";
+        private readonly string _registerComponent = "_Register";
         private readonly string _profileSettingsComponent = "~/Views/Shared/Components/Settings/Default.cshtml";
 
         public AccountController(

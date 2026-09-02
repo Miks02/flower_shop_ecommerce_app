@@ -1,10 +1,10 @@
 using FluentValidation;
 
-namespace FlowerShop.Application.Features.Flowers.Commands.AddFlower;
+namespace FlowerShop.Web.Areas.Admin.Models.Flowers;
 
-public class AddFlowerValidator : AbstractValidator<AddFlowerCommand>
+public class AddFlowerViewModelValidator : AbstractValidator<AddFlowerViewModel>
 {
-    public AddFlowerValidator()
+    public AddFlowerViewModelValidator()
     {
         RuleFor(x => x.Name)
             .NotEmpty()

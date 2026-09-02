@@ -1,10 +1,10 @@
 using FluentValidation;
 
-namespace FlowerShop.Application.Features.Auth.Commands.Login;
+namespace FlowerShop.Web.ViewModels.Components;
 
-public class LoginValidator : AbstractValidator<LoginCommand>
+public class LoginViewModelValidator : AbstractValidator<LoginViewModel>
 {
-    public LoginValidator()
+    public LoginViewModelValidator()
     {
         RuleFor(p => p.Username)
             .NotEmpty().WithMessage("Unesite korisničko ime");
