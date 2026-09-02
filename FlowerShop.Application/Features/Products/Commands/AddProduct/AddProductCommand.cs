@@ -1,4 +1,5 @@
 
+using FlowerShop.Domain.Entities.Products;
 using Microsoft.AspNetCore.Http;
 
 namespace FlowerShop.Application.Features.Products.Commands.AddProduct;
@@ -10,6 +11,8 @@ public record AddProductCommand
     public int CategoryId { get; init; }
     public string? Description { get; init; }
     public decimal Price { get; init; }
+    public decimal? PromoPrice { get; init; }
+    public DiscountType DiscountType { get; init; } = DiscountType.None;
     public int Stock { get; init; }
 
     public IFormFile ProductImage { get; init; } = null!;
