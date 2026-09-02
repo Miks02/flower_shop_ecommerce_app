@@ -17,13 +17,7 @@ public class SettingsPageViewModelValidator : AbstractValidator<SettingsPageView
             .MinimumLength(3).WithMessage("Prezime mora imati najmanje 3 karaktera.")
             .MaximumLength(30).WithMessage("Prezime može imati maksimalno 30 karaktera.")
             .Matches(@"^[\p{L}\s]+$").WithMessage("Prezime može sadržati samo slova.");
-
-        RuleFor(p => p.ProfileVm.UserName)
-            .NotEmpty().WithMessage("Korisničko ime je obavezno.")
-            .MinimumLength(5).WithMessage("Korisničko ime mora imati najmanje 5 karaktera.")
-            .MaximumLength(25).WithMessage("Korisničko ime može imati maksimalno 25 karaktera.")
-            .Matches(@"^[a-zA-Z0-9._]+$").WithMessage("Korisničko ime može sadržati samo slova, brojeve, tačku (.) i donju crtu (_).");
-
+        
         RuleFor(p => p.ProfileVm.Email)
             .NotEmpty().WithMessage("Email adresa je obavezna.")
             .EmailAddress().WithMessage("Unesite validnu email adresu.")

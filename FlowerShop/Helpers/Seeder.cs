@@ -29,7 +29,7 @@ public static class Seeder
         {
             var adminUser = new User
             {
-                UserName = configuration["AdminData:Username"],
+                UserName = adminEmail,
                 Email = adminEmail,
                 FirstName = configuration["AdminData:FirstName"]!,
                 LastName = configuration["AdminData:LastName"]!,

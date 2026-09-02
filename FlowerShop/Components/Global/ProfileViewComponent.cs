@@ -33,7 +33,6 @@ public class ProfileViewComponent(IUserProvider userProvider) : ViewComponent
             LastName = user.LastName,
             Email = user.Email,
             PhoneNumber = user.PhoneNumber,
-            Username = user.Username,
             ProfilePicture = Url.Content(user.ProfilePicture),
             Address = string.Empty,
             Status = user.Status,

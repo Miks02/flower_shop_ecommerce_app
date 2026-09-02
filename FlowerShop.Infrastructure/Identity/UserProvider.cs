@@ -1,9 +1,7 @@
 using System.Security.Claims;
 using FlowerShop.Application.Common.Abstractions;
 using FlowerShop.Application.Common.Abstractions.Dto;
-using FlowerShop.Domain.Entities.IdentityUser;
 using FlowerShop.Infrastructure.Persistence.EntityFramework;
-using FlowerShop.SharedKernel.Results;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 
@@ -26,7 +24,6 @@ public class UserProvider(IHttpContextAccessor http, AppDbContext context) : IUs
                 FirstName = e.FirstName,
                 LastName = e.LastName,
                 Email = e.Email!,
-                Username = e.UserName!,
                 PhoneNumber = e.PhoneNumber!,
                 Address = "",
                 ProfilePicture = e.ImagePath,
