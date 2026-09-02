@@ -19,12 +19,12 @@ public class UpdateProfileHandler(UserManager<User> userManager, ILogger<UpdateP
 
         currentUser.FirstName = command.FirstName;
         currentUser.LastName = command.LastName;
-        currentUser.UserName = command.UserName;
+        currentUser.UserName = command.Email;
         currentUser.Email = command.Email;
         currentUser.PhoneNumber = command.PhoneNumber;
 
         currentUser.NormalizedEmail = userManager.NormalizeEmail(currentUser.Email);
-        currentUser.NormalizedUserName = userManager.NormalizeName(currentUser.UserName);
+        currentUser.NormalizedUserName = userManager.NormalizeName(currentUser.Email);
 
         if (command.ProfilePicture is not null && command.ProfilePicture.Length > 0)
         {
@@ -68,7 +68,6 @@ public class UpdateProfileHandler(UserManager<User> userManager, ILogger<UpdateP
         {
             FirstName = currentUser.FirstName,
             LastName = currentUser.LastName,
-            Username = currentUser.UserName,
             PhoneNumber = currentUser.PhoneNumber,
             Email = currentUser.Email,
         };

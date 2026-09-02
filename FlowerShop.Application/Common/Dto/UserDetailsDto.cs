@@ -12,8 +12,6 @@ public record UserDetailsDto
     
     public string PhoneNumber { get; set; } = null!;
     
-    public string Username { get; set; } = null!;
-    
     public string? ProfilePicture { get; set; }
     
     public string Address { get; set; } = null!;

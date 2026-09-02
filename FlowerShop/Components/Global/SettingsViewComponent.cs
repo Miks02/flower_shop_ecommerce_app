@@ -17,7 +17,6 @@ public class SettingsViewComponent(IUserProvider userProvider) : ViewComponent
         {
             FirstName = user.FirstName,
             LastName = user.LastName,
-            UserName = user.Username,
             Email = user.Email,
             PhoneNumber = user.PhoneNumber,
             FullNameInitials = user.FirstName[0].ToString() + user.LastName[0],
