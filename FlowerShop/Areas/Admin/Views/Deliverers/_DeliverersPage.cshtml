@@ -1,0 +1,146 @@
+@using FlowerShop.Domain.Entities.Deliverers
+@model FlowerShop.Web.Areas.Admin.Models.Deliverers.DelivererSummaryViewModel
+
+@{
+    var totalDeliverers = Model.TotalCount;
+    var availableCount = Model.AvailableCount;
+    var onDutyCount = Model.OnDutyCount;
+    var unavailableCount = Model.UnavailableCount;
+}
+
+<div class="flex flex-col gap-8">
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+
+        <div class="flex flex-col gap-3 p-6 justify-center items-center bg-red-200/90 backdrop-blur-sm rounded-xl shadow-xl font-semibold transition-all duration-200 hover:-translate-y-1 border-b-4 border-orange-500 group">
+            <div class="p-4 bg-orange-100 rounded-full group-hover:scale-110 transition-transform duration-200">
+                <i class="fa-solid fa-truck-fast text-3xl text-orange-600"></i>
+            </div>
+            <h4 class="text-4xl text-red-900 font-bold mt-2">@totalDeliverers</h4>
+            <span class="text-center text-gray-500 uppercase text-xs tracking-wider">Ukupno dostavljača</span>
+        </div>
+
+        <div class="flex flex-col gap-3 p-6 justify-center items-center bg-red-200/90 backdrop-blur-sm rounded-xl shadow-xl font-semibold transition-all duration-200 hover:-translate-y-1 border-b-4 border-orange-500 group">
+            <div class="p-4 bg-orange-100 rounded-full group-hover:scale-110 transition-transform duration-200">
+                <i class="fa-solid fa-circle-check text-3xl text-orange-600"></i>
+            </div>
+            <h4 class="text-4xl text-red-900 font-bold mt-2">@availableCount</h4>
+            <span class="text-center text-gray-500 uppercase text-xs tracking-wider">Dostupnih</span>
+        </div>
+
+        <div class="flex flex-col gap-3 p-6 justify-center items-center bg-red-200/90 backdrop-blur-sm rounded-xl shadow-xl font-semibold transition-all duration-200 hover:-translate-y-1 border-b-4 border-orange-500 group">
+            <div class="p-4 bg-orange-100 rounded-full group-hover:scale-110 transition-transform duration-200">
+                <i class="fa-solid fa-route text-3xl text-orange-600"></i>
+            </div>
+            <h4 class="text-4xl text-red-900 font-bold mt-2">@onDutyCount</h4>
+            <span class="text-center text-gray-500 uppercase text-xs tracking-wider">Na dostavi</span>
+        </div>
+
+        <div class="flex flex-col gap-3 p-6 justify-center items-center bg-red-200/90 backdrop-blur-sm rounded-xl shadow-xl font-semibold transition-all duration-200 hover:-translate-y-1 border-b-4 border-orange-500 group">
+            <div class="p-4 bg-orange-100 rounded-full group-hover:scale-110 transition-transform duration-200">
+                <i class="fa-solid fa-ban text-3xl text-orange-600"></i>
+            </div>
+            <h4 class="text-4xl text-red-900 font-bold mt-2">@unavailableCount</h4>
+            <span class="text-center text-gray-500 uppercase text-xs tracking-wider">Nedostupnih</span>
+        </div>
+
+    </div>
+
+    <div class="flex flex-col shadow-xl bg-white/90 backdrop-blur-sm rounded-xl w-full overflow-hidden">
+
+        <div class="gradient-red px-5 py-4 w-full flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
+            <h4 class="text-red-100 font-semibold text-lg flex items-center">
+                <i class="fa-solid fa-truck-fast mr-3"></i>
+                Pregled dostavljača
+            </h4>
+            <div class="flex flex-col md:flex-row gap-2 w-full sm:w-auto">
+
+                <a hx-get="@Url.Action("Create", "Deliverers", new { area = "Admin" })"
+                   hx-target="#user-content"
+                   hx-swap="innerHTML"
+                   hx-push-url="true"
+                   class="flex items-center cursor-pointer justify-center gap-2 text-xs bg-orange-500 hover:bg-orange-600 text-white font-semibold px-4 py-2 rounded-lg transition-colors shadow-md">
+                    <i class="fa-solid fa-plus"></i>
+                    Dodaj dostavljača
+                </a>
+            </div>
+        </div>
+
+        <div class="p-4 bg-red-50 border-b border-red-100 grid grid-cols-1 md:grid-cols-4 gap-3">
+            <div class="relative w-full">
+                <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm pointer-events-none"></i>
+                <input type="text"
+                       name="search"
+                       placeholder="Pretraži dostavljače..."
+                       class="w-full pl-9 pr-4 py-2 text-sm rounded-lg border border-red-200 bg-white focus:outline-none focus:ring-2 focus:ring-red-300 text-gray-700"
+                       hx-get="@Url.Action("List", "Deliverers", new { area = "Admin" })"
+                       hx-target="#deliverers-table-container"
+                       hx-trigger="keyup changed delay:400ms"
+                       hx-include="[data-filter]"
+                       hx-push-url="true" />
+            </div>
+            <div class="relative w-full">
+                <select name="vehicleType"
+                        data-filter
+                        class="w-full text-sm rounded-lg border border-red-200 bg-white px-3 py-2 pr-8 focus:outline-none focus:ring-2 focus:ring-red-300 text-gray-700 appearance-none"
+                        hx-get="@Url.Action("List", "Deliverers", new { area = "Admin" })"
+                        hx-target="#deliverers-table-container"
+                        hx-trigger="change"
+                        hx-include="[data-filter]"
+                        hx-push-url="true">
+                    <option value="">Sva vozila</option>
+                    <option value="@VehicleType.Bicycle">Bicikla</option>
+                    <option value="@VehicleType.Scooter">Skuter</option>
+                    <option value="@VehicleType.Car">Automobil</option>
+                </select>
+                <i class="fa-solid fa-chevron-down absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs pointer-events-none"></i>
+            </div>
+            <div class="relative w-full">
+                <select name="delivererStatus"
+                        data-filter
+                        class="w-full text-sm rounded-lg border border-red-200 bg-white px-3 py-2 pr-8 focus:outline-none focus:ring-2 focus:ring-red-300 text-gray-700 appearance-none"
+                        hx-get="@Url.Action("List", "Deliverers", new { area = "Admin" })"
+                        hx-target="#deliverers-table-container"
+                        hx-trigger="change"
+                        hx-include="[data-filter]"
+                        hx-push-url="true">
+                    <option value="">Svi statusi</option>
+                    <option value="@DelivererStatus.Available">Dostupan</option>
+                    <option value="@DelivererStatus.OnDuty">Na dostavi</option>
+                    <option value="@DelivererStatus.Unavailable">Nedostupan</option>
+                </select>
+                <i class="fa-solid fa-chevron-down absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs pointer-events-none"></i>
+            </div>
+            <div class="relative w-full">
+                <select name="sortBy"
+                        data-filter
+                        class="w-full text-sm rounded-lg border border-red-200 bg-white px-3 py-2 pr-8 focus:outline-none focus:ring-2 focus:ring-red-300 text-gray-700 appearance-none"
+                        hx-get="@Url.Action("List", "Deliverers", new { area = "Admin" })"
+                        hx-target="#deliverers-table-container"
+                        hx-trigger="change"
+                        hx-include="[data-filter]"
+                        hx-push-url="true">
+                    <option value="">Sortiraj po...</option>
+                    <option value="name_asc">Ime (A-Z)</option>
+                    <option value="name_desc">Ime (Z-A)</option>
+                    <option value="status_asc">Status</option>
+                    <option value="vehicle_asc">Tip vozila</option>
+                </select>
+                <i class="fa-solid fa-chevron-down absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs pointer-events-none"></i>
+            </div>
+        </div>
+
+        <div id="deliverers-table-container" class="relative overflow-y-auto max-h-30">
+            <div id="filter-spinner" class="htmx-indicator absolute inset-0 bg-white/70 flex items-center justify-center z-10 rounded-b-xl">
+                <div class="flex items-center gap-3 text-red-700">
+                    <i class="fa-solid fa-spinner fa-spin text-2xl"></i>
+                    <span class="text-sm font-medium">Učitavanje...</span>
+                </div>
+            </div>
+            @await Html.PartialAsync("_DeliverersList", Model.PagedDeliverers)
+        </div>
+
+    </div>
+
+    <div id="modal-container"></div>
+</div>

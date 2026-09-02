@@ -1,5 +1,6 @@
 using FlowerShop.Application.Common.Abstractions;
 using FlowerShop.Domain.Entities.Categories;
+using FlowerShop.Domain.Entities.Deliverers;
 using FlowerShop.Domain.Entities.Flowers;
 using FlowerShop.Domain.Entities.Ocassions;
 using FlowerShop.Domain.Entities.Products;
@@ -23,5 +24,6 @@ public static class DbContextRegistration
         services.AddScoped<IFlowerRepository, FlowerRepository>();
         services.AddScoped<ICategoryRepository, CategoryRepository>();
         services.AddScoped<IOccasionRepository, OccasionRepository>();
+        services.AddScoped<IDelivererRepository, DelivererRepository>();
     }
 }

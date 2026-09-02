@@ -4,6 +4,7 @@ using FlowerShop.Infrastructure.Persistence.EntityFramework;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FlowerShop.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260902091708_AddDelivererEntityAndConfiguration")]
+    partial class AddDelivererEntityAndConfiguration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -94,12 +97,18 @@ namespace FlowerShop.Infrastructure.Migrations
                     b.Property<int>("DelivererStatus")
                         .HasColumnType("int");
 
+                    b.Property<int>("MaxAmountOfOrders")
+                        .HasColumnType("int");
+
                     b.Property<int>("VehicleType")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Deliverers");
+                    b.ToTable("Deliverer", t =>
+                        {
+                            t.HasCheckConstraint("CK_Deliverers_MaxAmountOfOrders_Positive", "\"MaxAmountOfOrders\" >= 0");
+                        });
                 });
 
             modelBuilder.Entity("FlowerShop.Domain.Entities.Flowers.Flower", b =>

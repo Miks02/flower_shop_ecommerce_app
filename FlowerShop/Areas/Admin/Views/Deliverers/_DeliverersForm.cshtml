@@ -1,0 +1,92 @@
+@using FlowerShop.Domain.Entities.Deliverers
+@model FlowerShop.Web.Areas.Admin.Models.Deliverers.DelivererFormViewModel
+
+<div class="flex flex-col shadow-xl bg-white/80 backdrop-blur-sm rounded-xl w-full overflow-hidden">
+    <div class="gradient-red px-5 py-4 w-full flex justify-between items-center">
+        <h4 class="text-red-100 font-semibold text-lg flex items-center">
+            <i class="fa-solid @(string.IsNullOrEmpty(Model.Id) ? "fa-plus" : "fa-pen-to-square") mr-3"></i>
+            @(string.IsNullOrEmpty(Model.Id) ? "Dodaj novog dostavljača" : "Izmeni dostavljača")
+        </h4>
+        <a hx-get="@Url.Action("Index", "Deliverers", new { area = "Admin" })"
+           hx-target="#user-content"
+           hx-push-url="true"
+           class="cursor-pointer text-white/80 hover:text-white transition-colors">
+            <i class="fa-solid fa-xmark text-xl"></i>
+        </a>
+    </div>
+
+    @{
+        var action = string.IsNullOrEmpty(Model.Id) ? "Create" : "Edit";
+    }
+    @using (Html.BeginForm(action, "Deliverers", new { area = "Admin" }, FormMethod.Post, true, new { hx_post = Url.Action(action, "Deliverers", new { area = "Admin" }), hx_target = "#user-content", @class = "p-6 space-y-6" }))
+    {
+
+        @Html.HiddenFor(m => m.Id)
+        @Html.HiddenFor(m => m.CreatedAt)
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="space-y-4">
+                <div>
+                    @Html.LabelFor(m => m.FirstName, "Ime", new { @class = "block text-sm font-semibold text-red-900 mb-1 font-secondary tracking-wide uppercase text-[10px]" })
+                    @Html.TextBoxFor(m => m.FirstName, new { @class = "w-full px-4 py-2 rounded-lg border border-red-200 focus:outline-none focus:ring-2 focus:ring-red-300 text-gray-700 bg-white/50", placeholder = "Unesite ime..." })
+                    @Html.ValidationMessageFor(m => m.FirstName, "", new { @class = "text-red-500 text-xs mt-1" })
+                </div>
+
+                <div>
+                    @Html.LabelFor(m => m.LastName, "Prezime", new { @class = "block text-sm font-semibold text-red-900 mb-1 font-secondary tracking-wide uppercase text-[10px]" })
+                    @Html.TextBoxFor(m => m.LastName, new { @class = "w-full px-4 py-2 rounded-lg border border-red-200 focus:outline-none focus:ring-2 focus:ring-red-300 text-gray-700 bg-white/50", placeholder = "Unesite prezime..." })
+                    @Html.ValidationMessageFor(m => m.LastName, "", new { @class = "text-red-500 text-xs mt-1" })
+                </div>
+
+                <div>
+                    @Html.LabelFor(m => m.Email, "Email adresa", new { @class = "block text-sm font-semibold text-red-900 mb-1 font-secondary tracking-wide uppercase text-[10px]" })
+                    @Html.TextBoxFor(m => m.Email, new { @class = "w-full px-4 py-2 rounded-lg border border-red-200 focus:outline-none focus:ring-2 focus:ring-red-300 text-gray-700 bg-white/50", type = "email", placeholder = "primer@email.com" })
+                    @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-red-500 text-xs mt-1" })
+                </div>
+            </div>
+
+            <div class="space-y-4">
+                <div>
+                    @Html.LabelFor(m => m.PhoneNumber, "Broj telefona", new { @class = "block text-sm font-semibold text-red-900 mb-1 font-secondary tracking-wide uppercase text-[10px]" })
+                    @Html.TextBoxFor(m => m.PhoneNumber, new { @class = "w-full px-4 py-2 rounded-lg border border-red-200 focus:outline-none focus:ring-2 focus:ring-red-300 text-gray-700 bg-white/50", type = "tel", placeholder = "06X XXX XXXX" })
+                    @Html.ValidationMessageFor(m => m.PhoneNumber, "", new { @class = "text-red-500 text-xs mt-1" })
+                </div>
+
+                <div>
+                    @Html.LabelFor(m => m.VehicleType, "Tip vozila", new { @class = "block text-sm font-semibold text-red-900 mb-1 font-secondary tracking-wide uppercase text-[10px]" })
+                    <div class="relative">
+                        @Html.DropDownListFor(m => m.VehicleType, Html.GetEnumSelectList<VehicleType>(), new { @class = "w-full px-4 py-2 rounded-lg border border-red-200 focus:outline-none focus:ring-2 focus:ring-red-300 text-gray-700 appearance-none bg-white/50 cursor-pointer" })
+                        <i class="fa-solid fa-chevron-down absolute right-3 top-1/2 -translate-y-1/2 text-red-200 text-xs pointer-events-none"></i>
+                    </div>
+                    @Html.ValidationMessageFor(m => m.VehicleType, "", new { @class = "text-red-500 text-xs mt-1" })
+                </div>
+
+                @if (!string.IsNullOrEmpty(Model.Id))
+                {
+                    <div>
+                        @Html.LabelFor(m => m.DelivererStatus, "Status dostavljača", new { @class = "block text-sm font-semibold text-red-900 mb-1 font-secondary tracking-wide uppercase text-[10px]" })
+                        <div class="relative">
+                            @Html.DropDownListFor(m => m.DelivererStatus, Html.GetEnumSelectList<DelivererStatus>(), new { @class = "w-full px-4 py-2 rounded-lg border border-red-200 focus:outline-none focus:ring-2 focus:ring-red-300 text-gray-700 appearance-none bg-white/50 cursor-pointer" })
+                            <i class="fa-solid fa-chevron-down absolute right-3 top-1/2 -translate-y-1/2 text-red-200 text-xs pointer-events-none"></i>
+                        </div>
+                        @Html.ValidationMessageFor(m => m.DelivererStatus, "", new { @class = "text-red-500 text-xs mt-1" })
+                    </div>
+                }
+            </div>
+        </div>
+
+        <div class="flex justify-end gap-3 pt-4 border-t border-red-100">
+            <a hx-get="@Url.Action("Index", "Deliverers", new { area = "Admin" })"
+               hx-target="#user-content"
+               hx-push-url="true"
+               class="px-5 py-2 text-xs font-semibold text-gray-600 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 transition-colors cursor-pointer flex items-center">
+                Otkaži
+            </a>
+            <button type="submit"
+                    class="px-6 py-2 text-xs font-semibold text-white bg-orange-500 hover:bg-orange-600 rounded-lg shadow-md transition-colors flex items-center gap-2 cursor-pointer">
+                <i class="fa-solid fa-check"></i>
+                @(string.IsNullOrEmpty(Model.Id) ? "Dodaj dostavljača" : "Sačuvaj izmene")
+            </button>
+        </div>
+    }
+</div>
