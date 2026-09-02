@@ -69,7 +69,7 @@ namespace FlowerShop.Web.Controllers;
 
             var loginCommand = new LoginCommand
             {
-                Username = model.Username,
+                Email = model.Email,
                 Password = model.Password,
                 RememberMe = model.RememberMe
             };
@@ -110,7 +110,6 @@ namespace FlowerShop.Web.Controllers;
                 FirstName = model.FirstName,
                 LastName = model.LastName,
                 Password = model.Password,
-                Username = model.Username,
                 ConfirmPassword = model.ConfirmPassword,
                 PhoneNumber = model.PhoneNumber,
                 Email = model.Email
@@ -125,7 +124,7 @@ namespace FlowerShop.Web.Controllers;
                 return PartialView(_registerComponent, model);
             }
 
-            await _loginHandler.Handle(new LoginCommand { Username = model.Username, Password = model.Password });
+            await _loginHandler.Handle(new LoginCommand { Email = model.Email, Password = model.Password });
             
             Response.Headers.Append("HX-Redirect", "/Home/Index");
             return Ok();
@@ -142,7 +141,6 @@ namespace FlowerShop.Web.Controllers;
             var command = new UpdateProfileCommand
             {
                 UserId = _userProvider.GetCurrentUserId(),
-                UserName = model.ProfileVm.UserName,
                 FirstName = model.ProfileVm.FirstName,
                 LastName = model.ProfileVm.LastName,
                 Email = model.ProfileVm.Email,
