@@ -1,6 +1,6 @@
 using FlowerShop.Domain.Entities.Deliverers;
 
-namespace FlowerShop.Application.Features.Deliverers.Commands;
+namespace FlowerShop.Application.Features.Deliverers.Commands.RegisterDeliverer;
 
 public record RegisterDelivererCommand
 {

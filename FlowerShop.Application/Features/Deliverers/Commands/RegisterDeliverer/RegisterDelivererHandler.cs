@@ -5,7 +5,7 @@ using FlowerShop.SharedKernel.Results;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
 
-namespace FlowerShop.Application.Features.Deliverers.Commands;
+namespace FlowerShop.Application.Features.Deliverers.Commands.RegisterDeliverer;
 
 public class RegisterDelivererHandler(
     UserManager<User> userManager,
