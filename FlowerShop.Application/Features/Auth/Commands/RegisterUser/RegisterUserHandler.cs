@@ -10,16 +10,11 @@ public class RegisterUserHandler(UserManager<User> userManager, RoleManager<Iden
 {
     public async Task<Result> Handle(RegisterUserCommand command)
     {
-        var credentialsCheckResult = await IsUserTaken(command.Username, command.Email);
-
-        if (!credentialsCheckResult.IsSuccess)
-            return Result.Failure(AuthError.RegistrationFailed(credentialsCheckResult.Errors[0].Description));
-        
         var user = new User
         {
             FirstName = command.FirstName,
             LastName = command.LastName,
-            UserName = command.Username,
+            UserName = command.Email,
             Email = command.Email,
             PhoneNumber = command.PhoneNumber,
         };
@@ -40,7 +35,7 @@ public class RegisterUserHandler(UserManager<User> userManager, RoleManager<Iden
 
         if (!roleAssignResult.IsSuccess)
         {
-            var errors = roleAssignResult.Errors!;
+            var errors = roleAssignResult.Errors;
 
             await userManager.DeleteAsync(user);
             
@@ -70,15 +65,4 @@ public class RegisterUserHandler(UserManager<User> userManager, RoleManager<Iden
         return Result.Success();
     }
     
-    private async Task<Result> IsUserTaken(string username, string email)
-    {
-        if (await userManager.FindByEmailAsync(email) is not null)
-            return Result.Failure(UserError.EmailAlreadyExists());
-        
-        if (await userManager.FindByNameAsync(username) is not null)
-            return Result.Failure(UserError.UsernameAlreadyExists(username)); 
-        
-
-        return Result.Success();
-    }
 }

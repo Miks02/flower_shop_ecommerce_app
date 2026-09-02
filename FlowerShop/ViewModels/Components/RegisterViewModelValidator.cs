@@ -17,13 +17,7 @@ public class RegisterViewModelValidator : AbstractValidator<RegisterViewModel>
             .MinimumLength(3).WithMessage("Prezime mora imati najmanje 3 karaktera.")
             .MaximumLength(30).WithMessage("Prezime može imati maksimalno 30 karaktera.")
             .Matches(@"^[\p{L}\s]+$").WithMessage("Prezime može sadržati samo slova.");
-
-        RuleFor(p => p.Username)
-            .NotEmpty().WithMessage("Korisničko ime je obavezno.")
-            .MinimumLength(5).WithMessage("Korisničko ime mora imati najmanje 5 karaktera.")
-            .MaximumLength(25).WithMessage("Korisničko ime može imati maksimalno 25 karaktera.")
-            .Matches(@"^[a-zA-Z0-9._]+$").WithMessage("Korisničko ime može sadržati samo slova, brojeve, tačku (.) i donju crtu (_).");
-
+        
         RuleFor(p => p.Email)
             .NotEmpty().WithMessage("Email adresa je obavezna.")
             .EmailAddress().WithMessage("Unesite validnu email adresu.")
@@ -31,10 +25,7 @@ public class RegisterViewModelValidator : AbstractValidator<RegisterViewModel>
 
         RuleFor(p => p.Password)
             .NotEmpty().WithMessage("Lozinka je obavezna.")
-            .MinimumLength(8).WithMessage("Lozinka mora imati najmanje 8 karaktera.")
-            .Matches(@"[A-Z]+").WithMessage("Lozinka mora sadržati barem jedno veliko slovo.")
-            .Matches(@"[a-z]+").WithMessage("Lozinka mora sadržati barem jedno malo slovo.")
-            .Matches(@"[0-9]+").WithMessage("Lozinka mora sadržati barem jedan broj.");
+            .MinimumLength(6).WithMessage("Lozinka mora imati najmanje 6 karaktera.");
 
         RuleFor(p => p.ConfirmPassword)
             .NotEmpty().WithMessage("Potvrda lozinke je obavezna.")

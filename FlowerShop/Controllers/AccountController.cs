@@ -120,7 +120,15 @@ namespace FlowerShop.Web.Controllers;
             if (!result.IsSuccess)
             {
                 foreach (var error in result.Errors!)
+                {
+                    if (error.Code.Equals("DuplicateUserName") || error.Code.Equals("DuplicateEmail"))
+                    {
+                        ModelState.AddModelError(nameof(model.Email), "Korisnik sa ovom email adresom već postoji.");
+                        return PartialView(_registerComponent, model);
+                    }
+                    
                     ModelState.AddModelError(nameof(model.ConfirmPassword), error.Description);
+                }
                 return PartialView(_registerComponent, model);
             }
 
