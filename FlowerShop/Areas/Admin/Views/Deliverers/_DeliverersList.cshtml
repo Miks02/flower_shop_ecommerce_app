@@ -1,0 +1,163 @@
+@using FlowerShop.Domain.Entities.Deliverers
+@using FlowerShop.SharedKernel.Results
+@model PagedResult<FlowerShop.Web.Areas.Admin.Models.Deliverers.DelivererListViewModel>
+
+<div class="overflow-x-auto w-full bg-red-100/40">
+    <table class="w-full text-left overflow-y-auto max-h-50">
+        <thead class="bg-red-200/60 text-red-900 uppercase text-[10px] font-bold tracking-widest">
+        <tr>
+            <th class="p-4">Dostavljač</th>
+            <th class="p-4 hidden sm:table-cell">Telefon</th>
+            <th class="p-4 hidden md:table-cell">Tip vozila</th>
+            <th class="p-4 text-center hidden lg:table-cell">Min. količina</th>
+            <th class="p-4 text-center">Status</th>
+            <th class="p-4 text-center">Akcije</th>
+        </tr>
+        </thead>
+        <tbody class="text-gray-700 divide-y divide-red-200 text-sm">
+        @if (!Model.Items.Any())
+        {
+            <tr>
+                <td colspan="6" class="p-20 text-center">
+                    <div class="flex flex-col items-center justify-center gap-4">
+                        <div class="w-24 h-24 bg-red-100 rounded-full flex items-center justify-center">
+                            <i class="fa-solid fa-truck-fast text-5xl text-red-300"></i>
+                        </div>
+                        <div class="space-y-1">
+                            <h3 class="text-2xl font-bold text-red-900">Nema pronađenih dostavljača</h3>
+                            <p class="text-gray-500">Pokušajte sa drugačijim filterima ili dodajte novog dostavljača.</p>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        }
+        @foreach (var deliverer in Model.Items)
+        {
+            <tr class="hover:bg-red-50/50 transition-colors">
+                <td class="p-4">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-full bg-orange-100 border border-orange-200 flex items-center justify-center font-bold text-orange-700 text-sm shadow-sm flex-shrink-0">
+                            @(deliverer.FirstName.Length > 0 ? deliverer.FirstName[0].ToString().ToUpper() : "")@(deliverer.LastName.Length > 0 ? deliverer.LastName[0].ToString().ToUpper() : "")
+                        </div>
+                        <div>
+                            <p class="font-semibold text-red-900">@deliverer.FirstName @deliverer.LastName</p>
+                            <p class="text-xs text-gray-500 mt-0.5">@deliverer.Email</p>
+                            <div class="sm:hidden mt-1 text-xs text-gray-500">
+                                <i class="fa-solid fa-phone text-[10px] mr-1 text-orange-500"></i>@deliverer.PhoneNumber
+                            </div>
+                        </div>
+                    </div>
+                </td>
+                <td class="p-4 hidden sm:table-cell">
+                    <span class="text-xs text-gray-700 font-medium">@deliverer.PhoneNumber</span>
+                </td>
+                <td class="p-4 hidden md:table-cell">
+                    @switch (deliverer.VehicleType)
+                    {
+                        case VehicleType.Bicycle:
+                            <span class="inline-flex items-center gap-1.5 text-xs bg-emerald-100 text-emerald-800 font-semibold px-2.5 py-1 rounded-full border border-emerald-200">
+                                <i class="fa-solid fa-bicycle text-xs"></i>
+                                Bicikla
+                            </span>
+                            break;
+                        case VehicleType.Scooter:
+                            <span class="inline-flex items-center gap-1.5 text-xs bg-sky-100 text-sky-800 font-semibold px-2.5 py-1 rounded-full border border-sky-200">
+                                <i class="fa-solid fa-motorcycle text-xs"></i>
+                                Skuter
+                            </span>
+                            break;
+                        case VehicleType.Car:
+                            <span class="inline-flex items-center gap-1.5 text-xs bg-purple-100 text-purple-800 font-semibold px-2.5 py-1 rounded-full border border-purple-200">
+                                <i class="fa-solid fa-car text-xs"></i>
+                                Automobil
+                            </span>
+                            break;
+                    }
+                </td>
+                <td class="p-4 text-center hidden lg:table-cell">
+                    <span class="text-xs font-bold text-orange-700 bg-orange-100 px-2.5 py-1 rounded-full border border-orange-200">
+                        @deliverer.MinAmountOfProducts kom.
+                    </span>
+                </td>
+                <td class="p-4 text-center">
+                    @switch (deliverer.DelivererStatus)
+                    {
+                        case DelivererStatus.Available:
+                            <span class="badge new text-[10px] p-1 px-3 bg-emerald-100 text-emerald-800 border border-emerald-200 rounded-full font-semibold">Dostupan</span>
+                            break;
+                        case DelivererStatus.OnDuty:
+                            <span class="badge sale text-[10px] p-1 px-3 bg-amber-100 text-amber-800 border border-amber-200 rounded-full font-semibold">Na dostavi</span>
+                            break;
+                        case DelivererStatus.Unavailable:
+                            <span class="badge out-of-stock text-[10px] p-1 px-3 bg-gray-100 text-gray-700 border border-gray-200 rounded-full font-semibold">Nedostupan</span>
+                            break;
+                    }
+                </td>
+                <td class="p-4 text-center">
+                    <div class="flex justify-center items-center gap-2">
+                        <a hx-get="@Url.Action("Edit", "Deliverers", new { area = "Admin", id = deliverer.Id })"
+                           hx-target="#user-content"
+                           hx-push-url="true"
+                           title="Izmeni"
+                           class="p-2 rounded-lg bg-orange-100 hover:bg-orange-200 text-orange-700 transition-colors cursor-pointer">
+                            <i class="fa-solid fa-pen text-xs"></i>
+                        </a>
+                        <button type="button"
+                                hx-get="@Url.Action("DeleteModal", "Deliverers", new { area = "Admin", id = deliverer.Id })"
+                                hx-target="#modal-container"
+                                hx-swap="innerHTML"
+                                title="Obriši"
+                                class="p-2 rounded-lg bg-red-100 hover:bg-red-200 text-red-700 transition-colors cursor-pointer">
+                            <i class="fa-solid fa-trash text-xs"></i>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+</div>
+
+@if (Model.TotalPages > 1)
+{
+    <div class="px-5 py-4 bg-red-50 border-t border-red-100 flex flex-col sm:flex-row justify-between items-center gap-3 text-sm text-gray-600">
+        <span>Stranica <span class="font-bold text-red-900">@Model.Page</span> od <span class="font-bold text-red-900">@Model.TotalPages</span> &mdash; ukupno <span class="font-bold text-red-900">@Model.TotalCount</span> dostavljača</span>
+        <div class="flex gap-1">
+            @if (Model.Page > 1)
+            {
+                <button type="button"
+                        hx-get="@Url.Action("List", "Deliverers", new { area = "Admin", page = Model.Page - 1 })"
+                        hx-target="#deliverers-table-container"
+                        hx-include="[data-filter]"
+                        class="px-3 py-1.5 rounded-lg bg-white border border-red-200 hover:bg-red-100 text-red-700 font-semibold transition-colors cursor-pointer">
+                    <i class="fa-solid fa-chevron-left text-xs"></i>
+                </button>
+            }
+            @for (int i = Math.Max(1, Model.Page - 2); i <= Math.Min(Model.TotalPages, Model.Page + 2); i++)
+            {
+                if (i == Model.Page)
+                {
+                    <span class="px-3 py-1.5 rounded-lg gradient-red text-white font-bold text-xs">@i</span>
+                }
+                else
+                {
+                    <button type="button"
+                            hx-get="@Url.Action("List", "Deliverers", new { area = "Admin", page = i })"
+                            hx-target="#deliverers-table-container"
+                            hx-include="[data-filter]"
+                            class="px-3 py-1.5 rounded-lg bg-white border border-red-200 hover:bg-red-100 text-red-700 font-semibold text-xs transition-colors cursor-pointer">@i</button>
+                }
+            }
+            @if (Model.Page < Model.TotalPages)
+            {
+                <button type="button"
+                        hx-get="@Url.Action("List", "Deliverers", new { area = "Admin", page = Model.Page + 1 })"
+                        hx-target="#deliverers-table-container"
+                        hx-include="[data-filter]"
+                        class="px-3 py-1.5 rounded-lg bg-white border border-red-200 hover:bg-red-100 text-red-700 font-semibold transition-colors cursor-pointer">
+                    <i class="fa-solid fa-chevron-right text-xs"></i>
+                </button>
+            }
+        </div>
+    </div>
+}

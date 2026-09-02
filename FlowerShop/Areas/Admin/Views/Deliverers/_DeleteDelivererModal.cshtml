@@ -1,0 +1,56 @@
+@using FlowerShop.Domain.Entities.Deliverers
+@model FlowerShop.Application.Features.Deliverers.Queries.GetDelivererById.GetDelivererByIdResponse
+
+<div id="delete-modal-backdrop" class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
+    <div class="relative bg-white rounded-2xl shadow-2xl max-w-md w-full overflow-hidden">
+        <div class="gradient-red px-6 py-4 flex items-center justify-between text-white">
+            <div class="flex items-center gap-2">
+                <i class="fa-solid fa-triangle-exclamation text-yellow-300 text-lg"></i>
+                <h3 class="font-bold text-lg text-white">Brisanje dostavljača</h3>
+            </div>
+            <button type="button" 
+                    onclick="document.getElementById('modal-container').innerHTML = ''" 
+                    class="text-white/80 hover:text-white transition-colors cursor-pointer">
+                <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
+        </div>
+
+        <div class="p-6 space-y-4">
+            <div class="flex items-center gap-4 p-3 bg-red-50 rounded-xl border border-red-100">
+                <div class="w-14 h-14 rounded-full bg-orange-100 border border-orange-200 flex items-center justify-center font-bold text-orange-700 text-lg shadow-sm flex-shrink-0">
+                    @(Model.FirstName.Length > 0 ? Model.FirstName[0].ToString().ToUpper() : "")@(Model.LastName.Length > 0 ? Model.LastName[0].ToString().ToUpper() : "")
+                </div>
+                <div class="min-w-0 flex-1">
+                    <h4 class="font-bold text-red-900 truncate">@Model.FirstName @Model.LastName</h4>
+                    <p class="text-xs text-gray-500 mt-0.5 truncate">@Model.Email</p>
+                    <p class="text-xs text-gray-500">Telefon: <span class="font-semibold text-gray-700">@Model.PhoneNumber</span></p>
+                </div>
+            </div>
+
+            <p class="text-sm text-gray-600">
+                Da li ste sigurni da želite da obrišete dostavljača <strong class="text-red-900">@Model.FirstName @Model.LastName</strong>? Ova akcija se ne može poništiti. Dostavljač ne može biti obrisan ukoliko je trenutno na dostavi.
+            </p>
+        </div>
+
+        <div class="px-6 py-4 bg-red-50/50 border-t border-red-100 flex justify-end gap-3">
+            <button type="button"
+                    onclick="document.getElementById('modal-container').innerHTML = ''"
+                    class="px-4 py-2 text-xs font-semibold text-gray-600 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 transition-colors cursor-pointer">
+                Otkaži
+            </button>
+
+            <form hx-post="@Url.Action("Delete", "Deliverers", new { area = "Admin", id = Model.Id })"
+                  hx-target="#deliverers-table-container"
+                  hx-include="[data-filter]"
+                  hx-swap="innerHTML"
+                  hx-on::after-request="if(event.detail.successful) document.getElementById('modal-container').innerHTML = ''">
+                @Html.AntiForgeryToken()
+                <button type="submit"
+                        class="px-4 py-2 text-xs font-semibold text-white bg-red-600 hover:bg-red-700 rounded-lg shadow-md transition-colors flex items-center gap-2 cursor-pointer">
+                    <i class="fa-solid fa-trash text-xs"></i>
+                    <span>Obriši dostavljača</span>
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
