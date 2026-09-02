@@ -1,0 +1,45 @@
+@using FlowerShop.Infrastructure.Htmx
+@{
+    var toast = ViewData[HtmxToastExtensions.ToastTempDataKey] as ToastMessage;
+}
+
+<div id="toast-container" class="fixed bottom-5 right-5 z-50 flex flex-col gap-3 pointer-events-none max-w-sm w-full px-4 sm:px-0">
+    @if (toast != null)
+    {
+        var borderClass = toast.Level switch
+        {
+            "success" => "border-green-500 bg-white/95 text-green-900 shadow-green-100",
+            "error" => "border-red-500 bg-white/95 text-red-900 shadow-red-100",
+            "warning" => "border-amber-500 bg-white/95 text-amber-900 shadow-amber-100",
+            _ => "border-blue-500 bg-white/95 text-blue-900 shadow-blue-100"
+        };
+        var iconClass = toast.Level switch
+        {
+            "success" => "fa-solid fa-circle-check text-green-500",
+            "error" => "fa-solid fa-circle-exclamation text-red-500",
+            "warning" => "fa-solid fa-triangle-exclamation text-amber-500",
+            _ => "fa-solid fa-circle-info text-blue-500"
+        };
+        var title = !string.IsNullOrWhiteSpace(toast.Title) ? toast.Title : toast.Level switch
+        {
+            "success" => "Uspešno",
+            "error" => "Greška",
+            "warning" => "Upozorenje",
+            _ => "Obaveštenje"
+        };
+
+        <div class="toast-item pointer-events-auto transform translate-y-0 opacity-100 transition-all duration-300 ease-out flex items-start gap-3 p-4 rounded-xl border-l-4 shadow-xl backdrop-blur-md @borderClass"
+             data-duration="@toast.Duration">
+            <div class="text-xl flex-shrink-0 mt-0.5">
+                <i class="@iconClass"></i>
+            </div>
+            <div class="flex-1 text-sm">
+                <h5 class="font-bold text-gray-900">@title</h5>
+                <p class="text-gray-600 mt-0.5 text-xs sm:text-sm">@toast.Message</p>
+            </div>
+            <button type="button" class="toast-close text-gray-400 hover:text-gray-600 transition-colors p-1" onclick="this.closest('.toast-item').remove()">
+                <i class="fa-solid fa-xmark text-sm"></i>
+            </button>
+        </div>
+    }
+</div>
