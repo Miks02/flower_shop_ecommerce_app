@@ -1,16 +1,16 @@
 using FluentValidation;
 
-namespace FlowerShop.Application.Features.Auth.Commands.RegisterUser;
+namespace FlowerShop.Web.ViewModels.Components;
 
-public class RegisterUserValidator : AbstractValidator<RegisterUserCommand>
+public class RegisterViewModelValidator : AbstractValidator<RegisterViewModel>
 {
-    public RegisterUserValidator()
+    public RegisterViewModelValidator()
     {
         RuleFor(p => p.FirstName)
             .NotEmpty().WithMessage("Ime je obavezno.")
             .MinimumLength(3).WithMessage("Ime mora imati najmanje 3 karaktera.")
             .MaximumLength(20).WithMessage("Ime može imati maksimalno 20 karaktera.")
-            .Matches(@"^[a-zA-Z\s]+$").WithMessage("Ime može sadržati samo slova."); 
+            .Matches(@"^[a-zA-Z\s]+$").WithMessage("Ime može sadržati samo slova.");
 
         RuleFor(p => p.LastName)
             .NotEmpty().WithMessage("Prezime je obavezno.")
@@ -36,14 +36,12 @@ public class RegisterUserValidator : AbstractValidator<RegisterUserCommand>
             .Matches(@"[a-z]+").WithMessage("Lozinka mora sadržati barem jedno malo slovo.")
             .Matches(@"[0-9]+").WithMessage("Lozinka mora sadržati barem jedan broj.");
 
-
         RuleFor(p => p.ConfirmPassword)
             .NotEmpty().WithMessage("Potvrda lozinke je obavezna.")
-            .Equal(p => p.Password).WithMessage("Lozinke se ne poklapaju."); 
-
+            .Equal(p => p.Password).WithMessage("Lozinke se ne poklapaju.");
 
         RuleFor(p => p.PhoneNumber)
             .NotEmpty().WithMessage("Broj telefona je obavezan.")
-            .Matches(@"^\+?(\d[\s-]?){7,15}$").WithMessage("Unesite validan broj telefona."); 
+            .Matches(@"^\+?(\d[\s-]?){7,15}$").WithMessage("Unesite validan broj telefona.");
     }
 }
