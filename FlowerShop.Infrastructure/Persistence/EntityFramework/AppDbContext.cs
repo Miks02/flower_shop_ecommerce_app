@@ -1,4 +1,5 @@
 using FlowerShop.Domain.Entities.Categories;
+using FlowerShop.Domain.Entities.Deliverers;
 using FlowerShop.Domain.Entities.Flowers;
 using FlowerShop.Domain.Entities.IdentityUser;
 using FlowerShop.Domain.Entities.Ocassions;
@@ -18,6 +19,7 @@ public class AppDbContext(DbContextOptions options) : IdentityDbContext<User>(op
     public DbSet<Category> Categories { get; set; }
     public DbSet<Flower> Flowers { get; set; }
     public DbSet<Occasion> Occasions { get; set; }
+    public DbSet<Deliverer> Deliverers { get; set; }
     
     protected override void OnModelCreating(ModelBuilder builder)
     {
