@@ -25,4 +25,9 @@ public class Deliverer
     {
         return DelivererStatus == DelivererStatus.Available;
     }
+
+    public bool IsOnDuty()
+    {
+        return DelivererStatus == DelivererStatus.OnDuty;
+    }
 }
