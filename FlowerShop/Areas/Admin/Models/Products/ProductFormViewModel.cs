@@ -2,6 +2,7 @@ using FlowerShop.Application.Features.Products.Commands.AddProduct;
 using FlowerShop.Domain.Entities.Categories;
 using FlowerShop.Domain.Entities.Flowers;
 using FlowerShop.Domain.Entities.Ocassions;
+using FlowerShop.Domain.Entities.Products;
 
 namespace FlowerShop.Web.Areas.Admin.Models.Products;
 
@@ -13,6 +14,8 @@ public record ProductFormViewModel
     public IFormFile? ProductImage { get; set; }
     public string? ProductImageUrl { get; set; }
     public decimal Price { get; init; }
+    public decimal? PromoPrice { get; init; }
+    public DiscountType DiscountType { get; init; } = DiscountType.None;
     public int Stock { get; init; }
     public int CategoryId { get; init; }
     public List<int> OccasionIds { get; init; } = [];
@@ -27,5 +30,6 @@ public record ProductFormViewModel
     public IReadOnlyList<FlowerDto> AvailableFlowers { get; init; } = [];
     
     public bool OutOfStock => Stock <= 0;
+    public bool IsDiscounted => DiscountType != DiscountType.None && PromoPrice.HasValue;
 
 };

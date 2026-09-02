@@ -65,6 +65,8 @@ public class UpdateProductHandler(
             product.Name = command.Name;
             product.Description = command.Description;
             product.Price = command.Price;
+            product.PromoPrice = command.PromoPrice;
+            product.DiscountType = command.DiscountType;
             product.Stock = command.Stock;
             product.CategoryId = command.CategoryId;
             product.Occasions = occasions.ToList();

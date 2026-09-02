@@ -1,4 +1,5 @@
 using FluentValidation;
+using FlowerShop.Domain.Entities.Products;
 
 namespace FlowerShop.Web.Areas.Admin.Models.Products;
 
@@ -19,6 +20,22 @@ public class ProductViewModelValidator : AbstractValidator<ProductFormViewModel>
             .WithMessage("Cena je obavezna.")
             .GreaterThan(0)
             .WithMessage("Cena mora biti pozitivna.");
+
+        RuleFor(x => x.DiscountType)
+            .IsInEnum()
+            .WithMessage("Nepoznat tip popusta.");
+
+        RuleFor(x => x.PromoPrice)
+            .NotNull()
+            .WithMessage("Cena sa popustom je obavezna kada je izabran tip popusta.")
+            .When(x => x.DiscountType != DiscountType.None);
+
+        RuleFor(x => x.PromoPrice)
+            .GreaterThan(0)
+            .WithMessage("Cena sa popustom mora biti pozitivna.")
+            .LessThan(x => x.Price)
+            .WithMessage("Cena sa popustom mora biti manja od originalne cene.")
+            .When(x => x.PromoPrice.HasValue);
         
         RuleFor(x => x.Description)
             .MaximumLength(750)
