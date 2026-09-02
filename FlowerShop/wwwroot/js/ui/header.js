@@ -56,10 +56,6 @@ const updateNavbarClasses = (options) => {
     navbar.classList.toggle("bg-red-900/35", bg);
 };
 
-searchInput.querySelector('input').addEventListener('input', (e) => {
-    const hasText = e.target.value.length > 0;
-    updateNavbarClasses({ blur: hasText, shadow: hasText, bg: hasText });
-});
 
 
 const handleIntersection = (entries) => {
@@ -71,7 +67,7 @@ const handleIntersection = (entries) => {
         if (isIntersecting) {
             navbar.classList.remove("gradient-red");
             mobileNavbar.classList.remove("bg-red-900/85");
-            
+
             updateNavbarClasses({
                 blur: ratioLow || hasSearchText,
                 shadow: ratioLow || hasSearchText,
@@ -81,7 +77,7 @@ const handleIntersection = (entries) => {
         } else {
             navbar.classList.add("gradient-red");
             mobileNavbar.classList.add("bg-red-900/85", "bg-opacity-50");
-            
+
             if (!hasSearchText) {
                 updateNavbarClasses({ blur: false, shadow: false, bg: false });
             }
@@ -94,5 +90,14 @@ const observer = new IntersectionObserver(handleIntersection, {
     rootMargin: "0px",
     root: null
 });
-observer.observe(heroSection);
+if(searchInput) {
+    searchInput.querySelector('input').addEventListener('input', (e) => {
+        const hasText = e.target.value.length > 0;
+        updateNavbarClasses({ blur: hasText, shadow: hasText, bg: hasText });
+    });
+    
+    observer.observe(heroSection);
+}
+
+
 

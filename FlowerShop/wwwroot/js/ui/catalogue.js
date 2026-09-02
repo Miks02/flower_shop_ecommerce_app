@@ -4,17 +4,22 @@ const filterMenu = document.getElementById('filter-menu');
 const filterClose = document.getElementById('filter-close');
 const filterOpen = document.getElementById('filter-open');
 
-filterOpen.addEventListener('click', (e) => {
-    e.preventDefault();
-    e.stopPropagation()
-    toggleOverlay(filterMenu, "-translate-x-full")
-})
+if(filterOpen) {
+    filterOpen.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation()
+        toggleOverlay(filterMenu, "-translate-x-full")
+    })
+}
 
-filterClose.addEventListener('click', (e) => {
-    e.preventDefault();
-    toggleOverlay(filterMenu, "-translate-x-full");
+if(filterClose) {
+    filterClose.addEventListener('click', (e) => {
+        e.preventDefault();
+        toggleOverlay(filterMenu, "-translate-x-full");
 
-})
+    })
+}
+
 
 const filterButtons = document.querySelectorAll('.filter-link');
 
