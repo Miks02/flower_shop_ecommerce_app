@@ -14,8 +14,8 @@ public static class DelivererError
             ? new Error("Deliverer.Unavailable", "Deliverer is unavailable at the moment.") 
             : new Error("Deliverer.Unavailable", $"Deliverer with id '{id}' is unavailable at the moment.");
     
-    public static Error MaxAmountOfOrdersReached(string? id = null) 
+    public static Error MinAmountOfProductsNotReached(string? id = null) 
         => string.IsNullOrWhiteSpace(id) 
-            ? new Error("Deliverer.MaxOrdersReached", "Deliverer has reached the maximum amount of orders.") 
-            : new Error("Deliverer.MaxOrdersReached", $"Deliverer with id '{id}' has reached the maximum amount of orders.");
+            ? new Error("Deliverer.MinProductsNotReached", "Deliverer has not reached the minimum amount of products.") 
+            : new Error("Deliverer.MinProductsNotReached", $"Deliverer with id '{id}' has not reached the minimum amount of products.");
 }

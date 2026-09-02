@@ -15,6 +15,5 @@ public class DelivererConfiguration : IEntityTypeConfiguration<Deliverer>
             .HasForeignKey<Deliverer>(x => x.Id)
             .OnDelete(DeleteBehavior.Cascade);
 
-        builder.ToTable(t => t.HasCheckConstraint("CK_Deliverers_MaxAmountOfOrders_Positive", "\"MaxAmountOfOrders\" >= 0"));
     }
 }
