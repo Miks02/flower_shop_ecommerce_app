@@ -1,3 +1,4 @@
+using FlowerShop.Domain.Entities.Carts;
 using FlowerShop.Domain.Entities.Deliverers;
 using FlowerShop.Domain.Entities.Products;
 using FlowerShop.Domain.Enums;
@@ -19,4 +20,5 @@ public class User : Microsoft.AspNetCore.Identity.IdentityUser
     public ICollection<Product> Products { get; set; } = new List<Product>();
 
     public Deliverer? Deliverer { get; set; }
+    public Cart? Cart { get; set; }
 }
