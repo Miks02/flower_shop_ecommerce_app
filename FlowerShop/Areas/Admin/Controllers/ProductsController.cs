@@ -159,7 +159,7 @@ public class ProductsController(
     [HttpGet]
     public async Task<IActionResult> Edit(int id, CancellationToken ct = default)
     {
-        var productResult = await getProductByIdHandler.Handle(232323, ct);
+        var productResult = await getProductByIdHandler.Handle(id, ct);
         if(!productResult.IsSuccess)
         {
             Response.ShowError("Traženi proizvod nije pronadjen");
