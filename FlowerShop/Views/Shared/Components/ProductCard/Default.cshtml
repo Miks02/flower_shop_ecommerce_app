@@ -43,14 +43,31 @@
         </div>
                         
         <div >
-            <button 
-                disabled="@(!User.IsInRole("User") || !Model.IsAvailable)"
-                class="flex gap-5 items-center text-white font-semibold  bg-green-600 w-[80%] rounded-xl py-3 px-3 mx-auto shadow-all hover:scale-105 transition-all hover:opacity-80 duration-200 will-change-transform disabled:opacity-70 disabled:pointer-events-none">
-                <div class="flex w-full h-full items-center justify-center gap-5 transform">
-                    <h2 class="text-center">Dodaj u korpu</h2>
-                    <i class="fa-solid fa-cart-plus"></i>
-                </div>
-            </button>
+            @if (User.IsInRole("User") && Model.IsAvailable)
+            {
+                <form hx-post="@Url.Action("Add", "Cart")" hx-swap="none">
+                    <input type="hidden" name="productId" value="@Model.Id" />
+                    <button
+                        type="submit"
+                        class="flex gap-5 items-center text-white font-semibold  bg-green-600 w-[80%] rounded-xl py-3 px-3 mx-auto shadow-all hover:scale-105 transition-all hover:opacity-80 duration-200 will-change-transform">
+                        <div class="flex w-full h-full items-center justify-center gap-5 transform">
+                            <h2 class="text-center">Dodaj u korpu</h2>
+                            <i class="fa-solid fa-cart-plus"></i>
+                        </div>
+                    </button>
+                </form>
+            }
+            else
+            {
+                <button 
+                    disabled
+                    class="flex gap-5 items-center text-white font-semibold  bg-green-600 w-[80%] rounded-xl py-3 px-3 mx-auto shadow-all hover:scale-105 transition-all hover:opacity-80 duration-200 will-change-transform disabled:opacity-70 disabled:pointer-events-none">
+                    <div class="flex w-full h-full items-center justify-center gap-5 transform">
+                        <h2 class="text-center">Dodaj u korpu</h2>
+                        <i class="fa-solid fa-cart-plus"></i>
+                    </div>
+                </button>
+            }
                             
         </div>
 

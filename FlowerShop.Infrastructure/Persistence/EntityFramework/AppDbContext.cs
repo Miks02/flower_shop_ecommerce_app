@@ -1,3 +1,4 @@
+using FlowerShop.Domain.Entities.Carts;
 using FlowerShop.Domain.Entities.Categories;
 using FlowerShop.Domain.Entities.Deliverers;
 using FlowerShop.Domain.Entities.Flowers;
@@ -20,6 +21,8 @@ public class AppDbContext(DbContextOptions options) : IdentityDbContext<User>(op
     public DbSet<Flower> Flowers { get; set; }
     public DbSet<Occasion> Occasions { get; set; }
     public DbSet<Deliverer> Deliverers { get; set; }
+    public DbSet<Cart> Carts { get; set; }
+    public DbSet<CartItem> CartItems { get; set; }
     
     protected override void OnModelCreating(ModelBuilder builder)
     {

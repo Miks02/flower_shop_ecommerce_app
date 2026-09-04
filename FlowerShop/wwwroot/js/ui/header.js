@@ -8,6 +8,7 @@ const authMenu = document.getElementById("auth-menu");
 const profileMenu = document.getElementById("profile-menu");
 const searchBar = document.getElementById('searchBar');
 const searchInput = document.getElementById('searchInput');
+const cartMenu = document.getElementById("cart-menu")
 
 header.addEventListener("click", handleHeaderInteractions)
 
@@ -37,6 +38,17 @@ function handleHeaderInteractions (e) {
         toggleOverlay(profileMenu, "translate-x-full");
 
     }
+    else if(e.target.closest(`button[data-menu="cart-open"]`) || e.target.closest(`button[data-menu="cart-close"]`))
+    {
+        e.preventDefault();
+        e.stopPropagation();
+        if (mobileNavbar?.classList.contains("translate-x-0")) {
+            mobileNavbar.classList.remove("translate-x-0");
+            mobileNavbar.classList.add("-translate-x-full");
+        }
+        toggleOverlay(cartMenu, "translate-x-full");
+    }
+
 }
 
 function toggleSearch() {
@@ -90,7 +102,7 @@ const observer = new IntersectionObserver(handleIntersection, {
     rootMargin: "0px",
     root: null
 });
-if(searchInput) {
+if(searchInput && heroSection) {
     searchInput.querySelector('input').addEventListener('input', (e) => {
         const hasText = e.target.value.length > 0;
         updateNavbarClasses({ blur: hasText, shadow: hasText, bg: hasText });

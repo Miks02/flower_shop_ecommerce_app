@@ -8,8 +8,8 @@ public static class FlowerError
     public static Error FlowerAlreadyExists(string identifier = "")
     {
         string message = string.IsNullOrWhiteSpace(identifier)
-            ? "A flower with the same name already exists."
-            : $"A flower with the name '{identifier}' already exists.";
+                    ? "Cvet sa istim nazivom već postoji."
+                    : $"Cvet sa nazivom '{identifier}' već postoji.";
         
         return new Error("FlowerError_AlreadyExists", message);
     }
@@ -17,35 +17,36 @@ public static class FlowerError
     public static Error FlowerNotFound(string identifier = "")   
     {
         string message = string.IsNullOrWhiteSpace(identifier)
-                ? "A flower with the specified identifier does not exist."
-                : $"A flower with the identifier '{identifier}' has not been found.";
+                        ? "Cvet sa navedenim identifikatorom ne postoji."
+                        : $"Cvet sa identifikatorom '{identifier}' nije pronađen.";
         
         return new Error("FlowerError_NotFound", message);
     }
     
     public static Error InsufficientStock(string flowerName, int requestedQuantity, int availableStock)
     {
-        string message = $"Insufficient stock for flower '{flowerName}'. Requested: {requestedQuantity}, Available: {availableStock}.";
-        return new Error("FlowerError_InsufficientStock", message);
-    }
-    public static Error InsufficientStock(IReadOnlyList<int> flowerIds)
-    {
-        string message = $"Insufficient stock for flowers with identifiers {string.Join(", ", flowerIds)}.";
+                string message = $"Nema dovoljno zaliha za cvet '{flowerName}'. Traženo: {requestedQuantity}, dostupno: {availableStock}.";
         return new Error("FlowerError_InsufficientStock", message);
     }
 
-    public static Error FlowersNotFound(IReadOnlyList<int> flowerIds)
-    {
-        string message = $"Flowers with identifiers {string.Join(", ", flowerIds)} not found.";
-        return new Error("FlowerError_NotFound", message);
-    }
+            public static Error InsufficientStock(IReadOnlyList<int> flowerIds)
+            {
+                string message = $"Nema dovoljno zaliha za cvetove sa identifikatorima {string.Join(", ", flowerIds)}.";
+                return new Error("FlowerError_InsufficientStock", message);
+            }
 
-    public static Error FlowerInUse(string identifier = "")
-    {
-        string message = string.IsNullOrWhiteSpace(identifier)
-            ? "The flower is used by one or more products and cannot be deleted."
-            : $"The flower '{identifier}' is used by one or more products and cannot be deleted.";
+            public static Error FlowersNotFound(IReadOnlyList<int> flowerIds)
+            {
+                string message = $"Cvetovi sa identifikatorima {string.Join(", ", flowerIds)} nisu pronađeni.";
+                return new Error("FlowerError_NotFound", message);
+            }
 
-        return new Error("FlowerError_InUse", message);
-    }
+            public static Error FlowerInUse(string identifier = "")
+            {
+                string message = string.IsNullOrWhiteSpace(identifier)
+                    ? "Cvet se koristi u jednom ili više proizvoda i ne može se obrisati."
+                    : $"Cvet '{identifier}' se koristi u jednom ili više proizvoda i ne može se obrisati.";
+
+                return new Error("FlowerError_InUse", message);
+            }
 }

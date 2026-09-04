@@ -35,9 +35,14 @@
                 
                 @if (isAuthenticated && !isStaff)
                 {
-                    <a href="#" class="fw-bolder text-xl md:text-lg ">
+                    <button type="button"
+                            data-menu="cart-open"
+                            hx-get="@Url.Action("Menu", "Cart")"
+                            hx-target="#cart-menu"
+                            hx-swap="innerHTML"
+                            class="fw-bolder text-xl md:text-lg">
                         <i class="fa-solid fa-cart-shopping text-green-400 transition-all hover:text-green-600 duration-600"></i>
-                    </a>
+                    </button>
                     <a href="#" class="hidden sm:block fw-bolder text-xl md:text-lg ">
                         <i class="fa-solid fa-bell text-yellow-400 transition-all hover:text-yellow-600 duration-600"></i>
                     </a>
@@ -104,10 +109,15 @@
                 @if (isAuthenticated && !isStaff)
                 {
                     <li>
-                        <a asp-area="" class="group flex items-center mx-2 py-2 px-3 rounded-lg transition-all duration-300 hover:bg-green-500/10">
+                        <button type="button"
+                                data-menu="cart-open"
+                                hx-get="@Url.Action("Menu", "Cart")"
+                                hx-target="#cart-menu"
+                                hx-swap="innerHTML"
+                                class="group flex items-center w-full mx-2 py-2 px-3 rounded-lg transition-all duration-300 hover:bg-green-500/10">
                             <i class="fa-solid fa-cart-shopping mr-5 text-green-400 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:text-green-300"></i>
                             <span class="transition-colors duration-300 group-hover:text-green-200">Korpa</span>
-                        </a>
+                        </button>
                     </li> 
                     
                     <li>
@@ -182,6 +192,9 @@
                 
             <partial name="_ProfileMenu" />
                 
+        </div>  
+        
+        <div id="cart-menu" class="fixed top-0 right-0 h-screen w-screen sm:w-[300px] bg-red-900/85 shadow-all translate-x-full backdrop-blur-xl transition-all duration-200 z-50">
         </div>  
     }
     else if (!isAuthenticated)

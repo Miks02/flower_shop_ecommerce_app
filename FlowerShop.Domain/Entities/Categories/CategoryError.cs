@@ -7,8 +7,8 @@ public static class CategoryError
     public static Error CategoryAlreadyExists(string name = "")
     {
         string message = string.IsNullOrWhiteSpace(name)
-            ? "A category with the same name already exists."
-            : $"A category with the name '{name}' already exists.";
+                    ? "Kategorija sa istim nazivom već postoji."
+                    : $"Kategorija sa nazivom '{name}' već postoji.";
         
         return new Error("CategoryError_AlreadyExists", message);
     }
@@ -17,8 +17,8 @@ public static class CategoryError
     public static Error CategoryNotFound(string identifier = "")    
     {
         string message = string.IsNullOrWhiteSpace(identifier)
-                ? "A category with the specified identifier does not exist."
-                : $"A category with the identifier '{identifier}' has not been found.";
+                        ? "Kategorija sa navedenim identifikatorom ne postoji."
+                        : $"Kategorija sa identifikatorom '{identifier}' nije pronađena.";
         
         return new Error("CategoryNotFound", message);
     }
