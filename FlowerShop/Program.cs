@@ -3,8 +3,6 @@ using FlowerShop.Application;
 using FlowerShop.Infrastructure.Extensions;
 using FlowerShop.Infrastructure.Htmx;
 using FlowerShop.Web.Helpers;
-using FlowerShop.Web.Services.Interfaces;
-using FlowerShop.Web.Services.Mock;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using Serilog;
@@ -19,11 +17,6 @@ builder.Host.UseSerilog((context, config) => config.ReadFrom.Configuration(conte
 builder.Services.AddInfrastructure(builder.Configuration);
 
 builder.Services.AddHttpContextAccessor();
-
-builder.Services
-    .AddScoped<IProductService, MockProductService>()
-    .AddScoped<ICategoryService, MockCategoryService>()
-    .AddScoped<IOccasionService, MockOccasionService>();
 
 builder.Services.AddControllersWithViews(options =>
     {
