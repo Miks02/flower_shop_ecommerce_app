@@ -6,18 +6,18 @@ public static class DelivererError
 {
     public static Error NotFound(string? id = null) 
         => string.IsNullOrWhiteSpace(id) 
-            ? new Error("DelivererError_NotFound", "Deliverer not found.") 
-            : new Error("DelivererError_NotFound", $"Deliverer with id '{id}' was not found.");
+                ? new Error("DelivererError_NotFound", "Dostavljač nije pronađen.") 
+                : new Error("DelivererError_NotFound", $"Dostavljač sa identifikatorom '{id}' nije pronađen.");
     
     public static Error DelivererUnavailable(string? id = null) 
         => string.IsNullOrWhiteSpace(id) 
-            ? new Error("DelivererError_Unavailable", "Deliverer is unavailable at the moment.") 
-            : new Error("DelivererError_Unavailable", $"Deliverer with id '{id}' is unavailable at the moment.");
+                ? new Error("DelivererError_Unavailable", "Dostavljač trenutno nije dostupan.") 
+                : new Error("DelivererError_Unavailable", $"Dostavljač sa identifikatorom '{id}' trenutno nije dostupan.");
     
     public static Error MinAmountOfProductsNotReached(string? id = null) 
         => string.IsNullOrWhiteSpace(id) 
-            ? new Error("DelivererError_MinProductsNotReached", "Deliverer has not reached the minimum amount of products.") 
-            : new Error("DelivererError_MinProductsNotReached", $"Deliverer with id '{id}' has not reached the minimum amount of products.");
+                ? new Error("DelivererError_MinProductsNotReached", "Dostavljač nije dostigao minimalan broj proizvoda.") 
+                : new Error("DelivererError_MinProductsNotReached", $"Dostavljač sa identifikatorom '{id}' nije dostigao minimalan broj proizvoda.");
 
     public static Error CannotDeleteWhileOnDuty(string? id = null)
         => string.IsNullOrWhiteSpace(id)

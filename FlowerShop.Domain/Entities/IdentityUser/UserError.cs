@@ -7,8 +7,8 @@ public class UserError
     public static Error EmailAlreadyExists(string email = "")
     {
         string message = string.IsNullOrWhiteSpace(email)
-            ? "Email is taken"
-            : $"Email '{email}' is taken";
+                    ? "Email adresa je zauzeta."
+                    : $"Email adresa '{email}' je zauzeta.";
             
         return new Error("User.EmailAlreadyExists", message);
     }
@@ -16,8 +16,8 @@ public class UserError
     public static Error UsernameAlreadyExists(string username = "")
     {
         string message = string.IsNullOrWhiteSpace(username)
-            ? "Username is taken"
-            : $"Email is {username}";
+                    ? "Korisničko ime je zauzeto."
+                    : $"Korisničko ime '{username}' je zauzeto.";
 
         return new Error("User.UsernameAlreadyExists", message);
     }
@@ -25,8 +25,8 @@ public class UserError
     public static Error NotFound(string identifier = "")
     {
         string message = string.IsNullOrWhiteSpace(identifier)
-            ? "User not found"
-            : $"User with identifier '{identifier}' is not found";
+                    ? "Korisnik nije pronađen."
+                    : $"Korisnik sa identifikatorom '{identifier}' nije pronađen.";
 
         return new Error("User.NotFound", message);
     }
