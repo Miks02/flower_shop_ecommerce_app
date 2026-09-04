@@ -4,6 +4,7 @@ using FlowerShop.Domain.Entities.Deliverers;
 using FlowerShop.Domain.Entities.Flowers;
 using FlowerShop.Domain.Entities.IdentityUser;
 using FlowerShop.Domain.Entities.Ocassions;
+using FlowerShop.Domain.Entities.Orders;
 using FlowerShop.Domain.Entities.ProductFlowers;
 using FlowerShop.Domain.Entities.Products;
 using Microsoft.AspNetCore.Identity;
@@ -23,6 +24,8 @@ public class AppDbContext(DbContextOptions options) : IdentityDbContext<User>(op
     public DbSet<Deliverer> Deliverers { get; set; }
     public DbSet<Cart> Carts { get; set; }
     public DbSet<CartItem> CartItems { get; set; }
+    public DbSet<Order> Orders { get; set; }
+    public DbSet<OrderItem> OrderItems { get; set; }
     
     protected override void OnModelCreating(ModelBuilder builder)
     {
