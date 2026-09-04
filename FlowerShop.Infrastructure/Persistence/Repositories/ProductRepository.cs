@@ -83,6 +83,74 @@ public class ProductRepository : Repository<Product>, IProductRepository
         return new PagedResult<ProductDto>(productList, page, pageSize, totalCount, productList.Count);
 
     }
+    
+    public async Task<PagedResult<ProductDto>> GetPagedProductsAsync(
+        string? sortBy,
+        int page, 
+        int pageSize, 
+        IReadOnlyList<int> categoryIds,
+        IReadOnlyList<int> occasionIds,
+        int priceRange,
+        CancellationToken ct = default)
+    {
+        var query = _context.Products
+            .IgnoreQueryFilters();
+
+        query = query.Where(p => !p.IsDeleted);
+        
+        if(categoryIds.Any())
+            query = query.Where(p => categoryIds.Contains(p.CategoryId));
+        
+        query = sortBy switch
+        {
+            "name_asc" => query.OrderBy(p => p.Name),
+            "name_desc" => query.OrderByDescending(p => p.Name),
+            "price_asc" => query.OrderBy(p => p.Price),
+            "price_desc" => query.OrderByDescending(p => p.Price),
+            "stock_asc" => query.OrderBy(p => p.Stock),
+            "stock_desc" => query.OrderByDescending(p => p.Stock),
+            _ => query.OrderBy(p => p.Id)
+        };
+        
+        if(occasionIds.Any())
+            query = query.Where(p => p.Occasions.Any(o => occasionIds.Contains(o.Id)));
+        
+        if(priceRange > 0)
+            query = query.Where(p => p.Price <= priceRange);
+        
+        var productList = await query
+            .Skip((page - 1) * pageSize)
+            .Take(pageSize)
+            .Select(p => new ProductDto
+            {
+                Id = p.Id,
+                Name = p.Name,
+                Price = p.Price,
+                PromoPrice = p.PromoPrice,
+                DiscountType = p.DiscountType,
+                Stock = p.Stock,
+                Description = p.Description,
+                CategoryName = p.Category.Name,
+                Occasions = p.Occasions.Select(o => o.Name).ToList(),
+                ProductFlowers = p.ProductFlowers.Select(pf => new ProductFlowerDto
+                {
+                    ProductId = pf.ProductId,
+                    ProductName = p.Name,
+                    FlowerId = pf.FlowerId,
+                    FlowerName = pf.Flower.Name,
+                    Quantity = pf.Quantity
+                }).ToList(),
+                ProductImage = p.ImageUrl,
+                IsDeleted = p.IsDeleted,
+                CreatedAt = p.CreatedAt,
+            })
+            .ToListAsync(ct);
+        
+        var totalCount = await _context.Products.Where(p => !p.IsDeleted).CountAsync(ct);
+
+        return new PagedResult<ProductDto>(productList, page, pageSize, totalCount, productList.Count);
+
+    }
 
     public async Task<Product?> GetByIdAsync(int id, CancellationToken ct = default)
     {
