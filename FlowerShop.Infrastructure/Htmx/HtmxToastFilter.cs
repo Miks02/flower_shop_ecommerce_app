@@ -1,6 +1,9 @@
 using System.Text.Json;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.AspNetCore.Mvc.Routing;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace FlowerShop.Infrastructure.Htmx;
 
@@ -61,6 +64,7 @@ public class HtmxToastFilter : IActionFilter, IResultFilter
                 {
                     controller.TempData[HtmxToastExtensions.ToastTempDataKey] = JsonSerializer.Serialize(toast, _jsonSerializerOptions);
                 }
+                
             }
             else if (context.Controller is Controller controller)
             {
@@ -72,4 +76,6 @@ public class HtmxToastFilter : IActionFilter, IResultFilter
     public void OnResultExecuted(ResultExecutedContext context)
     {
     }
+
+   
 }
