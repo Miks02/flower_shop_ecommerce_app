@@ -22,6 +22,60 @@ namespace FlowerShop.Infrastructure.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("FlowerShop.Domain.Entities.Carts.Cart", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId")
+                        .IsUnique();
+
+                    b.ToTable("Carts");
+                });
+
+            modelBuilder.Entity("FlowerShop.Domain.Entities.Carts.CartItem", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("CartId")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("Price")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductId");
+
+                    b.HasIndex("CartId", "ProductId")
+                        .IsUnique();
+
+                    b.ToTable("CartItems", t =>
+                        {
+                            t.HasCheckConstraint("CK_CartItems_Quantity_Positive", "Quantity >= 1");
+                        });
+                });
+
             modelBuilder.Entity("FlowerShop.Domain.Entities.Categories.Category", b =>
                 {
                     b.Property<int>("Id")
@@ -661,6 +715,36 @@ namespace FlowerShop.Infrastructure.Migrations
                     b.ToTable("OccasionProduct");
                 });
 
+            modelBuilder.Entity("FlowerShop.Domain.Entities.Carts.Cart", b =>
+                {
+                    b.HasOne("FlowerShop.Domain.Entities.IdentityUser.User", "User")
+                        .WithOne("Cart")
+                        .HasForeignKey("FlowerShop.Domain.Entities.Carts.Cart", "UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("FlowerShop.Domain.Entities.Carts.CartItem", b =>
+                {
+                    b.HasOne("FlowerShop.Domain.Entities.Carts.Cart", "Cart")
+                        .WithMany("Items")
+                        .HasForeignKey("CartId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("FlowerShop.Domain.Entities.Products.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Cart");
+
+                    b.Navigation("Product");
+                });
+
             modelBuilder.Entity("FlowerShop.Domain.Entities.Deliverers.Deliverer", b =>
                 {
                     b.HasOne("FlowerShop.Domain.Entities.IdentityUser.User", "User")
@@ -776,6 +860,11 @@ namespace FlowerShop.Infrastructure.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("FlowerShop.Domain.Entities.Carts.Cart", b =>
+                {
+                    b.Navigation("Items");
+                });
+
             modelBuilder.Entity("FlowerShop.Domain.Entities.Categories.Category", b =>
                 {
                     b.Navigation("Products");
@@ -788,6 +877,8 @@ namespace FlowerShop.Infrastructure.Migrations
 
             modelBuilder.Entity("FlowerShop.Domain.Entities.IdentityUser.User", b =>
                 {
+                    b.Navigation("Cart");
+
                     b.Navigation("Deliverer");
 
                     b.Navigation("Products");
