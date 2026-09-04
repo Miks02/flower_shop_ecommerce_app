@@ -1,3 +1,4 @@
+using FlowerShop.Domain.Entities.Deliverers;
 using FlowerShop.Domain.Entities.IdentityUser;
 
 namespace FlowerShop.Domain.Entities.Orders;
@@ -22,6 +23,10 @@ public class Order
 
     public User User { get; set; } = null!;
     public string UserId { get; set; } = null!;
+    
+    public Deliverer? Deliverer { get; set; }
+    public string? DelivererId { get; set; }
+    
     public ICollection<OrderItem> OrderItems { get; set; } = [];
     
     public decimal OrderPrice => OrderItems.Sum(oi => oi.TotalPrice);

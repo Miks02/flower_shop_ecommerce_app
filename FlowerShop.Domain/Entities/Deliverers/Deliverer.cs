@@ -1,4 +1,5 @@
 using FlowerShop.Domain.Entities.IdentityUser;
+using FlowerShop.Domain.Entities.Orders;
 
 namespace FlowerShop.Domain.Entities.Deliverers;
 
@@ -9,6 +10,8 @@ public class Deliverer
     public VehicleType VehicleType { get; set; }
     
     public User User { get; set; } = null!;
+
+    public ICollection<Order> Orders { get; set; } = [];
 
     public int MinAmountOfProducts()
     {

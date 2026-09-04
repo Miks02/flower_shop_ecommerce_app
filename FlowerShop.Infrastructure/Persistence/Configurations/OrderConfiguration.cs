@@ -62,6 +62,11 @@ public class OrderConfiguration : IEntityTypeConfiguration<Order>
             .WithMany(u => u.Orders)
             .HasForeignKey(o => o.UserId)
             .OnDelete(DeleteBehavior.Restrict);
+        
+        builder.HasOne(o => o.Deliverer)
+            .WithMany(d => d.Orders)
+            .HasForeignKey(o => o.DelivererId)
+            .OnDelete(DeleteBehavior.Restrict);
 
         builder.HasIndex(o => o.OrderNumber)
             .IsUnique();
