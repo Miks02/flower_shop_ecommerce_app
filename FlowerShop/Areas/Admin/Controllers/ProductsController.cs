@@ -81,9 +81,9 @@ public class ProductsController(
             Occasions = summary.Occasions,
             PagedProducts = vm
         };
+        
         if (Request.IsHtmx())
         {
-
             return PartialView("_ProductsPage", summaryVm);
         }
         
@@ -159,7 +159,7 @@ public class ProductsController(
     [HttpGet]
     public async Task<IActionResult> Edit(int id, CancellationToken ct = default)
     {
-        var productResult = await getProductByIdHandler.Handle(id, ct);
+        var productResult = await getProductByIdHandler.Handle(232323, ct);
         if(!productResult.IsSuccess)
         {
             Response.ShowError("Traženi proizvod nije pronadjen");
@@ -258,10 +258,7 @@ public class ProductsController(
             };
             return PartialView("_ProductsForm", vm);
         }
-
-        Response.ShowSuccess("Proizvod je uspešno dodat");
         return RedirectToAction("Index");
-
     }
 
     [HttpPost]
@@ -329,7 +326,6 @@ public class ProductsController(
             return PartialView("_ProductsForm", vm);
         }
 
-        Response.ShowSuccess("Proizvod je uspešno ažuriran");
         return RedirectToAction("Index");
     }
 
