@@ -1,6 +1,6 @@
-namespace FlowerShop.Application.Features.Catalogue.Queries;
+namespace FlowerShop.Application.Features.Catalogue.Queries.GetCatalog;
 
-public record GetCatalogSummaryQuery
+public record GetCatalogQuery
 {
     public int PriceRange { get; set; }
     public List<int> OccasionIds { get; set; } = [];
@@ -8,4 +8,5 @@ public record GetCatalogSummaryQuery
     public int Page { get; set; } = 1;
     public int PageSize { get; set; } = 15;
     public string Sort { get; set; } = "name_asc";
-}
+
+};

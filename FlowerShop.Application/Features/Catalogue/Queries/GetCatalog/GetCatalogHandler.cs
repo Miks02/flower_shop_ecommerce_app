@@ -2,7 +2,7 @@ using FlowerShop.Application.Common.Abstractions;
 using FlowerShop.Domain.Entities.Products;
 using FlowerShop.SharedKernel.Results;
 
-namespace FlowerShop.Application.Features.Catalogue.Queries;
+namespace FlowerShop.Application.Features.Catalogue.Queries.GetCatalog;
 
 public class GetCatalogHandler(IProductRepository productRepo) : IHandler
 {

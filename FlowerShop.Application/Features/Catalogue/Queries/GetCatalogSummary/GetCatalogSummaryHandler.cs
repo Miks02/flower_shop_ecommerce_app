@@ -1,8 +1,9 @@
 using FlowerShop.Application.Common.Abstractions;
+using FlowerShop.Application.Features.Catalogue.Queries.GetCatalog;
 using FlowerShop.Domain.Entities.Categories;
 using FlowerShop.Domain.Entities.Ocassions;
 
-namespace FlowerShop.Application.Features.Catalogue.Queries;
+namespace FlowerShop.Application.Features.Catalogue.Queries.GetCatalogSummary;
 
 public class GetCatalogSummaryHandler(
     GetCatalogHandler getCatalogHandler,

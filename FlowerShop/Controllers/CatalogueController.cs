@@ -1,4 +1,5 @@
-using FlowerShop.Application.Features.Catalogue.Queries;
+using FlowerShop.Application.Features.Catalogue.Queries.GetCatalog;
+using FlowerShop.Application.Features.Catalogue.Queries.GetCatalogSummary;
 using FlowerShop.Web.ViewModels;
 using Htmx;
 using Microsoft.AspNetCore.Mvc;

@@ -3,7 +3,7 @@ using FlowerShop.Domain.Entities.Ocassions;
 using FlowerShop.Domain.Entities.Products;
 using FlowerShop.SharedKernel.Results;
 
-namespace FlowerShop.Application.Features.Catalogue.Queries;
+namespace FlowerShop.Application.Features.Catalogue.Queries.GetCatalogSummary;
 
 public record GetCatalogSummaryResponse
 {

@@ -1,4 +1,5 @@
 using FlowerShop.Application.Features.Catalogue.Queries;
+using FlowerShop.Application.Features.Catalogue.Queries.GetCatalog;
 using FlowerShop.Domain.Entities.Categories;
 using FlowerShop.Domain.Entities.Ocassions;
 using FlowerShop.Domain.Entities.Products;
