@@ -1,3 +1,4 @@
+using FlowerShop.Application.Common.Abstractions;
 using FlowerShop.Domain.Enums;
 using FlowerShop.Web.ViewModels.Components;
 using Microsoft.AspNetCore.Mvc;
@@ -39,7 +40,7 @@ public class ProductCardViewComponent : ViewComponent
             }
         }
 
-        var vm = new ProductCardViewModel()
+        var vm = new ProductCardViewModel
         {
             Name = name,
             ImageUrl = imageUrl,
@@ -49,7 +50,9 @@ public class ProductCardViewComponent : ViewComponent
             Category = category,
             BadgeColor = badgeColor,
             Badge = badge,
-
+            IsAvailable = isAvailable,
+            IsNew = isNew,
+            
         };
         
         return await Task.FromResult(View("Default", vm));       

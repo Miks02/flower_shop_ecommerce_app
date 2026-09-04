@@ -15,7 +15,5 @@ public class ProductCardViewModel
     public bool IsAvailable { get; set; }
     public bool IsNew { get; set; }
     public bool IsDiscounted => PromoPrice > 0;
-    
-    
 
 }

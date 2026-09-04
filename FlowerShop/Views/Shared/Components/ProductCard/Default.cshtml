@@ -43,7 +43,9 @@
         </div>
                         
         <div >
-            <button class="flex gap-5 items-center text-white font-semibold  bg-green-600 w-[80%] rounded-xl py-3 px-3 mx-auto shadow-all hover:scale-105 transition-all hover:opacity-80 duration-200 will-change-transform">
+            <button 
+                disabled="!@Model.IsAvailable || !@User.IsInRole("User")"
+                class="flex gap-5 items-center text-white font-semibold  bg-green-600 w-[80%] rounded-xl py-3 px-3 mx-auto shadow-all hover:scale-105 transition-all hover:opacity-80 duration-200 will-change-transform disabled:opacity-70 disabled:pointer-events-none">
                 <div class="flex w-full h-full items-center justify-center gap-5 transform">
                     <h2 class="text-center">Dodaj u korpu</h2>
                     <i class="fa-solid fa-cart-plus"></i>
