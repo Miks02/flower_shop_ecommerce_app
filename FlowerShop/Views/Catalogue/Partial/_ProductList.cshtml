@@ -10,6 +10,7 @@
         {
             @await Component.InvokeAsync("ProductCard", new ProductCardViewModel
             {
+                Id = m.Id,
                 Name = m.Name,
                 ImageUrl = m.ProductImage,
                 Price = m.Price,

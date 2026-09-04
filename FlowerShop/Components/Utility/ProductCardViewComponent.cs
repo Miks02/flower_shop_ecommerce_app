@@ -9,6 +9,7 @@ public class ProductCardViewComponent : ViewComponent
 {
     public async Task<IViewComponentResult> InvokeAsync
         (
+            int id,
             string name, 
             string imageUrl, 
             decimal price, 
@@ -42,6 +43,7 @@ public class ProductCardViewComponent : ViewComponent
 
         var vm = new ProductCardViewModel
         {
+            Id = id,
             Name = name,
             ImageUrl = imageUrl,
             Price = price,
