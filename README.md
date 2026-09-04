@@ -102,8 +102,13 @@ FlowerShop.sln
 |   +-- Storage                # Local file storage implementation
 |   +-- Extensions             # DI registration (DependencyInjection.cs)
 |   +-- InfrastructureErrors   # Infrastructure-specific error definitions
-|
-+-- FlowerShop.SharedKernel    # Shared primitives used across all layers
-    +-- Results                # Result<T>, Error, PagedResult
-    +-- ErrorCatalogue         # Centralised error definitions (Auth, General)
-    +-- Extensions             # Shared extension methods
+```
+
+## Screenshots
+
+<img width="800" alt="image" src="https://github.com/user-attachments/assets/c3a0fe98-ab12-42fa-9374-ec579cc93172" />
+
+<img width="800" alt="image" src="https://github.com/user-attachments/assets/de88d959-c426-47ce-b143-3f7da0be478b" />
+
+<img width="800" alt="image" src="https://github.com/user-attachments/assets/bdde25d6-5d2c-49a9-a87a-3fc69e4716e7" />
+
