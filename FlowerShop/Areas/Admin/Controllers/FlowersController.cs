@@ -3,6 +3,7 @@ using FlowerShop.Application.Features.Flowers.Commands.AddFlower;
 using FlowerShop.Application.Features.Flowers.Commands.DeleteFlower;
 using FlowerShop.Application.Features.Flowers.Commands.UpdateFlowerStock;
 using FlowerShop.Application.Features.Flowers.Queries;
+using FlowerShop.Infrastructure.Htmx;
 using FlowerShop.Web.Areas.Admin.Models.Flowers;
 using FluentValidation;
 using Microsoft.AspNetCore.Authorization;
@@ -74,6 +75,7 @@ public class FlowersController(
             return PartialView("_AddFlowerModal", request);
         }
 
+        Response.ShowSuccess("Cvet je uspešno dodat");
         var listVm = await BuildFlowerSelectionListViewModel(request.SelectedFlowersJson, ct);
         return PartialView("_FlowerSelectionListOob", listVm);
     }
@@ -83,7 +85,10 @@ public class FlowersController(
     {
         var flowerResult = await getFlowerByIdHandler.Handle(id, ct);
         if (!flowerResult.IsSuccess)
-            return NotFound();
+        {
+            Response.ShowError("Traženi cvet nije pronađen");
+            return RedirectToAction("Index", "Products");
+        }
 
         var vm = new UpdateFlowerStockViewModel
         {
@@ -119,7 +124,10 @@ public class FlowersController(
         if (!result.IsSuccess)
         {
             if (result.Errors.Any(e => e.Code.Equals("FlowerError_NotFound")))
-                return NotFound();
+            {
+                Response.ShowError("Traženi cvet nije pronađen");
+                return RedirectToAction("Index", "Products");
+            }
 
             foreach (var error in result.Errors)
                 ModelState.AddModelError(string.Empty, error.Description);
@@ -127,6 +135,7 @@ public class FlowersController(
             return PartialView("_UpdateFlowerStockModal", request);
         }
 
+        Response.ShowSuccess("Stanje cveta je uspešno ažurirano");
         var listVm = await BuildFlowerSelectionListViewModel(request.SelectedFlowersJson, ct);
         return PartialView("_FlowerSelectionListOob", listVm);
     }
@@ -141,7 +150,10 @@ public class FlowersController(
         if (!result.IsSuccess)
         {
             if (result.Errors.Any(e => e.Code.Equals("FlowerError_NotFound")))
-                return NotFound();
+            {
+                Response.ShowError("Traženi cvet nije pronađen");
+                return RedirectToAction("Index", "Products");
+            }
 
             var flowerResult = await getFlowerByIdHandler.Handle(id, ct);
 
@@ -159,6 +171,7 @@ public class FlowersController(
             return PartialView("_UpdateFlowerStockModal", vm);
         }
 
+        Response.ShowSuccess("Cvet je uspešno obrisan");
         var deletedListVm = await BuildFlowerSelectionListViewModel(selectedFlowersJson, ct);
         return PartialView("_FlowerSelectionListOob", deletedListVm);
     }

@@ -1,6 +1,7 @@
 using System.Reflection;
 using FlowerShop.Application;
 using FlowerShop.Infrastructure.Extensions;
+using FlowerShop.Infrastructure.Htmx;
 using FlowerShop.Web.Helpers;
 using FlowerShop.Web.Services.Interfaces;
 using FlowerShop.Web.Services.Mock;
@@ -24,7 +25,10 @@ builder.Services
     .AddScoped<ICategoryService, MockCategoryService>()
     .AddScoped<IOccasionService, MockOccasionService>();
 
-builder.Services.AddControllersWithViews()
+builder.Services.AddControllersWithViews(options =>
+    {
+        options.Filters.Add<HtmxToastFilter>();
+    })
     .AddMvcOptions(options =>
     {
         options.ModelValidatorProviders.Clear();

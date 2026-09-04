@@ -1,4 +1,5 @@
 using FlowerShop.Application.Common.Abstractions;
+using FlowerShop.Infrastructure.Htmx;
 using FlowerShop.Infrastructure.Identity;
 using FlowerShop.Infrastructure.Persistence.EntityFramework;
 using FlowerShop.Infrastructure.Storage;
@@ -15,6 +16,7 @@ public static class DependencyInjection
         services.AddIdentity();
         services.AddHandlers();
         services.AddInfrastructureServices();
+        services.AddScoped<HtmxToastFilter>();
     }
 
     public static void AddHandlers(this IServiceCollection services)

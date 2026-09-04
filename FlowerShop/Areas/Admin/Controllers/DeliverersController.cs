@@ -7,6 +7,7 @@ using FlowerShop.Application.Features.Deliverers.Queries.GetDelivererById;
 using FlowerShop.Application.Features.Deliverers.Queries.GetDeliverers;
 using FlowerShop.Application.Features.Deliverers.Queries.GetDeliverersSummary;
 using FlowerShop.Domain.Entities.Deliverers;
+using FlowerShop.Infrastructure.Htmx;
 using FlowerShop.SharedKernel.Results;
 using FlowerShop.Web.Areas.Admin.Models.Deliverers;
 using Htmx;
@@ -179,6 +180,7 @@ public class DeliverersController(
             return PartialView("_DeliverersForm", request);
         }
 
+        Response.ShowSuccess("Dostavljač je uspešno registrovan");
         return RedirectToAction("Index");
     }
 
@@ -187,7 +189,10 @@ public class DeliverersController(
     {
         var delivererResult = await getDelivererByIdHandler.Handle(id, ct);
         if (!delivererResult.IsSuccess)
-            return NotFound();
+        {
+            Response.ShowError("Traženi dostavljač nije pronađen");
+            return RedirectToAction("Index");
+        }
 
         var deliverer = delivererResult.Payload!;
 
@@ -234,7 +239,10 @@ public class DeliverersController(
         if (!result.IsSuccess)
         {
             if (result.Errors.Any(e => e.Code.Equals("DelivererError_NotFound", StringComparison.OrdinalIgnoreCase) || e.Code.Equals("Deliverer.NotFound", StringComparison.OrdinalIgnoreCase)))
-                return NotFound();
+            {
+                Response.ShowError("Traženi dostavljač nije pronađen");
+                return RedirectToAction("Index");
+            }
 
             foreach (var error in result.Errors)
             {
@@ -247,6 +255,7 @@ public class DeliverersController(
             return PartialView("_DeliverersForm", request);
         }
 
+        Response.ShowSuccess("Dostavljač je uspešno ažuriran");
         return RedirectToAction("Index");
     }
 
@@ -255,7 +264,10 @@ public class DeliverersController(
     {
         var delivererResult = await getDelivererByIdHandler.Handle(id, ct);
         if (!delivererResult.IsSuccess)
-            return NotFound();
+        {
+            Response.ShowError("Traženi dostavljač nije pronađen");
+            return RedirectToAction("Index");
+        }
 
         return PartialView("_DeleteDelivererModal", delivererResult.Payload);
     }
@@ -278,8 +290,13 @@ public class DeliverersController(
         if (!result.IsSuccess)
         {
             if (result.Errors.Any(e => e.Code.Equals("DelivererError_NotFound", StringComparison.OrdinalIgnoreCase) || e.Code.Equals("Deliverer.NotFound", StringComparison.OrdinalIgnoreCase)))
-                return NotFound();
+            {
+                Response.ShowError("Traženi dostavljač nije pronađen");
+                return RedirectToAction("Index");
+            }
         }
+
+        Response.ShowSuccess("Dostavljač je uspešno obrisan");
 
         if (Request.IsHtmx())
         {
@@ -308,8 +325,13 @@ public class DeliverersController(
         if (!result.IsSuccess)
         {
             if (result.Errors.Any(e => e.Code.Equals("DelivererError_NotFound", StringComparison.OrdinalIgnoreCase) || e.Code.Equals("Deliverer.NotFound", StringComparison.OrdinalIgnoreCase)))
-                return NotFound();
+            {
+                Response.ShowError("Traženi dostavljač nije pronađen");
+                return RedirectToAction("Index");
+            }
         }
+
+        Response.ShowSuccess("Status dostavljača je uspešno ažuriran");
 
         if (Request.IsHtmx())
         {

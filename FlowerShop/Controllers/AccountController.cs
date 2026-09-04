@@ -1,5 +1,4 @@
-using System.Security.Claims;
-using Azure;
+
 using FlowerShop.Application.Common.Abstractions;
 using FlowerShop.Application.Features.Auth.Commands.Login;
 using FlowerShop.Application.Features.Auth.Commands.Logout;
@@ -7,13 +6,14 @@ using FlowerShop.Application.Features.Auth.Commands.RegisterUser;
 using FlowerShop.Application.Features.Users.Commands.RemoveProfilePicture;
 using FlowerShop.Application.Features.Users.Commands.UpdatePassword;
 using FlowerShop.Application.Features.Users.Commands.UpdateProfile;
+using FlowerShop.Infrastructure.Htmx;
 using Microsoft.AspNetCore.Mvc;
 using FlowerShop.Web.ViewModels.Components;
 using Microsoft.AspNetCore.Authorization;
 
 namespace FlowerShop.Web.Controllers;
 
- public class AccountController : BaseController
+ public class AccountController : Controller
     {
         private readonly RegisterUserHandler _registerUserHandler;
         private readonly LoginHandler _loginHandler;
@@ -29,7 +29,6 @@ namespace FlowerShop.Web.Controllers;
         private readonly string _profileSettingsComponent = "~/Views/Shared/Components/Settings/Default.cshtml";
 
         public AccountController(
-            ILogger<BaseController> logger,
             LoginHandler loginHandler,
             RegisterUserHandler registerUserHandler,
             LogoutHandler logoutHandler,
@@ -37,7 +36,7 @@ namespace FlowerShop.Web.Controllers;
             UpdatePasswordHandler updatePasswordHandler,
             IUserProvider userProvider,
             RemoveProfilePictureHandler removeProfilePictureHandler
-            ) : base(logger)
+            ) 
         {
             _registerUserHandler = registerUserHandler;
             _loginHandler = loginHandler;
@@ -163,8 +162,8 @@ namespace FlowerShop.Web.Controllers;
                 string errorMessage = string.Empty;
                 foreach (var error in result.Errors!)
                     errorMessage += " " + error.Description;
-                
-                SetErrorMessage(errorMessage);
+
+                Response.ShowError(errorMessage);
                 return PartialView(_profileSettingsComponent, model);
             }
 
@@ -185,13 +184,13 @@ namespace FlowerShop.Web.Controllers;
                     string errorMessage = string.Empty;
                     foreach (var error in passwordResult.Errors!)
                         errorMessage += " " + error.Description;
-                    
-                    SetErrorMessage(errorMessage);
+
+                    Response.ShowError(errorMessage);
                     return PartialView(_profileSettingsComponent, model);
                 }
             }
-            
-            SetSuccessMessage("Profil je uspesno ažuriran");
+
+            Response.ShowSuccess("Profil je uspešno ažuriran");
             Response.Headers.Append("HX-Redirect", "/User/Profile/Settings");
             return Ok();
         }
@@ -204,11 +203,11 @@ namespace FlowerShop.Web.Controllers;
         
             if (!result.IsSuccess)
             {
-                SetErrorMessage("Došlo je do greške prilikom brisanja profilne slike");
+                Response.ShowError("Došlo je do greške prilikom brisanja profilne slike");
                 return ViewComponent("Settings");
             }
-            
-            SetSuccessMessage("Profilna slika je uspešno obrisana!");
+
+            Response.ShowSuccess("Profilna slika je uspešno obrisana");
             return ViewComponent("Settings");
         
         }

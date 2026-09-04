@@ -1,21 +1,19 @@
+using System.Security.Claims;
 using FlowerShop.Application.Features.Flowers.Queries;
 using FlowerShop.Application.Features.Products.Commands.AddProduct;
 using FlowerShop.Application.Features.Products.Commands.ArchiveProduct;
 using FlowerShop.Application.Features.Products.Commands.DeleteProduct;
 using FlowerShop.Application.Features.Products.Commands.UpdateProduct;
+using FlowerShop.Application.Features.Products.Queries.GetProductById;
 using FlowerShop.Application.Features.Products.Queries.GetProductReferenceData;
 using FlowerShop.Application.Features.Products.Queries.GetProducts;
 using FlowerShop.Application.Features.Products.Queries.GetProductsSummary;
-using FlowerShop.Domain.Entities.Products;
+using FlowerShop.Infrastructure.Htmx;
 using FlowerShop.SharedKernel.Results;
-using FluentValidation;
+using FlowerShop.Web.Areas.Admin.Models.Products;
 using Htmx;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Security.Claims;
-using FlowerShop.Application.Features.Products.Queries.GetProductById;
-using FlowerShop.Domain.Entities.Flowers;
-using FlowerShop.Web.Areas.Admin.Models.Products;
 using AddFlowerItemDto = FlowerShop.Application.Features.Products.Commands.AddProduct.FlowerItemDto;
 using UpdateFlowerItemDto = FlowerShop.Application.Features.Products.Commands.UpdateProduct.FlowerItemDto;
 
@@ -32,8 +30,7 @@ public class ProductsController(
     AddProductHandler addProductHandler,
     UpdateProductHandler updateProductHandler,
     DeleteProductHandler deleteProductHandler,
-    ArchiveProductHandler archiveProductHandler,
-    IProductRepository productRepo
+    ArchiveProductHandler archiveProductHandler
     ) : Controller
 {
     
@@ -85,8 +82,10 @@ public class ProductsController(
             PagedProducts = vm
         };
         
-        if(Request.IsHtmx())
+        if (Request.IsHtmx())
+        {
             return PartialView("_ProductsPage", summaryVm);
+        }
         
         return View(summaryVm);
     }
@@ -151,19 +150,21 @@ public class ProductsController(
             AvailableCategories = productRefData.Categories,
             AvailableOccasions = productRefData.Occasions
         };
-        
         if(Request.IsHtmx())
             return PartialView("_ProductsForm", vm);
-        
+
         return View(vm);
     }
 
     [HttpGet]
     public async Task<IActionResult> Edit(int id, CancellationToken ct = default)
     {
-        var productResult = await getProductByIdHandler.Handle(id, ct);
+        var productResult = await getProductByIdHandler.Handle(232323, ct);
         if(!productResult.IsSuccess)
-            return NotFound();
+        {
+            Response.ShowError("Traženi proizvod nije pronadjen");
+            return RedirectToAction("Index");
+        }
 
         var product = productResult.Payload;
 
@@ -233,14 +234,14 @@ public class ProductsController(
             return PartialView("_ProductsForm", vm);
         }
         var result = await addProductHandler.Handle(command, ct);
-        
+
         if (!result.IsSuccess)
         {
             if (request.ProductImage != null && request.ProductImage.Length > 0)
                 ModelState.AddModelError("ProductImage", "Molimo vas ponovo unesite sliku proizvoda");
             foreach (var error in result.Errors)
             {
-                if (error.Code.Equals("FlowerError_InsufficientStock")) 
+                if (error.Code.Equals("FlowerError_InsufficientStock"))
                     ModelState.AddModelError("SelectedFlowers", "Neki od izabranih cvetova nisu na stanju");
                 else if (error.Code.Equals("ProductError_ProductAlreadyExists"))
                     ModelState.AddModelError("Name", "Proizvod sa navedenim imenom već postoji");
@@ -257,9 +258,7 @@ public class ProductsController(
             };
             return PartialView("_ProductsForm", vm);
         }
-
         return RedirectToAction("Index");
-
     }
 
     [HttpPost]
@@ -306,8 +305,11 @@ public class ProductsController(
             {
                 if (error.Code.Equals("FlowerError_InsufficientStock"))
                     ModelState.AddModelError("SelectedFlowers", "Neki od izabranih cvetova nisu na stanju");
-                else if (error.Code.Equals("ProductError_ProductNotFound")) 
-                    return RedirectToAction("Index", "Home");
+                else if (error.Code.Equals("ProductError_ProductNotFound"))
+                {
+                    Response.ShowError("Traženi proizvod nije pronađen");
+                    return RedirectToAction("Index");
+                }
                 else if (error.Code.Equals("ProductError_ProductAlreadyExists"))
                     ModelState.AddModelError("Name", "Proizvod sa navedenim imenom već postoji");
                 else
@@ -332,7 +334,10 @@ public class ProductsController(
     {
         var productResult = await getProductByIdHandler.Handle(id, ct);
         if (!productResult.IsSuccess)
-            return NotFound();
+        {
+            Response.ShowError("Traženi proizvod nije pronađen");
+            return RedirectToAction("Index");
+        }
 
         return PartialView("_DeleteProductModal", productResult.Payload);
     }
@@ -354,8 +359,13 @@ public class ProductsController(
         if (!result.IsSuccess)
         {
             if (result.Errors.Any(e => e.Code.Equals("ProductError_ProductNotFound") || e.Code.Equals("ProductError_NotFound")))
-                return NotFound();
+            {
+                Response.ShowError("Traženi proizvod nije pronađen");
+                return RedirectToAction("Index");
+            }
         }
+
+        Response.ShowSuccess("Proizvod je uspešno obrisan");
 
         if (Request.IsHtmx())
         {
@@ -386,8 +396,13 @@ public class ProductsController(
         if (!result.IsSuccess)
         {
             if (result.Errors.Any(e => e.Code.Equals("ProductError_NotFound") || e.Code.Equals("ProductError_ProductNotFound")))
-                return NotFound();
+            {
+                Response.ShowError("Traženi proizvod nije pronađen");
+                return RedirectToAction("Index");
+            }
         }
+
+        Response.ShowSuccess("Status proizvoda je uspešno ažuriran");
 
         if (Request.IsHtmx())
         {
