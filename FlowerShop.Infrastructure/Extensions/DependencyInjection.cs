@@ -12,14 +12,16 @@ public static class DependencyInjection
 {
     public static void AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
     {
+        services.AddHttpContextAccessor();
         services.AddPersistence(configuration);
         services.AddIdentity();
         services.AddHandlers();
         services.AddInfrastructureServices();
-        services.AddScoped<HtmxToastFilter>();
+        services.AddScoped<HtmxToastFilter>(); 
+
     }
 
-    public static void AddHandlers(this IServiceCollection services)
+    private static void AddHandlers(this IServiceCollection services)
     {
         var handlers = typeof(Application.AssemblyReference).Assembly
             .GetTypes()
@@ -30,7 +32,7 @@ public static class DependencyInjection
         
     }
 
-    public static void AddInfrastructureServices(this IServiceCollection services)
+    private static void AddInfrastructureServices(this IServiceCollection services)
     {
         services.AddScoped<IFileService, LocalFileStorage>();
         services.AddScoped<IUserProvider, UserProvider>();

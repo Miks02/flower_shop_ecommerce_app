@@ -1,5 +1,4 @@
 using System.Reflection;
-using FlowerShop.Application;
 using FlowerShop.Infrastructure.Extensions;
 using FlowerShop.Infrastructure.Htmx;
 using FlowerShop.Web.Helpers;
@@ -15,8 +14,6 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Host.UseSerilog((context, config) => config.ReadFrom.Configuration(context.Configuration));
 
 builder.Services.AddInfrastructure(builder.Configuration);
-
-builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddControllersWithViews(options =>
     {
