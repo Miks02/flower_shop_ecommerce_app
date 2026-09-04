@@ -1,5 +1,4 @@
-@using FlowerShop.Web.ViewModels;
-@model CatalogueViewModel;
+@model FlowerShop.Web.ViewModels.CatalogueViewModel
 @{
     ViewData["Title"] = "Asortiman";
     Layout = "_Layout";
@@ -8,278 +7,178 @@
 @await Component.InvokeAsync("Hero", new
 {
     title = "Asortiman",
-    subtitle = "Pregled asortimana",
-    
+    subtitle = "Pregled asortimana"
 })
 
-
-<section class="w-screen min-h-[400px] bg-gradient-to-tr from-red-100 to-rose-100 ">
-    <div class="flex md:justify-center  p-4 md:p-12">
-        <aside class="md:flex flex-col sticky top-[10%] bottom-[10%] overflow-y-auto max-h-[800px] bg-red-200 min-w-[300px] rounded-2xl shadow-lg hidden ">
+<section class="w-screen min-h-[400px] bg-gradient-to-tr from-red-100 to-rose-100">
+    <div class="flex md:justify-center p-4 md:p-12 gap-6">
+        <aside class="hidden md:flex flex-col sticky top-[10%] overflow-y-auto max-h-[850px] bg-red-200 min-w-[300px] rounded-2xl shadow-lg">
             <div class="flex mt-4 px-6 flex-col">
                 <h3 class="text-red-800 text-xl font-semibold"><i class="fa-solid fa-filter"></i> Filteri</h3>
                 <div class="bg-red-800 h-px w-full mx-auto mt-4"></div>
             </div>
-            
-            <div class="flex  flex-col">
-                <div class="flex mt-4 px-6 flex-col">
+
+            <form id="catalog-filters"
+                  class="flex flex-col px-6 pb-6"
+                  hx-get="@Url.Action("List", "Catalogue")"
+                  hx-target="#catalog-results"
+                  hx-include="#catalog-filters"
+                  hx-indicator="#catalog-loading"
+                  hx-trigger="change delay:250ms, input delay:250ms from:#price-range"
+                  hx-push-url="true">
+                <input type="hidden" id="catalog-page" name="Page" value="@Model.Page" />
+                <input type="hidden" name="PageSize" value="@Model.PageSize" />
+
+                <div class="mt-4">
                     <h4 class="text-red-800 text-lg font-semibold"><i class="fa-regular fa-bookmark mr-2"></i> Kategorije</h4>
-                    <div class="flex flex-col gap-4 m-4 ">
-                        @foreach (var m in Model.Categories)
-                        {
-                            <div>
-                                <input
-                                    type="checkbox"
-                                    id="category-@m.Id"
-                                    name="category-@m.Id"
-                                    class="primary-checkbox data-input"
-                                    data-id="@m.Id"
-                                    data-filter="@nameof(Model.Categories)"
-                                    >
-                                <label for="category-@m.Id" class="checkbox-label-primary">
-                                    @m.Name
-                                </label>
-                            </div>
-                        }
-                        
-
-                    </div>
-                </div>
-                
-                <div class="flex mt-4 px-6  flex-col">
-                    <h4 class="text-red-800 text-lg font-semibold"><i class="bi bi-tag mr-2 text-lg"></i> Prilike</h4>
-                    <div class="flex gap-4 flex-col m-4 ">
-                        @foreach (var m in Model.Occasions)
-                        {
-                            <div>
-                                <input
-                                    type="checkbox"
-                                    id="occasion-@m.Id"
-                                    name="occasion-@m.Id"
-                                    class="primary-checkbox"
-                                    data-id="@m.Id"
-                                    data-filter="@nameof(Model.Occasions)">
-                                <label for="occasion-@m.Id" class="checkbox-label-primary">
-                                    @m.Name
-                                </label>
-                            </div>
-                        }
-                        
-
-                    </div>
-                </div>
-                <div class="flex mt-4 px-6  flex-col">
-                    <h4 class="text-red-800 text-lg font-semibold"><i class="bi bi-flower2 mr-2 text-lg"></i> Cveće</h4>
-                    <div class="flex gap-4 flex-col m-4 ">
-                        @foreach (var m in Model.Occasions)
-                        {
-                            <div>
-                                <input
-                                    type="checkbox"
-                                    id="occasion-@m.Id"
-                                    name="occasio-@m.Id"
-                                    class="primary-checkbox">
-                                <label for="occasio-@m.Id" class="checkbox-label-primary">
-                                    @m.Name
-                                </label>
-                            </div>
-                        }
-                    </div>
-                    
-                </div>
-                
-                <div class="flex mt-4 px-6  flex-col">
-                    <h4 class="text-red-800 text-lg font-semibold"><i class="fa-solid fa-droplet mr-2 text-lg"></i> Boje</h4>
                     <div class="flex flex-col gap-4 m-4">
-                        @foreach (var m in Model.Occasions)
+                        @foreach (var category in Model.Categories)
                         {
                             <div>
-                                <input
-                                    type="checkbox"
-                                    id="occas-@m.Id"
-                                    name="occasion-@m.Id"
-                                    class="primary-checkbox">
-                                <label for="occas-@m.Id" class="checkbox-label-primary">
-                                    @m.Name
-                                </label>
+                                <input type="checkbox"
+                                       id="category-@category.Id"
+                                       name="CategoryIds"
+                                       value="@category.Id"
+                                       class="primary-checkbox data-reset-page"
+                                       checked="@(Model.CategoryIds.Contains(category.Id) ? "checked" : null)" />
+                                <label for="category-@category.Id" class="checkbox-label-primary">@category.Name</label>
                             </div>
                         }
                     </div>
-                    
                 </div>
-                <div class="flex mt-4 px-6  flex-col">
+
+                <div class="mt-4">
+                    <h4 class="text-red-800 text-lg font-semibold"><i class="bi bi-tag mr-2 text-lg"></i> Prilike</h4>
+                    <div class="flex flex-col gap-4 m-4">
+                        @foreach (var occasion in Model.Occasions)
+                        {
+                            <div>
+                                <input type="checkbox"
+                                       id="occasion-@occasion.Id"
+                                       name="OccasionIds"
+                                       value="@occasion.Id"
+                                       class="primary-checkbox data-reset-page"
+                                       checked="@(Model.OccasionIds.Contains(occasion.Id) ? "checked" : null)" />
+                                <label for="occasion-@occasion.Id" class="checkbox-label-primary">@occasion.Name</label>
+                            </div>
+                        }
+                    </div>
+                </div>
+
+                <div class="mt-4">
                     <h4 class="text-red-800 text-lg font-semibold"><i class="bi bi-wallet2 mr-2"></i> Cenovni opseg</h4>
-                    <div class="flex gap-4 flex-col m-4 ">
-                        <div class="flex flex-col items-center">
-                            <input
-                                type="range"
-                                min="0"
-                                max="50000"
-                                value="0"
-                                step="100"
-                                id="price-range"
-                                name="price-range"
-                                data-filter="price"
-                                data-id="0"
-                                class="w-full bg-gray-200 active:bg-red-400 shadow-md transition-all"
-                            >
-                            <label for="price-range" class="block text-center mt-2 text-red-800 font-semibold">
-                                Cena: <span id="price-tag" data-price class="text-yellow-700">0</span> RSD
-                            </label>
-
-                        </div>
-                        
-                        
-
+                    <div class="flex flex-col gap-4 m-4">
+                        <input type="range"
+                               min="0"
+                               max="50000"
+                               step="100"
+                               id="price-range"
+                               name="PriceRange"
+                               value="@Model.PriceRange"
+                               class="w-full bg-gray-200 active:bg-red-400 shadow-md transition-all data-reset-page" />
+                        <label for="price-range" class="block text-center mt-2 text-red-800 font-semibold">
+                            Cena: <span id="price-tag" class="text-yellow-700">@Model.PriceRange</span> RSD
+                        </label>
                     </div>
                 </div>
-            </div>
+            </form>
         </aside>
-        
-        <div class="flex flex-col  md:mx-5 gap-10 md:w-[70%] mx-auto">
-            <div class="bg-red-300  w-full p-3 rounded-2xl shadow-md">
-                <div class="flex justify-between items-center mx-auto">
-                    <p class="hidden md:block text-red-900 font-semibold">Prikazano 15 od 60 proizvoda</p>
-                    <button id="filter-open" class="w-[100px] md:hidden md:w-auto appearance-none text-center active:opacity-50 transition-all md:appearance-auto rounded-xl font-semibold text-red-900 bg-red-200 text-sm p-2">Filteri</button>
-                    @* <button class="w-[100px] md:hidden md:w-auto appearance-none text-center active:opacity-50 transition-all md:appearance-auto rounded-xl font-semibold text-red-900 bg-red-200 text-sm p-2">Sortiranje</button> *@
-                    
-                    
-                    <select 
-                        class="custom-select">
-                                            <option value="#" selected disabled hidden>Sortiraj</option>
-                        <option value="Podrazumevano">Podrazumevano</option>
-                        <option value="Ceni rastuće">Ceni rastuće</option>
-                        <option value="Ceni opadajuće">Ceni opadajuće</option>
-                        <option value="Najnovije">Najnovije</option>
-                        <option value="Preporučeno">Preporučeno</option>
-                    </select>
-                </div>
-            </div>
-            
-            <div id="product-list">
-                @await Html.PartialAsync("Partial/_ProductList", Model.Products)
-            </div>
-            
-            @if (Model.Products.Any())
-            {
-                <div class="bg-red-300  w-full p-3 rounded-2xl shadow-md">
-                    <div class="flex justify-between items-center">
-                        <p class="hidden md:block text-red-900 font-semibold">Prikazano 15 od 60 proizvoda</p>
-            
-                        <div class="mx-auto md:mx-0">
-                            <button class="bg-red-200 transition-all shadow-md rounded-lg py-2 px-4 font-semibold text-red-900 hover:bg-red-400 hover:text-red-700">1</button>
-                            <button class="bg-red-200 transition-all shadow-md rounded-lg py-2 px-4 font-semibold text-red-900 hover:bg-red-400 hover:text-red-700">2</button>
-                            <button class="bg-red-200 transition-all shadow-md rounded-lg py-2 px-4 font-semibold text-red-900 hover:bg-red-400 hover:text-red-700">3</button>
-                        </div>
+
+        <div class="flex flex-col md:mx-5 gap-6 md:w-[70%] mx-auto w-full">
+            <div class="bg-red-300 w-full p-3 rounded-2xl shadow-md">
+                <div class="flex justify-between items-center gap-3">
+                    <p class="text-red-900 font-semibold">Prikazano @Model.PagedProducts.PaginatedCount od @Model.PagedProducts.TotalCount proizvoda</p>
+                    <div class="relative w-full max-w-[220px]">
+                        <select id="catalog-sort"
+                                name="Sort"
+                                form="catalog-filters"
+                                class="custom-select data-reset-page w-full"
+                                hx-get="@Url.Action("List", "Catalogue")"
+                                hx-target="#catalog-results"
+                                hx-include="#catalog-filters"
+                                hx-indicator="#catalog-loading"
+                                hx-trigger="change delay:250ms"
+                                hx-push-url="true">
+                            <option value="name_asc" selected="@(Model.Sort == "name_asc" ? "selected" : null)">Naziv A-Z</option>
+                            <option value="name_desc" selected="@(Model.Sort == "name_desc" ? "selected" : null)">Naziv Z-A</option>
+                            <option value="price_asc" selected="@(Model.Sort == "price_asc" ? "selected" : null)">Cena rastuće</option>
+                            <option value="price_desc" selected="@(Model.Sort == "price_desc" ? "selected" : null)">Cena opadajuće</option>
+                        </select>
                     </div>
                 </div>
-            }
-            
-            
-            
-            
+            </div>
+
+            <div id="catalog-results-wrapper" class="relative min-h-[180px]">
+                <div id="catalog-loading" class="hidden absolute inset-0 bg-white/70 items-center justify-center z-10 rounded-2xl">
+                    <div class="flex items-center gap-3 text-red-700">
+                        <i class="fa-solid fa-spinner fa-spin text-2xl"></i>
+                        <span class="text-sm font-medium">Učitavanje...</span>
+                    </div>
+                </div>
+                <div id="catalog-results">
+                    @await Html.PartialAsync("Partial/_ProductList", Model.PagedProducts)
+                </div>
+            </div>
         </div>
     </div>
-    <div id="filter-menu" class=" md:hidden h-screen fixed top-0 left-0 w-full max-w-[410px] z-[999] bg-red-900/80 shadow-2xl backdrop-blur-3xl transform -translate-x-full transition-all duration-300 flex flex-col overflow-y-auto shadow-all">
-        
-        <nav class="flex flex-col p-3 pb-1  relative text-white  h-full">
-            <div class="flex justify-between items-center content-center border-b border-b-red-100 pb-2 flex-shrink-0">
-                <h2 class="text-2xl"><i class="fa-solid fa-filter"></i> Filteri</h2>
-                <button type="button" id="filter-close" class="text-3xl md:hidden hover:text-red-200 duration-200">
-                    <i class="fa-solid fa-close"></i>
-                </button>
-            </div>
-
-            <ul class="text-lg flex flex-col w-full space-y-1 text-center justify-center">
-
-                <li class="mt-3">
-                    <button class="filter-link flex w-[200px] items-center mx-2 py-2 px-3 rounded-lg transition-all duration-300 hover:bg-orange-500/10">
-                        <i class="fa-regular fa-bookmark mr-6 text-white transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:text-orange-300"></i>
-                        <span class="transition-colors duration-300 group-hover:text-orange-200">Kategorije</span> <i class="arrow  fa-solid fa-arrow-right transition-all ml-auto"></i>
-                    </button>
-                    <ul class="dropdown dropdown-default-open overflow-hidden transition-all duration-300 ml-2 w-[250px] bg-red-300 rounded-xl shadow-md">
-                        @foreach (var c in Model.Categories)
-                        {
-                            <li class="flex m-4 text-white gap-2 text-left">
-                                <input
-                                    type="checkbox"
-                                    id="category-mobile-@c.Id"
-                                    name="category-@c.Id"
-                                    data-id="@c.Id"
-                                    data-filter="@nameof(Model.Categories)"
-                                    class="primary-checkbox self-center data-input">
-                                <label for="category-mobile-@c.Id" class="checkbox-label-primary p-2 text-md hover:opacity-60">
-                                    @c.Name
-                                </label>
-                            </li>
-                        }
-                    </ul>
-                </li>
-                <li>
-                    <button href="#" class="filter-link group flex w-[200px] items-center mx-2 py-2 px-3 rounded-lg transition-all duration-300 hover:bg-orange-500/10">
-                        <i class="bi bi-tag mr-5 text-white transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:text-orange-300"></i>
-                        <span class="transition-colors duration-300 group-hover:text-orange-200">Prilike</span> <i class="arrow fa-solid fa-arrow-right transition-all ml-auto"></i>
-
-                    </button>
-
-                    <ul class="dropdown overflow-hidden transition-all duration-300 ml-2 w-[250px] bg-red-300 rounded-xl shadow-md" style="max-height: 0;">
-                        @foreach (var o in Model.Occasions)
-                        {
-                            <li class="flex m-4 text-white gap-2   text-left ">
-                                <input
-                                    type="checkbox"
-                                    id="occasion-mobile-@o.Id"
-                                    name="occasion-@o.Id"
-                                    data-id="@o.Id"
-                                    data-filter="@nameof(Model.Occasions)"
-                                    class="primary-checkbox self-center ">
-                                <label for="occasion-mobile-@o.Id" class="checkbox-label-primary p-2 text-md hover:opacity-60 ">
-                                    @o.Name
-                                </label>
-
-                            </li>
-                        }
-                    </ul>
-                </li>
-                <li>
-                    <button href="#" class="filter-link group flex w-[200px] items-center mx-2 py-2 px-3 rounded-lg transition-all duration-300 hover:bg-orange-500/10">
-                        <i class="bi bi-flower2 mr-5 text-white transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:text-orange-300"></i>
-                        <span class="transition-colors duration-300 group-hover:text-orange-200">Cveće</span> <i class="fa-solid fa-arrow-right transition-all ml-auto"></i>
-                    </button>
-                </li>
-                <li>
-                    <button href="#" class="group flex w-[200px] items-center mx-2 py-2 px-3 rounded-lg transition-all duration-300 hover:bg-orange-500/10">
-                        <i class="fa-solid fa-droplet mr-6 text-white transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:text-orange-300"></i>
-                        <span class="transition-colors duration-300 group-hover:text-orange-200">Boje</span> <i class="fa-solid fa-arrow-right transition-all ml-auto"></i>
-                    </button>
-                </li>
-
-                <li>
-                    <div class="flex gap-4 flex-col m-4 mt-6">
-                        <div class="flex flex-col items-center">
-                            <input
-                                type="range"
-                                min="0"
-                                max="50000"
-                                value="0"
-                                step="100"
-                                id="price-range-mobile"
-                                name="price-range"
-                                data-filter="price"
-                                data-id="0"
-                                class="w-full bg-gray-200 active:bg-red-400 shadow-md transition-all">
-                            <label for="price-range-mobile" class="block text-center mt-2 text-white font-semibold">
-                                Cena: <span id="price-tag-mobile" class="text-red-200">0</span> RSD
-                            </label>
-
-                        </div>
-                    </div>
-                </li>
-
-            </ul>
-        </nav>
-
-
-    </div>
-    
 </section>
+
+<script>
+    function setCatalogPage(page) {
+        const pageInput = document.getElementById("catalog-page");
+        if (pageInput) {
+            pageInput.value = page;
+        }
+    }
+
+    (function () {
+        const loading = document.getElementById("catalog-loading");
+        const pageInput = document.getElementById("catalog-page");
+        document.querySelectorAll(".data-reset-page").forEach((element) => {
+            element.addEventListener("change", () => {
+                if (pageInput) {
+                    pageInput.value = "1";
+                }
+            });
+            element.addEventListener("input", () => {
+                if (pageInput) {
+                    pageInput.value = "1";
+                }
+            });
+        });
+
+        const priceRange = document.getElementById("price-range");
+        const priceTag = document.getElementById("price-tag");
+        if (priceRange && priceTag) {
+            priceRange.addEventListener("input", () => {
+                priceTag.textContent = priceRange.value;
+            });
+        }
+
+        document.body.addEventListener("htmx:beforeRequest", (event) => {
+            const path = event.detail?.requestConfig?.path || "";
+            if (!path.includes("/Catalogue/List")) {
+                return;
+            }
+
+            if (loading) {
+                loading.classList.remove("hidden");
+                loading.classList.add("flex");
+            }
+        });
+
+        document.body.addEventListener("htmx:afterRequest", (event) => {
+            const path = event.detail?.requestConfig?.path || "";
+            if (!path.includes("/Catalogue/List")) {
+                return;
+            }
+
+            if (loading) {
+                setTimeout(() => {
+                    loading.classList.remove("flex");
+                    loading.classList.add("hidden");
+                }, 120);
+            }
+        });
+    })();
+</script>

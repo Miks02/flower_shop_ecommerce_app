@@ -1,3 +1,4 @@
+using FlowerShop.Application.Common.Abstractions;
 using FlowerShop.Domain.Enums;
 using FlowerShop.Web.ViewModels.Components;
 using Microsoft.AspNetCore.Mvc;
@@ -8,6 +9,7 @@ public class ProductCardViewComponent : ViewComponent
 {
     public async Task<IViewComponentResult> InvokeAsync
         (
+            int id,
             string name, 
             string imageUrl, 
             decimal price, 
@@ -39,8 +41,9 @@ public class ProductCardViewComponent : ViewComponent
             }
         }
 
-        var vm = new ProductCardViewModel()
+        var vm = new ProductCardViewModel
         {
+            Id = id,
             Name = name,
             ImageUrl = imageUrl,
             Price = price,
@@ -49,7 +52,9 @@ public class ProductCardViewComponent : ViewComponent
             Category = category,
             BadgeColor = badgeColor,
             Badge = badge,
-
+            IsAvailable = isAvailable,
+            IsNew = isNew,
+            
         };
         
         return await Task.FromResult(View("Default", vm));       

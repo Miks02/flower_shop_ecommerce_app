@@ -1,0 +1,135 @@
+@using FlowerShop.Domain.Entities.Products
+@using FlowerShop.Web.Helpers
+@model FlowerShop.Web.ViewModels.ProductDetailsViewModel
+@{
+    ViewData["Title"] = Model.Name;
+    Layout = "_Layout";
+    var canOrder = User.IsInRole("User");
+    var isAuthenticated = User.Identity?.IsAuthenticated == true;
+}
+
+@await Component.InvokeAsync("Hero", new
+{
+    title = Model.Name,
+    subtitle = "Detalji proizvoda"
+})
+
+<section class="w-screen min-h-[400px] bg-gradient-to-tr from-red-100 to-rose-100">
+    <div class="flex flex-col max-w-6xl mx-auto p-4 md:p-12 gap-6">
+        <a asp-controller="Catalogue" asp-action="Index"
+           class="self-start text-red-800 font-semibold hover:text-red-600 transition-colors">
+            <i class="fa-solid fa-arrow-left mr-2"></i>Nazad na asortiman
+        </a>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <div class="relative bg-red-200 rounded-2xl shadow-2xl overflow-hidden">
+                <img src="@Model.ImageUrl" alt="@Model.Name" class="w-full h-full min-h-[360px] max-h-[560px] object-cover" />
+                @if (!Model.IsAvailable)
+                {
+                    <p class="badge out-of-stock absolute top-4 right-4 p-2">Nema na stanju</p>
+                }
+                else if (Model.IsOnPromotion)
+                {
+                    <p class="badge sale absolute top-4 right-4 p-2">@(Model.DiscountType != DiscountType.None ? Model.DiscountType.GetDisplayName() : "Akcija")</p>
+                }
+            </div>
+
+            <div class="flex flex-col bg-red-200 rounded-2xl shadow-2xl p-6 md:p-8 gap-5">
+                <div class="w-fit bg-yellow-200 rounded-md p-1 px-3 shadow-all">
+                    <h5 class="text-sm text-green-900 font-semibold">@Model.CategoryName</h5>
+                </div>
+
+                <div class="flex flex-col gap-3">
+                    <h1 class="text-red-900 text-3xl md:text-4xl font-semibold">@Model.Name</h1>
+                    <div class="flex items-center gap-1 text-orange-500" aria-label="Ocena proizvoda">
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-regular fa-star"></i>
+                        <i class="fa-regular fa-star"></i>
+                        <i class="fa-regular fa-star"></i>
+                        <i class="fa-regular fa-star"></i>
+                    </div>
+                </div>
+
+                <div class="flex flex-col gap-1">
+                    @if (Model.IsOnPromotion && Model.PromoPrice.HasValue)
+                    {
+                        <p class="font-semibold text-green-700 line-through text-lg">@Model.Price RSD</p>
+                        <p class="font-semibold text-red-600 text-3xl">@Model.PromoPrice RSD</p>
+                    }
+                    else
+                    {
+                        <p class="font-semibold text-green-700 text-3xl">@Model.Price RSD</p>
+                    }
+                </div>
+
+                <div class="bg-red-800 h-px w-full"></div>
+
+                @if (Model.Occasions.Count > 0)
+                {
+                    <div class="flex flex-wrap gap-2">
+                        @foreach (var occasion in Model.Occasions)
+                        {
+                            <span class="bg-red-100 text-red-800 text-xs font-semibold px-3 py-1 rounded-full shadow-md">@occasion</span>
+                        }
+                    </div>
+                }
+
+                @if (canOrder)
+                {
+                    <button type="button"
+                            @(Model.IsAvailable ? null : "disabled")
+                            class="flex gap-5 items-center text-white font-semibold bg-green-600 w-full sm:w-[80%] rounded-xl py-3 px-3 shadow-all hover:scale-105 transition-all hover:opacity-80 duration-200 will-change-transform disabled:opacity-70 disabled:pointer-events-none disabled:hover:scale-100">
+                        <div class="flex w-full items-center justify-center gap-5">
+                            <span>@(Model.IsAvailable ? "Dodaj u korpu" : "Nema na stanju")</span>
+                            <i class="fa-solid fa-cart-plus"></i>
+                        </div>
+                    </button>
+                }
+                else if (!isAuthenticated)
+                {
+                    <button type="button"
+                            onclick="document.querySelector('header button[data-menu=\'auth-open\']')?.click()"
+                            class="flex items-center justify-center gap-3 text-red-900 font-semibold bg-red-100 border-2 border-red-300 w-full rounded-xl py-3 px-4 shadow-md hover:bg-red-50 transition-all">
+                        <i class="fa-regular fa-user"></i>
+                        <span>Ulogujte se kako biste naručili proizvod</span>
+                    </button>
+                }
+
+                <div>
+                    <h2 class="text-red-800 text-xl font-semibold mb-2">Opis proizvoda</h2>
+                    <p class="text-gray-700 leading-relaxed">
+                        @(string.IsNullOrWhiteSpace(Model.Description) ? "Opis za ovaj proizvod još nije unet." : Model.Description)
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-red-200 rounded-2xl shadow-2xl p-6 md:p-8">
+            <h2 class="text-red-800 text-2xl font-semibold mb-4">
+                <i class="fa-solid fa-seedling mr-2"></i>Cvetni sastav
+            </h2>
+            <div class="bg-red-800 h-px w-full mb-6"></div>
+
+            @if (Model.Composition.Count > 0)
+            {
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                    @foreach (var flower in Model.Composition)
+                    {
+                        <div class="bg-red-100 rounded-xl p-4 shadow-md flex flex-col gap-2">
+                            <p class="text-red-900 font-semibold text-lg">@flower.Name</p>
+                            <div class="flex flex-wrap gap-2 text-sm">
+                                <span class="bg-white/80 text-red-800 font-medium px-3 py-1 rounded-full">Boja: @flower.Color</span>
+                                <span class="bg-white/80 text-red-800 font-medium px-3 py-1 rounded-full">Količina: @flower.Quantity</span>
+                                <span class="bg-yellow-200 text-green-900 font-medium px-3 py-1 rounded-full">@flower.Category.GetDisplayName()</span>
+                            </div>
+                        </div>
+                    }
+                </div>
+            }
+            else
+            {
+                <p class="text-red-900 font-semibold">Cvetni sastav za ovaj proizvod nije naveden.</p>
+            }
+        </div>
+    </div>
+</section>

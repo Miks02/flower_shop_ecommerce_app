@@ -1,23 +1,85 @@
 @using FlowerShop.Web.ViewModels.Components
-@model List<FlowerShop.Domain.Entities.Products.Product>
+@using FlowerShop.SharedKernel.Results
+@model PagedResult<FlowerShop.Domain.Entities.Products.ProductDto>
 
-<div class="flex flex-wrap justify-center w-full overflow-y-auto">
-    @if (Model.Count > 0)
+<div class="space-y-6">
+    <div class="flex flex-wrap justify-center w-full overflow-y-auto gap-4">
+    @if (Model.Items.Count > 0)
     {
-        @foreach (var m in Model)
+        @foreach (var m in Model.Items)
         {
-            @await Component.InvokeAsync("ProductCard", new ProductCardViewModel()
+            @await Component.InvokeAsync("ProductCard", new ProductCardViewModel
             {
+                Id = m.Id,
                 Name = m.Name,
-                ImageUrl = m.ImageUrl,
+                ImageUrl = m.ProductImage,
                 Price = m.Price,
-                Category = m.Category.Name,
-                IsAvailable = m.Stock > 0
+                PromoPrice = m.PromoPrice ?? 0,
+                Rating = 0,
+                Category = m.CategoryName,
+                IsAvailable = m.Stock > 0,
+                IsNew = m.CreatedAt >= DateTime.UtcNow.AddDays(-30), 
             })
         }
     }
     else
     {
         <p class="text-red-900 text-2xl text-center font-semibold">Nema proizvoda za odabrane filtere.</p>
+    }
+    </div>
+
+    @if (Model.TotalPages > 1)
+    {
+        <div class="bg-red-300 w-full p-3 rounded-2xl shadow-md">
+            <div class="flex justify-between items-center">
+                <p class="hidden md:block text-red-900 font-semibold">Stranica @Model.Page od @Model.TotalPages</p>
+                <div class="mx-auto md:mx-0 flex gap-1">
+                    @if (Model.HasPreviousPage)
+                    {
+                        <a href="@Url.Action("Index", "Catalogue", new { Page = Model.Page - 1 })"
+                           onclick="setCatalogPage(@(Model.Page - 1))"
+                           hx-get="@Url.Action("List", "Catalogue")"
+                           hx-target="#catalog-results"
+                           hx-include="#catalog-filters"
+                           hx-indicator="#catalog-loading"
+                           hx-push-url="true"
+                           class="bg-red-200 transition-all shadow-md rounded-lg py-2 px-4 font-semibold text-red-900 hover:bg-red-400 hover:text-red-700">
+                            <i class="fa-solid fa-chevron-left text-xs"></i>
+                        </a>
+                    }
+                    @for (int i = Math.Max(1, Model.Page - 2); i <= Math.Min(Model.TotalPages, Model.Page + 2); i++)
+                    {
+                        if (i == Model.Page)
+                        {
+                            <span class="gradient-red transition-all shadow-md rounded-lg py-2 px-4 font-semibold text-white">@i</span>
+                        }
+                        else
+                        {
+                            <a href="@Url.Action("Index", "Catalogue", new { Page = i })"
+                               onclick="setCatalogPage(@i)"
+                               hx-get="@Url.Action("List", "Catalogue")"
+                               hx-target="#catalog-results"
+                               hx-include="#catalog-filters"
+                               hx-indicator="#catalog-loading"
+                               hx-push-url="true"
+                               class="bg-red-200 transition-all shadow-md rounded-lg py-2 px-4 font-semibold text-red-900 hover:bg-red-400 hover:text-red-700">@i</a>
+                        }
+                    }
+                    @if (Model.HasNextPage)
+                    {
+                        <a href="@Url.Action("Index", "Catalogue", new { Page = Model.Page + 1 })"
+                           onclick="setCatalogPage(@(Model.Page + 1))"
+                           hx-get="@Url.Action("List", "Catalogue")"
+                           hx-target="#catalog-results"
+                           hx-include="#catalog-filters"
+                           hx-indicator="#catalog-loading"
+                           hx-push-url="true"
+                           class="bg-red-200 transition-all shadow-md rounded-lg py-2 px-4 font-semibold text-red-900 hover:bg-red-400 hover:text-red-700">
+                            <i class="fa-solid fa-chevron-right text-xs"></i>
+                        </a>
+                    }
+                </div>
+            </div>
+        </div>
     }
 </div>

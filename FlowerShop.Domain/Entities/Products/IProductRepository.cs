@@ -13,6 +13,15 @@ public interface IProductRepository
         int pageSize,
         IReadOnlyList<int> occasionIds,
         CancellationToken ct = default);
+
+    Task<PagedResult<ProductDto>> GetPagedProductsAsync(
+        string? sortBy,
+        int page,
+        int pageSize,
+        IReadOnlyList<int> categoryIds,
+        IReadOnlyList<int> occasionIds,
+        int priceRange,
+        CancellationToken ct = default);
     Task<Product?> GetByIdAsync(int id, CancellationToken ct = default);
     void Add(Product product);
     void Update(Product product);
