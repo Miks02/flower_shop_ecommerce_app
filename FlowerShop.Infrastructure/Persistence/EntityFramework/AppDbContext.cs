@@ -3,6 +3,7 @@ using FlowerShop.Domain.Entities.Categories;
 using FlowerShop.Domain.Entities.Deliverers;
 using FlowerShop.Domain.Entities.Flowers;
 using FlowerShop.Domain.Entities.IdentityUser;
+using FlowerShop.Domain.Entities.LoyaltyTransactions;
 using FlowerShop.Domain.Entities.Ocassions;
 using FlowerShop.Domain.Entities.Orders;
 using FlowerShop.Domain.Entities.ProductFlowers;
@@ -26,6 +27,7 @@ public class AppDbContext(DbContextOptions options) : IdentityDbContext<User>(op
     public DbSet<CartItem> CartItems { get; set; }
     public DbSet<Order> Orders { get; set; }
     public DbSet<OrderItem> OrderItems { get; set; }
+    public DbSet<LoyaltyTransaction> LoyaltyTransactions { get; set; }
     
     protected override void OnModelCreating(ModelBuilder builder)
     {
