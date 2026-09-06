@@ -178,4 +178,27 @@ public class ProductRepository : Repository<Product>, IProductRepository
     {
         return await _context.Products.AnyAsync(p => p.Name == name, ct);
     }
+
+    public async Task<IReadOnlyList<string>> CheckStockForMultipleProductsAsync(
+        IReadOnlyList<(int ProductId, int Quantity)> productQuantities,
+        CancellationToken ct = default)
+    {
+        var requestedQuantities = productQuantities
+            .GroupBy(pq => pq.ProductId)
+            .ToDictionary(g => g.Key, g => g.Max(pq => pq.Quantity));
+
+        var productIds = requestedQuantities.Keys.ToList();
+
+        var products = await _context.Products
+            .Where(p => productIds.Contains(p.Id))
+            .Select(p => new { p.Id, p.Name, p.Stock })
+            .ToListAsync(ct);
+
+        var outOfStock = products
+            .Where(p => requestedQuantities[p.Id] > p.Stock)
+            .Select(p => p.Name)
+            .ToList();
+
+        return outOfStock;
+    }
 }

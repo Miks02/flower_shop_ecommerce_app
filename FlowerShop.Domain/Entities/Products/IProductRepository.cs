@@ -13,7 +13,6 @@ public interface IProductRepository
         int pageSize,
         IReadOnlyList<int> occasionIds,
         CancellationToken ct = default);
-
     Task<PagedResult<ProductDto>> GetPagedProductsAsync(
         string? sortBy,
         int page,
@@ -28,4 +27,7 @@ public interface IProductRepository
     void Remove(Product product);
     Task<bool> ExistsAsync(int id, CancellationToken ct = default);
     Task<bool> ExistsByNameAsync(string name, CancellationToken ct = default);
+    Task<IReadOnlyList<string>> CheckStockForMultipleProductsAsync(
+        IReadOnlyList<(int ProductId, int Quantity)> productQuantities,
+        CancellationToken ct = default);
 }
