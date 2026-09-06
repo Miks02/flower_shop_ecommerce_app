@@ -61,5 +61,14 @@ public static class OrderError
 
         return new Error("OrderError_AlreadyCompleted", message);
     }
+
+    public static Error ItemsOutOfStock(IReadOnlyList<string> productNames)
+    {
+        string message = productNames.Count == 1
+            ? $"Proizvod '{productNames[0]}' nije na stanju."
+            : $"Proizvodi '{string.Join(", ", productNames)}' nisu na stanju.";
+
+        return new Error("OrderError_ItemsOutOfStock", message);
+    }   
     
 }
