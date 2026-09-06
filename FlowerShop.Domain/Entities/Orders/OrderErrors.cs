@@ -65,8 +65,8 @@ public static class OrderError
     public static Error ItemsOutOfStock(IReadOnlyList<string> productNames)
     {
         string message = productNames.Count == 1
-            ? $"Proizvod '{productNames[0]}' nije na stanju."
-            : $"Proizvodi '{string.Join(", ", productNames)}' nisu na stanju.";
+            ? $"Proizvod '{productNames[0]}' nije na stanju u izabranoj količini."
+            : $"Proizvodi '{string.Join(", ", productNames)}' nisu na stanju u izabranoj količini.";
 
         return new Error("OrderError_ItemsOutOfStock", message);
     }   
