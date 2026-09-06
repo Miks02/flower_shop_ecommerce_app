@@ -168,6 +168,11 @@ public class ProductRepository : Repository<Product>, IProductRepository
     {
         return await _context.Products.AnyAsync(p => p.Id == id, ct);   
     }
+    
+    public async Task<bool> ExistsAsync(IReadOnlyList<int> ids, CancellationToken ct = default)
+    {
+        return await _context.Products.AnyAsync(p => ids.Contains(p.Id), ct);   
+    }
 
     public async Task<bool> ExistsByNameAsync(string name, CancellationToken ct = default)
     {
