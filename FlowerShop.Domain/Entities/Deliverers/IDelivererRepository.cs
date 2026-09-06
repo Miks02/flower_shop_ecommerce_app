@@ -14,6 +14,7 @@ public interface IDelivererRepository
         CancellationToken ct = default);
     Task<DelivererStatisticsDto> GetStatisticsAsync(CancellationToken ct = default);
     Task<Deliverer?> GetByIdAsync(string id, CancellationToken ct = default);
+    Task<IReadOnlyList<DelivererDto>> GetAvailableDeliverersListAsync(CancellationToken ct = default);
     void Add(Deliverer deliverer);
     void Update(Deliverer deliverer);
     void Remove(Deliverer deliverer);
