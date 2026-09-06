@@ -92,6 +92,89 @@ public class OrderRepository(AppDbContext context) : Repository<Order>(context),
         return (total, pending, inDelivery, completed);
     }
 
+    public async Task<PagedResult<Order>> GetPagedOrdersForAdminAsync(
+        string? searchBy,
+        string? sortBy,
+        OrderStatus? status,
+        DeliveryStatus? deliveryStatus,
+        bool? isAssigned,
+        int pageIndex,
+        int pageSize,
+        CancellationToken ct = default)
+    {
+        var query = context.Orders
+            .AsNoTracking()
+            .AsSplitQuery()
+            .Include(o => o.OrderItems)
+            .Include(o => o.User)
+            .Include(o => o.Deliverer)
+                .ThenInclude(d => d!.User)
+            .AsQueryable();
+
+        if (!string.IsNullOrWhiteSpace(searchBy))
+        {
+            var search = searchBy.Trim();
+            query = query.Where(o =>
+                o.OrderNumber.Contains(search) ||
+                o.RecipientFullName.Contains(search) ||
+                o.City.Contains(search) ||
+                o.OrderAddress.Contains(search) ||
+                (o.User != null && (o.User.FirstName.Contains(search) || o.User.LastName.Contains(search) || (o.User.Email != null && o.User.Email.Contains(search)))) ||
+                (o.Deliverer != null && o.Deliverer.User != null && (o.Deliverer.User.FirstName.Contains(search) || o.Deliverer.User.LastName.Contains(search))) ||
+                o.OrderItems.Any(i => i.ProductName.Contains(search)));
+        }
+
+        if (status.HasValue)
+        {
+            query = query.Where(o => o.OrderStatus == status.Value);
+        }
+
+        if (deliveryStatus.HasValue)
+        {
+            query = query.Where(o => o.DeliveryStatus == deliveryStatus.Value);
+        }
+
+        if (isAssigned.HasValue)
+        {
+            query = isAssigned.Value
+                ? query.Where(o => o.DelivererId != null)
+                : query.Where(o => o.DelivererId == null);
+        }
+
+        query = sortBy switch
+        {
+            "date_asc" => query.OrderBy(o => o.CreatedAt),
+            "date_desc" => query.OrderByDescending(o => o.CreatedAt),
+            "price_asc" => query.OrderBy(o => o.OrderItems.Sum(i => i.Quantity * i.UnitPrice)),
+            "price_desc" => query.OrderByDescending(o => o.OrderItems.Sum(i => i.Quantity * i.UnitPrice)),
+            "delivery_asc" => query.OrderBy(o => o.OrderDate),
+            "delivery_desc" => query.OrderByDescending(o => o.OrderDate),
+            _ => query.OrderByDescending(o => o.CreatedAt)
+        };
+
+        var totalCount = await query.CountAsync(ct);
+
+        var items = await query
+            .Skip((pageIndex - 1) * pageSize)
+            .Take(pageSize)
+            .ToListAsync(ct);
+
+        return new PagedResult<Order>(items, pageIndex, pageSize, totalCount, items.Count);
+    }
+
+    public async Task<(int TotalOrders, int PendingOrders, int UnassignedOrders, int InDeliveryOrders, int CompletedOrders)> GetAdminOrderStatsAsync(CancellationToken ct = default)
+    {
+        var orders = context.Orders.AsNoTracking();
+
+        var total = await orders.CountAsync(ct);
+        var pending = await orders.CountAsync(o => o.OrderStatus == OrderStatus.Pending, ct);
+        var unassigned = await orders.CountAsync(o => o.DelivererId == null && o.OrderStatus != OrderStatus.Cancelled && o.OrderStatus != OrderStatus.Completed, ct);
+        var inDelivery = await orders.CountAsync(o => o.DeliveryStatus == DeliveryStatus.InTransit || o.DeliveryStatus == DeliveryStatus.OnTheWay, ct);
+        var completed = await orders.CountAsync(o => o.OrderStatus == OrderStatus.Completed, ct);
+
+        return (total, pending, unassigned, inDelivery, completed);
+    }
+
     public OrderItem? GetItemById(int id)
     {
         return context.OrderItems.FirstOrDefault(i => i.Id == id);

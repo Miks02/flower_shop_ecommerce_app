@@ -18,4 +18,14 @@ public interface IOrderRepository
         int pageSize,
         CancellationToken ct = default);
     Task<(int TotalOrders, int PendingOrders, int InDeliveryOrders, int CompletedOrders)> GetUserOrderStatsAsync(string userId, CancellationToken ct = default);
+    Task<PagedResult<Order>> GetPagedOrdersForAdminAsync(
+        string? searchBy,
+        string? sortBy,
+        OrderStatus? status,
+        DeliveryStatus? deliveryStatus,
+        bool? isAssigned,
+        int pageIndex,
+        int pageSize,
+        CancellationToken ct = default);
+    Task<(int TotalOrders, int PendingOrders, int UnassignedOrders, int InDeliveryOrders, int CompletedOrders)> GetAdminOrderStatsAsync(CancellationToken ct = default);
 }
