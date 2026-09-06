@@ -175,6 +175,17 @@ public class OrderRepository(AppDbContext context) : Repository<Order>(context),
         return (total, pending, unassigned, inDelivery, completed);
     }
 
+    public async Task<(int TotalDeliveries, int ActiveDeliveries, int CompletedDeliveries)> GetDelivererOrderStatsAsync(string delivererId, CancellationToken ct = default)
+    {
+        var orders = context.Orders.AsNoTracking().Where(o => o.DelivererId == delivererId);
+
+        var total = await orders.CountAsync(ct);
+        var active = await orders.CountAsync(o => o.OrderStatus != OrderStatus.Completed && o.OrderStatus != OrderStatus.Cancelled, ct);
+        var completed = await orders.CountAsync(o => o.OrderStatus == OrderStatus.Completed, ct);
+
+        return (total, active, completed);
+    }
+
     public OrderItem? GetItemById(int id)
     {
         return context.OrderItems.FirstOrDefault(i => i.Id == id);
