@@ -98,7 +98,6 @@ public class CheckoutController(
             return View(invalidVm);
         }
 
-        SetSuccessMessage("Vaša porudžbina je uspešno kreirana!");
         return RedirectToAction("Index", "Orders", new { area = "User", orderId = result.Payload!.OrderId });
     }
 }
