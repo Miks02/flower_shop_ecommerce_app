@@ -24,6 +24,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <Folder Include="Areas\Deliverer\Views\" />
       <Folder Include="Views\Account\" />
       <Folder Include="Views\Shared\Components\Admin\Dashboard\" />
       <Folder Include="wwwroot\AppImages\" />
