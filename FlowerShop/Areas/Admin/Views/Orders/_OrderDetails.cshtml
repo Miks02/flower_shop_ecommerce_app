@@ -1,0 +1,358 @@
+@using FlowerShop.Domain.Entities.Deliverers
+@using FlowerShop.Domain.Entities.Orders
+@using FlowerShop.Web.Helpers
+@model FlowerShop.Web.Areas.Admin.Models.Orders.OrderDetailsViewModel
+
+<div class="flex flex-col gap-6">
+
+    <div class="flex flex-col shadow-xl bg-white/95 backdrop-blur-md rounded-2xl w-full overflow-hidden">
+        
+        <div class="gradient-red px-6 py-5 w-full flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+            <div class="flex items-center gap-3">
+                <a hx-get="@Url.Action("Index", "Orders", new { area = "Admin" })"
+                   hx-target="#user-content"
+                   hx-push-url="true"
+                   class="w-9 h-9 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition-colors cursor-pointer">
+                    <i class="fa-solid fa-arrow-left text-sm"></i>
+                </a>
+                <div>
+                    <h2 class="text-xl font-bold text-white flex items-center gap-2">
+                        <span>Porudžbina</span>
+                        <span class="font-mono text-orange-200">#@Model.Order.OrderNumber</span>
+                    </h2>
+                    <span class="text-xs text-red-100 flex items-center gap-1.5 mt-0.5">
+                        <i class="fa-regular fa-clock text-[11px]"></i>
+                        Kreirano: @Model.Order.CreatedAt.ToString("dd.MM.yyyy. HH:mm")
+                    </span>
+                </div>
+            </div>
+
+            <div class="flex flex-wrap items-center gap-2">
+                @switch (Model.Order.OrderStatus)
+                {
+                    case OrderStatus.Pending:
+                        <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-amber-500/20 text-amber-100 border border-amber-300/40">
+                            <i class="fa-solid fa-hourglass-half text-[11px]"></i> Na čekanju
+                        </span>
+                        break;
+                    case OrderStatus.Confirmed:
+                        <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-blue-500/20 text-blue-100 border border-blue-300/40">
+                            <i class="fa-solid fa-check text-[11px]"></i> Potvrđeno
+                        </span>
+                        break;
+                    case OrderStatus.Completed:
+                        <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-500/20 text-emerald-100 border border-emerald-300/40">
+                            <i class="fa-solid fa-circle-check text-[11px]"></i> Završeno
+                        </span>
+                        break;
+                    case OrderStatus.Cancelled:
+                        <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-gray-500/20 text-gray-100 border border-gray-300/40">
+                            <i class="fa-solid fa-ban text-[11px]"></i> Otkazano
+                        </span>
+                        break;
+                    default:
+                        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-white/20 text-white">
+                            @Model.Order.OrderStatus.GetDisplayName()
+                        </span>
+                        break;
+                }
+
+                @switch (Model.Order.DeliveryStatus)
+                {
+                    case DeliveryStatus.Standby:
+                        <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-gray-500/20 text-gray-100 border border-gray-300/40">
+                            <i class="fa-solid fa-box text-[11px]"></i> U pripremi
+                        </span>
+                        break;
+                    case DeliveryStatus.Prepared:
+                        <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-orange-500/20 text-orange-100 border border-orange-300/40">
+                            <i class="fa-solid fa-boxes-packing text-[11px]"></i> Spremno za slanje
+                        </span>
+                        break;
+                    case DeliveryStatus.InTransit:
+                    case DeliveryStatus.OnTheWay:
+                        <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-blue-500/20 text-blue-100 border border-blue-300/40 animate-pulse">
+                            <i class="fa-solid fa-truck text-[11px]"></i> Na putu
+                        </span>
+                        break;
+                    case DeliveryStatus.Delivered:
+                        <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-500/20 text-emerald-100 border border-emerald-300/40">
+                            <i class="fa-solid fa-house-chimney-check text-[11px]"></i> Uručeno
+                        </span>
+                        break;
+                    default:
+                        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-white/20 text-white">
+                            @Model.Order.DeliveryStatus.GetDisplayName()
+                        </span>
+                        break;
+                }
+            </div>
+        </div>
+
+        <div class="p-6 grid grid-cols-1 lg:grid-cols-3 gap-6">
+
+            <div class="lg:col-span-2 space-y-6">
+
+                <div class="bg-red-50/50 rounded-xl p-5 border border-red-100 shadow-sm">
+                    <h3 class="text-base font-bold text-red-950 flex items-center gap-2 mb-4">
+                        <i class="fa-solid fa-basket-shopping text-red-700"></i>
+                        Naručeni artikli
+                    </h3>
+
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left">
+                            <thead>
+                            <tr class="text-xs uppercase text-red-900/70 border-b border-red-200 font-semibold tracking-wider">
+                                <th class="pb-3">Proizvod</th>
+                                <th class="pb-3 text-center">Količina</th>
+                                <th class="pb-3 text-right">Cena</th>
+                                <th class="pb-3 text-right">Ukupno</th>
+                            </tr>
+                            </thead>
+                            <tbody class="divide-y divide-red-100 text-sm">
+                            @foreach (var item in Model.Order.Items)
+                            {
+                                <tr>
+                                    <td class="py-3.5">
+                                        <div class="flex items-center gap-3">
+                                            @if (!string.IsNullOrWhiteSpace(item.ProductImagePath))
+                                            {
+                                                <img src="@item.ProductImagePath" alt="@item.ProductName" class="w-12 h-12 rounded-lg object-cover border border-red-200 shrink-0" />
+                                            }
+                                            else
+                                            {
+                                                <div class="w-12 h-12 rounded-lg bg-red-100 flex items-center justify-center text-red-600 text-sm font-bold border border-red-200 shrink-0">
+                                                    <i class="fa-solid fa-seedling"></i>
+                                                </div>
+                                            }
+                                            <span class="font-semibold text-red-950">@item.ProductName</span>
+                                        </div>
+                                    </td>
+                                    <td class="py-3.5 text-center font-medium text-gray-700">
+                                        @item.Quantity kom.
+                                    </td>
+                                    <td class="py-3.5 text-right font-medium text-gray-700">
+                                        @item.UnitPrice.ToString("N0") RSD
+                                    </td>
+                                    <td class="py-3.5 text-right font-bold text-red-950">
+                                        @item.TotalPrice.ToString("N0") RSD
+                                    </td>
+                                </tr>
+                            }
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="mt-4 pt-4 border-t border-red-200 space-y-2 text-sm">
+                        <div class="flex justify-between text-gray-600">
+                            <span>Međuzbir artikala</span>
+                            <span class="font-semibold text-gray-800">@Model.Order.Subtotal.ToString("N0") RSD</span>
+                        </div>
+                        <div class="flex justify-between text-gray-600">
+                            <span>Troškovi dostave</span>
+                            <span class="font-semibold text-gray-800">@Model.Order.DeliveryFee.ToString("N0") RSD</span>
+                        </div>
+                        <div class="flex justify-between text-base font-bold text-red-950 pt-2 border-t border-red-200">
+                            <span>Ukupan iznos</span>
+                            <span class="text-lg text-red-800">@Model.Order.TotalPrice.ToString("N0") RSD</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="bg-red-50/50 rounded-xl p-5 border border-red-100 shadow-sm space-y-3">
+                        <h3 class="text-base font-bold text-red-950 flex items-center gap-2">
+                            <i class="fa-solid fa-user text-red-700"></i>
+                            Podaci o kupcu
+                        </h3>
+                        <div class="text-sm space-y-2">
+                            <div>
+                                <span class="text-xs text-gray-500 block uppercase font-semibold">Ime i prezime</span>
+                                <span class="font-semibold text-gray-900">@(string.IsNullOrWhiteSpace(Model.Order.BuyerFullName) ? "Neregistrovani korisnik" : Model.Order.BuyerFullName)</span>
+                            </div>
+                            @if (!string.IsNullOrWhiteSpace(Model.Order.BuyerEmail))
+                            {
+                                <div>
+                                    <span class="text-xs text-gray-500 block uppercase font-semibold">Email</span>
+                                    <a href="mailto:@Model.Order.BuyerEmail" class="text-red-700 hover:underline">@Model.Order.BuyerEmail</a>
+                                </div>
+                            }
+                            @if (!string.IsNullOrWhiteSpace(Model.Order.BuyerPhoneNumber))
+                            {
+                                <div>
+                                    <span class="text-xs text-gray-500 block uppercase font-semibold">Telefon</span>
+                                    <a href="tel:@Model.Order.BuyerPhoneNumber" class="text-red-700 hover:underline">@Model.Order.BuyerPhoneNumber</a>
+                                </div>
+                            }
+                        </div>
+                    </div>
+
+                    <div class="bg-red-50/50 rounded-xl p-5 border border-red-100 shadow-sm space-y-3">
+                        <h3 class="text-base font-bold text-red-950 flex items-center gap-2">
+                            <i class="fa-solid fa-location-dot text-red-700"></i>
+                            Dostava & Primalac
+                        </h3>
+                        <div class="text-sm space-y-2">
+                            <div>
+                                <span class="text-xs text-gray-500 block uppercase font-semibold">Primalac</span>
+                                <span class="font-semibold text-gray-900">@Model.Order.RecipientFullName</span>
+                            </div>
+                            <div>
+                                <span class="text-xs text-gray-500 block uppercase font-semibold">Adresa i grad</span>
+                                <span class="text-gray-900">@Model.Order.OrderAddress, @Model.Order.ZipCode @Model.Order.City</span>
+                            </div>
+                            <div>
+                                <span class="text-xs text-gray-500 block uppercase font-semibold">Telefon primaoca</span>
+                                <a href="tel:@Model.Order.RecipientPhoneNumber" class="text-red-700 hover:underline">@Model.Order.RecipientPhoneNumber</a>
+                            </div>
+                            <div>
+                                <span class="text-xs text-gray-500 block uppercase font-semibold">Željeni datum dostave</span>
+                                <span class="font-semibold text-red-900">@Model.Order.OrderDate.ToString("dd.MM.yyyy. HH:mm")</span>
+                            </div>
+                            @if (!string.IsNullOrWhiteSpace(Model.Order.Note))
+                            {
+                                <div class="pt-2 border-t border-red-200">
+                                    <span class="text-xs text-gray-500 block uppercase font-semibold">Napomena / Poruka</span>
+                                    <p class="text-xs text-gray-700 italic bg-white p-2.5 rounded border border-red-100 mt-1">@Model.Order.Note</p>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="space-y-6">
+
+                <div class="bg-white rounded-xl p-5 border-2 @(Model.Order.IsDelivererAssigned ? "border-blue-300 shadow-blue-50" : "border-amber-300 shadow-amber-50") shadow-md">
+                    <h3 class="text-base font-bold text-red-950 flex items-center justify-between gap-2 mb-4 pb-3 border-b border-gray-100">
+                        <span class="flex items-center gap-2">
+                            <i class="fa-solid fa-truck-fast text-orange-600"></i>
+                            Dostavljač
+                        </span>
+                        @if (Model.Order.IsDelivererAssigned)
+                        {
+                            <span class="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-800 border border-emerald-200">
+                                Dodeljen
+                            </span>
+                        }
+                        else
+                        {
+                            <span class="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-rose-100 text-rose-800 border border-rose-200">
+                                Nije dodeljen
+                            </span>
+                        }
+                    </h3>
+
+                    @if (Model.Order.IsDelivererAssigned)
+                    {
+                        <div class="space-y-4">
+                            <div class="flex items-center gap-3 p-3 bg-red-50/60 rounded-xl border border-red-100">
+                                <div class="w-12 h-12 rounded-full bg-red-100 flex items-center justify-center text-red-800 font-bold text-lg shrink-0">
+                                    <i class="fa-solid fa-user-tie"></i>
+                                </div>
+                                <div class="flex flex-col">
+                                    <span class="font-bold text-red-950 text-base">@Model.Order.DelivererFullName</span>
+                                    @if (Model.Order.DelivererVehicleType.HasValue)
+                                    {
+                                        <span class="text-xs text-gray-600 flex items-center gap-1.5 mt-0.5">
+                                            @switch (Model.Order.DelivererVehicleType.Value)
+                                            {
+                                                case VehicleType.Bicycle:
+                                                    <i class="fa-solid fa-bicycle text-orange-600"></i>
+                                                    break;
+                                                case VehicleType.Scooter:
+                                                    <i class="fa-solid fa-motorcycle text-orange-600"></i>
+                                                    break;
+                                                case VehicleType.Car:
+                                                    <i class="fa-solid fa-car text-orange-600"></i>
+                                                    break;
+                                            }
+                                            @Model.Order.DelivererVehicleType.Value.GetDisplayName()
+                                        </span>
+                                    }
+                                </div>
+                            </div>
+
+                            @if (!string.IsNullOrWhiteSpace(Model.Order.DelivererPhoneNumber))
+                            {
+                                <div class="text-sm">
+                                    <span class="text-xs text-gray-500 block uppercase font-semibold">Kontakt telefon</span>
+                                    <a href="tel:@Model.Order.DelivererPhoneNumber" class="font-semibold text-red-800 hover:underline flex items-center gap-2 mt-0.5">
+                                        <i class="fa-solid fa-phone text-xs"></i>
+                                        @Model.Order.DelivererPhoneNumber
+                                    </a>
+                                </div>
+                            }
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="space-y-4">
+                            <p class="text-xs text-gray-600">
+                                Porudžbini još uvek nije dodeljen dostavljač. Izaberite dostupnog dostavljača iz liste i potvrdite dodelu:
+                            </p>
+
+                            @if (Model.Order.AvailableDeliverers.Any())
+                            {
+                                @using (Html.BeginForm("Assign", "Orders", new { area = "Admin" }, FormMethod.Post, true, new { hx_post = Url.Action("Assign", "Orders", new { area = "Admin" }), hx_target = "#user-content", @class = "space-y-4" }))
+                                {
+                                    @Html.AntiForgeryToken()
+                                    <input type="hidden" name="orderId" value="@Model.Order.Id" />
+
+                                    <div>
+                                        <label for="delivererSelect" class="block text-xs font-bold text-red-900 uppercase tracking-wider mb-1.5">
+                                            Izaberi dostavljača
+                                        </label>
+                                        <div class="relative">
+                                            <select id="delivererSelect"
+                                                    name="delivererId"
+                                                    required
+                                                    class="w-full text-sm rounded-lg bg-white border border-red-200 px-3 py-2.5 pr-8 focus:outline-none focus:ring-2 focus:ring-red-400 text-gray-700 appearance-none cursor-pointer">
+                                                <option value="" disabled selected>-- Izaberite dostavljača --</option>
+                                                @foreach (var del in Model.Order.AvailableDeliverers)
+                                                {
+                                                    <option value="@del.Id">
+                                                        @del.FirstName @del.LastName (@del.VehicleType.GetDisplayName() - @del.PhoneNumber)
+                                                    </option>
+                                                }
+                                            </select>
+                                            <i class="fa-solid fa-chevron-down absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs pointer-events-none"></i>
+                                        </div>
+                                    </div>
+
+                                    <button type="submit"
+                                            class="w-full py-2.5 px-4 bg-orange-500 hover:bg-orange-600 text-white font-semibold text-sm rounded-lg shadow-md transition-all duration-200 flex items-center justify-center gap-2 cursor-pointer">
+                                        <i class="fa-solid fa-user-plus"></i>
+                                        <span>Dodeli dostavljača</span>
+                                    </button>
+                                }
+                            }
+                            else
+                            {
+                                <div class="p-3 bg-amber-50 rounded-lg border border-amber-200 text-xs text-amber-800 flex items-center gap-2">
+                                    <i class="fa-solid fa-triangle-exclamation text-amber-600 text-base"></i>
+                                    <span>Trenutno nema slobodnih ili aktivnih dostavljača u sistemu.</span>
+                                </div>
+                            }
+                        </div>
+                    }
+                </div>
+
+                <div class="bg-red-50/50 rounded-xl p-5 border border-red-100 shadow-sm flex flex-col gap-3">
+                    <a hx-get="@Url.Action("Index", "Orders", new { area = "Admin" })"
+                       hx-target="#user-content"
+                       hx-push-url="true"
+                       class="w-full py-2.5 px-4 bg-white hover:bg-red-50 text-red-900 border border-red-200 font-semibold text-sm rounded-lg transition-colors flex items-center justify-center gap-2 cursor-pointer shadow-sm">
+                        <i class="fa-solid fa-arrow-left text-xs"></i>
+                        <span>Nazad na sve porudžbine</span>
+                    </a>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

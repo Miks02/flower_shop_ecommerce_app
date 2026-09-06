@@ -1,0 +1,10 @@
+@model FlowerShop.Web.Areas.Deliverer.Models.Dashboard.DelivererDashboardViewModel
+
+@{
+    Layout = "_DelivererLayout";
+    ViewData["Title"] = "Moj profil";
+}
+
+<div id="user-content" class="p-4">
+    @await Html.PartialAsync("_DashboardContent", Model)
+</div>

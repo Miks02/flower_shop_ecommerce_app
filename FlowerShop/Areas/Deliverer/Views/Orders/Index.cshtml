@@ -1,0 +1,10 @@
+@model FlowerShop.Web.Areas.Deliverer.Models.Orders.OrderSummaryViewModel
+
+@{
+    ViewBag.Title = "Narudžbine";
+    Layout = "_DelivererLayout";
+}
+
+<div id="user-content">
+    @await Html.PartialAsync("_OrdersPage", Model)
+</div>

@@ -89,6 +89,25 @@ public class DelivererRepository : Repository<Deliverer>, IDelivererRepository
         return new DelivererStatisticsDto(total, available, onDuty, unavailable, bicycle, scooter, car);
     }
 
+    public async Task<IReadOnlyList<DelivererDto>> GetAvailableDeliverersListAsync(CancellationToken ct = default)
+    {
+        return await _context.Deliverers
+            .Include(d => d.User)
+            .Where(d => d.DelivererStatus != DelivererStatus.Unavailable)
+            .Select(d => new DelivererDto
+            {
+                Id = d.Id,
+                FirstName = d.User.FirstName,
+                LastName = d.User.LastName,
+                Email = d.User.Email!,
+                PhoneNumber = d.User.PhoneNumber!,
+                VehicleType = d.VehicleType,
+                DelivererStatus = d.DelivererStatus,
+                CreatedAt = d.User.CreatedAt
+            })
+            .ToListAsync(ct);
+    }
+
     public async Task<Deliverer?> GetByIdAsync(string id, CancellationToken ct = default)
     {
         return await _context.Deliverers

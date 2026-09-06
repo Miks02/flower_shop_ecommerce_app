@@ -471,6 +471,119 @@ namespace FlowerShop.Infrastructure.Migrations
                         });
                 });
 
+            modelBuilder.Entity("FlowerShop.Domain.Entities.Orders.Order", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("City")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("DelivererId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("DeliveryStatus")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Note")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<string>("OrderAddress")
+                        .IsRequired()
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
+                    b.Property<DateTime>("OrderDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("OrderNumber")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("OrderStatus")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("RecipientFullName")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
+
+                    b.Property<string>("RecipientPhoneNumber")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("ZipCode")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CreatedAt");
+
+                    b.HasIndex("DelivererId");
+
+                    b.HasIndex("OrderNumber")
+                        .IsUnique();
+
+                    b.HasIndex("OrderStatus");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Orders", (string)null);
+                });
+
+            modelBuilder.Entity("FlowerShop.Domain.Entities.Orders.OrderItem", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("OrderId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ProductImagePath")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<string>("ProductName")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("UnitPrice")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OrderId");
+
+                    b.ToTable("OrderItems");
+                });
+
             modelBuilder.Entity("FlowerShop.Domain.Entities.ProductFlowers.ProductFlower", b =>
                 {
                     b.Property<int>("ProductId")
@@ -756,6 +869,35 @@ namespace FlowerShop.Infrastructure.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("FlowerShop.Domain.Entities.Orders.Order", b =>
+                {
+                    b.HasOne("FlowerShop.Domain.Entities.Deliverers.Deliverer", "Deliverer")
+                        .WithMany("Orders")
+                        .HasForeignKey("DelivererId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("FlowerShop.Domain.Entities.IdentityUser.User", "User")
+                        .WithMany("Orders")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Deliverer");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("FlowerShop.Domain.Entities.Orders.OrderItem", b =>
+                {
+                    b.HasOne("FlowerShop.Domain.Entities.Orders.Order", "Order")
+                        .WithMany("OrderItems")
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Order");
+                });
+
             modelBuilder.Entity("FlowerShop.Domain.Entities.ProductFlowers.ProductFlower", b =>
                 {
                     b.HasOne("FlowerShop.Domain.Entities.Flowers.Flower", "Flower")
@@ -870,6 +1012,11 @@ namespace FlowerShop.Infrastructure.Migrations
                     b.Navigation("Products");
                 });
 
+            modelBuilder.Entity("FlowerShop.Domain.Entities.Deliverers.Deliverer", b =>
+                {
+                    b.Navigation("Orders");
+                });
+
             modelBuilder.Entity("FlowerShop.Domain.Entities.Flowers.Flower", b =>
                 {
                     b.Navigation("ProductFlowers");
@@ -881,7 +1028,14 @@ namespace FlowerShop.Infrastructure.Migrations
 
                     b.Navigation("Deliverer");
 
+                    b.Navigation("Orders");
+
                     b.Navigation("Products");
+                });
+
+            modelBuilder.Entity("FlowerShop.Domain.Entities.Orders.Order", b =>
+                {
+                    b.Navigation("OrderItems");
                 });
 
             modelBuilder.Entity("FlowerShop.Domain.Entities.Products.Product", b =>

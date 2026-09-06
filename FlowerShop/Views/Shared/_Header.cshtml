@@ -29,7 +29,7 @@
                 </button>
                 <button
                     data-menu="@(isAuthenticated ? "profile-open" : "auth-open")" class="@(isAuthenticated ? "hidden" : "block") @(isStaff ? "hidden" : "sm:block") text-xl md:text-lg hover:text-red-200 duration-200"><i class="fa-regular fa-user"></i></button>
-                <a asp-area="@(isAdmin ? "Admin" : "Delivery")" asp-controller="Dashboard" asp-action="Index" class="@(isStaff ? "block" : "hidden") text-xl md:text-lg hover:text-red-200 duration-200"><i class="fa-solid fa-user-gear"></i></a>
+                <a asp-area="@(isAdmin ? "Admin" : "Deliverer")" asp-controller="Dashboard" asp-action="Index" class="@(isStaff ? "block" : "hidden") text-xl md:text-lg hover:text-red-200 duration-200"><i class="fa-solid fa-user-gear"></i></a>
         
                 
                 
@@ -166,7 +166,7 @@
                         }
                         else if(isDelivery)
                         {
-                            <a asp-area="Delivery" asp-controller="Dashboard" asp-action="Index" class="group flex items-center w-full px-5 py-2 rounded-lg transition-all duration-300 hover:bg-green-500/10">
+                            <a asp-area="Deliverer" asp-controller="Dashboard" asp-action="Index" class="group flex items-center w-full px-5 py-2 rounded-lg transition-all duration-300 hover:bg-green-500/10">
                                 <i class="fa-solid fa-user-gear mr-5 text-orange-400 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:text-yellow-300"></i>
                                 <span class="transition-colors duration-300 group-hover:text-yellow-200">Dostavljački panel</span>
                             </a>

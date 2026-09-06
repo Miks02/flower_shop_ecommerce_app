@@ -1,0 +1,222 @@
+@model FlowerShop.Web.ViewModels.CheckoutViewModel
+@{
+    ViewBag.Title = "Plaćanje";
+}
+
+@await Component.InvokeAsync("Hero", new
+{
+    title = "Plaćanje",
+    subtitle = "Unesite podatke za dostavu i završite porudžbinu.",
+})
+
+<section class="w-full min-h-screen bg-gradient-to-br from-rose-50 via-red-50 to-pink-100 py-10 px-4 sm:px-8">
+    @if (TempData["Error"] != null)
+    {
+        <div class="mb-6 p-4 rounded-2xl bg-red-100/90 border border-red-400 text-red-800 text-sm font-semibold shadow-md flex items-center gap-3">
+            <i class="fa-solid fa-triangle-exclamation text-red-600"></i>
+            <span>@TempData["Error"]</span>
+        </div>
+    }
+    <div class="max-w-7xl mx-auto">
+        <form asp-controller="Checkout" asp-action="Index" method="post" class="flex flex-col lg:flex-row gap-8 items-start">
+            @Html.AntiForgeryToken()
+
+            <div class="w-full lg:w-2/3 flex flex-col gap-6">
+
+                @if (!ViewData.ModelState.IsValid && ViewData.ModelState[string.Empty]?.Errors.Count > 0)
+                {
+                    <div asp-validation-summary="ModelOnly" class="p-4 rounded-2xl bg-red-100/90 border border-red-300 text-red-800 text-sm font-semibold shadow-md"></div>
+                }
+
+                <div class="bg-red-200/90 backdrop-blur-md p-6 sm:p-8 rounded-3xl shadow-xl text-red-950 flex flex-col gap-5">
+                    <div class="flex items-center gap-3 border-b border-red-300/60 pb-4">
+                        <span class="w-8 h-8 rounded-full bg-red-700 text-white flex items-center justify-center font-bold text-sm shadow">1</span>
+                        <h2 class="text-2xl font-bold text-red-900">Podaci za dostavu</h2>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div class="flex flex-col gap-1.5">
+                            <label asp-for="RecipientFullName" class="text-sm font-semibold text-red-800">Ime i prezime primaoca</label>
+                            <input asp-for="RecipientFullName" placeholder="Petar Petrović" class="w-full p-2 border-2 shadow-md transition-all bg-red-50/80 placeholder-gray-500 border-red-400 rounded-md focus:outline-none focus:ring-2 focus:ring-red-400 focus:border-red-500 text-red-950">
+                            <span asp-validation-for="RecipientFullName" class="text-xs text-red-600 font-semibold"></span>
+                        </div>
+
+                        <div class="flex flex-col gap-1.5">
+                            <label asp-for="RecipientPhoneNumber" class="text-sm font-semibold text-red-800">Telefon primaoca</label>
+                            <input asp-for="RecipientPhoneNumber" type="tel" placeholder="06X XXX XXXX" class="w-full p-2 border-2 shadow-md transition-all bg-red-50/80 placeholder-gray-500 border-red-400 rounded-md focus:outline-none focus:ring-2 focus:ring-red-400 focus:border-red-500 text-red-950">
+                            <span asp-validation-for="RecipientPhoneNumber" class="text-xs text-red-600 font-semibold"></span>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-col gap-1.5">
+                        <label asp-for="OrderAddress" class="text-sm font-semibold text-red-800">Adresa dostave</label>
+                        <input asp-for="OrderAddress" placeholder="Ulica i broj, sprat, stan..." class="w-full p-2 border-2 shadow-md transition-all bg-red-50/80 placeholder-gray-500 border-red-400 rounded-md focus:outline-none focus:ring-2 focus:ring-red-400 focus:border-red-500 text-red-950">
+                        <span asp-validation-for="OrderAddress" class="text-xs text-red-600 font-semibold"></span>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div class="flex flex-col gap-1.5">
+                            <label asp-for="City" class="text-sm font-semibold text-red-800">Grad</label>
+                            <input asp-for="City" placeholder="Beograd" class="w-full p-2 border-2 shadow-md transition-all bg-red-50/80 placeholder-gray-500 border-red-400 rounded-md focus:outline-none focus:ring-2 focus:ring-red-400 focus:border-red-500 text-red-950">
+                            <span asp-validation-for="City" class="text-xs text-red-600 font-semibold"></span>
+                        </div>
+
+                        <div class="flex flex-col gap-1.5">
+                            <label asp-for="ZipCode" class="text-sm font-semibold text-red-800">Poštanski broj</label>
+                            <input asp-for="ZipCode" placeholder="11000" class="w-full p-2 border-2 shadow-md transition-all bg-red-50/80 placeholder-gray-500 border-red-400 rounded-md focus:outline-none focus:ring-2 focus:ring-red-400 focus:border-red-500 text-red-950">
+                            <span asp-validation-for="ZipCode" class="text-xs text-red-600 font-semibold"></span>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div class="flex flex-col gap-1.5">
+                            <label asp-for="DeliveryDate" class="text-sm font-semibold text-red-800">Datum dostave</label>
+                            <input asp-for="DeliveryDate" type="date" min="@DateTime.Today.ToString("yyyy-MM-dd")" class="w-full p-2 border-2 shadow-md transition-all bg-red-50/80 placeholder-gray-500 border-red-400 rounded-md focus:outline-none focus:ring-2 focus:ring-red-400 focus:border-red-500 text-red-950">
+                            <span asp-validation-for="DeliveryDate" class="text-xs text-red-600 font-semibold"></span>
+                        </div>
+
+                        <div class="flex flex-col gap-1.5">
+                            <label asp-for="DeliveryTime" class="text-sm font-semibold text-red-800">Željeno vreme</label>
+                            <input asp-for="DeliveryTime" type="time" class="w-full p-2 border-2 shadow-md transition-all bg-red-50/80 placeholder-gray-500 border-red-400 rounded-md focus:outline-none focus:ring-2 focus:ring-red-400 focus:border-red-500 text-red-950">
+                            <span asp-validation-for="DeliveryTime" class="text-xs text-red-600 font-semibold"></span>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-col gap-1.5">
+                        <label asp-for="Note" class="text-sm font-semibold text-red-800">Poruka na čestitki / napomena (opciono)</label>
+                        <textarea asp-for="Note" rows="3" placeholder="Npr. Srećan rođendan!" class="w-full p-2 border-2 shadow-md transition-all bg-red-50/80 placeholder-gray-500 border-red-400 rounded-md focus:outline-none focus:ring-2 focus:ring-red-400 focus:border-red-500 text-red-950 resize-none"></textarea>
+                        <span asp-validation-for="Note" class="text-xs text-red-600 font-semibold"></span>
+                    </div>
+                </div>
+
+                <div class="bg-red-300/80 backdrop-blur-md p-6 sm:p-8 rounded-3xl shadow-xl text-red-950 flex flex-col gap-5">
+                    <div class="flex items-center gap-3 border-b border-red-400/50 pb-4">
+                        <span class="w-8 h-8 rounded-full bg-red-800 text-white flex items-center justify-center font-bold text-sm shadow">2</span>
+                        <h2 class="text-2xl font-bold text-red-950">Kontakt podaci kupca</h2>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div class="flex flex-col gap-1.5">
+                            <label asp-for="BuyerEmail" class="text-sm font-semibold text-red-900">Email adresa</label>
+                            <input asp-for="BuyerEmail" type="email" placeholder="vas@email.com" class="w-full p-2 border-2 shadow-md transition-all bg-red-50/80 placeholder-gray-500 border-red-400 rounded-md focus:outline-none focus:ring-2 focus:ring-red-400 focus:border-red-500 text-red-950">
+                            <span asp-validation-for="BuyerEmail" class="text-xs text-red-600 font-semibold"></span>
+                        </div>
+
+                        <div class="flex flex-col gap-1.5">
+                            <label asp-for="BuyerPhone" class="text-sm font-semibold text-red-900">Vaš kontakt telefon</label>
+                            <input asp-for="BuyerPhone" type="tel" placeholder="06X XXX XXXX" class="w-full p-2 border-2 shadow-md transition-all bg-red-50/80 placeholder-gray-500 border-red-400 rounded-md focus:outline-none focus:ring-2 focus:ring-red-400 focus:border-red-500 text-red-950">
+                            <span asp-validation-for="BuyerPhone" class="text-xs text-red-600 font-semibold"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-red-200/90 backdrop-blur-md p-6 sm:p-8 rounded-3xl shadow-xl text-red-950 flex flex-col gap-5">
+                    <div class="flex items-center justify-between border-b border-red-300/60 pb-4">
+                        <div class="flex items-center gap-3">
+                            <span class="w-8 h-8 rounded-full bg-red-700 text-white flex items-center justify-center font-bold text-sm shadow">3</span>
+                            <h2 class="text-2xl font-bold text-red-900">Plaćanje karticom</h2>
+                        </div>
+                        <div class="flex gap-2 text-2xl text-red-800">
+                            <i class="fa-brands fa-cc-visa"></i>
+                            <i class="fa-brands fa-cc-mastercard"></i>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 gap-4">
+                        <div class="flex flex-col gap-1.5">
+                            <label asp-for="CardNumber" class="text-sm font-semibold text-red-800">Broj kartice</label>
+                            <div class="relative">
+                                <input asp-for="CardNumber" placeholder="4123 4567 8901 2345" maxlength="19" class="w-full p-2 border-2 shadow-md transition-all bg-red-50/80 placeholder-gray-500 border-red-400 rounded-md focus:outline-none focus:ring-2 focus:ring-red-400 focus:border-red-500 text-red-950 pl-11">
+                                <i class="fa-solid fa-credit-card absolute left-4 top-1/2 -translate-y-1/2 text-red-700"></i>
+                            </div>
+                            <span asp-validation-for="CardNumber" class="text-xs text-red-600 font-semibold"></span>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="flex flex-col gap-1.5">
+                                <label asp-for="CardExpiry" class="text-sm font-semibold text-red-800">Ističe (MM/YY)</label>
+                                <input asp-for="CardExpiry" placeholder="08/28" maxlength="5" class="w-full p-2 border-2 shadow-md transition-all bg-red-50/80 placeholder-gray-500 border-red-400 rounded-md focus:outline-none focus:ring-2 focus:ring-red-400 focus:border-red-500 text-red-950">
+                                <span asp-validation-for="CardExpiry" class="text-xs text-red-600 font-semibold"></span>
+                            </div>
+
+                            <div class="flex flex-col gap-1.5">
+                                <label asp-for="CardCvc" class="text-sm font-semibold text-red-800">CVC / CVV</label>
+                                <input asp-for="CardCvc" type="password" placeholder="123" maxlength="4" class="w-full p-2 border-2 shadow-md transition-all bg-red-50/80 placeholder-gray-500 border-red-400 rounded-md focus:outline-none focus:ring-2 focus:ring-red-400 focus:border-red-500 text-red-950">
+                                <span asp-validation-for="CardCvc" class="text-xs text-red-600 font-semibold"></span>
+                            </div>
+                        </div>
+
+                        <div class="flex flex-col gap-1.5">
+                            <label asp-for="CardHolder" class="text-sm font-semibold text-red-800">Ime na kartici</label>
+                            <input asp-for="CardHolder" placeholder="PETAR PETROVIC" class="w-full p-2 border-2 shadow-md transition-all bg-red-50/80 placeholder-gray-500 border-red-400 rounded-md focus:outline-none focus:ring-2 focus:ring-red-400 focus:border-red-500 text-red-950">
+                            <span asp-validation-for="CardHolder" class="text-xs text-red-600 font-semibold"></span>
+                        </div>
+                    </div>
+
+                    <div class="pt-4 flex flex-col gap-4 border-t border-red-300/60">
+                        <label class="flex items-center gap-3 cursor-pointer">
+                            <input asp-for="AcceptTerms" class="w-5 h-5 accent-red-700 rounded">
+                            <span class="text-sm font-medium text-red-900">Slažem se sa uslovima korišćenja i politikom privatnosti</span>
+                        </label>
+                        <span asp-validation-for="AcceptTerms" class="text-xs text-red-600 font-semibold"></span>
+
+                        <button type="submit" class="w-full py-4 bg-red-800 hover:bg-red-900 text-white font-bold text-lg rounded-xl shadow-lg shadow-red-900/20 hover:scale-[1.01] transition-all duration-200 flex items-center justify-center gap-3 cursor-pointer">
+                            <i class="fa-solid fa-lock"></i>
+                            Potvrdi i plati (@Model.Total.ToString("N0") RSD)
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="w-full lg:w-1/3 lg:sticky lg:top-6 flex flex-col gap-6">
+
+                <div class="bg-red-300/80 backdrop-blur-md p-6 rounded-3xl shadow-xl text-red-950 flex flex-col gap-5">
+                    <h2 class="text-2xl font-bold border-b border-red-400/50 pb-4 text-red-950">Pregled porudžbine</h2>
+
+                    <div class="flex flex-col gap-4 max-h-[320px] overflow-y-auto pr-1">
+                        @if (Model.Cart.Items.Count == 0)
+                        {
+                            <p class="text-sm text-red-800">Vaša korpa je prazna.</p>
+                        }
+                        else
+                        {
+                            @foreach (var item in Model.Cart.Items)
+                            {
+                                <div class="flex gap-3 items-center">
+                                    <img src="@item.ImageUrl" alt="@item.ProductName" class="w-14 h-14 rounded-xl object-cover shrink-0">
+                                    <div class="flex-1 min-w-0">
+                                        <p class="font-semibold text-sm truncate text-red-950">@item.ProductName</p>
+                                        <p class="text-xs text-red-800 font-medium">@item.Price.ToString("N0") RSD × @item.Quantity</p>
+                                    </div>
+                                    <p class="font-bold text-sm text-red-950">@item.LineTotal.ToString("N0") RSD</p>
+                                </div>
+                            }
+                        }
+                    </div>
+
+                    <div class="border-t border-red-400/50 pt-4 flex flex-col gap-2 text-sm">
+                        <div class="flex justify-between text-red-900">
+                            <span>Međuzbir</span>
+                            <span class="font-semibold text-red-950">@Model.Subtotal.ToString("N0") RSD</span>
+                        </div>
+                        <div class="flex justify-between text-red-900">
+                            <span>Dostava</span>
+                            <span class="font-semibold text-red-950">@Model.DeliveryFee.ToString("N0") RSD</span>
+                        </div>
+
+                        <div class="flex justify-between text-lg font-bold text-red-950 pt-3 border-t border-red-400/50">
+                            <span>Ukupno za uplatu</span>
+                            <span class="text-red-900">@Model.Total.ToString("N0") RSD</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </form>
+    </div>
+</section>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

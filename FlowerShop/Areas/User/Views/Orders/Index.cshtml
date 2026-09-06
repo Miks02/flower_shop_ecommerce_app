@@ -1,0 +1,17 @@
+@model FlowerShop.Web.Areas.User.Models.Orders.UserOrdersSummaryViewModel
+@{
+    ViewBag.Title = "Moje porudžbine";
+    Layout = "_UserLayout";
+}
+
+<div id="user-content" class="p-4 sm:p-6">
+    @await Html.PartialAsync("_OrdersPage", Model)
+</div>
+
+@if (ViewBag.InitialOrderId != null)
+{
+    <div hx-get="@Url.Action("ReceiptModal", "Orders", new { area = "User", id = ViewBag.InitialOrderId })"
+         hx-target="#modal-container"
+         hx-trigger="load"
+         hx-swap="innerHTML"></div>
+}
