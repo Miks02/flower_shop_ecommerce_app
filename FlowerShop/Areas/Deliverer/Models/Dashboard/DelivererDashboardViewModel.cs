@@ -1,7 +1,7 @@
 using FlowerShop.Domain.Entities.Deliverers;
 using FlowerShop.Domain.Enums;
 
-namespace FlowerShop.Web.Areas.Deliverer.Models;
+namespace FlowerShop.Web.Areas.Deliverer.Models.Dashboard;
 
 public record DelivererDashboardViewModel
 {

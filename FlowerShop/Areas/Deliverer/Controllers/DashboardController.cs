@@ -2,6 +2,7 @@ using FlowerShop.Application.Common.Abstractions;
 using FlowerShop.Application.Features.Deliverers.Queries.GetDelivererDetails;
 
 using FlowerShop.Web.Areas.Deliverer.Models;
+using FlowerShop.Web.Areas.Deliverer.Models.Dashboard;
 using Htmx;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
