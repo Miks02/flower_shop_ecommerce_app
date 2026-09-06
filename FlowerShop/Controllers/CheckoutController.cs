@@ -80,6 +80,7 @@ public class CheckoutController(
             OrderDate = orderDate,
             OrderItems = cart.Items.Select(i => new CreateOrderCommand.OrderItemDto
             {
+                ProductId = i.ProductId,
                 ProductName = i.ProductName,
                 ProductImagePath = i.ImageUrl,
                 Quantity = i.Quantity,
@@ -91,7 +92,7 @@ public class CheckoutController(
 
         if (!result.IsSuccess)
         {
-            Response.ShowError(result.Errors[0].Description);
+            SetErrorMessage(result.Errors[0].Description);
 
             var invalidVm = model with { Cart = cart };
             return View(invalidVm);

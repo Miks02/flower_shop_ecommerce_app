@@ -17,6 +17,7 @@ public record CreateOrderCommand
 
     public record OrderItemDto
     {
+        public int ProductId { get; init; }
         public string ProductName { get; init; } = null!;
         public string? ProductImagePath { get; init; }
         public int Quantity { get; init; }
