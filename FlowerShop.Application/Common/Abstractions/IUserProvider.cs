@@ -7,4 +7,7 @@ public interface IUserProvider
 {
     string GetCurrentUserId();
     Task<UserDetailsDto> GetCurrentUserDetails(string userId, CancellationToken ct = default);
+    bool IsAdmin();
+    bool IsUser();
+    bool IsDeliverer();
 }
