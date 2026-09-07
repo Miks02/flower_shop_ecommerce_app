@@ -1,6 +1,7 @@
 using FlowerShop.Application.Common.Abstractions;
 using FlowerShop.Infrastructure.Htmx;
 using FlowerShop.Infrastructure.Identity;
+using FlowerShop.Infrastructure.Notifications;
 using FlowerShop.Infrastructure.Persistence.EntityFramework;
 using FlowerShop.Infrastructure.Storage;
 using Microsoft.Extensions.Configuration;
@@ -36,5 +37,6 @@ public static class DependencyInjection
     {
         services.AddScoped<IFileService, LocalFileStorage>();
         services.AddScoped<IUserProvider, UserProvider>();
+        services.AddScoped<INotificationService, NotificationService>();
     }
 }
