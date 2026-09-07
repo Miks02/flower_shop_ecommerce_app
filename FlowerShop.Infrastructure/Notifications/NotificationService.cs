@@ -23,6 +23,16 @@ namespace FlowerShop.Infrastructure.Notifications
             if(!recipient)
                 throw new NotificationException($"Recipient with ID: {userId} has not been found.");
 
+            var newNotification = new Notification
+            {
+                Title = title,
+                Message = message,
+                NotificationType = type,
+                NotificationEntityType = entityType
+            };
+
+            notificationRepo.Add(newNotification, userId);
+            await unitOfWork.SaveAsync();
         }
         public async Task SendMultipleNotificationsAsync(
             IReadOnlyList<string> userIds, 
@@ -34,7 +44,7 @@ namespace FlowerShop.Infrastructure.Notifications
             var usersExists = await userManager.Users.Where(u => userIds.Contains(u.Id)).ToListAsync();
 
             if (usersExists.Count != userIds.Count)
-                throw new NotificationException($"Some recipients have not been found.");
+                throw new NotificationException("Some recipients have not been found.");
 
             var newNotification = new Notification
             {

@@ -38,5 +38,16 @@ namespace FlowerShop.Infrastructure.Persistence.Repositories
 
             context.Add(notification);
         }
+
+        public void Add(Notification notification, string userId)
+        {
+            notification.Recipients.Add(new NotificationRecipient
+            {
+                UserId = userId,
+                Notification = notification
+            });
+
+            context.Notifications.Add(notification);
+        }
     }
 }

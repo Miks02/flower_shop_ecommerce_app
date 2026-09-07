@@ -23,6 +23,9 @@ namespace FlowerShop.Infrastructure.Persistence.Configurations
                 .HasMaxLength(20)
                 .HasConversion<string>();
 
+            builder.Property(n => n.EntityId)
+                .IsRequired(false);
+
             builder.Property(n => n.Title)
                 .HasMaxLength(200)
                 .IsRequired();
