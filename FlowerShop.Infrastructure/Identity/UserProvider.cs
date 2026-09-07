@@ -9,6 +9,11 @@ namespace FlowerShop.Infrastructure.Identity;
 
 public class UserProvider(IHttpContextAccessor http, AppDbContext context) : IUserProvider
 {
+        
+    public bool IsAdmin() => http.HttpContext?.User.IsInRole("Admin") ?? false;
+    public bool IsUser() => http.HttpContext?.User.IsInRole("User") ?? false;
+    public bool IsDeliverer() => http.HttpContext?.User.IsInRole("Deliverer") ?? false;
+    
     public string GetCurrentUserId()
     {
         return http.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier) 
@@ -36,4 +41,5 @@ public class UserProvider(IHttpContextAccessor http, AppDbContext context) : IUs
 
         return user;
     }
+
 }

@@ -43,17 +43,29 @@
                             class="fw-bolder text-xl md:text-lg">
                         <i class="fa-solid fa-cart-shopping text-green-400 transition-all hover:text-green-600 duration-600"></i>
                     </button>
-                    <a href="#" class="hidden sm:block fw-bolder text-xl md:text-lg ">
+                    <button type="button"
+                            data-menu="notification-open"
+                            hx-get="@Url.Action("GetNotifications", "Notification")"
+                            hx-target="#notification-menu"
+                            hx-swap="innerHTML" class="hidden sm:block fw-bolder text-xl md:text-lg ">
                         <i class="fa-solid fa-bell text-yellow-400 transition-all hover:text-yellow-600 duration-600"></i>
-                    </a>
+                    </button>
                 }
                 else if (isAuthenticated && isStaff)
                 {
+                    <button type="button"
+                            data-menu="notification-open"
+                            hx-get="@Url.Action("GetNotifications", "Notification")"
+                            hx-target="#notification-menu"
+                            hx-swap="innerHTML" class="hidden sm:block fw-bolder text-xl md:text-lg ">
+                        <i class="fa-solid fa-bell text-yellow-400 transition-all hover:text-yellow-600 duration-600"></i>
+                    </button>
                     <form class="hidden sm:block" asp-controller="Account" asp-action="Logout" method="post">
                         <button type="submit" class="fw-bolder text-xl md:text-lg hover:opacity-60 duration-200">
                             <i class="bi bi-door-closed-fill text-red-200"></i>
                         </button>
                     </form>
+                   
                 }
                 
             </div>
@@ -121,7 +133,7 @@
                     </li> 
                     
                     <li>
-                        <a asp-area="" class="group flex items-center mx-2 py-2 px-3 rounded-lg transition-all duration-300 hover:bg-yellow-500/10">
+                        <a asp-controller="Notification" asp-action="GetNotifications" data-menu="notification-open" class="group flex items-center mx-2 py-2 px-3 rounded-lg transition-all duration-300 hover:bg-yellow-500/10">
                             <i class="fa-solid fa-bell mr-5 text-yellow-400 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:text-yellow-300"></i>
                             <span class="transition-colors duration-300 group-hover:text-yellow-200">Notifikacije</span>
                         </a>
@@ -193,6 +205,10 @@
             <partial name="_ProfileMenu" />
                 
         </div>  
+        <div id="notification-menu" class="fixed top-0 right-0 h-screen w-screen sm:w-[300px] bg-red-900/85 shadow-all translate-x-full backdrop-blur-xl transition-all duration-200 z-50">
+            
+        </div>  
+        
         
         <div id="cart-menu" class="fixed top-0 right-0 h-screen w-screen sm:w-[300px] bg-red-900/85 shadow-all translate-x-full backdrop-blur-xl transition-all duration-200 z-50">
         </div>  
@@ -202,6 +218,12 @@
         <div id="auth-menu" class="fixed top-0 right-0 h-screen w-screen sm:w-[300px] bg-red-900/85 shadow-all translate-x-full backdrop-blur-xl transition-all duration-200 z-50">
             
             <partial name="_Login" model="new LoginViewModel()" />
+            
+        </div>  
+    }
+    else if(isAuthenticated)
+    {
+        <div id="notification-menu" class="fixed top-0 right-0 h-screen w-screen sm:w-[300px] bg-red-900/85 shadow-all translate-x-full backdrop-blur-xl transition-all duration-200 z-50">
             
         </div>  
     }

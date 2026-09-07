@@ -1,0 +1,70 @@
+@model FlowerShop.Web.ViewModels.NotificationMenuViewModel
+
+<div class="flex flex-col p-4 h-full">
+
+    <div class="flex justify-between items-center border-b border-b-red-100 mb-1 pb-3 flex-shrink-0">
+        <h4 class="text-xl font-semibold">Notifikacije <span class="text-red-400 text-base">(@Model.UnreadCount)</span></h4>
+        <button type="button" data-menu="notification-close" class="text-3xl pb-1 hover:text-red-200 duration-200">
+            <i class="fa-solid fa-close"></i>
+        </button>
+    </div>
+
+    <div class="flex flex-col justify-between flex-1 min-h-0">
+        @if (Model.Notifications.Count == 0)
+        {
+            <p class="text-center mt-10 text-red-200 font-semibold">Nema notifikacija</p>
+        }
+        else
+        {
+            <ul class="flex flex-col w-full gap-2 my-3 flex-1 min-h-0 overflow-y-auto pr-1">
+                @foreach (var notification in Model.Notifications)
+                {
+                    <li class="group flex items-start gap-3 py-2 px-2 rounded-lg transition-all duration-300 @notification.BackgroundColorClass @(notification.IsRead ? "border border-gray-700" : "border border-red-100")">
+                        <div class="flex-shrink-0 mt-1">
+                            <i class="@notification.IconClass @notification.ColorClass text-lg"></i>
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <div class="flex items-start justify-between gap-2">
+                                <div class="flex-1">
+                                    <p class="font-medium text-sm @(notification.IsRead ? "text-gray-200" : "text-white")">@notification.Title</p>
+                                    <p class="text-xs text-red-200 mt-1">@notification.Message</p>
+                                    <p class="text-[10px] text-gray-400 mt-1">@notification.CreatedAt.ToLocalTime().ToString("dd.MM.yyyy. HH:mm")</p>
+                                </div>
+                                @if (!notification.IsRead)
+                                {
+                                    <div class="flex-shrink-0 w-2 h-2 rounded-full bg-red-400 mt-1"></div>
+                                }
+                            </div>
+                            @if (!string.IsNullOrEmpty(notification.ActionUrl))
+                            {
+                                <a href="@notification.ActionUrl" class="inline-flex items-center gap-1 text-xs text-amber-300 hover:text-amber-200 mt-2 transition-colors">
+                                    <i class="fa-solid fa-arrow-right text-[10px]"></i>
+                                    <span>Pogledaj detalje</span>
+                                </a>
+                            }
+                        </div>
+                    </li>
+                }
+            </ul>
+
+            <div class="mt-auto border-t border-t-red-100 pt-3 flex-shrink-0">
+                @if (Model.UnreadCount > 0)
+                {
+                    <button type="button"
+                            hx-post="@Url.Action("MarkAllAsRead", "Notification", new { area = "" })"
+                            hx-target="#notification-menu"
+                            hx-swap="innerHTML"
+                            class="group flex w-full justify-center items-center py-2.5 px-3 rounded-lg bg-red-800 text-white transition-all duration-300 hover:bg-red-700">
+                        <i class="fa-solid fa-check-double mr-3"></i>
+                        <span>Označi sve kao pročitano</span>
+                    </button>
+                }
+                else
+                {
+                    <p class="text-center">Pročitali ste sve notifikacije</p>
+                }
+            </div>
+        }
+    </div>
+
+</div>
