@@ -14,31 +14,36 @@ namespace FlowerShop.Application.Common.Abstractions
             string title,
             string message,
             NotificationType type = NotificationType.Information,
-            NotificationEntityType entityType = NotificationEntityType.None);
+            NotificationEntityType entityType = NotificationEntityType.None,
+            int? entityId = null);
         Task SendMultipleNotificationsAsync(
             IReadOnlyList<string> userIds, 
             string title,
             string message,
             NotificationType type = NotificationType.Information,
-            NotificationEntityType entityType = NotificationEntityType.None);
+            NotificationEntityType entityType = NotificationEntityType.None,
+            int? entityId = null);
 
         Task SendNotificationsToAllAdminsAsync(
             string title,
             string message,
             NotificationType type = NotificationType.Information,
-            NotificationEntityType entityType = NotificationEntityType.None);
+            NotificationEntityType entityType = NotificationEntityType.None,
+            int? entityId = null);
 
         Task SendNotificationsToAllDeliverersAsync(
             string title,
             string message,
             NotificationType type = NotificationType.Information,
-            NotificationEntityType entityType = NotificationEntityType.None);
+            NotificationEntityType entityType = NotificationEntityType.None,
+            int? entityId = null);
 
         Task SendNotificationsToAllUsersAsync(
             string title,
             string message,
             NotificationType type = NotificationType.Information,
-            NotificationEntityType entityType = NotificationEntityType.None);
+            NotificationEntityType entityType = NotificationEntityType.None,
+            int? entityId = null);
         Task MarkAllAsReadAsync(string userId); 
 
     }

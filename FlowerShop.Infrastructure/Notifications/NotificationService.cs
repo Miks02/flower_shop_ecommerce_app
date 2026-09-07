@@ -11,12 +11,12 @@ namespace FlowerShop.Infrastructure.Notifications
         UserManager<User> userManager,
         IUnitOfWork unitOfWork) : INotificationService
     {
-        public async Task SendNotificationAsync(
-            string userId, 
-            string title, 
+        public async Task SendNotificationAsync(string userId,
+            string title,
             string message,
             NotificationType type = NotificationType.Information,
-            NotificationEntityType entityType = NotificationEntityType.None)
+            NotificationEntityType entityType = NotificationEntityType.None,
+            int? entityId = null)
         {
             var recipient = await userManager.Users.AnyAsync(u => u.Id == userId);
 
@@ -28,7 +28,8 @@ namespace FlowerShop.Infrastructure.Notifications
                 Title = title,
                 Message = message,
                 NotificationType = type,
-                NotificationEntityType = entityType
+                NotificationEntityType = entityType,
+                EntityId = entityId
             };
 
             notificationRepo.Add(newNotification, userId);
@@ -39,7 +40,8 @@ namespace FlowerShop.Infrastructure.Notifications
             string title,
             string message,
             NotificationType type = NotificationType.Information,
-            NotificationEntityType entityType = NotificationEntityType.None)
+            NotificationEntityType entityType = NotificationEntityType.None,
+            int? entityId = null)
         {
             var usersExists = await userManager.Users.Where(u => userIds.Contains(u.Id)).ToListAsync();
 
@@ -51,7 +53,8 @@ namespace FlowerShop.Infrastructure.Notifications
                 Title = title,
                 Message = message,
                 NotificationType = type,
-                NotificationEntityType = entityType
+                NotificationEntityType = entityType,
+                EntityId = entityId
             };
 
             notificationRepo.AddNotificationWithMultipleRecipients(userIds, newNotification);
@@ -67,7 +70,8 @@ namespace FlowerShop.Infrastructure.Notifications
             string title,
             string message,
             NotificationType type = NotificationType.Information,
-            NotificationEntityType entityType = NotificationEntityType.None)
+            NotificationEntityType entityType = NotificationEntityType.None,
+            int? entityId = null)
         {
             var users = await userManager.GetUsersInRoleAsync("Admin");
 
@@ -79,7 +83,8 @@ namespace FlowerShop.Infrastructure.Notifications
                 Title = title,
                 Message = message,
                 NotificationType = type,
-                NotificationEntityType = entityType
+                NotificationEntityType = entityType,
+                EntityId = entityId
             };
 
             notificationRepo.AddNotificationWithMultipleRecipients(users.Select(u => u.Id).ToList(), newNotification);
@@ -90,7 +95,8 @@ namespace FlowerShop.Infrastructure.Notifications
             string title,
             string message,
             NotificationType type = NotificationType.Information,
-            NotificationEntityType entityType = NotificationEntityType.None)
+            NotificationEntityType entityType = NotificationEntityType.None,
+            int? entityId = null)
         {
             var users = await userManager.GetUsersInRoleAsync("Deliverer");
 
@@ -102,18 +108,19 @@ namespace FlowerShop.Infrastructure.Notifications
                 Title = title,
                 Message = message,
                 NotificationType = type,
-                NotificationEntityType = entityType
+                NotificationEntityType = entityType,
+                EntityId = entityId
             };
 
             notificationRepo.AddNotificationWithMultipleRecipients(users.Select(u => u.Id).ToList(), newNotification);
             await unitOfWork.SaveAsync();
         }
 
-        public async Task SendNotificationsToAllUsersAsync(
-            string title,
+        public async Task SendNotificationsToAllUsersAsync(string title,
             string message,
             NotificationType type = NotificationType.Information,
-            NotificationEntityType entityType = NotificationEntityType.None)
+            NotificationEntityType entityType = NotificationEntityType.None,
+            int? entityId = null)
         {
             var users = await userManager.GetUsersInRoleAsync("User");
 
@@ -125,7 +132,8 @@ namespace FlowerShop.Infrastructure.Notifications
                 Title = title,
                 Message = message,
                 NotificationType = type,
-                NotificationEntityType = entityType
+                NotificationEntityType = entityType,
+                EntityId = entityId
             };
 
             notificationRepo.AddNotificationWithMultipleRecipients(users.Select(u => u.Id).ToList(), newNotification);
