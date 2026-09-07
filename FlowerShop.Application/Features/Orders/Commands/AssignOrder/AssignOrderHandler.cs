@@ -1,5 +1,6 @@
 using FlowerShop.Application.Common.Abstractions;
 using FlowerShop.Domain.Entities.Deliverers;
+using FlowerShop.Domain.Entities.Notifications;
 using FlowerShop.Domain.Entities.Orders;
 using FlowerShop.SharedKernel.Results;
 
@@ -8,6 +9,7 @@ namespace FlowerShop.Application.Features.Orders.Commands.AssignOrder;
 public class AssignOrderHandler(
     IOrderRepository orderRepo,
     IDelivererRepository delivererRepo,
+    INotificationService notificationService,
     IUnitOfWork unitOfWork) : IHandler
 {
     public async Task<Result> Handle(AssignOrderCommand command, CancellationToken ct = default)
@@ -37,6 +39,15 @@ public class AssignOrderHandler(
         orderRepo.Update(order);
 
         await unitOfWork.SaveAsync(ct);
+        
+        await notificationService.SendNotificationAsync(
+            deliverer.Id,
+            "Dodeljena porudžbina",
+            $"Dodeljena vam je porudžbina {order.OrderNumber}. Molimo vas da je preuzmete i isporučite na vreme.",
+            NotificationType.Information,
+            NotificationEntityType.Order,
+            order.Id);
+        
         return Result.Success();
     }
 }
