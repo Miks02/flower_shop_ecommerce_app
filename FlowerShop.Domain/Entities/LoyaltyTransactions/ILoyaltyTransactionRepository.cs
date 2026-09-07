@@ -8,4 +8,6 @@ public interface ILoyaltyTransactionRepository
     Task<LoyaltyTransaction?> GetMostRecentLoyaltyTransaction(string userId, CancellationToken ct = default);
     Task<LoyaltyTransaction?> GetLastLoyaltyTransactionByOrderId(int orderId, CancellationToken ct = default);
     Task<int> GetCurrentLoyaltyPoints(string userId, CancellationToken ct = default);
+    Task<int> GetAllSpentLoyaltyPoints(CancellationToken ct = default);
+    Task<int> GetAllSpentLoyaltyPointsByUserId(string userId, CancellationToken ct = default);
 }

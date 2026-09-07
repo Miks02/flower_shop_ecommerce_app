@@ -33,4 +33,18 @@ public class LoyaltyTransactionRepository(AppDbContext context) : Repository<Loy
             .OrderByDescending(lt => lt.TransactionDate)
             .FirstOrDefaultAsync(ct);
     }
+    
+    public async Task<int> GetAllSpentLoyaltyPoints(CancellationToken ct = default)
+    {
+        return await context.LoyaltyTransactions
+            .Where(lt => lt.TransactionType == TransactionType.Redeemed)
+            .SumAsync(lt => lt.PreviousPoints, ct);
+    }
+
+    public async Task<int> GetAllSpentLoyaltyPointsByUserId(string userId, CancellationToken ct = default)
+    {
+        return await context.LoyaltyTransactions
+            .Where(lt => lt.TransactionType == TransactionType.Redeemed && lt.UserId == userId)
+            .SumAsync(lt => lt.PreviousPoints, ct);
+    }
 }
