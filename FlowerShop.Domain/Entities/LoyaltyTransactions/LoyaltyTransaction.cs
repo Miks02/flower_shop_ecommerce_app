@@ -5,10 +5,10 @@ namespace FlowerShop.Domain.Entities.LoyaltyTransactions;
 
 public class LoyaltyTransaction
 {
-    public int Id { get; init; }
-    public TransactionType TransactionType { get; init; }
-    public int Points { get; init; }
-    public DateTime TransactionDate { get; init; } = DateTime.UtcNow;
+    public int Id { get; set; }
+    public TransactionType TransactionType { get; set; }
+    public int Points { get; set; }
+    public DateTime TransactionDate { get; set; } = DateTime.UtcNow;
 
     public User User { get; set; } = null!;
     public string UserId { get; set; } = null!;

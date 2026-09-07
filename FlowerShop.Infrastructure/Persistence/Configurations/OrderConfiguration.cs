@@ -56,7 +56,8 @@ public class OrderConfiguration : IEntityTypeConfiguration<Order>
         builder.Property(o => o.UserId)
             .IsRequired();
 
-        builder.Ignore(o => o.OrderPrice);
+        builder.Property(o => o.OrderPrice)
+            .HasPrecision(18, 2);
 
         builder.HasOne(o => o.User)
             .WithMany(u => u.Orders)

@@ -29,7 +29,7 @@ public class Order
     
     public ICollection<OrderItem> OrderItems { get; set; } = [];
     
-    public decimal OrderPrice => OrderItems.Sum(oi => oi.TotalPrice);
+    public decimal OrderPrice { get; set; }
 
     private static string GenerateOrderNumber()
     {

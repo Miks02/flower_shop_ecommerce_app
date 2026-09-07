@@ -19,6 +19,9 @@ public class LoyaltyTransactionConfiguration : IEntityTypeConfiguration<LoyaltyT
             .WithMany()
             .HasForeignKey(lt => lt.OrderId)
             .OnDelete(DeleteBehavior.Restrict);
+
+        builder.Property(lt => lt.TransactionType)
+            .HasConversion<string>();
         
         builder.ToTable(lts => lts.HasCheckConstraint($"CK_{nameof(LoyaltyTransaction)}s_{nameof(LoyaltyTransaction.Points)}_NonNegative", "Points >= 0"));
         
