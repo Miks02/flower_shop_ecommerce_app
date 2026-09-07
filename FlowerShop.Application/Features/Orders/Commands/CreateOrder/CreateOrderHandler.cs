@@ -67,7 +67,8 @@ public class CreateOrderHandler(
                     TransactionType = TransactionType.Redeemed,
                     UserId = command.BuyerId,
                     Order = newOrder, 
-                    Points = pointsBalanceAfterRedeem
+                    CurrentPoints = pointsBalanceAfterRedeem,
+                    PreviousPoints = currentPoints
                 });
             }
             else 
@@ -78,7 +79,8 @@ public class CreateOrderHandler(
                 TransactionType = TransactionType.Earned,
                 UserId = command.BuyerId,
                 Order = newOrder, 
-                Points = pointsBalanceAfterRedeem + PointsEarnedPerOrder
+                CurrentPoints = pointsBalanceAfterRedeem + PointsEarnedPerOrder,
+                PreviousPoints = currentPoints
             });
 
             var cart = await cartRepo.GetByUserIdAsync(command.BuyerId, ct);
