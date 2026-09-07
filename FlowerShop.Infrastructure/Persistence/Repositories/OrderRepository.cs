@@ -11,6 +11,7 @@ public class OrderRepository(AppDbContext context) : Repository<Order>(context),
     {
         return await context.Orders
             .AsSplitQuery()
+            .Include(o => o.LoyaltyTransactions)
             .Include(o => o.OrderItems)
             .Include(o => o.User)
             .Include(o => o.Deliverer)
@@ -22,6 +23,7 @@ public class OrderRepository(AppDbContext context) : Repository<Order>(context),
     {
         return await context.Orders
             .AsSplitQuery()
+            .Include(o => o.LoyaltyTransactions)
             .Include(o => o.OrderItems)
             .Include(o => o.User)
             .Include(o => o.Deliverer)
@@ -40,6 +42,8 @@ public class OrderRepository(AppDbContext context) : Repository<Order>(context),
     {
         var query = context.Orders
             .AsNoTracking()
+            .AsSplitQuery()
+            .Include(o => o.LoyaltyTransactions)
             .Include(o => o.OrderItems)
             .Where(o => o.UserId == userId);
 
@@ -105,6 +109,7 @@ public class OrderRepository(AppDbContext context) : Repository<Order>(context),
         var query = context.Orders
             .AsNoTracking()
             .AsSplitQuery()
+            .Include(o => o.LoyaltyTransactions)
             .Include(o => o.OrderItems)
             .Include(o => o.User)
             .Include(o => o.Deliverer)
@@ -175,6 +180,7 @@ public class OrderRepository(AppDbContext context) : Repository<Order>(context),
         var query = context.Orders
             .AsNoTracking()
             .AsSplitQuery()
+            .Include(o => o.LoyaltyTransactions)
             .Include(o => o.OrderItems)
             .Include(o => o.User)
             .Include(o => o.Deliverer)
