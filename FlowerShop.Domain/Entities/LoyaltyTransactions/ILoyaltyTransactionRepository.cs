@@ -6,5 +6,6 @@ public interface ILoyaltyTransactionRepository
     public void Update(LoyaltyTransaction transaction);
     public void Remove(LoyaltyTransaction transaction);
     Task<LoyaltyTransaction?> GetMostRecentLoyaltyTransaction(string userId, CancellationToken ct = default);
+    Task<LoyaltyTransaction?> GetLastLoyaltyTransactionByOrderId(int orderId, CancellationToken ct = default);
     Task<int> GetCurrentLoyaltyPoints(string userId, CancellationToken ct = default);
 }

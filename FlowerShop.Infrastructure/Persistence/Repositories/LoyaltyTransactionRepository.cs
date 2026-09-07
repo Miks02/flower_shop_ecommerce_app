@@ -9,6 +9,7 @@ public class LoyaltyTransactionRepository(AppDbContext context) : Repository<Loy
     public async Task<LoyaltyTransaction?> GetMostRecentLoyaltyTransaction(string userId, CancellationToken ct = default)
     {
         return await context.LoyaltyTransactions
+            .AsNoTracking()
             .Where(lt => lt.UserId == userId)
             .OrderByDescending(lt => lt.TransactionDate)
             .FirstOrDefaultAsync(ct); 
@@ -17,9 +18,19 @@ public class LoyaltyTransactionRepository(AppDbContext context) : Repository<Loy
     public async Task<int> GetCurrentLoyaltyPoints(string userId, CancellationToken ct = default)
     {
         return await context.LoyaltyTransactions
+            .AsNoTracking()
             .Where(lt => lt.UserId == userId)
             .OrderByDescending(lt => lt.TransactionDate)
-            .Select(lt => lt.Points)
+            .Select(lt => lt.CurrentPoints)
+            .FirstOrDefaultAsync(ct);
+    }
+
+    public async Task<LoyaltyTransaction?> GetLastLoyaltyTransactionByOrderId(int orderId, CancellationToken ct = default)
+    {
+        return await context.LoyaltyTransactions
+            .AsNoTracking()
+            .Where(lt => lt.OrderId == orderId)
+            .OrderByDescending(lt => lt.TransactionDate)
             .FirstOrDefaultAsync(ct);
     }
 }
