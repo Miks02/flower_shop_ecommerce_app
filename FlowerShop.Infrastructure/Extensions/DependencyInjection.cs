@@ -2,6 +2,7 @@ using FlowerShop.Application.Common.Abstractions;
 using FlowerShop.Infrastructure.Htmx;
 using FlowerShop.Infrastructure.Identity;
 using FlowerShop.Infrastructure.Notifications;
+using FlowerShop.Infrastructure.Notifications.Strategies;
 using FlowerShop.Infrastructure.Persistence.EntityFramework;
 using FlowerShop.Infrastructure.Storage;
 using Microsoft.Extensions.Configuration;
@@ -38,5 +39,11 @@ public static class DependencyInjection
         services.AddScoped<IFileService, LocalFileStorage>();
         services.AddScoped<IUserProvider, UserProvider>();
         services.AddScoped<INotificationService, NotificationService>();
+        services.AddScoped<INotificationResolver, NotificationResolver>();
+        
+        services.AddScoped<INotificationActionStrategy, OrderNotificationStrategy>();
+        services.AddScoped<INotificationActionStrategy, ReviewNotificationStrategy>();
+        services.AddScoped<INotificationActionStrategy, DeliveryReviewNotificationStrategy>();
+        services.AddScoped<INotificationActionStrategy, ProductNotificationStrategy>();
     }
 }
