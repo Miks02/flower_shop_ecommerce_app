@@ -1,6 +1,7 @@
 using FlowerShop.Application.Common.Abstractions;
 using FlowerShop.Domain.Entities.Carts;
 using FlowerShop.Domain.Entities.LoyaltyTransactions;
+using FlowerShop.Domain.Entities.Notifications;
 using FlowerShop.Domain.Entities.Orders;
 using FlowerShop.Domain.Entities.Products;
 using FlowerShop.SharedKernel.Results;
@@ -12,6 +13,7 @@ public class CreateOrderHandler(
     ICartRepository cartRepo,
     IProductRepository productRepo,
     ILoyaltyTransactionRepository loyaltyRepo,
+    INotificationService notificationService,
     IUnitOfWork unitOfWork) : IHandler
 {
     private const int MinPointsToRedeem = 1000;
@@ -89,6 +91,18 @@ public class CreateOrderHandler(
 
             await unitOfWork.SaveAsync(ct); 
         
+            await notificationService.SendNotificationAsync(command.BuyerId,
+                "Porudžbina",
+                $"Vaša porudžbina #{newOrder.OrderNumber} je kreirana.",
+                NotificationType.Success,
+                NotificationEntityType.Order, newOrder.Id);
+            
+            await notificationService.SendNotificationsToAllAdminsAsync(
+                "Nova porudžbina",
+                $"Kreirana je nova porudžbina #{newOrder.OrderNumber}.",
+                NotificationType.Information,
+                NotificationEntityType.Order, newOrder.Id);
+            
             return Result<CreateOrderResponse>.Success(new CreateOrderResponse(newOrder.Id, newOrder.OrderNumber));
     }   
 }
