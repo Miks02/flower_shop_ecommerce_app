@@ -1,6 +1,7 @@
 using System.Security.Claims;
 using FlowerShop.Application.Common.Abstractions;
 using FlowerShop.Application.Features.Cart.Queries.GetCart;
+using FlowerShop.Application.Features.Loyalty.Queries.GetCurrentLoyaltyPoints;
 using FlowerShop.Application.Features.Orders.Commands.CreateOrder;
 using FlowerShop.Infrastructure.Htmx;
 using FlowerShop.Web.ViewModels;
@@ -14,6 +15,7 @@ public class CheckoutController(
     IUserProvider userProvider,
     GetCartHandler getCartHandler,
     CreateOrderHandler createOrderHandler,
+    GetCurrentLoyaltyPointsHandler getCurrentLoyaltyPointsHandler,
     ILogger<CheckoutController> logger) : BaseController(logger)
 {
     [HttpGet]
@@ -39,6 +41,7 @@ public class CheckoutController(
             OrderAddress = userDetails.Address,
             DeliveryDate = DateOnly.FromDateTime(DateTime.Today.AddDays(1)),
             DeliveryTime = new TimeOnly(12, 0),
+            LoyaltyPoints = await getCurrentLoyaltyPointsHandler.Handle(new GetCurrentLoyaltyPointsQuery(userId), ct),
             Cart = cart
         };
 
@@ -78,6 +81,7 @@ public class CheckoutController(
             ZipCode = model.ZipCode,
             Note = model.Note,
             OrderDate = orderDate,
+            UseLoyaltyPoints = model.UseLoyaltyPoints,
             OrderItems = cart.Items.Select(i => new CreateOrderCommand.OrderItemDto
             {
                 ProductId = i.ProductId,

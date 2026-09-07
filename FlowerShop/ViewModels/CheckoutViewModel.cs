@@ -21,6 +21,8 @@ public record CheckoutViewModel
     public string CardCvc { get; init; } = string.Empty;
     public string CardHolder { get; init; } = string.Empty;
     public bool AcceptTerms { get; init; }
+    public bool UseLoyaltyPoints { get; init; }
+    public int LoyaltyPoints { get; init; }
 
     public GetCartResponse Cart { get; init; } = new();
     public decimal DeliveryFee { get; init; } = 300m;
