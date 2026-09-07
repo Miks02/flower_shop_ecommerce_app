@@ -1,5 +1,6 @@
 using FlowerShop.Application.Common.Abstractions;
 using FlowerShop.Domain.Entities.Deliverers;
+using FlowerShop.Domain.Entities.LoyaltyTransactions;
 using FlowerShop.Domain.Entities.Orders;
 using FlowerShop.SharedKernel.Results;
 
@@ -17,10 +18,15 @@ public class GetAdminOrderDetailsHandler(
 
         var availableDeliverers = await delivererRepo.GetAvailableDeliverersListAsync(ct);
 
-        var buyerName = order.User != null ? $"{order.User.FirstName} {order.User.LastName}".Trim() : string.Empty;
+        var buyerName = $"{order.User.FirstName} {order.User.LastName}".Trim();
         var delivererName = order.Deliverer?.User != null ? $"{order.Deliverer.User.FirstName} {order.Deliverer.User.LastName}".Trim() : null;
         var delivererPhone = order.Deliverer?.User?.PhoneNumber;
         var vehicleType = order.Deliverer?.VehicleType;
+
+        var loyaltyPointsSpent = order.LoyaltyTransactions
+            .Where(lt => lt.TransactionType == TransactionType.Redeemed)
+            .Select(lt => lt.PreviousPoints)
+            .FirstOrDefault();
 
         var dto = new AdminOrderDetailsDto
         {
@@ -44,6 +50,7 @@ public class GetAdminOrderDetailsHandler(
             DelivererFullName = delivererName,
             DelivererPhoneNumber = delivererPhone,
             DelivererVehicleType = vehicleType,
+            LoyaltyPointsSpent = loyaltyPointsSpent,
             Items = order.OrderItems.Select(i => new AdminOrderItemDetailDto(
                 i.Id,
                 i.ProductName,

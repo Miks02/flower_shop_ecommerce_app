@@ -1,4 +1,5 @@
 using FlowerShop.Application.Common.Abstractions;
+using FlowerShop.Domain.Entities.LoyaltyTransactions;
 using FlowerShop.Domain.Entities.Orders;
 using FlowerShop.SharedKernel.Results;
 
@@ -12,10 +13,15 @@ public class GetOrderReceiptHandler(IOrderRepository orderRepo) : IHandler
         if (order is null)
             return Result<OrderReceiptDto>.Failure(OrderError.OrderNotFound(request.OrderId.ToString()));
 
-        var buyerName = order.User != null ? $"{order.User.FirstName} {order.User.LastName}".Trim() : string.Empty;
+        var buyerName = $"{order.User.FirstName} {order.User.LastName}".Trim();
         var delivererName = order.Deliverer?.User != null ? $"{order.Deliverer.User.FirstName} {order.Deliverer.User.LastName}".Trim() : null;
         var delivererPhone = order.Deliverer?.User?.PhoneNumber;
 
+        var loyaltyPointsSpent = order.LoyaltyTransactions
+            .Where(lt => lt.TransactionType == TransactionType.Redeemed)
+            .Select(lt => lt.PreviousPoints)
+            .FirstOrDefault();
+        
         var receipt = new OrderReceiptDto
         {
             Id = order.Id,
@@ -35,6 +41,8 @@ public class GetOrderReceiptHandler(IOrderRepository orderRepo) : IHandler
             BuyerPhoneNumber = order.User?.PhoneNumber ?? string.Empty,
             DelivererFullName = delivererName,
             DelivererPhoneNumber = delivererPhone,
+            TotalPrice = order.OrderPrice + 300m,
+            LoyaltyPointsSpent = loyaltyPointsSpent,
             Items = order.OrderItems.Select(i => new OrderReceiptItemDto(
                 i.ProductName,
                 i.ProductImagePath,

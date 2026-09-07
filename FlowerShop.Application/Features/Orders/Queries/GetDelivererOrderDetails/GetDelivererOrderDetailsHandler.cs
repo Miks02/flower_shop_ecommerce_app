@@ -1,4 +1,5 @@
 using FlowerShop.Application.Common.Abstractions;
+using FlowerShop.Domain.Entities.LoyaltyTransactions;
 using FlowerShop.Domain.Entities.Orders;
 using FlowerShop.SharedKernel.Results;
 
@@ -15,7 +16,12 @@ public class GetDelivererOrderDetailsHandler(IOrderRepository orderRepo) : IHand
         if (order.DelivererId != request.DelivererId)
             return Result<DelivererOrderDetailsDto>.Failure(new Error("OrderError_Unauthorized", "Nemate pravo da pristupite ovoj porudžbini."));
 
-        var buyerName = order.User != null ? $"{order.User.FirstName} {order.User.LastName}".Trim() : string.Empty;
+        var buyerName = $"{order.User.FirstName} {order.User.LastName}".Trim();
+
+        var loyaltyPointsSpent = order.LoyaltyTransactions
+            .Where(lt => lt.TransactionType == TransactionType.Redeemed)
+            .Select(lt => lt.PreviousPoints)
+            .FirstOrDefault();
 
         var dto = new DelivererOrderDetailsDto
         {
@@ -32,8 +38,9 @@ public class GetDelivererOrderDetailsHandler(IOrderRepository orderRepo) : IHand
             City = order.City,
             ZipCode = order.ZipCode,
             BuyerFullName = buyerName,
-            BuyerEmail = order.User?.Email ?? string.Empty,
-            BuyerPhoneNumber = order.User?.PhoneNumber ?? string.Empty,
+            BuyerEmail = order.User.Email ?? string.Empty,
+            BuyerPhoneNumber = order.User.PhoneNumber ?? string.Empty,
+            LoyaltyPointsSpent = loyaltyPointsSpent,
             Items = order.OrderItems.Select(i => new DelivererOrderItemDetailDto(
                 i.Id,
                 i.ProductName,

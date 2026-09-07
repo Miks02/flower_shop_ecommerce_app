@@ -34,7 +34,8 @@ public record AdminOrderDetailsDto
 
     public decimal Subtotal => Items.Sum(i => i.TotalPrice);
     public decimal DeliveryFee { get; init; } = 300m;
-    public decimal TotalPrice => Subtotal + DeliveryFee;
+    public int LoyaltyPointsSpent { get; init; }
+    public decimal TotalPrice => Subtotal + DeliveryFee - LoyaltyPointsSpent;
     public bool IsDelivererAssigned => !string.IsNullOrEmpty(DelivererId);
 }
 

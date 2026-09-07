@@ -121,7 +121,6 @@
                         <th class="p-3">Artikal</th>
                         <th class="p-3 text-center">Količina</th>
                         <th class="p-3 text-right">Cena</th>
-                        <th class="p-3 text-right">Ukupno</th>
                     </tr>
                     </thead>
                     <tbody class="divide-y divide-red-100 text-gray-700">
@@ -137,7 +136,6 @@
                             </td>
                             <td class="p-3 text-center font-bold text-gray-800">@item.Quantity</td>
                             <td class="p-3 text-right whitespace-nowrap">@item.UnitPrice.ToString("N0") RSD</td>
-                            <td class="p-3 text-right font-bold text-red-950 whitespace-nowrap">@item.TotalPrice.ToString("N0") RSD</td>
                         </tr>
                     }
                     </tbody>
@@ -153,6 +151,13 @@
                     <span>Troškovi dostave:</span>
                     <span class="font-semibold text-gray-900">@Model.DeliveryFee.ToString("N0") RSD</span>
                 </div>
+                @if (Model.LoyaltyPointsSpent > 0)
+                {
+                    <div class="flex justify-between text-gray-700">
+                        <span>Iskorišćeni poeni:</span>
+                        <span class="font-semibold text-emerald-700">@Model.LoyaltyPointsSpent</span>
+                    </div>
+                }
                 <div class="border-t border-red-200 pt-2 flex justify-between items-center text-base font-bold text-red-950">
                     <span>UKUPNO ZA UPLATU:</span>
                     <span class="text-lg text-red-900 font-extrabold">@Model.TotalPrice.ToString("N0") RSD</span>

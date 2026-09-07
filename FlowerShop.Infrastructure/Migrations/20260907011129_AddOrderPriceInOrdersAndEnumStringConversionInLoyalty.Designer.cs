@@ -4,6 +4,7 @@ using FlowerShop.Infrastructure.Persistence.EntityFramework;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FlowerShop.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260907011129_AddOrderPriceInOrdersAndEnumStringConversionInLoyalty")]
+    partial class AddOrderPriceInOrdersAndEnumStringConversionInLoyalty
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -435,13 +438,10 @@ namespace FlowerShop.Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("CurrentPoints")
-                        .HasColumnType("int");
-
                     b.Property<int>("OrderId")
                         .HasColumnType("int");
 
-                    b.Property<int>("PreviousPoints")
+                    b.Property<int>("Points")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("TransactionDate")
@@ -463,7 +463,7 @@ namespace FlowerShop.Infrastructure.Migrations
 
                     b.ToTable("LoyaltyTransactions", t =>
                         {
-                            t.HasCheckConstraint("CK_LoyaltyTransactions_CurrentPoints_NonNegative", "CurrentPoints >= 0");
+                            t.HasCheckConstraint("CK_LoyaltyTransactions_Points_NonNegative", "Points >= 0");
                         });
                 });
 
@@ -916,7 +916,7 @@ namespace FlowerShop.Infrastructure.Migrations
             modelBuilder.Entity("FlowerShop.Domain.Entities.LoyaltyTransactions.LoyaltyTransaction", b =>
                 {
                     b.HasOne("FlowerShop.Domain.Entities.Orders.Order", "Order")
-                        .WithMany("LoyaltyTransactions")
+                        .WithMany()
                         .HasForeignKey("OrderId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
@@ -1100,8 +1100,6 @@ namespace FlowerShop.Infrastructure.Migrations
 
             modelBuilder.Entity("FlowerShop.Domain.Entities.Orders.Order", b =>
                 {
-                    b.Navigation("LoyaltyTransactions");
-
                     b.Navigation("OrderItems");
                 });
 
