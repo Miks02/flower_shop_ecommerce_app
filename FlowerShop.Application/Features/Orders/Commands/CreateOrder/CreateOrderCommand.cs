@@ -12,6 +12,7 @@ public record CreateOrderCommand
     
     public string? Note { get; init; }
     public DateTime OrderDate { get; init; }
+    public bool UseLoyaltyPoints { get; init; }
     
     public IReadOnlyList<OrderItemDto> OrderItems { get; init; } = [];
 
