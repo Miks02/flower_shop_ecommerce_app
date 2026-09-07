@@ -8,10 +8,10 @@ namespace FlowerShop.Domain.Entities.Notifications
 {
     public interface INotificationRepository
     {
-        void Add(Notification notification);
+        void Add(Notification notification, string userId);
         void Update(Notification notification);
         void Remove (Notification notification);
-        Task<IReadOnlyList<Notification>> GetAllNotificationsByUserId(string userId);
+        Task<IReadOnlyList<NotificationRecipient>> GetAllNotificationsByUserId(string userId);
         Task<int> MarkNotificationsAsRead(string userId);
         void AddNotificationWithMultipleRecipients(IReadOnlyList<string> userIds, Notification notification);
     }

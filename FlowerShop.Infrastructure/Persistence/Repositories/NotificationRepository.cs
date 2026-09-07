@@ -11,12 +11,11 @@ namespace FlowerShop.Infrastructure.Persistence.Repositories
 {
     public class NotificationRepository(AppDbContext context) : Repository<Notification>(context), INotificationRepository
     {
-        public async Task<IReadOnlyList<Notification>> GetAllNotificationsByUserId(string userId)
+        public async Task<IReadOnlyList<NotificationRecipient>> GetAllNotificationsByUserId(string userId)
         {
             return await context.NotificationRecipients
                 .Where(nt => nt.UserId == userId)
                 .Include(nt => nt.Notification) 
-                .Select(nt => nt.Notification)
                 .ToListAsync();
         }
 
