@@ -1,5 +1,6 @@
 using FlowerShop.Domain.Entities.Deliverers;
 using FlowerShop.Domain.Entities.IdentityUser;
+using FlowerShop.Domain.Entities.LoyaltyTransactions;
 
 namespace FlowerShop.Domain.Entities.Orders;
 
@@ -27,6 +28,7 @@ public class Order
     public Deliverer? Deliverer { get; set; }
     public string? DelivererId { get; set; }
     
+    public ICollection<LoyaltyTransaction> LoyaltyTransactions { get; set; } = [];
     public ICollection<OrderItem> OrderItems { get; set; } = [];
     
     public decimal OrderPrice { get; set; }

@@ -7,7 +7,8 @@ public class LoyaltyTransaction
 {
     public int Id { get; set; }
     public TransactionType TransactionType { get; set; }
-    public int Points { get; set; }
+    public int CurrentPoints { get; set; }
+    public int PreviousPoints { get; set; }
     public DateTime TransactionDate { get; set; } = DateTime.UtcNow;
 
     public User User { get; set; } = null!;

@@ -16,14 +16,14 @@ public class LoyaltyTransactionConfiguration : IEntityTypeConfiguration<LoyaltyT
             .OnDelete(DeleteBehavior.Restrict); 
         
         builder.HasOne(lt => lt.Order)
-            .WithMany()
+            .WithMany(o => o.LoyaltyTransactions)
             .HasForeignKey(lt => lt.OrderId)
             .OnDelete(DeleteBehavior.Restrict);
 
         builder.Property(lt => lt.TransactionType)
             .HasConversion<string>();
         
-        builder.ToTable(lts => lts.HasCheckConstraint($"CK_{nameof(LoyaltyTransaction)}s_{nameof(LoyaltyTransaction.Points)}_NonNegative", "Points >= 0"));
+        builder.ToTable(lt => lt.HasCheckConstraint($"CK_{nameof(LoyaltyTransaction)}s_{nameof(LoyaltyTransaction.CurrentPoints)}_NonNegative", "CurrentPoints >= 0"));
         
     }
 }
