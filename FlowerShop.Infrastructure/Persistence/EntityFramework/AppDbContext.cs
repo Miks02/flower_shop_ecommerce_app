@@ -9,6 +9,7 @@ using FlowerShop.Domain.Entities.Ocassions;
 using FlowerShop.Domain.Entities.Orders;
 using FlowerShop.Domain.Entities.ProductFlowers;
 using FlowerShop.Domain.Entities.Products;
+using FlowerShop.Domain.Entities.Reviews;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -31,6 +32,7 @@ public class AppDbContext(DbContextOptions options) : IdentityDbContext<User>(op
     public DbSet<LoyaltyTransaction> LoyaltyTransactions { get; set; }
     public DbSet<Notification> Notifications { get; set; }
     public DbSet<NotificationRecipient> NotificationRecipients { get; set; }
+    public DbSet<Review> Reviews { get; set; }
     
     protected override void OnModelCreating(ModelBuilder builder)
     {
