@@ -28,7 +28,9 @@ public record OrderReceiptDto
     public IReadOnlyList<OrderReceiptItemDto> Items { get; init; } = [];
     public decimal Subtotal => Items.Sum(i => i.TotalPrice);
     public decimal DeliveryFee { get; init; } = 300m;
-    public decimal TotalPrice => Subtotal + (Items.Count > 0 ? DeliveryFee : 0m);
+    public decimal TotalPrice { get; init; }
+    public int LoyaltyPointsSpent { get; init; }
+    
 }
 
 public record OrderReceiptItemDto(

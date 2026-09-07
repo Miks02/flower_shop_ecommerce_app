@@ -435,10 +435,13 @@ namespace FlowerShop.Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<int>("CurrentPoints")
+                        .HasColumnType("int");
+
                     b.Property<int>("OrderId")
                         .HasColumnType("int");
 
-                    b.Property<int>("Points")
+                    b.Property<int>("PreviousPoints")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("TransactionDate")
@@ -460,7 +463,7 @@ namespace FlowerShop.Infrastructure.Migrations
 
                     b.ToTable("LoyaltyTransactions", t =>
                         {
-                            t.HasCheckConstraint("CK_LoyaltyTransactions_Points_NonNegative", "Points >= 0");
+                            t.HasCheckConstraint("CK_LoyaltyTransactions_CurrentPoints_NonNegative", "CurrentPoints >= 0");
                         });
                 });
 
@@ -913,7 +916,7 @@ namespace FlowerShop.Infrastructure.Migrations
             modelBuilder.Entity("FlowerShop.Domain.Entities.LoyaltyTransactions.LoyaltyTransaction", b =>
                 {
                     b.HasOne("FlowerShop.Domain.Entities.Orders.Order", "Order")
-                        .WithMany()
+                        .WithMany("LoyaltyTransactions")
                         .HasForeignKey("OrderId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
@@ -1097,6 +1100,8 @@ namespace FlowerShop.Infrastructure.Migrations
 
             modelBuilder.Entity("FlowerShop.Domain.Entities.Orders.Order", b =>
                 {
+                    b.Navigation("LoyaltyTransactions");
+
                     b.Navigation("OrderItems");
                 });
 

@@ -152,6 +152,13 @@
                             <span>Troškovi dostave</span>
                             <span class="font-semibold text-gray-800">@Model.Order.DeliveryFee.ToString("N0") RSD</span>
                         </div>
+                        @if (Model.Order.LoyaltyPointsSpent > 0)
+                        {
+                            <div class="flex justify-between text-emerald-700">
+                                <span>Iskorišćeni loyalty poeni</span>
+                                <span class="font-semibold text-emerald-700">@Model.Order.LoyaltyPointsSpent</span>
+                            </div>
+                        }
                         <div class="flex justify-between text-base font-bold text-red-950 pt-2 border-t border-red-200">
                             <span>Ukupan iznos</span>
                             <span class="text-lg text-red-800">@Model.Order.TotalPrice.ToString("N0") RSD</span>
