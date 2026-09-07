@@ -9,6 +9,7 @@ const profileMenu = document.getElementById("profile-menu");
 const searchBar = document.getElementById('searchBar');
 const searchInput = document.getElementById('searchInput');
 const cartMenu = document.getElementById("cart-menu")
+const notificationMenu = document.getElementById("notification-menu")
 
 header.addEventListener("click", handleHeaderInteractions)
 
@@ -47,6 +48,12 @@ function handleHeaderInteractions (e) {
             mobileNavbar.classList.add("-translate-x-full");
         }
         toggleOverlay(cartMenu, "translate-x-full");
+    }
+    else if(e.target.closest(`button[data-menu="notification-open"]`) || e.target.closest(`button[data-menu="notification-close"]`))
+    {
+        e.preventDefault();
+        e.stopPropagation();
+        toggleOverlay(notificationMenu, "translate-x-full");
     }
 
 }
