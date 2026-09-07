@@ -8,7 +8,6 @@ namespace FlowerShop.Domain.Entities.Notifications
 {
     public interface INotificationRepository
     {
-
         void Add(Notification notification);
         void Update(Notification notification);
         void Remove (Notification notification);
