@@ -2,6 +2,7 @@ using FlowerShop.Application.Common.Abstractions;
 using FlowerShop.Application.Features.Cart.Commands.AddToCart;
 using FlowerShop.Application.Features.Cart.Commands.RemoveCartItem;
 using FlowerShop.Application.Features.Cart.Queries.GetCart;
+using FlowerShop.Application.Features.Cart.Queries.GetCartItemCount;
 using FlowerShop.Infrastructure.Htmx;
 using Htmx;
 using Microsoft.AspNetCore.Authorization;
@@ -14,6 +15,7 @@ public class CartController(
     ILogger<CartController> logger,
     IUserProvider userProvider,
     GetCartHandler getCartHandler,
+    GetCartItemCountHandler getCartItemCountHandler,
     AddToCartHandler addToCartHandler,
     RemoveCartItemHandler removeCartItemHandler) : BaseController(logger)
 {
@@ -22,6 +24,13 @@ public class CartController(
     {
         var cart = await getCartHandler.Handle(new GetCartQuery { UserId = userProvider.GetCurrentUserId() }, ct);
         return PartialView("_CartMenu", cart);
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> GetItemCount(CancellationToken ct = default)
+    {
+        var count = await getCartItemCountHandler.Handle(new GetCartItemCountQuery { UserId = userProvider.GetCurrentUserId() }, ct);
+        return PartialView("_CartBadgeContent", count);
     }
 
     [HttpPost]
@@ -41,6 +50,7 @@ public class CartController(
         }
 
         Response.ShowSuccess("Proizvod je dodat u korpu.");
+        Response.TriggerClientEvent("cartUpdated");
         return Request.IsHtmx() ? NoContent() : RedirectToAction(nameof(Menu));
     }
 
@@ -56,6 +66,7 @@ public class CartController(
         if (!result.IsSuccess)
             Response.ShowError(result.Errors[0].Description);
 
+        Response.TriggerClientEvent("cartUpdated");
         var cart = await getCartHandler.Handle(new GetCartQuery { UserId = userProvider.GetCurrentUserId() }, ct);
         return PartialView("_CartMenu", cart);
     }

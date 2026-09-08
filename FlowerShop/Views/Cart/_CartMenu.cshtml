@@ -25,7 +25,7 @@
                             <p class="font-medium truncate">@item.ProductName</p>
                             <p class="text-sm text-amber-200">@item.Price RSD × <span class="font-semibold">@item.Quantity</span></p>
                         </div>
-                        <form hx-post="@Url.Action("Remove", "Cart", new { id = item.Id })"
+                        <form hx-post="@Url.Action("Remove", "Cart", new { id = item.Id, area = "" })"
                               hx-target="#cart-menu"
                               hx-swap="innerHTML">
                             <button type="submit" class="text-gray-300 hover:text-red-400 transition-colors duration-200 px-2">
@@ -41,7 +41,7 @@
                     <span class="text-gray-100">Ukupno</span>
                     <span class="text-xl font-semibold text-amber-500">@Model.Total RSD</span>
                 </div>
-                <a asp-controller="Checkout" asp-action="Index"
+                <a asp-area="" asp-controller="Checkout" asp-action="Index"
                    class="group flex w-full justify-center items-center py-2.5 px-3 rounded-lg bg-red-800 text-white transition-all duration-300 hover:bg-red-700">
                     <i class="fa-solid fa-lock mr-3"></i>
                     <span>Nastavi na plaćanje</span>

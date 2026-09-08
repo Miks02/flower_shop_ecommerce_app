@@ -1,5 +1,7 @@
 using FlowerShop.Application.Common.Abstractions;
 using FlowerShop.Application.Features.Notifications.Queries.GetNotifications;
+using FlowerShop.Application.Features.Notifications.Queries.GetUnreadNotificationCount;
+using FlowerShop.Infrastructure.Htmx;
 using FlowerShop.Web.ViewModels;
 using Htmx;
 using Microsoft.AspNetCore.Authorization;
@@ -11,8 +13,18 @@ namespace FlowerShop.Web.Controllers;
 public class NotificationController(
     IUserProvider userProvider,
     GetNotificationsHandler getNotificationsHandler,
+    GetUnreadNotificationCountHandler getUnreadNotificationCountHandler,
     INotificationService notificationService) : Controller
 {
+    [HttpGet]
+    public async Task<IActionResult> GetUnreadCount(CancellationToken ct = default)
+    {
+        var userId = userProvider.GetCurrentUserId();
+        var count = await getUnreadNotificationCountHandler.Handle(new GetUnreadNotificationCountQuery { UserId = userId }, ct);
+
+        return PartialView("_NotificationBadgeContent", count);
+    }
+
     [HttpGet]
     public async Task<IActionResult> GetNotifications(CancellationToken ct = default)
     {
@@ -47,7 +59,8 @@ public class NotificationController(
     {
         var userId = userProvider.GetCurrentUserId();
         await notificationService.MarkAllAsReadAsync(userId);
-        
+        Response.TriggerClientEvent("notificationsUpdated");
+
         if (Request.IsHtmx())
         {
             var response = await getNotificationsHandler.Handle(new GetNotificationsQuery { UserId = userId }, ct);

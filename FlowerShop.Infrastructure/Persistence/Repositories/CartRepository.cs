@@ -33,4 +33,12 @@ public class CartRepository : Repository<Cart>, ICartRepository
     {
         _context.CartItems.Remove(item);
     }
+
+    public async Task<int> CountItemsAsync(string userId, CancellationToken ct = default)
+    {
+        return await _context.Carts
+            .Where(c => c.UserId == userId)
+            .Select(c => c.Items.Count)
+            .FirstOrDefaultAsync(ct);
+    }
 }

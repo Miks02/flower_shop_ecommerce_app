@@ -104,13 +104,25 @@
             <button class="block md:hidden "><i class="fa-solid fa-bars text-red-900 transition-all hover:text-red-200 duration-200"></i></button>
         </div>
         <div class="flex">
-            <button class="text-orange-600 hover:text-orange-400 duration-200">
+            <button type="button"
+                    data-menu="notification-open"
+                    hx-get="@Url.Action("GetNotifications", "Notification", new { area = "" })"
+                    hx-target="#notification-menu"
+                    hx-swap="innerHTML"
+                    class="relative text-orange-600 hover:text-orange-400 duration-200">
                 <i class="fa-regular fa-bell text-2xl"></i>
+                <partial name="_NotificationBadge" model="0" />
             </button>
         </div>
         <div class="flex ">
-            <button class="text-green-900 hover:text-green-400 duration-200">
+            <button type="button"
+                    data-menu="cart-open"
+                    hx-get="@Url.Action("Menu", "Cart", new { area = "" })"
+                    hx-target="#cart-menu"
+                    hx-swap="innerHTML"
+                    class="relative text-green-900 hover:text-green-400 duration-200">
                 <i class="bi bi-cart2 text-2xl"></i>
+                <partial name="_CartBadge" model="0" />
             </button>
         </div>
         <div class="flex px-4 border-l border-red-900/85">
@@ -126,6 +138,11 @@
         
     </main>
     
+</div>
+
+<div id="notification-menu" class="fixed top-0 right-0 h-screen w-screen sm:w-[300px] text-white bg-red-900/85 shadow-all translate-x-full backdrop-blur-xl transition-all duration-200 z-50">
+</div>
+<div id="cart-menu" class="fixed top-0 right-0 h-screen w-screen sm:w-[300px] text-white bg-red-900/85 shadow-all translate-x-full backdrop-blur-xl transition-all duration-200 z-50">
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.8/dist/htmx.min.js" integrity="sha384-/TgkGk7p307TH7EXJDuUlgG3Ce1UVolAOFopFekQkkXihi5u/6OCvVKyz1W+idaz" crossorigin="anonymous"></script>

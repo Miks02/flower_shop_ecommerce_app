@@ -49,7 +49,17 @@ public static class HtmxToastExtensions
         response.ShowToast(ToastLevel.Info, message, title, duration);
     }
 
+    public static void TriggerClientEvent(this HttpResponse response, string eventName)
+    {
+        MergeHxTrigger(response, eventName, string.Empty);
+    }
+
     private static void AppendHxTrigger(HttpResponse response, ToastMessage toast)
+    {
+        MergeHxTrigger(response, ToastEventName, toast);
+    }
+
+    private static void MergeHxTrigger(HttpResponse response, string eventName, object payload)
     {
         var currentHeader = response.Headers[HxTriggerHeader].ToString();
         var serializerOptions = new JsonSerializerOptions
@@ -61,7 +71,7 @@ public static class HtmxToastExtensions
         {
             var triggerPayload = new Dictionary<string, object>
             {
-                { ToastEventName, toast }
+                { eventName, payload }
             };
             response.Headers[HxTriggerHeader] = JsonSerializer.Serialize(triggerPayload, serializerOptions);
             return;
@@ -70,7 +80,7 @@ public static class HtmxToastExtensions
         try
         {
             var existingTriggers = JsonSerializer.Deserialize<Dictionary<string, object>>(currentHeader) ?? new Dictionary<string, object>();
-            existingTriggers[ToastEventName] = toast;
+            existingTriggers[eventName] = payload;
             response.Headers[HxTriggerHeader] = JsonSerializer.Serialize(existingTriggers, serializerOptions);
         }
         catch
@@ -78,7 +88,7 @@ public static class HtmxToastExtensions
             var fallback = new Dictionary<string, object>
             {
                 { currentHeader, string.Empty },
-                { ToastEventName, toast }
+                { eventName, payload }
             };
             response.Headers[HxTriggerHeader] = JsonSerializer.Serialize(fallback, serializerOptions);
         }

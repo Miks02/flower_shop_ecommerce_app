@@ -8,4 +8,5 @@ public interface ICartRepository
     void Update(Cart cart);
     void Remove(Cart cart);
     void RemoveItem(CartItem item);
+    Task<int> CountItemsAsync(string userId, CancellationToken ct = default);
 }
