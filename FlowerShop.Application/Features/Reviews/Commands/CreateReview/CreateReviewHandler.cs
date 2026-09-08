@@ -1,4 +1,5 @@
 using FlowerShop.Application.Common.Abstractions;
+using FlowerShop.Domain.Entities.Notifications;
 using FlowerShop.Domain.Entities.Orders;
 using FlowerShop.Domain.Entities.Reviews;
 using FlowerShop.SharedKernel.Results;
@@ -8,6 +9,7 @@ namespace FlowerShop.Application.Features.Reviews.Commands.CreateReview;
 public class CreateReviewHandler(
     IReviewRepository reviewRepo, 
     IOrderRepository orderRepo,
+    INotificationService notificationService,
     IUnitOfWork unitOfWork) : IHandler
 {
     public async Task<Result> Handle(CreateReviewCommand command, CancellationToken ct = default)
@@ -37,6 +39,12 @@ public class CreateReviewHandler(
         reviewRepo.Add(review);
         await unitOfWork.SaveAsync(ct);
 
+        await notificationService.SendNotificationAsync(
+            orderToReview.DelivererId!, 
+            "Recenzija", $"Korisnik je ostavio recenziju za porudžbinu {orderToReview.OrderNumber}.",
+            NotificationType.Information,
+            NotificationEntityType.Order,
+            orderToReview.Id);
         return Result.Success();
     }
 }
