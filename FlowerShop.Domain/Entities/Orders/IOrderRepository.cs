@@ -37,6 +37,8 @@ public interface IOrderRepository
         int pageIndex,
         int pageSize,
         CancellationToken ct = default);
-    Task<(int TotalOrders, int PendingOrders, int UnassignedOrders, int InDeliveryOrders, int CompletedOrders)> GetAdminOrderStatsAsync(CancellationToken ct = default);
-    Task<(int TotalDeliveries, int ActiveDeliveries, int CompletedDeliveries)> GetDelivererOrderStatsAsync(string delivererId, CancellationToken ct = default);
+    Task<(int TotalOrders, int PendingOrders, int UnassignedOrders, int InDeliveryOrders, int CompletedOrders)>
+        GetAdminOrderStatsAsync(CancellationToken ct = default);
+    Task<(int TotalDeliveries, int ActiveDeliveries, int CompletedDeliveries, decimal AverageRating)> 
+        GetDelivererOrderStatsAsync(string delivererId, CancellationToken ct = default);
 }
