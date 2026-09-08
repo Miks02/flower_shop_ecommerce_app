@@ -48,5 +48,11 @@ namespace FlowerShop.Infrastructure.Persistence.Repositories
 
             context.Notifications.Add(notification);
         }
+
+        public async Task<int> CountUnreadAsync(string userId, CancellationToken ct = default)
+        {
+            return await context.NotificationRecipients
+                .CountAsync(r => r.UserId == userId && r.ReadAt == null, ct);
+        }
     }
 }
