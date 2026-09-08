@@ -35,6 +35,7 @@ public class GetUserOrdersSummaryHandler(IOrderRepository orderRepo) : IHandler
             Note = o.Note,
             OrderPrice = o.OrderPrice,
             TotalItemsCount = o.OrderItems.Sum(i => i.Quantity),
+            IsRated = o.Review != null,
             Items = o.OrderItems.Select(i => new UserOrderItemDto
             {
                 Id = i.Id,

@@ -40,6 +40,7 @@ public class GetDelivererOrdersHandler(IOrderRepository orderRepo) : IHandler
                 CreatedAt = o.CreatedAt,
                 Note = o.Note,
                 OrderPrice = o.OrderPrice,
+                IsRated = o.Review != null,
                 BuyerFullName = buyerName,
                 BuyerEmail = o.User?.Email,
                 DelivererId = o.DelivererId,

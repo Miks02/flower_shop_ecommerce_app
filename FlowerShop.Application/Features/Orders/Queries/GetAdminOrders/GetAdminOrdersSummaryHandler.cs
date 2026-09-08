@@ -41,6 +41,7 @@ public class GetAdminOrdersSummaryHandler(IOrderRepository orderRepo) : IHandler
                 Note = o.Note,
                 OrderPrice = o.OrderPrice,
                 TotalItemsCount = o.OrderItems.Sum(i => i.Quantity),
+                IsRated = o.Review != null,
                 BuyerFullName = buyerName,
                 BuyerEmail = o.User?.Email,
                 DelivererId = o.DelivererId,

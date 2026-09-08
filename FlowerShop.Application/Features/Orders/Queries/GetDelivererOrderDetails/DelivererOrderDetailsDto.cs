@@ -22,6 +22,9 @@ public record DelivererOrderDetailsDto
     public string BuyerEmail { get; init; } = null!;
     public string BuyerPhoneNumber { get; init; } = null!;
 
+    public decimal? ServiceRating { get; init; }
+    public string? ReviewComment { get; init; }
+
     public IReadOnlyList<DelivererOrderItemDetailDto> Items { get; init; } = [];
 
     public decimal Subtotal => Items.Sum(i => i.TotalPrice);
