@@ -1,7 +1,6 @@
 import {toggleOverlay} from "../helpers.js";
 
 const heroSection = document.querySelector(".hero");
-const header = document.querySelector("header");
 const navbar = document.getElementById("navbar");
 const mobileNavbar = document.getElementById("mobile-navbar");
 const authMenu = document.getElementById("auth-menu");
@@ -12,7 +11,7 @@ const cartMenu = document.getElementById("cart-menu")
 const notificationMenu = document.getElementById("notification-menu")
 const dashboardSidebar = document.getElementById("dashboard-sidebar")
 
-header.addEventListener("click", handleHeaderInteractions)
+document.addEventListener("click", handleHeaderInteractions)
 
 function handleHeaderInteractions (e) {
     if(e.target.closest("#navbar-open")) {
