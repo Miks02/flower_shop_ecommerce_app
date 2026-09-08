@@ -21,15 +21,15 @@
                         Podešavanje i informacije o nalogu
                     </h4>
                 </div>
-                <div class="flex flex-col p-5 px-16 ">
+                <div class="flex flex-col p-4 sm:p-8 lg:px-16 ">
 
                     <div class="pb-2 border-b border-red-900 w-full"></div>
 
                     <div class="flex flex-col w-full py-6">
                         <div class="flex justify-between">
 
-                            <div class="flex gap-5 w-full">
-                                <div class="mx-auto md:mx-0 shadow-xl w-32 h-32 font-bold bg-orange-400 text-red-100 rounded-full flex items-center justify-center text-3xl">
+                            <div class="flex flex-col sm:flex-row items-center sm:items-start gap-5 w-full">
+                                <div class="mx-auto sm:mx-0 shadow-xl w-32 h-32 font-bold bg-orange-400 text-red-100 rounded-full flex items-center justify-center text-3xl shrink-0">
                                     @if (!string.IsNullOrEmpty(Model.ProfileVm.ImagePath))
                                     {
                                         <div>
@@ -39,11 +39,11 @@
                                     else
                                     {
                                         @Model.ProfileVm.FullNameInitials
-                                        
+
                                     }
                                 </div>
 
-                                <div class="hidden md:flex flex-col self-center">
+                                <div class="flex flex-col items-center sm:items-start text-center sm:text-left self-center">
                                     <h4 class="text-lg font-semibold text-red-900">Profilna slika</h4>
                                     <p class="text-gray-600">Formati: PNG, JPG, JPEG</p>
                                     <span asp-validation-for="ProfileVm.ProfilePicture" class="text-red-700 font-medium mt-1"></span>
@@ -58,7 +58,7 @@
 
                                 </div>
 
-                                <div class="hidden md:flex self-center ml-auto gap-5">
+                                <div class="flex items-center self-center sm:ml-auto gap-5">
                                     <input asp-for="ProfileVm.ProfilePicture" type="file" accept="image/jpg, image/jpeg, image/png" class="hidden" >
                                     <label asp-for="ProfileVm.ProfilePicture" class="btn-classic gradient-red text-red-100 !px-4 text-sm">Promeni sliku</label>
 
@@ -66,7 +66,7 @@
                                        hx-target="#user-content"
                                        hx-swap="innerHTML"
                                        id="delete-pic-btn" type="submit" class="btn-classic bg-gray-400 text-white !px-4 text-sm @(ViewBag.Disabled != null && ViewBag.Disabled ? "opacity-50 pointer-events-none" : "")">Obriši sliku</button>
-                                    
+
                                 </div>
                             </div>
 

@@ -1,7 +1,6 @@
 import {toggleOverlay} from "../helpers.js";
 
 const heroSection = document.querySelector(".hero");
-const header = document.querySelector("header");
 const navbar = document.getElementById("navbar");
 const mobileNavbar = document.getElementById("mobile-navbar");
 const authMenu = document.getElementById("auth-menu");
@@ -10,8 +9,9 @@ const searchBar = document.getElementById('searchBar');
 const searchInput = document.getElementById('searchInput');
 const cartMenu = document.getElementById("cart-menu")
 const notificationMenu = document.getElementById("notification-menu")
+const dashboardSidebar = document.getElementById("dashboard-sidebar")
 
-header.addEventListener("click", handleHeaderInteractions)
+document.addEventListener("click", handleHeaderInteractions)
 
 function handleHeaderInteractions (e) {
     if(e.target.closest("#navbar-open")) {
@@ -54,6 +54,12 @@ function handleHeaderInteractions (e) {
         e.preventDefault();
         e.stopPropagation();
         toggleOverlay(notificationMenu, "translate-x-full");
+    }
+    else if(e.target.closest(`button[data-menu="sidebar-open"]`) || e.target.closest(`button[data-menu="sidebar-close"]`))
+    {
+        e.preventDefault();
+        e.stopPropagation();
+        toggleOverlay(dashboardSidebar, "-translate-x-full");
     }
 
 }
@@ -109,6 +115,12 @@ const observer = new IntersectionObserver(handleIntersection, {
     rootMargin: "0px",
     root: null
 });
+document.addEventListener("htmx:pushedIntoHistory", () => {
+    if (dashboardSidebar && !dashboardSidebar.classList.contains("-translate-x-full")) {
+        toggleOverlay(dashboardSidebar, "-translate-x-full");
+    }
+});
+
 if(searchInput && heroSection) {
     searchInput.querySelector('input').addEventListener('input', (e) => {
         const hasText = e.target.value.length > 0;

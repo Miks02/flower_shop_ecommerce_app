@@ -10,10 +10,11 @@ public class GetCatalogHandler(IProductRepository productRepo) : IHandler
     {
         var products = await productRepo.GetPagedProductsAsync(
             request.Sort,
-            request.Page, 
+            request.Page,
             request.PageSize,
             request.CategoryIds,
             request.OccasionIds,
+            request.FlowerIds,
             request.PriceRange, ct);
         
         return products;

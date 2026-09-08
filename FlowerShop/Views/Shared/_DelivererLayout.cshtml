@@ -11,10 +11,9 @@
 </head>
 <body class="h-screen flex overflow-hidden bg-contain" style="background-image: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('@Url.Content("~/AppImages/Fullscreen pozadina.jpg")'); background-size: cover">
 
-<aside class="hidden md:flex flex-col h-screen w-[300px] bg-red-900/85 shadow-all backdrop-blur-xl p-5">
-    <div class="flex flex-col p-5 justify-center items-center border-b border-red-100">
+<aside id="dashboard-sidebar" class="flex flex-col h-screen w-[300px] bg-red-900/85 shadow-all backdrop-blur-xl p-5 fixed md:static top-0 left-0 -translate-x-full md:translate-x-0 transition-transform duration-300 ease-in-out z-50">
+    <div class="flex flex-col p-5 justify-center items-center border-b border-red-100 relative">
         <img class="max-w-[175px]" src="~/AppImages/Logo bez pozadine.png" alt="">
-
     </div>
     
     <ul class="flex flex-col text-lg text-orange-100 mt-3">
@@ -66,40 +65,49 @@
     </div>
 </aside>
 
-<div class="flex flex-col gap-5 flex-grow">
-    <header class="flex justify-end gap-4 items-center  p-2 shadow-all text-xl">
-        <div class="mr-auto px-4 border-r border-red-900/85">
-            <span class="hidden md:block text-red-900 font-semibold">Dostavljač</span>
-            <button class="block md:hidden "><i class="fa-solid fa-bars text-red-900 transition-all hover:text-red-200 duration-200"></i></button>
+<div class="flex flex-col gap-5 flex-grow min-w-0">
+    <header class="flex justify-between gap-4 items-center  p-2 shadow-all text-xl">
+        <div class="flex gap-4 items-center">
+            <div class="mr-auto px-4 border-r border-red-900/85 flex items-center gap-3">
+                <button type="button" data-menu="sidebar-open" class="md:hidden text-red-900 text-2xl transition-all hover:text-red-500 duration-200">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+                <span class="hidden md:block text-red-900 font-semibold">Dostavljač</span>
+            </div>      
+            <span class="md:hidden text-red-900 font-semibold">@ViewData["Title"]</span>
+
         </div>
-        <div class="flex">
-            <button type="button"
-                    data-menu="notification-open"
-                    hx-get="@Url.Action("GetNotifications", "Notification", new { area = "" })"
-                    hx-target="#notification-menu"
-                    hx-swap="innerHTML"
-                    class="relative text-orange-600 hover:text-orange-400 duration-200">
-                <i class="fa-regular fa-bell text-2xl"></i>
-                <partial name="_NotificationBadge" model="0" />
-            </button>
-        </div>
-        <div class="flex px-4 border-l border-red-900/85">
-            <span class="text-red-900 font-semibold">@User.Identity!.Name</span>
+        <div class="flex gap-4">
+            <div class="flex">
+                <button type="button"
+                        data-menu="notification-open"
+                        hx-get="@Url.Action("GetNotifications", "Notification", new { area = "" })"
+                        hx-target="#notification-menu"
+                        hx-swap="innerHTML"
+                        class="relative text-orange-600 hover:text-orange-400 duration-200">
+                    <i class="fa-regular fa-bell text-2xl"></i>
+                    <partial name="_NotificationBadge" model="0" />
+                </button>
+            </div>
+            <div class="hidden md:flex px-4 border-l border-red-900/85">
+                <span class="text-red-900 font-semibold">@User.Identity!.Name</span>
+            </div>
         </div>
     </header>
     
     <main role="main" class="flex-1 flex flex-col overflow-hidden ">
         <div class="flex-1 overflow-y-scroll">
-            @RenderBody()
-
+            <div id="user-content" class="p-4 sm:p-6">
+                @RenderBody()
+            </div>
         </div>
-        
+
     </main>
     
 </div>
 
 
-<div id="notification-menu" class="fixed top-0 right-0 h-screen w-screen sm:w-[300px] bg-red-900/85 shadow-all translate-x-full backdrop-blur-xl transition-all duration-200 z-50">
+<div id="notification-menu" class="fixed text-red-100 top-0 right-0 h-screen w-screen sm:w-[300px] bg-red-900/85 shadow-all translate-x-full backdrop-blur-xl transition-all duration-200 z-50">
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.8/dist/htmx.min.js" integrity="sha384-/TgkGk7p307TH7EXJDuUlgG3Ce1UVolAOFopFekQkkXihi5u/6OCvVKyz1W+idaz" crossorigin="anonymous"></script>

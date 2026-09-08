@@ -1,6 +1,7 @@
 using FlowerShop.Application.Common.Abstractions;
 using FlowerShop.Application.Features.Catalogue.Queries.GetCatalog;
 using FlowerShop.Domain.Entities.Categories;
+using FlowerShop.Domain.Entities.Flowers;
 using FlowerShop.Domain.Entities.Ocassions;
 
 namespace FlowerShop.Application.Features.Catalogue.Queries.GetCatalogSummary;
@@ -8,7 +9,8 @@ namespace FlowerShop.Application.Features.Catalogue.Queries.GetCatalogSummary;
 public class GetCatalogSummaryHandler(
     GetCatalogHandler getCatalogHandler,
     ICategoryRepository categoryRepo,
-    IOccasionRepository occasionRepo) : IHandler
+    IOccasionRepository occasionRepo,
+    IFlowerRepository flowerRepo) : IHandler
 {
     public async Task<GetCatalogSummaryResponse> Handle(GetCatalogSummaryQuery request, CancellationToken ct = default)
     {
@@ -17,6 +19,7 @@ public class GetCatalogSummaryHandler(
             PriceRange = request.PriceRange,
             OccasionIds = request.OccasionIds,
             CategoryIds = request.CategoryIds,
+            FlowerIds = request.FlowerIds,
             Page = request.Page,
             PageSize = request.PageSize,
             Sort = request.Sort
@@ -26,7 +29,8 @@ public class GetCatalogSummaryHandler(
         {
             PagedProducts = await getCatalogHandler.Handle(productRequest, ct),
             Categories = await categoryRepo.GetAllAsync(ct),
-            Occasions = await occasionRepo.GetAllAsync(ct)
+            Occasions = await occasionRepo.GetAllAsync(ct),
+            Flowers = await flowerRepo.GetFlowersUsedInProductsAsync(ct)
         };
     }
 }

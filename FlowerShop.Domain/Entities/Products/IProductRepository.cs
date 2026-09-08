@@ -19,6 +19,7 @@ public interface IProductRepository
         int pageSize,
         IReadOnlyList<int> categoryIds,
         IReadOnlyList<int> occasionIds,
+        IReadOnlyList<int> flowerIds,
         int priceRange,
         CancellationToken ct = default);
     Task<Product?> GetByIdAsync(int id, CancellationToken ct = default);

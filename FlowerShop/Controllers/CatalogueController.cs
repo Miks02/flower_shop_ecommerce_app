@@ -31,8 +31,10 @@ public class CatalogueController(
             PagedProducts = summary.PagedProducts,
             Categories = summary.Categories,
             Occasions = summary.Occasions,
+            Flowers = summary.Flowers,
             CategoryIds = request.CategoryIds,
             OccasionIds = request.OccasionIds,
+            FlowerIds = request.FlowerIds,
             PriceRange = request.PriceRange,
             Page = request.Page,
             PageSize = request.PageSize,
@@ -57,7 +59,8 @@ public class CatalogueController(
             request.PageSize,
             request.Sort,
             request.CategoryIds,
-            request.OccasionIds
+            request.OccasionIds,
+            request.FlowerIds
         });
     }
 

@@ -13,11 +13,10 @@ public static class DelivererError
         => string.IsNullOrWhiteSpace(id) 
                 ? new Error("DelivererError_Unavailable", "Dostavljač trenutno nije dostupan.") 
                 : new Error("DelivererError_Unavailable", $"Dostavljač sa identifikatorom '{id}' trenutno nije dostupan.");
-    
-    public static Error MinAmountOfProductsNotReached(string? id = null) 
-        => string.IsNullOrWhiteSpace(id) 
-                ? new Error("DelivererError_MinProductsNotReached", "Dostavljač nije dostigao minimalan broj proizvoda.") 
-                : new Error("DelivererError_MinProductsNotReached", $"Dostavljač sa identifikatorom '{id}' nije dostigao minimalan broj proizvoda.");
+
+    public static Error MinAmountOfProductsNotReached()
+        => new Error("DelivererError_MinProductsNotReached",
+            "Broj poručenih artikala je previše mali za dostavljača sa ovim tipom vozila."); 
 
     public static Error CannotDeleteWhileOnDuty(string? id = null)
         => string.IsNullOrWhiteSpace(id)

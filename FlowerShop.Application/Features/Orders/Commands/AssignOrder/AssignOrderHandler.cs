@@ -25,7 +25,7 @@ public class AssignOrderHandler(
         if (!deliverer.IsAvailable() && !deliverer.IsOnDuty())
             return Result.Failure(DelivererError.DelivererUnavailable(command.DelivererId));
         
-        if (!(deliverer.MinAmountOfProducts() > order.OrderItems.Sum(oi => oi.Quantity)))
+        if ((deliverer.MinAmountOfProducts() > order.OrderItems.Sum(oi => oi.Quantity)))
             return Result.Failure(DelivererError.MinAmountOfProductsNotReached());
 
         deliverer.DelivererStatus = DelivererStatus.OnDuty;

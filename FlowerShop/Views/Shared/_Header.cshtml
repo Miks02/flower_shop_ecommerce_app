@@ -19,7 +19,7 @@
             <a asp-controller="Home" asp-action="Index" class="sm:mr-auto ml-[20.5px] sm:ml-0 p-3 hover:opacity-80 duration-200"><img src="~/AppImages/Logo bez pozadine.png" alt="Logo" class="brightness-200 max-w-32 rounded-full"/></a>
             <ul class="text-lg hidden sm:flex">
                 <li><a asp-area="" asp-controller="Home" asp-action="Index" class="mx-2 hover:text-red-200 duration-200">Početna</a></li>
-                <li><a asp-area="" class="mx-2 hover:text-red-200 duration-200">O nama</a></li>
+                <li><a asp-area="" asp-controller="About" asp-action="Index" class="mx-2 hover:text-red-200 duration-200">O nama</a></li>
                 <li><a asp-area="" asp-controller="Catalogue" asp-action="Index" class="mx-2 hover:text-red-200 duration-200">Asortiman</a></li>
                 <li><a asp-area="" asp-controller="Contact" asp-action="Index" class="mx-2 hover:text-red-200 duration-200">Kontakt</a></li>
             </ul>
@@ -59,7 +59,7 @@
                             data-menu="notification-open"
                             hx-get="@Url.Action("GetNotifications", "Notification")"
                             hx-target="#notification-menu"
-                            hx-swap="innerHTML" class="relative hidden sm:block fw-bolder text-xl md:text-lg ">
+                            hx-swap="innerHTML" class="relative fw-bolder text-xl md:text-lg ">
                         <i class="fa-solid fa-bell text-yellow-400 transition-all hover:text-yellow-600 duration-600"></i>
                         <partial name="_NotificationBadge" model="0" />
                     </button>
@@ -104,7 +104,7 @@
                     </a>
                 </li>
                 <li>
-                    <a asp-area="" class="group flex items-center mx-2 py-2 px-3 rounded-lg transition-all duration-300 hover:bg-orange-500/10">
+                    <a asp-area="" asp-controller="About" asp-action="Index" class="group flex items-center mx-2 py-2 px-3 rounded-lg transition-all duration-300 hover:bg-orange-500/10">
                         <i class="fa-solid fa-users-rectangle mr-5 text-white transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:text-orange-300"></i>
                         <span class="transition-colors duration-300 group-hover:text-orange-200">O nama</span>
                     </a>
@@ -138,10 +138,15 @@
                 else if (isAuthenticated && isStaff)
                 {
                     <li>
-                        <a asp-controller="Notification" asp-action="GetNotifications" data-menu="notification-open" class="group flex items-center mx-2 py-2 px-3 rounded-lg transition-all duration-300 hover:bg-yellow-500/10">
+                        <button type="button"
+                                data-menu="notification-open"
+                                hx-get="@Url.Action("GetNotifications", "Notification")"
+                                hx-target="#notification-menu"
+                                hx-swap="innerHTML"
+                                class="group flex items-center w-full mx-2 py-2 px-3 rounded-lg transition-all duration-300 hover:bg-yellow-500/10">
                             <i class="fa-solid fa-bell mr-5 text-yellow-400 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:text-yellow-300"></i>
                             <span class="transition-colors duration-300 group-hover:text-yellow-200">Notifikacije</span>
-                        </a>
+                        </button>
                     </li>
                 }
                 
