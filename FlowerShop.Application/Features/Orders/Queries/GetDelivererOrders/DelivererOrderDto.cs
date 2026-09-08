@@ -18,6 +18,7 @@ public record DelivererOrderDto
     public string? Note { get; init; }
     public decimal OrderPrice { get; init; }
     public int TotalItemsCount => Items.Sum(item => item.Quantity);
+    public bool IsRated { get; init; }
     public string? BuyerFullName { get; init; }
     public string? BuyerEmail { get; init; }
     public string? DelivererId { get; init; }
