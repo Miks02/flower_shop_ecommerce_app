@@ -1,6 +1,5 @@
 using FlowerShop.Domain.Entities.IdentityUser;
 using FlowerShop.Domain.Entities.Orders;
-using FlowerShop.Domain.Entities.Reviews;
 
 namespace FlowerShop.Domain.Entities.Deliverers;
 
@@ -13,7 +12,6 @@ public class Deliverer
     public User User { get; set; } = null!;
 
     public ICollection<Order> Orders { get; set; } = [];
-    public ICollection<Review> Reviews { get; set; } = [];
 
     public int MinAmountOfProducts()
     {

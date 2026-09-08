@@ -10,9 +10,6 @@ public class Review
     public decimal Rating { get; set; }
     public string? Comment { get; set; }
 
-    public string DelivererId { get; set; } = null!;
-    public Deliverer Deliverer { get; set; } = null!;
-
     public int OrderId { get; set; }
     public Order Order { get; set; } = null!;
 
