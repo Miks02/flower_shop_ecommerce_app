@@ -24,6 +24,8 @@ public record OrderReceiptDto
 
     public string? DelivererFullName { get; init; }
     public string? DelivererPhoneNumber { get; init; }
+    public decimal? ServiceRating { get; init; }
+    public string? ReviewComment { get; init; }
 
     public IReadOnlyList<OrderReceiptItemDto> Items { get; init; } = [];
     public decimal Subtotal => Items.Sum(i => i.TotalPrice);

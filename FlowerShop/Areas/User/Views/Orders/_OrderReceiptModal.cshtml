@@ -112,6 +112,77 @@
                         <span class="text-blue-800 font-medium">@Model.DelivererPhoneNumber</span>
                     }
                 </div>
+                
+                @if (Model.ServiceRating is not null)
+{
+    var filledStars = (int)Math.Round(Model.ServiceRating.Value);
+
+    <div class="p-4 bg-amber-50/70 rounded-2xl border border-amber-200 flex flex-col gap-2">
+        <span class="font-bold uppercase tracking-wider text-amber-700 text-[10px] flex items-center gap-1.5">
+            <i class="fa-solid fa-star text-amber-500"></i> Vaša ocena usluge
+        </span>
+        <div class="flex items-center gap-1 text-lg">
+            @for (int i = 1; i <= 5; i++)
+            {
+                if (i <= filledStars)
+                {
+                    <i class="fa-solid fa-star text-amber-400"></i>
+                }
+                else
+                {
+                    <i class="fa-regular fa-star text-amber-300"></i>
+                }
+            }
+            <span class="text-xs text-gray-600 ml-2">(@Model.ServiceRating.Value.ToString("0.#")/5)</span>
+        </div>
+        @if (!string.IsNullOrWhiteSpace(Model.ReviewComment))
+        {
+            <p class="text-sm italic text-amber-950 pl-2 border-l-2 border-amber-400 mt-1">"@Model.ReviewComment"</p>
+        }
+    </div>
+}
+else if (Model.OrderStatus == OrderStatus.Completed)
+{
+    <form hx-post="@Url.Action("SubmitReview", "Orders", new { area = "User", id = Model.Id })"
+          hx-target="#receipt-modal-backdrop"
+          hx-swap="outerHTML"
+          class="star-review-form flex flex-col gap-3 p-4 bg-amber-50/70 rounded-2xl border border-amber-200">
+        @Html.AntiForgeryToken()
+
+        <span class="font-bold uppercase tracking-wider text-amber-700 text-[10px] flex items-center gap-1.5">
+            <i class="fa-solid fa-star text-amber-500"></i> Ocenite uslugu
+        </span>
+
+        <div class="star-input flex flex-row-reverse justify-end gap-1 text-2xl">
+            <input type="radio" id="rating-5" name="Rating" value="5" class="sr-only">
+            <label for="rating-5" class="cursor-pointer text-gray-300 transition-colors"><i class="fa-solid fa-star"></i></label>
+
+            <input type="radio" id="rating-4" name="Rating" value="4" class="sr-only">
+            <label for="rating-4" class="cursor-pointer text-gray-300 transition-colors"><i class="fa-solid fa-star"></i></label>
+
+            <input type="radio" id="rating-3" name="Rating" value="3" class="sr-only">
+            <label for="rating-3" class="cursor-pointer text-gray-300 transition-colors"><i class="fa-solid fa-star"></i></label>
+
+            <input type="radio" id="rating-2" name="Rating" value="2" class="sr-only">
+            <label for="rating-2" class="cursor-pointer text-gray-300 transition-colors"><i class="fa-solid fa-star"></i></label>
+
+            <input type="radio" id="rating-1" name="Rating" value="1" class="sr-only">
+            <label for="rating-1" class="cursor-pointer text-gray-300 transition-colors"><i class="fa-solid fa-star"></i></label>
+        </div>
+
+        <textarea name="Comment" rows="2" maxlength="500" placeholder="Vaš komentar (opciono)..."
+                  class="w-full p-2 border-2 shadow-sm transition-all bg-white placeholder-gray-400 border-amber-200 rounded-md focus:outline-none focus:ring-2 focus:ring-amber-300 focus:border-amber-400 text-sm text-gray-800 resize-none"></textarea>
+
+        <button type="submit" class="self-start px-4 py-2 text-xs font-semibold text-white bg-amber-500 rounded-xl hover:bg-amber-600 transition-colors cursor-pointer shadow-sm">
+            Pošalji ocenu
+        </button>
+    </form>
+
+    <style>
+        .star-input input:checked ~ label { color: #fbbf24; }
+        .star-input label:hover, .star-input label:hover ~ label { color: #fbbf24; }
+    </style>
+}
             }
 
             <div class="border border-red-200/80 rounded-2xl overflow-hidden">
