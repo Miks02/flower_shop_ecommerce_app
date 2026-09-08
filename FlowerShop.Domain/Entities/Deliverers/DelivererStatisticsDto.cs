@@ -7,4 +7,5 @@ public record DelivererStatisticsDto(
     int UnavailableCount,
     int BicycleCount,
     int ScooterCount,
-    int CarCount);
+    int CarCount,
+    decimal TotalRating);

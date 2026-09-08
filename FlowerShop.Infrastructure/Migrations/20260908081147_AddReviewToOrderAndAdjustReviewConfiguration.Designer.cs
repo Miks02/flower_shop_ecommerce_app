@@ -4,6 +4,7 @@ using FlowerShop.Infrastructure.Persistence.EntityFramework;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FlowerShop.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260908081147_AddReviewToOrderAndAdjustReviewConfiguration")]
+    partial class AddReviewToOrderAndAdjustReviewConfiguration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -796,6 +799,10 @@ namespace FlowerShop.Infrastructure.Migrations
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
 
+                    b.Property<string>("DelivererId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<int>("OrderId")
                         .HasColumnType("int");
 
@@ -814,7 +821,7 @@ namespace FlowerShop.Infrastructure.Migrations
 
                     b.HasIndex("ReviewerId");
 
-                    b.HasIndex("OrderId", "ReviewerId")
+                    b.HasIndex("DelivererId", "OrderId")
                         .IsUnique();
 
                     b.ToTable("Reviews");
@@ -1116,6 +1123,12 @@ namespace FlowerShop.Infrastructure.Migrations
 
             modelBuilder.Entity("FlowerShop.Domain.Entities.Reviews.Review", b =>
                 {
+                    b.HasOne("FlowerShop.Domain.Entities.Deliverers.Deliverer", "Deliverer")
+                        .WithMany("Reviews")
+                        .HasForeignKey("DelivererId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
                     b.HasOne("FlowerShop.Domain.Entities.Orders.Order", "Order")
                         .WithOne("Review")
                         .HasForeignKey("FlowerShop.Domain.Entities.Reviews.Review", "OrderId")
@@ -1127,6 +1140,8 @@ namespace FlowerShop.Infrastructure.Migrations
                         .HasForeignKey("ReviewerId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+
+                    b.Navigation("Deliverer");
 
                     b.Navigation("Order");
 
@@ -1212,6 +1227,8 @@ namespace FlowerShop.Infrastructure.Migrations
             modelBuilder.Entity("FlowerShop.Domain.Entities.Deliverers.Deliverer", b =>
                 {
                     b.Navigation("Orders");
+
+                    b.Navigation("Reviews");
                 });
 
             modelBuilder.Entity("FlowerShop.Domain.Entities.Flowers.Flower", b =>

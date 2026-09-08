@@ -4,6 +4,7 @@ using FlowerShop.Infrastructure.Persistence.EntityFramework;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FlowerShop.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260907221848_AddReviewEntityAndItsRelations")]
+    partial class AddReviewEntityAndItsRelations
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -626,9 +629,6 @@ namespace FlowerShop.Infrastructure.Migrations
                         .HasMaxLength(30)
                         .HasColumnType("nvarchar(30)");
 
-                    b.Property<int?>("ReviewId")
-                        .HasColumnType("int");
-
                     b.Property<string>("UserId")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
@@ -796,8 +796,9 @@ namespace FlowerShop.Infrastructure.Migrations
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
 
-                    b.Property<int>("OrderId")
-                        .HasColumnType("int");
+                    b.Property<string>("DelivererId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<decimal>("Rating")
                         .HasPrecision(3, 2)
@@ -809,13 +810,9 @@ namespace FlowerShop.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("OrderId")
-                        .IsUnique();
+                    b.HasIndex("DelivererId");
 
                     b.HasIndex("ReviewerId");
-
-                    b.HasIndex("OrderId", "ReviewerId")
-                        .IsUnique();
 
                     b.ToTable("Reviews");
                 });
@@ -1116,9 +1113,9 @@ namespace FlowerShop.Infrastructure.Migrations
 
             modelBuilder.Entity("FlowerShop.Domain.Entities.Reviews.Review", b =>
                 {
-                    b.HasOne("FlowerShop.Domain.Entities.Orders.Order", "Order")
-                        .WithOne("Review")
-                        .HasForeignKey("FlowerShop.Domain.Entities.Reviews.Review", "OrderId")
+                    b.HasOne("FlowerShop.Domain.Entities.Deliverers.Deliverer", "Deliverer")
+                        .WithMany("Reviews")
+                        .HasForeignKey("DelivererId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
@@ -1128,7 +1125,7 @@ namespace FlowerShop.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.Navigation("Order");
+                    b.Navigation("Deliverer");
 
                     b.Navigation("Reviewer");
                 });
@@ -1212,6 +1209,8 @@ namespace FlowerShop.Infrastructure.Migrations
             modelBuilder.Entity("FlowerShop.Domain.Entities.Deliverers.Deliverer", b =>
                 {
                     b.Navigation("Orders");
+
+                    b.Navigation("Reviews");
                 });
 
             modelBuilder.Entity("FlowerShop.Domain.Entities.Flowers.Flower", b =>
@@ -1246,8 +1245,6 @@ namespace FlowerShop.Infrastructure.Migrations
                     b.Navigation("LoyaltyTransactions");
 
                     b.Navigation("OrderItems");
-
-                    b.Navigation("Review");
                 });
 
             modelBuilder.Entity("FlowerShop.Domain.Entities.Products.Product", b =>

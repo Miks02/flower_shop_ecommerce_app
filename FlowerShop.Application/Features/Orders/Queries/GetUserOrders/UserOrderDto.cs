@@ -18,6 +18,7 @@ public record UserOrderDto
     public string? Note { get; init; }
     public decimal OrderPrice { get; init; }
     public int TotalItemsCount { get; init; }
+    public bool IsRated { get; init; }
     public IReadOnlyList<UserOrderItemDto> Items { get; init; } = [];
 }
 

@@ -25,6 +25,8 @@ public class DelivererRepository : Repository<Deliverer>, IDelivererRepository
     {
         var query = _context.Deliverers
             .Include(d => d.User)
+            .Include(d => d.Orders)
+                .ThenInclude(o  => o.Review)
             .AsQueryable();
 
         if (vehicleType is not null)
@@ -75,7 +77,9 @@ public class DelivererRepository : Repository<Deliverer>, IDelivererRepository
     public async Task<DelivererStatisticsDto> GetStatisticsAsync(CancellationToken ct = default)
     {
         var items = await _context.Deliverers
-            .Select(d => new { d.DelivererStatus, d.VehicleType })
+            .Include(o => o.Orders)
+                .ThenInclude(o => o.Review)
+            .Select(d => new { d.DelivererStatus, d.VehicleType, d.Orders })
             .ToListAsync(ct);
 
         var total = items.Count;
@@ -85,8 +89,11 @@ public class DelivererRepository : Repository<Deliverer>, IDelivererRepository
         var bicycle = items.Count(d => d.VehicleType == VehicleType.Bicycle);
         var scooter = items.Count(d => d.VehicleType == VehicleType.Scooter);
         var car = items.Count(d => d.VehicleType == VehicleType.Car);
+        var averageRating = items.SelectMany(d => d.Orders)
+                               .Where(o => o.Review != null)
+                               .Average(o => o.Review!.Rating);
 
-        return new DelivererStatisticsDto(total, available, onDuty, unavailable, bicycle, scooter, car);
+        return new DelivererStatisticsDto(total, available, onDuty, unavailable, bicycle, scooter, car, averageRating);
     }
 
     public async Task<IReadOnlyList<DelivererDto>> GetAvailableDeliverersListAsync(CancellationToken ct = default)

@@ -14,6 +14,7 @@ public class OrderRepository(AppDbContext context) : Repository<Order>(context),
             .Include(o => o.LoyaltyTransactions)
             .Include(o => o.OrderItems)
             .Include(o => o.User)
+            .Include(o => o.Review)
             .Include(o => o.Deliverer)
                 .ThenInclude(d => d!.User)
             .FirstOrDefaultAsync(o => o.Id == id, ct);
@@ -26,6 +27,7 @@ public class OrderRepository(AppDbContext context) : Repository<Order>(context),
             .Include(o => o.LoyaltyTransactions)
             .Include(o => o.OrderItems)
             .Include(o => o.User)
+            .Include(o => o.Review)
             .Include(o => o.Deliverer)
                 .ThenInclude(d => d!.User)
             .FirstOrDefaultAsync(o => o.Id == id && o.UserId == userId, ct);
@@ -45,6 +47,7 @@ public class OrderRepository(AppDbContext context) : Repository<Order>(context),
             .AsSplitQuery()
             .Include(o => o.LoyaltyTransactions)
             .Include(o => o.OrderItems)
+            .Include(o => o.Review)
             .Where(o => o.UserId == userId);
 
         if (!string.IsNullOrWhiteSpace(searchBy))
@@ -112,6 +115,7 @@ public class OrderRepository(AppDbContext context) : Repository<Order>(context),
             .Include(o => o.LoyaltyTransactions)
             .Include(o => o.OrderItems)
             .Include(o => o.User)
+            .Include(o => o.Review)
             .Include(o => o.Deliverer)
                 .ThenInclude(d => d!.User)
             .AsQueryable();
@@ -183,6 +187,7 @@ public class OrderRepository(AppDbContext context) : Repository<Order>(context),
             .Include(o => o.LoyaltyTransactions)
             .Include(o => o.OrderItems)
             .Include(o => o.User)
+            .Include(o => o.Review)
             .Include(o => o.Deliverer)
                 .ThenInclude(d => d!.User)
             .Where(o => o.DelivererId == delivererId)
@@ -245,15 +250,22 @@ public class OrderRepository(AppDbContext context) : Repository<Order>(context),
         return (total, pending, unassigned, inDelivery, completed);
     }
 
-    public async Task<(int TotalDeliveries, int ActiveDeliveries, int CompletedDeliveries)> GetDelivererOrderStatsAsync(string delivererId, CancellationToken ct = default)
+    public async Task<(int TotalDeliveries, int ActiveDeliveries, int CompletedDeliveries, decimal AverageRating)> GetDelivererOrderStatsAsync(string delivererId, CancellationToken ct = default)
     {
         var orders = context.Orders.AsNoTracking().Where(o => o.DelivererId == delivererId);
 
         var total = await orders.CountAsync(ct);
         var active = await orders.CountAsync(o => o.OrderStatus != OrderStatus.Completed && o.OrderStatus != OrderStatus.Cancelled, ct);
         var completed = await orders.CountAsync(o => o.OrderStatus == OrderStatus.Completed, ct);
-
-        return (total, active, completed);
+        var ratings= await orders.Where(o => o.Review != null)
+                                        .Select(o => o.Review!.Rating)
+                                        .ToListAsync(ct);
+        
+        var averageRating = ratings.Count > 0 
+            ? ratings.Average() 
+            : 0m;
+        
+        return (total, active, completed, averageRating);
     }
 
     public OrderItem? GetItemById(int id)

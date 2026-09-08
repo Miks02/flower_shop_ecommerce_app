@@ -8,6 +8,7 @@ using FlowerShop.Domain.Entities.Notifications;
 using FlowerShop.Domain.Entities.Ocassions;
 using FlowerShop.Domain.Entities.Orders;
 using FlowerShop.Domain.Entities.Products;
+using FlowerShop.Domain.Entities.Reviews;
 using FlowerShop.Infrastructure.Persistence.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -33,5 +34,6 @@ public static class DbContextRegistration
         services.AddScoped<IOrderRepository, OrderRepository>();
         services.AddScoped<ILoyaltyTransactionRepository, LoyaltyTransactionRepository>();
         services.AddScoped<INotificationRepository, NotificationRepository>();
+        services.AddScoped<IReviewRepository, ReviewRepository>();
     }
 }

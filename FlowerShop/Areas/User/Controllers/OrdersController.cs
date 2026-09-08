@@ -1,6 +1,8 @@
 using FlowerShop.Application.Common.Abstractions;
+using FlowerShop.Application.Features.Orders.Commands.CreateOrder;
 using FlowerShop.Application.Features.Orders.Queries.GetOrderReceipt;
 using FlowerShop.Application.Features.Orders.Queries.GetUserOrders;
+using FlowerShop.Application.Features.Reviews.Commands.CreateReview;
 using FlowerShop.Domain.Entities.Orders;
 using FlowerShop.Infrastructure.Htmx;
 using FlowerShop.Web.Areas.User.Models.Orders;
@@ -17,6 +19,7 @@ public class OrdersController(
     IUserProvider userProvider,
     GetUserOrdersSummaryHandler getUserOrdersSummaryHandler,
     GetOrderReceiptHandler getOrderReceiptHandler,
+    CreateReviewHandler createReviewHandler,
     ILogger<OrdersController> logger) : BaseController(logger)
 {
     [HttpGet]
@@ -108,5 +111,42 @@ public class OrdersController(
         }
 
         return PartialView("_OrderReceiptModal", result.Payload);
+    }
+    
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    [Route("/User/Orders/Review/{id:int}")]
+    public async Task<IActionResult> SubmitReview(int id, [FromForm] SubmitOrderReviewRequest request, CancellationToken ct = default)
+    {
+        var userId = userProvider.GetCurrentUserId();
+
+        var command = new CreateReviewCommand(userId, id, request.Rating, request.Comment);
+
+        if (!ModelState.IsValid)
+        {
+            var unReviewedReceipt = await getOrderReceiptHandler.Handle(new GetOrderReceiptQuery(id, userId), ct);
+            Response.ShowWarning("Proverite sva polja pre slanja recenzije.");
+            return PartialView("_OrderReceiptModal", unReviewedReceipt.Payload);
+        }
+        
+        var result = await createReviewHandler.Handle(command, ct);
+
+
+        if (!result.IsSuccess)
+        {
+            Response.ShowError(result.Errors[0].Description);
+            return NoContent();
+        }
+
+        var receipt = await getOrderReceiptHandler.Handle(new GetOrderReceiptQuery(id, userId), ct);
+
+        if (!receipt.IsSuccess)
+        {
+            Response.ShowError("Tražena porudžbina nije pronađena.");
+            return NoContent();
+        }
+
+        Response.ShowSuccess("Hvala vam na ostavljenoj recenziji. Vaši utisci su nam od velikog značaja!");
+        return PartialView("_OrderReceiptModal", receipt.Payload);
     }
 }

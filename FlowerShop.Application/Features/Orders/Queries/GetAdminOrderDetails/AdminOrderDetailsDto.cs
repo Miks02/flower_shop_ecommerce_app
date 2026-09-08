@@ -29,6 +29,9 @@ public record AdminOrderDetailsDto
     public string? DelivererPhoneNumber { get; init; }
     public VehicleType? DelivererVehicleType { get; init; }
 
+    public decimal? ServiceRating { get; init; }
+    public string? ReviewComment { get; init; }
+
     public IReadOnlyList<AdminOrderItemDetailDto> Items { get; init; } = [];
     public IReadOnlyList<DelivererDto> AvailableDeliverers { get; init; } = [];
 

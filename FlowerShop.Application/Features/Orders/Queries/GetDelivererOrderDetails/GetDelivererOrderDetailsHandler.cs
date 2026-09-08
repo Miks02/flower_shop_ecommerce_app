@@ -41,6 +41,8 @@ public class GetDelivererOrderDetailsHandler(IOrderRepository orderRepo) : IHand
             BuyerEmail = order.User.Email ?? string.Empty,
             BuyerPhoneNumber = order.User.PhoneNumber ?? string.Empty,
             LoyaltyPointsSpent = loyaltyPointsSpent,
+            ServiceRating = order.Review?.Rating,
+            ReviewComment = order.Review?.Comment,
             Items = order.OrderItems.Select(i => new DelivererOrderItemDetailDto(
                 i.Id,
                 i.ProductName,

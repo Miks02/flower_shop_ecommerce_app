@@ -14,7 +14,7 @@ public class GetDelivererDetailsHandler(IDelivererRepository delivererRepo, IOrd
         if(deliverer is null)
             return Result<GetDelivererDetailsResponse>.Failure(DelivererError.NotFound(detailsQuery.Id));
         
-        var (totalDeliveries, activeDeliveries, completedDeliveries) = await orderRepo.GetDelivererOrderStatsAsync(deliverer.Id, ct);
+        var (totalDeliveries, activeDeliveries, completedDeliveries, averageRating) = await orderRepo.GetDelivererOrderStatsAsync(deliverer.Id, ct);
 
         var response = new GetDelivererDetailsResponse
         {
@@ -28,7 +28,7 @@ public class GetDelivererDetailsHandler(IDelivererRepository delivererRepo, IOrd
             DelivererStatus = deliverer.DelivererStatus,
             VehicleType = deliverer.VehicleType,
             RegistrationDate = deliverer.User.CreatedAt.ToString("dd.MM.yyyy"),
-            AverageRating = 4.9,
+            AverageRating = averageRating,
             TotalDeliveries = totalDeliveries,
             ActiveDeliveries = activeDeliveries,
             CompletedDeliveries = completedDeliveries
