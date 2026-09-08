@@ -14,6 +14,7 @@ public class OrderRepository(AppDbContext context) : Repository<Order>(context),
             .Include(o => o.LoyaltyTransactions)
             .Include(o => o.OrderItems)
             .Include(o => o.User)
+            .Include(o => o.Review)
             .Include(o => o.Deliverer)
                 .ThenInclude(d => d!.User)
             .FirstOrDefaultAsync(o => o.Id == id, ct);
@@ -26,6 +27,7 @@ public class OrderRepository(AppDbContext context) : Repository<Order>(context),
             .Include(o => o.LoyaltyTransactions)
             .Include(o => o.OrderItems)
             .Include(o => o.User)
+            .Include(o => o.Review)
             .Include(o => o.Deliverer)
                 .ThenInclude(d => d!.User)
             .FirstOrDefaultAsync(o => o.Id == id && o.UserId == userId, ct);
@@ -45,6 +47,7 @@ public class OrderRepository(AppDbContext context) : Repository<Order>(context),
             .AsSplitQuery()
             .Include(o => o.LoyaltyTransactions)
             .Include(o => o.OrderItems)
+            .Include(o => o.Review)
             .Where(o => o.UserId == userId);
 
         if (!string.IsNullOrWhiteSpace(searchBy))
@@ -112,6 +115,7 @@ public class OrderRepository(AppDbContext context) : Repository<Order>(context),
             .Include(o => o.LoyaltyTransactions)
             .Include(o => o.OrderItems)
             .Include(o => o.User)
+            .Include(o => o.Review)
             .Include(o => o.Deliverer)
                 .ThenInclude(d => d!.User)
             .AsQueryable();
@@ -183,6 +187,7 @@ public class OrderRepository(AppDbContext context) : Repository<Order>(context),
             .Include(o => o.LoyaltyTransactions)
             .Include(o => o.OrderItems)
             .Include(o => o.User)
+            .Include(o => o.Review)
             .Include(o => o.Deliverer)
                 .ThenInclude(d => d!.User)
             .Where(o => o.DelivererId == delivererId)
