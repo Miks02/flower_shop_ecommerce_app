@@ -16,6 +16,18 @@ public class GetProductDetailsHandler(IProductRepository productRepo) : IHandler
 
         var isOnPromotion = product.PromoPrice is > 0;
 
+        var reviews = product.ProductReviews
+            .OrderByDescending(pr => pr.CreatedAt)
+            .Select(pr => new ProductReviewDto
+            {
+                Id = pr.Id,
+                ReviewerName = $"{pr.User.FirstName} {pr.User.LastName}".Trim(),
+                Rating = pr.Rating,
+                Comment = pr.Comment,
+                CreatedAt = pr.CreatedAt
+            })
+            .ToList();
+
         var response = new GetProductDetailsResponse
         {
             Id = product.Id,
@@ -38,7 +50,13 @@ public class GetProductDetailsHandler(IProductRepository productRepo) : IHandler
                     Category = pf.Flower.FlowerCategory
                 })
                 .OrderBy(f => f.Name)
-                .ToList()
+                .ToList(),
+            AverageRating = product.ProductReviews.Count > 0 ? product.ProductReviews.Average(pr => pr.Rating) : null,
+            ReviewCount = product.ProductReviews.Count,
+            CurrentUserReviewId = request.CurrentUserId is null
+                ? null
+                : product.ProductReviews.FirstOrDefault(pr => pr.ReviewerId == request.CurrentUserId)?.Id,
+            Reviews = reviews
         };
 
         return Result<GetProductDetailsResponse>.Success(response);

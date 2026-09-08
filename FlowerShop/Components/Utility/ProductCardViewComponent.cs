@@ -14,7 +14,7 @@ public class ProductCardViewComponent : ViewComponent
             string imageUrl, 
             decimal price, 
             decimal promoPrice, 
-            double rating, 
+            decimal? rating, 
             string category,
             bool isAvailable,
             bool isDiscounted,

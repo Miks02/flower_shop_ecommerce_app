@@ -26,6 +26,7 @@ public class ProductRepository : Repository<Product>, IProductRepository
         CancellationToken ct = default)
     {
         var query = _context.Products
+            .Include(p => p.ProductReviews)
             .IgnoreQueryFilters();
         
         if(categoryId is not null)
@@ -64,6 +65,7 @@ public class ProductRepository : Repository<Product>, IProductRepository
                 Stock = p.Stock,
                 Description = p.Description,
                 CategoryName = p.Category.Name,
+                AverageRating = p.ProductReviews.Select(pr => pr.Rating).Average(),
                 Occasions = p.Occasions.Select(o => o.Name).ToList(),
                 ProductFlowers = p.ProductFlowers.Select(pf => new ProductFlowerDto
                 {
@@ -94,6 +96,7 @@ public class ProductRepository : Repository<Product>, IProductRepository
         CancellationToken ct = default)
     {
         var query = _context.Products
+            .Include(p => p.ProductReviews)
             .IgnoreQueryFilters();
 
         query = query.Where(p => !p.IsDeleted);
@@ -131,6 +134,7 @@ public class ProductRepository : Repository<Product>, IProductRepository
                 Stock = p.Stock,
                 Description = p.Description,
                 CategoryName = p.Category.Name,
+                AverageRating = p.ProductReviews.Select(pr => pr.Rating).Average(),
                 Occasions = p.Occasions.Select(o => o.Name).ToList(),
                 ProductFlowers = p.ProductFlowers.Select(pf => new ProductFlowerDto
                 {
@@ -161,6 +165,8 @@ public class ProductRepository : Repository<Product>, IProductRepository
             .Include(p => p.Occasions)
             .Include(p => p.ProductFlowers)
                 .ThenInclude(pf => pf.Flower)
+            .Include(p => p.ProductReviews)
+                .ThenInclude(pr => pr.User)
             .FirstOrDefaultAsync(p => p.Id == id, ct);
     }
 

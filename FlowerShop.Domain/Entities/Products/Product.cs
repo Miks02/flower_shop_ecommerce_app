@@ -3,6 +3,7 @@ using FlowerShop.Domain.Entities.Categories;
 using FlowerShop.Domain.Entities.IdentityUser;
 using FlowerShop.Domain.Entities.Ocassions;
 using FlowerShop.Domain.Entities.ProductFlowers;
+using FlowerShop.Domain.Entities.ProductReviews;
 
 namespace FlowerShop.Domain.Entities.Products;
 
@@ -39,8 +40,9 @@ public class Product
     
     public int CategoryId { get; set; }
     public Category Category { get; set; } = null!;
-    
-    public ICollection<Occasion> Occasions { get; set; } = new List<Occasion>();
-    public ICollection<ProductFlower> ProductFlowers { get; set; } = new List<ProductFlower>();
-    
+
+    public ICollection<Occasion> Occasions { get; set; } = [];
+    public ICollection<ProductFlower> ProductFlowers { get; set; } = [];
+    public ICollection<ProductReview> ProductReviews { get; set; } = [];
+
 }

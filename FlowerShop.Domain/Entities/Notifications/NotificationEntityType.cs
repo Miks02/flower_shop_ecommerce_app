@@ -12,6 +12,7 @@ namespace FlowerShop.Domain.Entities.Notifications
         Order,
         Review,
         DeliveryReview,
-        Product
+        Product,
+        ProductReview
     }
 }
