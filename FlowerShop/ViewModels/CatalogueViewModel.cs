@@ -1,6 +1,7 @@
 using FlowerShop.Application.Features.Catalogue.Queries;
 using FlowerShop.Application.Features.Catalogue.Queries.GetCatalog;
 using FlowerShop.Domain.Entities.Categories;
+using FlowerShop.Domain.Entities.Flowers;
 using FlowerShop.Domain.Entities.Ocassions;
 using FlowerShop.Domain.Entities.Products;
 using FlowerShop.SharedKernel.Results;
@@ -12,8 +13,10 @@ public class CatalogueViewModel
     public PagedResult<ProductDto> PagedProducts { get; set; } = null!;
     public IReadOnlyList<CategoryDto> Categories { get; set; } = [];
     public IReadOnlyList<OccasionDto> Occasions { get; set; } = [];
+    public IReadOnlyList<CatalogueFlowerDto> Flowers { get; set; } = [];
     public List<int> CategoryIds { get; set; } = [];
     public List<int> OccasionIds { get; set; } = [];
+    public List<int> FlowerIds { get; set; } = [];
     public int PriceRange { get; set; }
     public int Page { get; set; } = 1;
     public int PageSize { get; set; } = 15;
@@ -26,6 +29,7 @@ public class CatalogueViewModel
             PriceRange = PriceRange,
             OccasionIds = OccasionIds.ToList(),
             CategoryIds = CategoryIds.ToList(),
+            FlowerIds = FlowerIds.ToList(),
             Page = Page,
             PageSize = PageSize,
             Sort = Sort

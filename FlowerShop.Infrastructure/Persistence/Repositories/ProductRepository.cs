@@ -88,10 +88,11 @@ public class ProductRepository : Repository<Product>, IProductRepository
     
     public async Task<PagedResult<ProductDto>> GetPagedProductsAsync(
         string? sortBy,
-        int page, 
-        int pageSize, 
+        int page,
+        int pageSize,
         IReadOnlyList<int> categoryIds,
         IReadOnlyList<int> occasionIds,
+        IReadOnlyList<int> flowerIds,
         int priceRange,
         CancellationToken ct = default)
     {
@@ -100,10 +101,10 @@ public class ProductRepository : Repository<Product>, IProductRepository
             .IgnoreQueryFilters();
 
         query = query.Where(p => !p.IsDeleted);
-        
+
         if(categoryIds.Any())
             query = query.Where(p => categoryIds.Contains(p.CategoryId));
-        
+
         query = sortBy switch
         {
             "name_asc" => query.OrderBy(p => p.Name),
@@ -114,10 +115,13 @@ public class ProductRepository : Repository<Product>, IProductRepository
             "stock_desc" => query.OrderByDescending(p => p.Stock),
             _ => query.OrderBy(p => p.Id)
         };
-        
+
         if(occasionIds.Any())
             query = query.Where(p => p.Occasions.Any(o => occasionIds.Contains(o.Id)));
-        
+
+        if(flowerIds.Any())
+            query = query.Where(p => p.ProductFlowers.Any(pf => flowerIds.Contains(pf.FlowerId)));
+
         if(priceRange > 0)
             query = query.Where(p => p.Price <= priceRange);
         

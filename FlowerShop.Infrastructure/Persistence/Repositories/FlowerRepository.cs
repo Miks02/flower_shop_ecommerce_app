@@ -28,6 +28,20 @@ public class FlowerRepository : Repository<Flower>, IFlowerRepository
             .ToListAsync(ct);
     }
 
+    public async Task<IReadOnlyList<CatalogueFlowerDto>> GetFlowersUsedInProductsAsync(CancellationToken ct = default)
+    {
+        return await _context.Flowers
+            .Where(f => f.ProductFlowers.Any())
+            .OrderBy(f => f.Name)
+            .Select(f => new CatalogueFlowerDto
+            {
+                Id = f.Id,
+                FlowerName = f.Name,
+                Color = f.Color
+            })
+            .ToListAsync(ct);
+    }
+
     public async Task<IReadOnlyList<Flower>> GetFlowersByIdsAsync(IReadOnlyList<int> flowerIds, CancellationToken ct = default)
     {
         return await _context.Flowers
