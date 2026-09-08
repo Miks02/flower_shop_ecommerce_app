@@ -1,4 +1,5 @@
 using FlowerShop.Application.Common.Abstractions;
+using FlowerShop.Infrastructure.ExceptionHandling;
 using FlowerShop.Infrastructure.Htmx;
 using FlowerShop.Infrastructure.Identity;
 using FlowerShop.Infrastructure.Notifications;
@@ -19,6 +20,8 @@ public static class DependencyInjection
         services.AddIdentity();
         services.AddHandlers();
         services.AddInfrastructureServices();
+        services.AddExceptionHandlers();
+        services.AddProblemDetails();
         services.AddScoped<HtmxToastFilter>(); 
 
     }
