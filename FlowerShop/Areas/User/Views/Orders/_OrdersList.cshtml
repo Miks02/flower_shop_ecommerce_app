@@ -110,6 +110,12 @@
                             </span>
                             break;
                     }
+                    @if (order.IsRated)
+                    {
+                        <div class="mt-1 flex items-center justify-center gap-1 text-[10px] text-amber-600 font-semibold" title="Porudžbina je ocenjena">
+                            <i class="fa-solid fa-star text-amber-400"></i> Ocenjeno
+                        </div>
+                    }
                 </td>
 
                 <td class="p-4 text-center hidden sm:table-cell whitespace-nowrap">
