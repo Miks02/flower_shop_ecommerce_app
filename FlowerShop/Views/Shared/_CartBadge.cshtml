@@ -1,0 +1,9 @@
+@model int
+<span id="cart-badge"
+      hx-get="@Url.Action("GetItemCount", "Cart", new { area = "" })"
+      hx-trigger="load, cartUpdated from:body"
+      hx-target="this"
+      hx-swap="innerHTML"
+      class="absolute -top-1 -right-1 pointer-events-none">
+    <partial name="_CartBadgeContent" model="Model" />
+</span>

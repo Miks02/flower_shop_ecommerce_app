@@ -1,0 +1,9 @@
+@model int
+<span id="notification-badge"
+      hx-get="@Url.Action("GetUnreadCount", "Notification", new { area = "" })"
+      hx-trigger="load, every 15s, notificationsUpdated from:body"
+      hx-target="this"
+      hx-swap="innerHTML"
+      class="absolute -top-1 -right-1 pointer-events-none">
+    <partial name="_NotificationBadgeContent" model="Model" />
+</span>
