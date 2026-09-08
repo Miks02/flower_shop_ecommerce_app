@@ -16,7 +16,7 @@ public record GetDelivererDetailsResponse
     public DelivererStatus DelivererStatus { get; init; }
     public VehicleType VehicleType { get; init; }
     public string RegistrationDate { get; init; } = null!;
-    public double AverageRating { get; init; } = 4.9;
+    public decimal AverageRating { get; init; }
     public int TotalDeliveries { get; init; }
     public int ActiveDeliveries { get; init; }
     public int CompletedDeliveries { get; init; }
