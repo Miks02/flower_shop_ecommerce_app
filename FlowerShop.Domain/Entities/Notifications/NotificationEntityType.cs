@@ -10,7 +10,7 @@ namespace FlowerShop.Domain.Entities.Notifications
     {
         None,
         Order,
-        Review,
+        ServiceReview,
         DeliveryReview,
         Product,
         ProductReview

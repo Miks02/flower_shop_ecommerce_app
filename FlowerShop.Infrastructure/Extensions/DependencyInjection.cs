@@ -42,7 +42,7 @@ public static class DependencyInjection
         services.AddScoped<INotificationResolver, NotificationResolver>();
         
         services.AddScoped<INotificationActionStrategy, OrderNotificationStrategy>();
-        services.AddScoped<INotificationActionStrategy, ReviewNotificationStrategy>();
+        services.AddScoped<INotificationActionStrategy, ServiceReviewNotificationStrategy>();
         services.AddScoped<INotificationActionStrategy, DeliveryReviewNotificationStrategy>();
         services.AddScoped<INotificationActionStrategy, ProductNotificationStrategy>();
         services.AddScoped<INotificationActionStrategy, ProductReviewNotificationStrategy>();

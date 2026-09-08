@@ -43,8 +43,8 @@ public class GetOrderReceiptHandler(IOrderRepository orderRepo) : IHandler
             DelivererPhoneNumber = delivererPhone,
             TotalPrice = order.OrderPrice + 300m,
             LoyaltyPointsSpent = loyaltyPointsSpent,
-            ServiceRating = order.Review?.Rating,
-            ReviewComment = order.Review?.Comment,
+            ServiceRating = order.ServiceReview?.Rating,
+            ReviewComment = order.ServiceReview?.Comment,
             Items = order.OrderItems.Select(i => new OrderReceiptItemDto(
                 i.ProductName,
                 i.ProductImagePath,

@@ -51,8 +51,8 @@ public class GetAdminOrderDetailsHandler(
             DelivererPhoneNumber = delivererPhone,
             DelivererVehicleType = vehicleType,
             LoyaltyPointsSpent = loyaltyPointsSpent,
-            ServiceRating = order.Review?.Rating,
-            ReviewComment = order.Review?.Comment,
+            ServiceRating = order.ServiceReview?.Rating,
+            ReviewComment = order.ServiceReview?.Comment,
             Items = order.OrderItems.Select(i => new AdminOrderItemDetailDto(
                 i.Id,
                 i.ProductName,

@@ -26,7 +26,7 @@ public class DelivererRepository : Repository<Deliverer>, IDelivererRepository
         var query = _context.Deliverers
             .Include(d => d.User)
             .Include(d => d.Orders)
-                .ThenInclude(o  => o.Review)
+                .ThenInclude(o  => o.ServiceReview)
             .AsQueryable();
 
         if (vehicleType is not null)
@@ -78,7 +78,7 @@ public class DelivererRepository : Repository<Deliverer>, IDelivererRepository
     {
         var items = await _context.Deliverers
             .Include(o => o.Orders)
-                .ThenInclude(o => o.Review)
+                .ThenInclude(o => o.ServiceReview)
             .Select(d => new { d.DelivererStatus, d.VehicleType, d.Orders })
             .ToListAsync(ct);
 
@@ -90,8 +90,8 @@ public class DelivererRepository : Repository<Deliverer>, IDelivererRepository
         var scooter = items.Count(d => d.VehicleType == VehicleType.Scooter);
         var car = items.Count(d => d.VehicleType == VehicleType.Car);
         var averageRating = items.SelectMany(d => d.Orders)
-                               .Where(o => o.Review != null)
-                               .Average(o => o.Review!.Rating);
+                               .Where(o => o.ServiceReview != null)
+                               .Average(o => o.ServiceReview!.Rating);
 
         return new DelivererStatisticsDto(total, available, onDuty, unavailable, bicycle, scooter, car, averageRating);
     }

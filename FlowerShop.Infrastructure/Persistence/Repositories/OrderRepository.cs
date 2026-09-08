@@ -14,7 +14,7 @@ public class OrderRepository(AppDbContext context) : Repository<Order>(context),
             .Include(o => o.LoyaltyTransactions)
             .Include(o => o.OrderItems)
             .Include(o => o.User)
-            .Include(o => o.Review)
+            .Include(o => o.ServiceReview)
             .Include(o => o.Deliverer)
                 .ThenInclude(d => d!.User)
             .FirstOrDefaultAsync(o => o.Id == id, ct);
@@ -27,7 +27,7 @@ public class OrderRepository(AppDbContext context) : Repository<Order>(context),
             .Include(o => o.LoyaltyTransactions)
             .Include(o => o.OrderItems)
             .Include(o => o.User)
-            .Include(o => o.Review)
+            .Include(o => o.ServiceReview)
             .Include(o => o.Deliverer)
                 .ThenInclude(d => d!.User)
             .FirstOrDefaultAsync(o => o.Id == id && o.UserId == userId, ct);
@@ -47,7 +47,7 @@ public class OrderRepository(AppDbContext context) : Repository<Order>(context),
             .AsSplitQuery()
             .Include(o => o.LoyaltyTransactions)
             .Include(o => o.OrderItems)
-            .Include(o => o.Review)
+            .Include(o => o.ServiceReview)
             .Where(o => o.UserId == userId);
 
         if (!string.IsNullOrWhiteSpace(searchBy))
@@ -115,7 +115,7 @@ public class OrderRepository(AppDbContext context) : Repository<Order>(context),
             .Include(o => o.LoyaltyTransactions)
             .Include(o => o.OrderItems)
             .Include(o => o.User)
-            .Include(o => o.Review)
+            .Include(o => o.ServiceReview)
             .Include(o => o.Deliverer)
                 .ThenInclude(d => d!.User)
             .AsQueryable();
@@ -187,7 +187,7 @@ public class OrderRepository(AppDbContext context) : Repository<Order>(context),
             .Include(o => o.LoyaltyTransactions)
             .Include(o => o.OrderItems)
             .Include(o => o.User)
-            .Include(o => o.Review)
+            .Include(o => o.ServiceReview)
             .Include(o => o.Deliverer)
                 .ThenInclude(d => d!.User)
             .Where(o => o.DelivererId == delivererId)
@@ -257,8 +257,8 @@ public class OrderRepository(AppDbContext context) : Repository<Order>(context),
         var total = await orders.CountAsync(ct);
         var active = await orders.CountAsync(o => o.OrderStatus != OrderStatus.Completed && o.OrderStatus != OrderStatus.Cancelled, ct);
         var completed = await orders.CountAsync(o => o.OrderStatus == OrderStatus.Completed, ct);
-        var ratings= await orders.Where(o => o.Review != null)
-                                        .Select(o => o.Review!.Rating)
+        var ratings= await orders.Where(o => o.ServiceReview != null)
+                                        .Select(o => o.ServiceReview!.Rating)
                                         .ToListAsync(ct);
         
         var averageRating = ratings.Count > 0 

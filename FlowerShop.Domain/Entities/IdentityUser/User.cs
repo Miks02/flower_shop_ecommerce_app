@@ -5,7 +5,7 @@ using FlowerShop.Domain.Entities.Notifications;
 using FlowerShop.Domain.Entities.Orders;
 using FlowerShop.Domain.Entities.ProductReviews;
 using FlowerShop.Domain.Entities.Products;
-using FlowerShop.Domain.Entities.Reviews;
+using FlowerShop.Domain.Entities.ServiceReviews;
 using FlowerShop.Domain.Enums;
 
 namespace FlowerShop.Domain.Entities.IdentityUser;
@@ -30,6 +30,6 @@ public class User : Microsoft.AspNetCore.Identity.IdentityUser
     public ICollection<Order> Orders { get; set; } = [];
     public ICollection<LoyaltyTransaction> LoyaltyTransactions { get; set; } = [];
     public ICollection<NotificationRecipient> Notifications { get; set; } = [];
-    public ICollection<Review> Reviews { get; set; } = [];
+    public ICollection<ServiceReview> ServiceReviews { get; set; } = [];
     public ICollection<ProductReview> ProductReviews { get; set; } = [];
 }

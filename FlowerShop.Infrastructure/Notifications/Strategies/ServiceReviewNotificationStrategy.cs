@@ -2,9 +2,9 @@ using FlowerShop.Domain.Entities.Notifications;
 
 namespace FlowerShop.Infrastructure.Notifications.Strategies;
 
-public class ReviewNotificationStrategy : INotificationActionStrategy
+public class ServiceReviewNotificationStrategy : INotificationActionStrategy
 {
-    public NotificationEntityType EntityType => NotificationEntityType.Review;
+    public NotificationEntityType EntityType => NotificationEntityType.ServiceReview;
 
     public string? GetActionUrl(int? entityId)
     {

@@ -2,9 +2,9 @@ using FlowerShop.Domain.Entities.Deliverers;
 using FlowerShop.Domain.Entities.IdentityUser;
 using FlowerShop.Domain.Entities.Orders;
 
-namespace FlowerShop.Domain.Entities.Reviews;
+namespace FlowerShop.Domain.Entities.ServiceReviews;
 
-public class Review
+public class ServiceReview
 {
     public int Id { get; set; }
     public decimal Rating { get; set; }

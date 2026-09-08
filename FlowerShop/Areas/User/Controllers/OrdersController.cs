@@ -2,7 +2,7 @@ using FlowerShop.Application.Common.Abstractions;
 using FlowerShop.Application.Features.Orders.Commands.CreateOrder;
 using FlowerShop.Application.Features.Orders.Queries.GetOrderReceipt;
 using FlowerShop.Application.Features.Orders.Queries.GetUserOrders;
-using FlowerShop.Application.Features.Reviews.Commands.CreateReview;
+using FlowerShop.Application.Features.ServiceReviews.Commands.CreateServiceReview;
 using FlowerShop.Domain.Entities.Orders;
 using FlowerShop.Infrastructure.Htmx;
 using FlowerShop.Web.Areas.User.Models.Orders;
@@ -19,7 +19,7 @@ public class OrdersController(
     IUserProvider userProvider,
     GetUserOrdersSummaryHandler getUserOrdersSummaryHandler,
     GetOrderReceiptHandler getOrderReceiptHandler,
-    CreateReviewHandler createReviewHandler,
+    CreateServiceReviewHandler createServiceReviewHandler,
     ILogger<OrdersController> logger) : BaseController(logger)
 {
     [HttpGet]
@@ -120,7 +120,7 @@ public class OrdersController(
     {
         var userId = userProvider.GetCurrentUserId();
 
-        var command = new CreateReviewCommand(userId, id, request.Rating, request.Comment);
+        var command = new CreateServiceReviewCommand(userId, id, request.Rating, request.Comment);
 
         if (!ModelState.IsValid)
         {
@@ -129,7 +129,7 @@ public class OrdersController(
             return PartialView("_OrderReceiptModal", unReviewedReceipt.Payload);
         }
         
-        var result = await createReviewHandler.Handle(command, ct);
+        var result = await createServiceReviewHandler.Handle(command, ct);
 
 
         if (!result.IsSuccess)
