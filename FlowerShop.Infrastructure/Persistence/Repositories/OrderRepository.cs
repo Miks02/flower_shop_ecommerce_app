@@ -257,9 +257,14 @@ public class OrderRepository(AppDbContext context) : Repository<Order>(context),
         var total = await orders.CountAsync(ct);
         var active = await orders.CountAsync(o => o.OrderStatus != OrderStatus.Completed && o.OrderStatus != OrderStatus.Cancelled, ct);
         var completed = await orders.CountAsync(o => o.OrderStatus == OrderStatus.Completed, ct);
-        var averageRating = await orders.Where(o => o.Review != null)
-                                        .AverageAsync(o => o.Review!.Rating, ct);
-
+        var ratings= await orders.Where(o => o.Review != null)
+                                        .Select(o => o.Review!.Rating)
+                                        .ToListAsync(ct);
+        
+        var averageRating = ratings.Count > 0 
+            ? ratings.Average() 
+            : 0m;
+        
         return (total, active, completed, averageRating);
     }
 
