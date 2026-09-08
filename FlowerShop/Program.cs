@@ -37,9 +37,10 @@ builder.Host.UseDefaultServiceProvider(options =>
 
 var app = builder.Build();
 
+app.UseExceptionHandler();
+
 if (!app.Environment.IsDevelopment())
 {
-    app.UseExceptionHandler("/Home/Error");
     app.UseHsts();
 }
 
