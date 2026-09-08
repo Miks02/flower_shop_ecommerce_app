@@ -2,7 +2,7 @@
 @using FlowerShop.Web.ViewModels.Components
 @model UserProfileViewModel
 
-<div class="flex flex-col md:flex-row mx-5 py-5 gap-5">
+<div class="flex flex-col md:flex-row mx-2 sm:mx-5 py-3 sm:py-5 gap-5">
         
     <div class="flex flex-col w-full gap-5">
         <div class="flex flex-col shadow-xl bg-red-100 rounded-xl transition-all duration-200 hover:-translate-y-1">
@@ -35,7 +35,7 @@
                             <i class="fa-solid fa-at mr-2"></i>
                             <span>Email adresa</span>
                         </div>
-                        <h5 class="text-red-900 font-semibold">@Model.Email</h5>
+                        <h5 class="text-red-900 font-semibold break-all">@Model.Email</h5>
                     </div>
                     <div class="flex flex-col gap-1 p-3 w-auto bg-red-200 flex-1 shadow-xl w-25">
                         <div class="text-gray-500">
@@ -64,7 +64,7 @@
                         }
                         else
                         {
-                            <h5 class="text-red-900 font-semibold">@Model.Address</h5>
+                            <h5 class="text-red-900 font-semibold break-words">@Model.Address</h5>
                         }
                     </div>
                 </div>

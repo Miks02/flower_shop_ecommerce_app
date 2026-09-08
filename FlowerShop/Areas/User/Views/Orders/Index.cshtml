@@ -4,9 +4,7 @@
     Layout = "_UserLayout";
 }
 
-<div id="user-content" class="p-4 sm:p-6">
-    @await Html.PartialAsync("_OrdersPage", Model)
-</div>
+@await Html.PartialAsync("_OrdersPage", Model)
 
 @if (ViewBag.InitialOrderId != null)
 {

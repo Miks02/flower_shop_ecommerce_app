@@ -6,15 +6,15 @@
     var isSelected = selectedFlower != null;
     var quantity = isSelected ? selectedFlower!.Quantity : 1;
 
-    <div class="flex items-center justify-between gap-4 bg-red-100 p-3 rounded-lg border border-red-300 transition-all hover:border-red-500 group">
-        <div class="flex items-center gap-3">
+    <div class="flex flex-wrap items-center justify-between gap-4 bg-red-100 p-3 rounded-lg border border-red-300 transition-all hover:border-red-500 group">
+        <div class="flex items-center gap-3 min-w-0">
             <input type="checkbox"
-                   class="flower-checkbox w-5 h-5 rounded border-red-400 text-red-600 focus:ring-red-500 cursor-pointer"
+                   class="flower-checkbox w-5 h-5 rounded border-red-400 text-red-600 focus:ring-red-500 cursor-pointer shrink-0"
                    @(isSelected ? "checked" : "")
                    data-index="@flower.Id"
                    onchange="toggleFlower(@flower.Id, this)"/>
-            <div>
-                <p class="font-bold text-red-900 leading-none">@flower.Name <span class="font-normal text-gray-400">- (@flower.Color)</span></p>
+            <div class="min-w-0">
+                <p class="font-bold text-red-900 leading-none break-words">@flower.Name <span class="font-normal text-gray-400">- (@flower.Color)</span></p>
                 <span class="text-[10px] font-semibold text-orange-600 uppercase tracking-tighter">Zaliha: @flower.Stock kom</span>
             </div>
         </div>
