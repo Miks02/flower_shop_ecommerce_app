@@ -1,0 +1,161 @@
+@using FlowerShop.Web.ViewModels
+@model ProductDetailsViewModel
+
+<div id="product-reviews-container" class="bg-red-200 rounded-2xl shadow-2xl p-6 md:p-8">
+    <h2 class="text-red-800 text-2xl font-semibold mb-4">
+        <i class="fa-solid fa-comments mr-2"></i>Recenzije kupaca
+    </h2>
+    <div class="bg-red-800 h-px w-full mb-6"></div>
+
+    <div class="flex flex-col sm:flex-row sm:items-center gap-3 mb-6">
+        @{ var averageFilledStars = Model.AverageRating.HasValue ? (int)Math.Round(Model.AverageRating.Value) : 0; }
+        <div class="flex items-center gap-1 text-orange-500 text-2xl">
+            @for (int i = 1; i <= 5; i++)
+            {
+                if (i <= averageFilledStars)
+                {
+                    <i class="fa-solid fa-star"></i>
+                }
+                else
+                {
+                    <i class="fa-regular fa-star"></i>
+                }
+            }
+        </div>
+        <span class="text-red-900 font-semibold">
+            @(Model.AverageRating.HasValue ? Model.AverageRating.Value.ToString("0.#") : "0")/5
+            <span class="text-red-700 font-normal">(@Model.ReviewCount @(Model.ReviewCount == 1 ? "recenzija" : "recenzija"))</span>
+        </span>
+    </div>
+
+    @if (User.Identity?.IsAuthenticated == true && User.IsInRole("User"))
+    {
+        var myReview = Model.CurrentUserReviewId is not null
+            ? Model.Reviews.FirstOrDefault(r => r.Id == Model.CurrentUserReviewId)
+            : null;
+
+        if (myReview is not null)
+        {
+            var myFilledStars = (int)Math.Round(myReview.Rating);
+            <div class="p-4 bg-amber-50/70 rounded-2xl border border-amber-200 flex flex-col gap-2 mb-6">
+                <div class="flex items-center justify-between">
+                    <span class="font-bold uppercase tracking-wider text-amber-700 text-[10px] flex items-center gap-1.5">
+                        <i class="fa-solid fa-star text-amber-500"></i> Vaša recenzija
+                    </span>
+                    <button type="button"
+                            hx-post="@Url.Action("DeleteProductReview", "Catalogue", new { id = Model.Id, reviewId = myReview.Id })"
+                            hx-target="#product-reviews-container"
+                            hx-swap="outerHTML"
+                            hx-confirm="Da li ste sigurni da želite da obrišete svoju recenziju?"
+                            class="text-xs font-semibold text-red-700 hover:text-red-900 transition-colors cursor-pointer flex items-center gap-1">
+                        <i class="fa-solid fa-trash"></i> Obriši
+                    </button>
+                </div>
+                <div class="flex items-center gap-1 text-lg">
+                    @for (int i = 1; i <= 5; i++)
+                    {
+                        if (i <= myFilledStars)
+                        {
+                            <i class="fa-solid fa-star text-amber-400"></i>
+                        }
+                        else
+                        {
+                            <i class="fa-regular fa-star text-amber-300"></i>
+                        }
+                    }
+                    <span class="text-xs text-gray-600 ml-2">(@myReview.Rating.ToString("0.#")/5)</span>
+                </div>
+                @if (!string.IsNullOrWhiteSpace(myReview.Comment))
+                {
+                    <p class="text-sm italic text-amber-950 pl-2 border-l-2 border-amber-400 mt-1">"@myReview.Comment"</p>
+                }
+            </div>
+        }
+        else
+        {
+            <form hx-post="@Url.Action("SubmitProductReview", "Catalogue", new { id = Model.Id })"
+                  hx-target="#product-reviews-container"
+                  hx-swap="outerHTML"
+                  class="star-review-form flex flex-col gap-3 p-4 bg-amber-50/70 rounded-2xl border border-amber-200 mb-6">
+                @Html.AntiForgeryToken()
+
+                <span class="font-bold uppercase tracking-wider text-amber-700 text-[10px] flex items-center gap-1.5">
+                    <i class="fa-solid fa-star text-amber-500"></i> Ocenite proizvod
+                </span>
+
+                <div class="star-input flex flex-row-reverse justify-end gap-1 text-2xl">
+                    <input type="radio" id="product-rating-5" name="Rating" value="5" class="sr-only">
+                    <label for="product-rating-5" class="cursor-pointer text-gray-300 transition-colors"><i class="fa-solid fa-star"></i></label>
+
+                    <input type="radio" id="product-rating-4" name="Rating" value="4" class="sr-only">
+                    <label for="product-rating-4" class="cursor-pointer text-gray-300 transition-colors"><i class="fa-solid fa-star"></i></label>
+
+                    <input type="radio" id="product-rating-3" name="Rating" value="3" class="sr-only">
+                    <label for="product-rating-3" class="cursor-pointer text-gray-300 transition-colors"><i class="fa-solid fa-star"></i></label>
+
+                    <input type="radio" id="product-rating-2" name="Rating" value="2" class="sr-only">
+                    <label for="product-rating-2" class="cursor-pointer text-gray-300 transition-colors"><i class="fa-solid fa-star"></i></label>
+
+                    <input type="radio" id="product-rating-1" name="Rating" value="1" class="sr-only">
+                    <label for="product-rating-1" class="cursor-pointer text-gray-300 transition-colors"><i class="fa-solid fa-star"></i></label>
+                </div>
+
+                <textarea name="Comment" rows="2" maxlength="1000" placeholder="Vaš komentar (opciono)..."
+                          class="w-full p-2 border-2 shadow-sm transition-all bg-white placeholder-gray-400 border-amber-200 rounded-md focus:outline-none focus:ring-2 focus:ring-amber-300 focus:border-amber-400 text-sm text-gray-800 resize-none"></textarea>
+
+                <button type="submit" class="self-start px-4 py-2 text-xs font-semibold text-white bg-amber-500 rounded-xl hover:bg-amber-600 transition-colors cursor-pointer shadow-sm">
+                    Pošalji recenziju
+                </button>
+            </form>
+
+            <style>
+                .star-input input:checked ~ label { color: #fbbf24; }
+                .star-input label:hover, .star-input label:hover ~ label { color: #fbbf24; }
+            </style>
+        }
+    }
+    else if (User.Identity?.IsAuthenticated != true)
+    {
+        <div class="p-4 bg-red-100 border-2 border-red-300 rounded-xl text-red-900 text-sm mb-6 flex items-center gap-2">
+            <i class="fa-regular fa-user"></i>
+            <span>Ulogujte se kako biste ostavili recenziju proizvoda.</span>
+        </div>
+    }
+
+    @if (Model.Reviews.Count > 0)
+    {
+        <div class="flex flex-col gap-4">
+            @foreach (var review in Model.Reviews)
+            {
+                var reviewStars = (int)Math.Round(review.Rating);
+                <div class="bg-red-100 rounded-xl p-4 shadow-md flex flex-col gap-2">
+                    <div class="flex items-center justify-between">
+                        <span class="font-semibold text-red-900">@review.ReviewerName</span>
+                        <span class="text-xs text-gray-500">@review.CreatedAt.ToString("dd.MM.yyyy.")</span>
+                    </div>
+                    <div class="flex items-center gap-1 text-orange-500">
+                        @for (int i = 1; i <= 5; i++)
+                        {
+                            if (i <= reviewStars)
+                            {
+                                <i class="fa-solid fa-star"></i>
+                            }
+                            else
+                            {
+                                <i class="fa-regular fa-star"></i>
+                            }
+                        }
+                    </div>
+                    @if (!string.IsNullOrWhiteSpace(review.Comment))
+                    {
+                        <p class="text-sm text-gray-700 italic">"@review.Comment"</p>
+                    }
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        <p class="text-red-900 font-semibold">Ovaj proizvod još uvek nema recenzija. Budite prvi koji će ga oceniti!</p>
+    }
+</div>

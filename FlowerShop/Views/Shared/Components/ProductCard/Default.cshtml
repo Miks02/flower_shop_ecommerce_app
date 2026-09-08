@@ -33,10 +33,13 @@
                     }
                     
                 </div>
-                <div class="flex gap-2">
-                    <i class="fa-solid fa-star text-orange-500 p-0 m-0 self-center"></i>
-                    <p class="mt-1 text-orange-500">@(Model.Rating > 0 ? Model.Rating : Model.Rating.ToString("0"))</p>
-                </div>
+                @if (Model.Rating is not null)
+                {
+                    <div class="flex gap-2">
+                        <i class="fa-solid fa-star text-orange-500 p-0 m-0 self-center"></i>
+                        <p class="mt-1 text-orange-500">@(Model.Rating.Value.ToString("0.##"))</p>
+                    </div>
+                }
             </div>
             <div class="bg-red-800 h-px w-full "></div>
 

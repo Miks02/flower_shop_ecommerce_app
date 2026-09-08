@@ -15,7 +15,7 @@
                 ImageUrl = m.ProductImage,
                 Price = m.Price,
                 PromoPrice = m.PromoPrice ?? 0,
-                Rating = 0,
+                Rating = m.AverageRating,
                 Category = m.CategoryName,
                 IsAvailable = m.Stock > 0,
                 IsNew = m.CreatedAt >= DateTime.UtcNow.AddDays(-30), 

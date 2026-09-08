@@ -9,7 +9,7 @@ public class ProductCardViewModel
     public string ImageUrl { get; set; } = null!;
     public decimal Price { get; set; }
     public decimal PromoPrice { get; set; }
-    public double Rating { get; set; } 
+    public decimal? Rating { get; set; } 
     public string Category { get; set; } = null!;
     public string BadgeColor { get; set; } = string.Empty;
     public ProductBadge? Badge { get; set; }

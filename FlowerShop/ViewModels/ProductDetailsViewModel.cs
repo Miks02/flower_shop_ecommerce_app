@@ -17,5 +17,9 @@ public record ProductDetailsViewModel
     public string CategoryName { get; init; } = null!;
     public IReadOnlyList<string> Occasions { get; init; } = [];
     public IReadOnlyList<FlowerCompositionDto> Composition { get; init; } = [];
+    public decimal? AverageRating { get; init; }
+    public int ReviewCount { get; init; }
+    public int? CurrentUserReviewId { get; init; }
+    public IReadOnlyList<ProductReviewDto> Reviews { get; init; } = [];
     public bool IsAvailable => Stock > 0;
 }

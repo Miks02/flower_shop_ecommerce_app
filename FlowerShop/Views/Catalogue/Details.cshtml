@@ -41,12 +41,22 @@
 
                 <div class="flex flex-col gap-3">
                     <h1 class="text-red-900 text-3xl md:text-4xl font-semibold">@Model.Name</h1>
+                    @{ var headlineFilledStars = Model.AverageRating.HasValue ? (int)Math.Round(Model.AverageRating.Value) : 0; }
                     <div class="flex items-center gap-1 text-orange-500" aria-label="Ocena proizvoda">
-                        <i class="fa-solid fa-star"></i>
-                        <i class="fa-regular fa-star"></i>
-                        <i class="fa-regular fa-star"></i>
-                        <i class="fa-regular fa-star"></i>
-                        <i class="fa-regular fa-star"></i>
+                        @for (int i = 1; i <= 5; i++)
+                        {
+                            if (i <= headlineFilledStars)
+                            {
+                                <i class="fa-solid fa-star"></i>
+                            }
+                            else
+                            {
+                                <i class="fa-regular fa-star"></i>
+                            }
+                        }
+                        <span class="text-sm text-red-900 font-semibold ml-1">
+                            (@Model.ReviewCount)
+                        </span>
                     </div>
                 </div>
 
@@ -134,5 +144,7 @@
                 <p class="text-red-900 font-semibold">Cvetni sastav za ovaj proizvod nije naveden.</p>
             }
         </div>
+
+        <partial name="Partial/_ProductReviews" model="Model" />
     </div>
 </section>
