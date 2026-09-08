@@ -1,0 +1,150 @@
+@{
+    ViewData["Title"] = "O nama";
+}
+
+@await Component.InvokeAsync("Hero", new
+{
+    title = "O nama",
+    subtitle = "Upoznajte priču iza cvećare „Nikolić“ - porodičnog posla koji od 2025. godine neguje ljubav prema cveću u Beogradu.",
+})
+
+<section class="w-screen min-h-[400px] bg-gradient-to-tr from-red-100 to-rose-100">
+    <div class="p-6 sm:p-16 flex justify-center gap-16 items-center w-full 2xl:w-[80%] mx-auto flex-wrap">
+        <div class="rounded-3xl border border-solid border-gray-200 md:h-[550px]">
+            <img src="~/AppImages/Cvecara.jpg" class="sm:max-w-[400px] min-w-[200px] min-h-[275px] h-full sm:object-cover rounded-full sm:rounded-3xl shadow-all object-left" alt="Izlog cvećare Nikolić">
+        </div>
+
+        <div class="flex flex-col md:w-[50%]">
+            <p class="text-gray-400 font-semibold">Naša priča</p>
+            <h1 class="text-5xl text-gray-900 font-semibold mt-2"><span class="text-red-900">Od malog izloga</span> <br> do porodične tradicije</h1>
+            <p class="mt-5">
+                Cvećara „Nikolić“ otvorena je 9. juna 2025. godine na Savskom nasipu, kada je Tamara Nikolić, Mlada
+                filozofkinja, odlučila da od svoje ljubavi prema cveću napravi poziv. Prvi buket je vezala
+                sopstvenim rukama u malom prostoru od svega petnaest kvadrata, oslanjajući se na znanje koje je
+                ponela od svoje bake, koja je cveće gajila u dvorištu ispred svoje kuće.
+            </p>
+
+            <p class="mt-5">
+                Danas, više od godinu dana kasnije, cvećara „Nikolić“ je prerasla u prepoznatljivo mesto za sve koji žele
+                da poklone nešto iskreno - od svežih buketa za rođendane, preko svečanih aranžmana za venčanja, do
+                saksijskog bilja za dom i kancelariju. Katalog je bogat opcijama i konstantno se proširuje i unapredjuje. Ako
+                imate posebnu želju, Tamara i njen tim će je ispuniti, jer veruju da je svaki buket priča za sebe.
+            </p>
+
+          
+        </div>
+    </div>
+</section>
+
+<section class="w-screen min-h-[400px] bg-gradient-to-tr from-red-200 to-rose-200">
+    <div class="p-6 sm:p-16 flex justify-center gap-16 items-center w-full 2xl:w-[80%] mx-auto flex-wrap flex-col-reverse md:flex-row">
+        <div class="flex flex-col md:w-[50%]">
+            <p class="text-gray-500 font-semibold">Vlasnica</p>
+            <h1 class="text-5xl text-gray-900 font-semibold mt-2">Tamara Nikolić</h1>
+            <p class="mt-5">
+                „Cveće ne prodajemo - mi pomažemo ljudima da kažu ono za šta reči ponekad nisu dovoljne. Bilo da je
+                to izvinjenje, zahvalnost ili velika ljubav, moj zadatak je da pronađem pravu kombinaciju boja i
+                mirisa za taj trenutak.“
+            </p>
+            <p class="mt-5">
+                Tamara je student filozofije, a cvećarstvom se bavi od svoje 15. godine. Nakon što je završila kurs aranžiranja cveća u Beogradu,
+                 Danas prenosi znanje na kolege
+                 u svom timu i lično nadgleda svaki veći poduhvat - od venčanja do korporativnih dekoracija.
+            </p>
+            <p class="mt-5">
+                Van radnog vremena, Tamara vodi malu baštu raznolikih ruža i ljiljana iza radnje i redovno organizuje besplatne
+                radionice aranžiranja cveća za decu iz obližnjih beogradskih škola.
+            </p>
+        </div>
+
+        <div class="flex flex-col items-center gap-3">
+            <img src="AppImages/Ostalo/Tamara.jpeg"
+                 alt="Profilna slika Tamare"
+                 class="w-[250px] h-[300px] object-cover rounded-3xl border-2 border-dashed border-red-400/60 bg-red-100/60 shadow-all">            
+        </div>
+    </div>
+</section>
+
+<section class="w-screen min-h-[400px] bg-gradient-to-tr from-rose-100 to-red-100">
+    <div class="p-6 sm:p-16 flex justify-center gap-16 items-center w-full 2xl:w-[80%] mx-auto flex-wrap">
+        <div class="flex flex-col items-center gap-3">
+            <div class="flex flex-col items-center gap-3">
+                <img src="AppImages/Ostalo/Milan.jpg"
+                     alt="Profilna slika Milana"
+                     class="w-[250px] h-[300px] object-cover rounded-3xl border-2 border-dashed border-red-400/60 bg-red-100/60 shadow-all">            
+            </div>
+        </div>
+
+        <div class="flex flex-col md:w-[50%]">
+            <p class="text-gray-500 font-semibold">Suosnivač i lead developer</p>
+            <h1 class="text-5xl text-gray-900 font-semibold mt-2">Milan Nikolić</h1>
+            <p class="mt-5">
+                Ja sam Milan Nikolić, po struci softverski inženjer. Dok Tamara stvara buket po
+                buket, ja sam se pobrinuo da cvećara „Nikolić“ ima svoj dom i na internetu.
+            </p>
+            <p class="mt-5">
+                Ovu veb aplikaciju sam osmislio i razvio od početka do kraja, sa željom da Tamarin trud i ljubav prema
+                cveću budu vidljivi i onima koji je ne poznaju lično. Svaki deo sajta, od kataloga do poručivanja,
+                pravljen je tako da kupcima olakša pronalazak pravog buketa.
+            </p>
+            <p class="mt-5">
+                Van posla, najviše volim da gledam kako je mala ideja iz naše kuhinje prerasla u nešto što svakog dana
+                usrećuje ljude širom Beograda.
+            </p>
+        </div>
+    </div>
+</section>
+
+<section class="w-screen min-h-[400px] bg-gradient-to-tr from-red-100 to-rose-100">
+    <div class="p-6 sm:p-16 flex flex-col justify-center items-center text-center">
+        <h1 class="text-4xl sm:text-5xl font-semibold text-red-900">Naše vrednosti</h1>
+        <p class="text-lg sm:text-xl mt-1 text-gray-700">Ono što nas vodi od prvog dana</p>
+
+        <div class="flex flex-wrap gap-8 justify-center mt-10">
+            <div class="bg-white rounded-2xl shadow-all p-8 max-w-[280px] flex flex-col items-center gap-3">
+                <i class="fa-solid fa-seedling text-3xl text-red-800"></i>
+                <h2 class="text-xl font-semibold text-red-900">Svežina pre svega</h2>
+                <p class="text-gray-600 text-sm">Cveće nabavljamo svakog jutra i nikada ne prodajemo primerke starije od nekoliko dana.</p>
+            </div>
+
+            <div class="bg-white rounded-2xl shadow-all p-8 max-w-[280px] flex flex-col items-center gap-3">
+                <i class="fa-solid fa-truck-fast text-3xl text-red-800"></i>
+                <h2 class="text-xl font-semibold text-red-900">Pouzdana dostava</h2>
+                <p class="text-gray-600 text-sm">Dostavljamo širom Beograda i po okolini uz praćenje porudžbine u realnom vremenu.</p>
+            </div>
+
+            <div class="bg-white rounded-2xl shadow-all p-8 max-w-[280px] flex flex-col items-center gap-3">
+                <i class="fa-solid fa-people-roof text-3xl text-red-800"></i>
+                <h2 class="text-xl font-semibold text-red-900">Porodični duh</h2>
+                <p class="text-gray-600 text-sm">Mi smo mali tim koji se ophodi prema svakom kupcu kao prema članu porodice.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="w-screen min-h-[300px] bg-gradient-to-tr from-red-800 to-red-900 flex items-center justify-center">
+    <div class="p-6 sm:p-16 flex flex-wrap justify-center gap-12 text-center text-white">
+        <div class="flex flex-col">
+            <span class="text-4xl sm:text-5xl font-bold text-red-200">6+</span>
+            <span class="mt-2 text-gray-200">godina iskustva</span>
+        </div>
+        <div class="flex flex-col">
+            <span class="text-4xl sm:text-5xl font-bold text-red-200">7 000+</span>
+            <span class="mt-2 text-gray-200">isporučenih buketa</span>
+        </div>
+        <div class="flex flex-col">
+            <span class="text-4xl sm:text-5xl font-bold text-red-200">30 min</span>
+            <span class="mt-2 text-gray-200">prosečno vreme dostave u centru grada</span>
+        </div>
+    </div>
+</section>
+
+<section class="w-screen min-h-[300px] bg-gradient-to-tr from-red-200 to-rose-200">
+    <div class="p-16 flex flex-col justify-center items-center text-center gap-4">
+        <h1 class="text-3xl sm:text-4xl font-semibold text-red-900">Spremni da poklonite osmeh?</h1>
+        <p class="text-gray-700 max-w-[500px]">Pogledajte naš asortiman i pronađite buket koji najbolje govori ono što želite da poručite.</p>
+        <a asp-controller="Catalogue" asp-action="Index" class="btn gradient-red cursor-pointer shadow-red-900/50  mt-4">
+            <span>Pogledaj asortiman</span>
+        </a>
+    </div>
+</section>
