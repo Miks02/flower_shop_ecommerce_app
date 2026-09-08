@@ -12,6 +12,7 @@ public record ProductDto
     public decimal? PromoPrice { get; set; }
     public DiscountType DiscountType { get; set; } = DiscountType.None;
     public int Stock { get; set; }
+    public decimal? AverageRating { get; set; }
     public string CreatedBy { get; set; } = null!;
     
     public DateTime CreatedAt { get; set; }

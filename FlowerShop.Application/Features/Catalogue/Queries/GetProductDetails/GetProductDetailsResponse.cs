@@ -17,6 +17,10 @@ public record GetProductDetailsResponse
     public string CategoryName { get; init; } = null!;
     public IReadOnlyList<string> Occasions { get; init; } = [];
     public IReadOnlyList<FlowerCompositionDto> Composition { get; init; } = [];
+    public decimal? AverageRating { get; init; }
+    public int ReviewCount { get; init; }
+    public int? CurrentUserReviewId { get; init; }
+    public IReadOnlyList<ProductReviewDto> Reviews { get; init; } = [];
 }
 
 public record FlowerCompositionDto
@@ -25,4 +29,13 @@ public record FlowerCompositionDto
     public string Color { get; init; } = null!;
     public int Quantity { get; init; }
     public FlowerCategory Category { get; init; }
+}
+
+public record ProductReviewDto
+{
+    public int Id { get; init; }
+    public string ReviewerName { get; init; } = null!;
+    public decimal Rating { get; init; }
+    public string? Comment { get; init; }
+    public DateTime CreatedAt { get; init; }
 }
