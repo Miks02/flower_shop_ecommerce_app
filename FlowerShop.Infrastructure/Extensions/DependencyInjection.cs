@@ -45,5 +45,6 @@ public static class DependencyInjection
         services.AddScoped<INotificationActionStrategy, ReviewNotificationStrategy>();
         services.AddScoped<INotificationActionStrategy, DeliveryReviewNotificationStrategy>();
         services.AddScoped<INotificationActionStrategy, ProductNotificationStrategy>();
+        services.AddScoped<INotificationActionStrategy, ProductReviewNotificationStrategy>();
     }
 }
