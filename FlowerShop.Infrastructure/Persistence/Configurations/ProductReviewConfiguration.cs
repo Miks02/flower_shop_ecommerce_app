@@ -29,6 +29,8 @@ public class ProductReviewConfiguration : IEntityTypeConfiguration<ProductReview
             .WithMany(u => u.ProductReviews)
             .HasForeignKey(pr => pr.ReviewerId)
             .OnDelete(DeleteBehavior.Restrict);
-        
+
+        builder.HasIndex(pr => new { pr.ProductId, pr.ReviewerId })
+            .IsUnique();
     }
 }
