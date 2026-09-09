@@ -47,15 +47,12 @@ public class UpdateOrderStatusHandlerTests
     [InlineData(DeliveryStatus.AlmostOnDestination, DeliveryStatus.Delivered)]
     public async Task Handle_WhenTransitionIsAllowed_UpdatesDeliveryStatusAndSucceeds(DeliveryStatus current, DeliveryStatus target)
     {
-        // Arrange
         var order = CreateOrder(current);
         _orderRepo.GetByIdAsync(order.Id, Arg.Any<CancellationToken>()).Returns(order);
         var command = CreateCommand(order.Id, target);
 
-        // Act
         var result = await _sut.Handle(command);
 
-        // Assert
         result.IsSuccess.Should().BeTrue();
         order.DeliveryStatus.Should().Be(target);
         _orderRepo.Received(1).Update(order);
@@ -73,15 +70,12 @@ public class UpdateOrderStatusHandlerTests
     public async Task Handle_WhenTransitionSkipsStepsOrGoesBackward_ReturnsInvalidDeliveryStatusTransitionError(
         DeliveryStatus current, DeliveryStatus target)
     {
-        // Arrange
         var order = CreateOrder(current);
         _orderRepo.GetByIdAsync(order.Id, Arg.Any<CancellationToken>()).Returns(order);
         var command = CreateCommand(order.Id, target);
 
-        // Act
         var result = await _sut.Handle(command);
 
-        // Assert
         result.IsSuccess.Should().BeFalse();
         result.Errors.Should().ContainSingle().Which.Should().Be(OrderError.InvalidDeliveryStatusTransition(current, target));
         order.DeliveryStatus.Should().Be(current);
@@ -92,15 +86,12 @@ public class UpdateOrderStatusHandlerTests
     [Fact]
     public async Task Handle_WhenDeliveryStatusBecomesDelivered_SetsOrderStatusToCompleted()
     {
-        // Arrange
         var order = CreateOrder(DeliveryStatus.AlmostOnDestination);
         _orderRepo.GetByIdAsync(order.Id, Arg.Any<CancellationToken>()).Returns(order);
         var command = CreateCommand(order.Id, DeliveryStatus.Delivered);
 
-        // Act
         var result = await _sut.Handle(command);
 
-        // Assert
         result.IsSuccess.Should().BeTrue();
         order.OrderStatus.Should().Be(OrderStatus.Completed);
     }
@@ -111,15 +102,12 @@ public class UpdateOrderStatusHandlerTests
     [InlineData(DeliveryStatus.InTransit, DeliveryStatus.AlmostOnDestination)]
     public async Task Handle_WhenTransitionSucceedsButNotDelivered_LeavesOrderStatusUnchanged(DeliveryStatus current, DeliveryStatus target)
     {
-        // Arrange
         var order = CreateOrder(current);
         _orderRepo.GetByIdAsync(order.Id, Arg.Any<CancellationToken>()).Returns(order);
         var command = CreateCommand(order.Id, target);
 
-        // Act
         var result = await _sut.Handle(command);
 
-        // Assert
         result.IsSuccess.Should().BeTrue();
         order.OrderStatus.Should().Be(OrderStatus.Confirmed);
     }
@@ -127,15 +115,12 @@ public class UpdateOrderStatusHandlerTests
     [Fact]
     public async Task Handle_WhenTransitionToPrepared_SendsPreparedNotificationToBuyer()
     {
-        // Arrange
         var order = CreateOrder(DeliveryStatus.Standby);
         _orderRepo.GetByIdAsync(order.Id, Arg.Any<CancellationToken>()).Returns(order);
         var command = CreateCommand(order.Id, DeliveryStatus.Prepared);
 
-        // Act
         var result = await _sut.Handle(command);
 
-        // Assert
         result.IsSuccess.Should().BeTrue();
         await _notificationService.Received(1).SendNotificationAsync(
             order.UserId,
@@ -149,15 +134,12 @@ public class UpdateOrderStatusHandlerTests
     [Fact]
     public async Task Handle_WhenTransitionToInTransit_SendsInTransitNotificationToBuyer()
     {
-        // Arrange
         var order = CreateOrder(DeliveryStatus.Prepared);
         _orderRepo.GetByIdAsync(order.Id, Arg.Any<CancellationToken>()).Returns(order);
         var command = CreateCommand(order.Id, DeliveryStatus.InTransit);
 
-        // Act
         var result = await _sut.Handle(command);
 
-        // Assert
         result.IsSuccess.Should().BeTrue();
         await _notificationService.Received(1).SendNotificationAsync(
             order.UserId,
@@ -171,15 +153,12 @@ public class UpdateOrderStatusHandlerTests
     [Fact]
     public async Task Handle_WhenTransitionToAlmostOnDestination_SendsAlmostOnDestinationNotificationToBuyer()
     {
-        // Arrange
         var order = CreateOrder(DeliveryStatus.InTransit);
         _orderRepo.GetByIdAsync(order.Id, Arg.Any<CancellationToken>()).Returns(order);
         var command = CreateCommand(order.Id, DeliveryStatus.AlmostOnDestination);
 
-        // Act
         var result = await _sut.Handle(command);
 
-        // Assert
         result.IsSuccess.Should().BeTrue();
         await _notificationService.Received(1).SendNotificationAsync(
             order.UserId,
@@ -193,15 +172,12 @@ public class UpdateOrderStatusHandlerTests
     [Fact]
     public async Task Handle_WhenTransitionToDelivered_SendsDeliveredNotificationToBuyer()
     {
-        // Arrange
         var order = CreateOrder(DeliveryStatus.AlmostOnDestination);
         _orderRepo.GetByIdAsync(order.Id, Arg.Any<CancellationToken>()).Returns(order);
         var command = CreateCommand(order.Id, DeliveryStatus.Delivered);
 
-        // Act
         var result = await _sut.Handle(command);
 
-        // Assert
         result.IsSuccess.Should().BeTrue();
         await _notificationService.Received(1).SendNotificationAsync(
             order.UserId,
@@ -215,14 +191,11 @@ public class UpdateOrderStatusHandlerTests
     [Fact]
     public async Task Handle_WhenOrderDoesNotExist_ReturnsOrderNotFoundError()
     {
-        // Arrange
         _orderRepo.GetByIdAsync(Arg.Any<int>(), Arg.Any<CancellationToken>()).Returns((Order?)null);
         var command = CreateCommand(orderId: 404, DeliveryStatus.Prepared);
 
-        // Act
         var result = await _sut.Handle(command);
 
-        // Assert
         result.IsSuccess.Should().BeFalse();
         result.Errors.Should().ContainSingle().Which.Should().Be(OrderError.OrderNotFound("404"));
         await _notificationService.DidNotReceive().SendNotificationAsync(

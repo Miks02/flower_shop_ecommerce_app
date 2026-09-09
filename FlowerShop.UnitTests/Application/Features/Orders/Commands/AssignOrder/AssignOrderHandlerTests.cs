@@ -55,17 +55,14 @@ public class AssignOrderHandlerTests
     [Fact]
     public async Task Handle_WhenDelivererIsUnavailable_ReturnsDelivererUnavailableError()
     {
-        // Arrange
         var order = CreateOrder(quantity: 5);
         var deliverer = CreateDeliverer(VehicleType.Car, DelivererStatus.Unavailable);
         _orderRepo.GetByIdAsync(order.Id, Arg.Any<CancellationToken>()).Returns(order);
         _delivererRepo.GetByIdAsync(deliverer.Id, Arg.Any<CancellationToken>()).Returns(deliverer);
         var command = CreateCommand(order.Id, deliverer.Id);
 
-        // Act
         var result = await _sut.Handle(command);
 
-        // Assert
         result.IsSuccess.Should().BeFalse();
         result.Errors.Should().ContainSingle().Which.Should().Be(DelivererError.DelivererUnavailable(deliverer.Id));
         _delivererRepo.DidNotReceive().Update(Arg.Any<Deliverer>());
@@ -79,17 +76,14 @@ public class AssignOrderHandlerTests
     public async Task Handle_WhenItemCountIsBelowVehicleMinimum_ReturnsMinAmountOfProductsNotReachedError(
         VehicleType vehicleType, int quantity)
     {
-        // Arrange
         var order = CreateOrder(quantity);
         var deliverer = CreateDeliverer(vehicleType);
         _orderRepo.GetByIdAsync(order.Id, Arg.Any<CancellationToken>()).Returns(order);
         _delivererRepo.GetByIdAsync(deliverer.Id, Arg.Any<CancellationToken>()).Returns(deliverer);
         var command = CreateCommand(order.Id, deliverer.Id);
 
-        // Act
         var result = await _sut.Handle(command);
 
-        // Assert
         result.IsSuccess.Should().BeFalse();
         result.Errors.Should().ContainSingle().Which.Should().Be(DelivererError.MinAmountOfProductsNotReached());
         _delivererRepo.DidNotReceive().Update(Arg.Any<Deliverer>());
@@ -103,34 +97,28 @@ public class AssignOrderHandlerTests
     public async Task Handle_WhenItemCountExactlyMeetsVehicleMinimum_AssignsOrderSuccessfully(
         VehicleType vehicleType, int quantity)
     {
-        // Arrange
         var order = CreateOrder(quantity);
         var deliverer = CreateDeliverer(vehicleType);
         _orderRepo.GetByIdAsync(order.Id, Arg.Any<CancellationToken>()).Returns(order);
         _delivererRepo.GetByIdAsync(deliverer.Id, Arg.Any<CancellationToken>()).Returns(deliverer);
         var command = CreateCommand(order.Id, deliverer.Id);
 
-        // Act
         var result = await _sut.Handle(command);
 
-        // Assert
         result.IsSuccess.Should().BeTrue();
     }
 
     [Fact]
     public async Task Handle_WhenAssignmentSucceeds_SetsDelivererToOnDutyDeliveryToPreparedAndOrderToConfirmed()
     {
-        // Arrange
         var order = CreateOrder(quantity: 5, orderStatus: OrderStatus.Pending);
         var deliverer = CreateDeliverer(VehicleType.Car, DelivererStatus.Available);
         _orderRepo.GetByIdAsync(order.Id, Arg.Any<CancellationToken>()).Returns(order);
         _delivererRepo.GetByIdAsync(deliverer.Id, Arg.Any<CancellationToken>()).Returns(deliverer);
         var command = CreateCommand(order.Id, deliverer.Id);
 
-        // Act
         var result = await _sut.Handle(command);
 
-        // Assert
         result.IsSuccess.Should().BeTrue();
         deliverer.DelivererStatus.Should().Be(DelivererStatus.OnDuty);
         order.DeliveryStatus.Should().Be(DeliveryStatus.Prepared);
@@ -144,17 +132,14 @@ public class AssignOrderHandlerTests
     [Fact]
     public async Task Handle_WhenDelivererIsAlreadyOnDuty_AllowsAssignment()
     {
-        // Arrange
         var order = CreateOrder(quantity: 5);
         var deliverer = CreateDeliverer(VehicleType.Car, DelivererStatus.OnDuty);
         _orderRepo.GetByIdAsync(order.Id, Arg.Any<CancellationToken>()).Returns(order);
         _delivererRepo.GetByIdAsync(deliverer.Id, Arg.Any<CancellationToken>()).Returns(deliverer);
         var command = CreateCommand(order.Id, deliverer.Id);
 
-        // Act
         var result = await _sut.Handle(command);
 
-        // Assert
         result.IsSuccess.Should().BeTrue();
         deliverer.DelivererStatus.Should().Be(DelivererStatus.OnDuty);
     }
@@ -162,17 +147,14 @@ public class AssignOrderHandlerTests
     [Fact]
     public async Task Handle_WhenOrderIsNotPending_DoesNotChangeOrderStatus()
     {
-        // Arrange
         var order = CreateOrder(quantity: 5, orderStatus: OrderStatus.Confirmed);
         var deliverer = CreateDeliverer(VehicleType.Car);
         _orderRepo.GetByIdAsync(order.Id, Arg.Any<CancellationToken>()).Returns(order);
         _delivererRepo.GetByIdAsync(deliverer.Id, Arg.Any<CancellationToken>()).Returns(deliverer);
         var command = CreateCommand(order.Id, deliverer.Id);
 
-        // Act
         var result = await _sut.Handle(command);
 
-        // Assert
         result.IsSuccess.Should().BeTrue();
         order.OrderStatus.Should().Be(OrderStatus.Confirmed);
     }
@@ -180,14 +162,11 @@ public class AssignOrderHandlerTests
     [Fact]
     public async Task Handle_WhenOrderDoesNotExist_ReturnsOrderNotFoundError()
     {
-        // Arrange
         _orderRepo.GetByIdAsync(Arg.Any<int>(), Arg.Any<CancellationToken>()).Returns((Order?)null);
         var command = CreateCommand(orderId: 404, "deliverer-1");
 
-        // Act
         var result = await _sut.Handle(command);
 
-        // Assert
         result.IsSuccess.Should().BeFalse();
         result.Errors.Should().ContainSingle().Which.Should().Be(OrderError.OrderNotFound("404"));
     }
@@ -195,16 +174,13 @@ public class AssignOrderHandlerTests
     [Fact]
     public async Task Handle_WhenDelivererDoesNotExist_ReturnsDelivererNotFoundError()
     {
-        // Arrange
         var order = CreateOrder(quantity: 5);
         _orderRepo.GetByIdAsync(order.Id, Arg.Any<CancellationToken>()).Returns(order);
         _delivererRepo.GetByIdAsync(Arg.Any<string>(), Arg.Any<CancellationToken>()).Returns((Deliverer?)null);
         var command = CreateCommand(order.Id, "unknown-deliverer");
 
-        // Act
         var result = await _sut.Handle(command);
 
-        // Assert
         result.IsSuccess.Should().BeFalse();
         result.Errors.Should().ContainSingle().Which.Should().Be(DelivererError.NotFound("unknown-deliverer"));
     }
