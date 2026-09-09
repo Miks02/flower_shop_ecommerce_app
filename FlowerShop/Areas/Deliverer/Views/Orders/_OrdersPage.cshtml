@@ -10,32 +10,32 @@
             <div class="p-3 bg-orange-100 rounded-full group-hover:scale-110 transition-transform duration-200">
                 <i class="fa-solid fa-boxes-stacked text-2xl text-orange-600"></i>
             </div>
-            <h4 class="text-3xl text-red-950 font-bold mt-1">@Model.TotalOrders</h4>
+            <h4 class="text-3xl text-red-950 font-bold mt-1">@Model.TotalDeliveries</h4>
             <span class="text-center text-gray-600 uppercase text-xs tracking-wider">Ukupno</span>
-        </div>
-
-        <div class="flex flex-col gap-2 p-5 justify-center items-center bg-red-200/90 backdrop-blur-sm rounded-2xl shadow-lg font-semibold transition-all duration-200 hover:-translate-y-1 border-b-4 border-amber-500 group">
-            <div class="p-3 bg-amber-100 rounded-full group-hover:scale-110 transition-transform duration-200">
-                <i class="fa-solid fa-clock text-2xl text-amber-600"></i>
-            </div>
-            <h4 class="text-3xl text-red-950 font-bold mt-1">@Model.PendingOrders</h4>
-            <span class="text-center text-gray-600 uppercase text-xs tracking-wider">Na čekanju</span>
         </div>
 
         <div class="flex flex-col gap-2 p-5 justify-center items-center bg-red-200/90 backdrop-blur-sm rounded-2xl shadow-lg font-semibold transition-all duration-200 hover:-translate-y-1 border-b-4 border-blue-500 group">
             <div class="p-3 bg-blue-100 rounded-full group-hover:scale-110 transition-transform duration-200">
                 <i class="fa-solid fa-truck-fast text-2xl text-blue-600"></i>
             </div>
-            <h4 class="text-3xl text-red-950 font-bold mt-1">@Model.InDeliveryOrders</h4>
-            <span class="text-center text-gray-600 uppercase text-xs tracking-wider">U dostavi</span>
+            <h4 class="text-3xl text-red-950 font-bold mt-1">@Model.ActiveDeliveries</h4>
+            <span class="text-center text-gray-600 uppercase text-xs tracking-wider">Aktivne</span>
         </div>
 
         <div class="flex flex-col gap-2 p-5 justify-center items-center bg-red-200/90 backdrop-blur-sm rounded-2xl shadow-lg font-semibold transition-all duration-200 hover:-translate-y-1 border-b-4 border-emerald-500 group">
             <div class="p-3 bg-emerald-100 rounded-full group-hover:scale-110 transition-transform duration-200">
                 <i class="fa-solid fa-circle-check text-2xl text-emerald-600"></i>
             </div>
-            <h4 class="text-3xl text-red-950 font-bold mt-1">@Model.CompletedOrders</h4>
+            <h4 class="text-3xl text-red-950 font-bold mt-1">@Model.CompletedDeliveries</h4>
             <span class="text-center text-gray-600 uppercase text-xs tracking-wider">Završeno</span>
+        </div>
+
+        <div class="flex flex-col gap-2 p-5 justify-center items-center bg-red-200/90 backdrop-blur-sm rounded-2xl shadow-lg font-semibold transition-all duration-200 hover:-translate-y-1 border-b-4 border-amber-500 group">
+            <div class="p-3 bg-amber-100 rounded-full group-hover:scale-110 transition-transform duration-200">
+                <i class="fa-solid fa-star text-2xl text-amber-600"></i>
+            </div>
+            <h4 class="text-3xl text-red-950 font-bold mt-1">@Model.AverageRating.ToString("0.0")</h4>
+            <span class="text-center text-gray-600 uppercase text-xs tracking-wider">Prosečna ocena</span>
         </div>
 
     </div>
