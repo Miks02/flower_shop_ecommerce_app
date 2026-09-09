@@ -1,5 +1,5 @@
 using FlowerShop.Application.Common.Abstractions;
-using FlowerShop.Infrastructure.ExceptionHandling;
+using FlowerShop.Infrastructure.Filters;
 using FlowerShop.Infrastructure.Htmx;
 using FlowerShop.Infrastructure.Identity;
 using FlowerShop.Infrastructure.Notifications;
@@ -22,8 +22,8 @@ public static class DependencyInjection
         services.AddInfrastructureServices();
         services.AddExceptionHandlers();
         services.AddProblemDetails();
-        services.AddScoped<HtmxToastFilter>(); 
-
+        services.AddScoped<HtmxToastFilter>();
+        services.AddScoped<NotFoundResultFilter>();
     }
 
     private static void AddHandlers(this IServiceCollection services)

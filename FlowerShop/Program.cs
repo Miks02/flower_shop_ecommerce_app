@@ -1,5 +1,6 @@
 using System.Reflection;
 using FlowerShop.Infrastructure.Extensions;
+using FlowerShop.Infrastructure.Filters;
 using FlowerShop.Infrastructure.Htmx;
 using FlowerShop.Web.Helpers;
 using FluentValidation;
@@ -18,6 +19,7 @@ builder.Services.AddInfrastructure(builder.Configuration);
 builder.Services.AddControllersWithViews(options =>
     {
         options.Filters.Add<HtmxToastFilter>();
+        options.Filters.Add<NotFoundResultFilter>();
     })
     .AddMvcOptions(options =>
     {
