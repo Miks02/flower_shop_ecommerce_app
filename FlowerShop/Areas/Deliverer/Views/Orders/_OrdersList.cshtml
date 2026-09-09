@@ -138,9 +138,13 @@
                             <span class="text-xs text-orange-800 bg-orange-100 px-2.5 py-1 rounded-full font-medium">Spremno za slanje</span>
                             break;
                         case DeliveryStatus.InTransit:
-                        case DeliveryStatus.OnTheWay:
                             <span class="text-xs text-blue-800 bg-blue-100 px-2.5 py-1 rounded-full font-medium flex items-center justify-center gap-1">
                                 <i class="fa-solid fa-truck text-[10px]"></i> Na putu
+                            </span>
+                            break;
+                        case DeliveryStatus.AlmostOnDestination:
+                            <span class="text-xs text-indigo-800 bg-indigo-100 px-2.5 py-1 rounded-full font-medium flex items-center justify-center gap-1">
+                                <i class="fa-solid fa-location-dot text-[10px]"></i> Uskoro stiže
                             </span>
                             break;
                         case DeliveryStatus.Delivered:

@@ -70,9 +70,13 @@
                         </span>
                         break;
                     case DeliveryStatus.InTransit:
-                    case DeliveryStatus.OnTheWay:
                         <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-blue-500/20 text-blue-100 border border-blue-300/40 animate-pulse">
                             <i class="fa-solid fa-truck text-[11px]"></i> Na putu
+                        </span>
+                        break;
+                    case DeliveryStatus.AlmostOnDestination:
+                        <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-indigo-500/20 text-indigo-100 border border-indigo-300/40 animate-pulse">
+                            <i class="fa-solid fa-location-dot text-[11px]"></i> Uskoro stiže
                         </span>
                         break;
                     case DeliveryStatus.Delivered:

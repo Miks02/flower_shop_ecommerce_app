@@ -69,9 +69,13 @@
                         </span>
                         break;
                     case DeliveryStatus.InTransit:
-                    case DeliveryStatus.OnTheWay:
                         <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-blue-500/20 text-blue-100 border border-blue-300/40 animate-pulse">
                             <i class="fa-solid fa-truck text-[11px]"></i> Na putu
+                        </span>
+                        break;
+                    case DeliveryStatus.AlmostOnDestination:
+                        <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-indigo-500/20 text-indigo-100 border border-indigo-300/40 animate-pulse">
+                            <i class="fa-solid fa-location-dot text-[11px]"></i> Uskoro stiže
                         </span>
                         break;
                     case DeliveryStatus.Delivered:
@@ -266,7 +270,7 @@
                                   class="space-y-3">
                                 @Html.AntiForgeryToken()
                                 <input type="hidden" name="orderId" value="@Model.Order.Id" />
-                                <input type="hidden" name="deliveryStatus" value="@DeliveryStatus.OnTheWay" />
+                                <input type="hidden" name="deliveryStatus" value="@DeliveryStatus.InTransit" />
 
                                 <button type="submit"
                                         class="w-full py-2.5 px-4 bg-blue-500 hover:bg-blue-600 text-white font-semibold text-sm rounded-lg shadow-md transition-all duration-200 flex items-center justify-center gap-2 cursor-pointer">
@@ -275,7 +279,24 @@
                                 </button>
                             </form>
                         }
-                        else if (Model.Order.DeliveryStatus == DeliveryStatus.OnTheWay || Model.Order.DeliveryStatus == DeliveryStatus.InTransit)
+                        else if (Model.Order.DeliveryStatus == DeliveryStatus.InTransit)
+                        {
+                            <form hx-post="@Url.Action("UpdateStatus", "Orders", new { area = "Deliverer" })"
+                                  hx-target="#user-content"
+                                  hx-push-url="true"
+                                  class="space-y-3">
+                                @Html.AntiForgeryToken()
+                                <input type="hidden" name="orderId" value="@Model.Order.Id" />
+                                <input type="hidden" name="deliveryStatus" value="@DeliveryStatus.AlmostOnDestination" />
+
+                                <button type="submit"
+                                        class="w-full py-2.5 px-4 bg-indigo-500 hover:bg-indigo-600 text-white font-semibold text-sm rounded-lg shadow-md transition-all duration-200 flex items-center justify-center gap-2 cursor-pointer">
+                                    <i class="fa-solid fa-location-dot"></i>
+                                    <span>Označi kao uskoro stiže</span>
+                                </button>
+                            </form>
+                        }
+                        else if (Model.Order.DeliveryStatus == DeliveryStatus.AlmostOnDestination)
                         {
                             <form hx-post="@Url.Action("UpdateStatus", "Orders", new { area = "Deliverer" })"
                                   hx-target="#user-content"

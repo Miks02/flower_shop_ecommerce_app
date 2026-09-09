@@ -93,7 +93,7 @@ public class OrderRepository(AppDbContext context) : Repository<Order>(context),
 
         var total = await userOrders.CountAsync(ct);
         var pending = await userOrders.CountAsync(o => o.OrderStatus == OrderStatus.Pending, ct);
-        var inDelivery = await userOrders.CountAsync(o => o.DeliveryStatus == DeliveryStatus.InTransit || o.DeliveryStatus == DeliveryStatus.OnTheWay, ct);
+        var inDelivery = await userOrders.CountAsync(o => o.DeliveryStatus == DeliveryStatus.InTransit || o.DeliveryStatus == DeliveryStatus.AlmostOnDestination, ct);
         var completed = await userOrders.CountAsync(o => o.OrderStatus == OrderStatus.Completed, ct);
 
         return (total, pending, inDelivery, completed);
@@ -244,7 +244,7 @@ public class OrderRepository(AppDbContext context) : Repository<Order>(context),
         var total = await orders.CountAsync(ct);
         var pending = await orders.CountAsync(o => o.OrderStatus == OrderStatus.Pending, ct);
         var unassigned = await orders.CountAsync(o => o.DelivererId == null && o.OrderStatus != OrderStatus.Cancelled && o.OrderStatus != OrderStatus.Completed, ct);
-        var inDelivery = await orders.CountAsync(o => o.DeliveryStatus == DeliveryStatus.InTransit || o.DeliveryStatus == DeliveryStatus.OnTheWay, ct);
+        var inDelivery = await orders.CountAsync(o => o.DeliveryStatus == DeliveryStatus.InTransit || o.DeliveryStatus == DeliveryStatus.AlmostOnDestination, ct);
         var completed = await orders.CountAsync(o => o.OrderStatus == OrderStatus.Completed, ct);
         var active = await orders.CountAsync(o => o.OrderStatus != OrderStatus.Completed && o.OrderStatus != OrderStatus.Cancelled, ct);
 
