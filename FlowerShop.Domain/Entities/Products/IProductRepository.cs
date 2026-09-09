@@ -29,4 +29,5 @@ public interface IProductRepository
     void Remove(Product product);
     Task<bool> ExistsAsync(int id, CancellationToken ct = default);
     Task<bool> ExistsByNameAsync(string name, CancellationToken ct = default);
+    Task<int> CountAvailableProductsAsync(CancellationToken ct = default);
 }
