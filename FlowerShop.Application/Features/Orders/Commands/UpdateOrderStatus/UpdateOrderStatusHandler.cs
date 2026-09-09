@@ -1,4 +1,5 @@
 using FlowerShop.Application.Common.Abstractions;
+using FlowerShop.Domain.Entities.Deliverers;
 using FlowerShop.Domain.Entities.Notifications;
 using FlowerShop.Domain.Entities.Orders;
 using FlowerShop.SharedKernel.Results;
@@ -7,6 +8,7 @@ namespace FlowerShop.Application.Features.Orders.Commands.UpdateOrderStatus;
 
 public class UpdateOrderStatusHandler(
     IOrderRepository orderRepo,
+    IDelivererRepository delivererRepo,
     INotificationService notificationService,
     IUnitOfWork unitOfWork) : IHandler
 {
@@ -24,6 +26,14 @@ public class UpdateOrderStatusHandler(
         if (command.DeliveryStatus == DeliveryStatus.Delivered)
         {
             order.OrderStatus = OrderStatus.Completed;
+
+            if (order is { Deliverer: not null, DelivererId: not null }
+                && order.Deliverer.IsOnDuty()
+                && !await orderRepo.HasActiveOrdersAsync(order.DelivererId, order.Id, ct))
+            {
+                order.Deliverer.DelivererStatus = DelivererStatus.Available;
+                delivererRepo.Update(order.Deliverer);
+            }
         }
 
         orderRepo.Update(order);

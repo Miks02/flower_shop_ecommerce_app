@@ -1,5 +1,6 @@
 using FlowerShop.Application.Common.Abstractions;
 using FlowerShop.Application.Features.Orders.Commands.UpdateOrderStatus;
+using FlowerShop.Domain.Entities.Deliverers;
 using FlowerShop.Domain.Entities.Notifications;
 using FlowerShop.Domain.Entities.Orders;
 using FluentAssertions;
@@ -10,13 +11,14 @@ namespace FlowerShop.UnitTests.Application.Features.Orders.Commands.UpdateOrderS
 public class UpdateOrderStatusHandlerTests
 {
     private readonly IOrderRepository _orderRepo = Substitute.For<IOrderRepository>();
+    private readonly IDelivererRepository _delivererRepo = Substitute.For<IDelivererRepository>();
     private readonly INotificationService _notificationService = Substitute.For<INotificationService>();
     private readonly IUnitOfWork _unitOfWork = Substitute.For<IUnitOfWork>();
     private readonly UpdateOrderStatusHandler _sut;
 
     public UpdateOrderStatusHandlerTests()
     {
-        _sut = new UpdateOrderStatusHandler(_orderRepo, _notificationService, _unitOfWork);
+        _sut = new UpdateOrderStatusHandler(_orderRepo, _delivererRepo, _notificationService, _unitOfWork);
     }
 
     private static Order CreateOrder(DeliveryStatus deliveryStatus, int id = 1) => new()
@@ -186,6 +188,42 @@ public class UpdateOrderStatusHandlerTests
             NotificationType.Success,
             NotificationEntityType.Order,
             order.Id);
+    }
+
+    [Fact]
+    public async Task Handle_WhenDeliveredAndDelivererHasNoOtherActiveOrders_SetsDelivererAvailable()
+    {
+        var deliverer = new Deliverer { Id = "deliverer-1", DelivererStatus = DelivererStatus.OnDuty };
+        var order = CreateOrder(DeliveryStatus.AlmostOnDestination);
+        order.DelivererId = deliverer.Id;
+        order.Deliverer = deliverer;
+        _orderRepo.GetByIdAsync(order.Id, Arg.Any<CancellationToken>()).Returns(order);
+        _orderRepo.HasActiveOrdersAsync(deliverer.Id, order.Id, Arg.Any<CancellationToken>()).Returns(false);
+        var command = CreateCommand(order.Id, DeliveryStatus.Delivered);
+
+        var result = await _sut.Handle(command);
+
+        result.IsSuccess.Should().BeTrue();
+        deliverer.DelivererStatus.Should().Be(DelivererStatus.Available);
+        _delivererRepo.Received(1).Update(deliverer);
+    }
+
+    [Fact]
+    public async Task Handle_WhenDeliveredButDelivererHasOtherActiveOrders_KeepsDelivererOnDuty()
+    {
+        var deliverer = new Deliverer { Id = "deliverer-1", DelivererStatus = DelivererStatus.OnDuty };
+        var order = CreateOrder(DeliveryStatus.AlmostOnDestination);
+        order.DelivererId = deliverer.Id;
+        order.Deliverer = deliverer;
+        _orderRepo.GetByIdAsync(order.Id, Arg.Any<CancellationToken>()).Returns(order);
+        _orderRepo.HasActiveOrdersAsync(deliverer.Id, order.Id, Arg.Any<CancellationToken>()).Returns(true);
+        var command = CreateCommand(order.Id, DeliveryStatus.Delivered);
+
+        var result = await _sut.Handle(command);
+
+        result.IsSuccess.Should().BeTrue();
+        deliverer.DelivererStatus.Should().Be(DelivererStatus.OnDuty);
+        _delivererRepo.DidNotReceive().Update(Arg.Any<Deliverer>());
     }
 
     [Fact]

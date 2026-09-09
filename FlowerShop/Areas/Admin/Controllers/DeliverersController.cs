@@ -289,11 +289,15 @@ public class DeliverersController(
 
         if (!result.IsSuccess)
         {
-            if (result.Errors.Any(e => e.Code.Equals("DelivererError_NotFound", StringComparison.OrdinalIgnoreCase) || e.Code.Equals("Deliverer.NotFound", StringComparison.OrdinalIgnoreCase)))
+            var errorMessage = result.Errors.FirstOrDefault()?.Description ?? "Došlo je do greške prilikom brisanja dostavljača.";
+            Response.ShowError(errorMessage);
+
+            if (Request.IsHtmx())
             {
-                Response.ShowError("Traženi dostavljač nije pronađen");
-                return RedirectToAction("Index");
+                return await List(search, sortBy, vehicleType, delivererStatus, page, pageSize, ct);
             }
+
+            return RedirectToAction("Index");
         }
 
         Response.ShowSuccess("Dostavljač je uspešno obrisan");
@@ -324,11 +328,15 @@ public class DeliverersController(
 
         if (!result.IsSuccess)
         {
-            if (result.Errors.Any(e => e.Code.Equals("DelivererError_NotFound", StringComparison.OrdinalIgnoreCase) || e.Code.Equals("Deliverer.NotFound", StringComparison.OrdinalIgnoreCase)))
+            var errorMessage = result.Errors.FirstOrDefault()?.Description ?? "Došlo je do greške prilikom ažuriranja statusa dostavljača.";
+            Response.ShowError(errorMessage);
+
+            if (Request.IsHtmx())
             {
-                Response.ShowError("Traženi dostavljač nije pronađen");
-                return RedirectToAction("Index");
+                return await List(search, sortBy, vehicleType, delivererStatus, page, pageSize, ct);
             }
+
+            return RedirectToAction("Index");
         }
 
         Response.ShowSuccess("Status dostavljača je uspešno ažuriran");
