@@ -41,4 +41,9 @@ public class CartRepository : Repository<Cart>, ICartRepository
             .Select(c => c.Items.Count)
             .FirstOrDefaultAsync(ct);
     }
+
+    public async Task<bool> ProductExistsInAnyCartAsync(int productId, CancellationToken ct = default)
+    {
+        return await _context.CartItems.AnyAsync(ci => ci.ProductId == productId, ct);
+    }
 }

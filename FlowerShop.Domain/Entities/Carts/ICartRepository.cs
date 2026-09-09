@@ -9,4 +9,5 @@ public interface ICartRepository
     void Remove(Cart cart);
     void RemoveItem(CartItem item);
     Task<int> CountItemsAsync(string userId, CancellationToken ct = default);
+    Task<bool> ProductExistsInAnyCartAsync(int productId, CancellationToken ct = default);
 }
