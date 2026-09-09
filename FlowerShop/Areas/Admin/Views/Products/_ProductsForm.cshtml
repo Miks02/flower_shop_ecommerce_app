@@ -140,7 +140,7 @@
                     var flowerSelectionListVm = new FlowerSelectionListViewModel
                     {
                         AvailableFlowers = Model.AvailableFlowers,
-                        SelectedFlowers = Model.SelectedFlowers.Select(f => new SelectedFlowerDto(f.Id, f.Quantity)).ToList()
+                        SelectedFlowers = Model.SelectedFlowers.Select(f => new SelectedFlowerDto { Id = f.Id, Quantity = f.Quantity }).ToList()
                     };
                 }
                 @await Html.PartialAsync("_FlowerSelectionList", flowerSelectionListVm)

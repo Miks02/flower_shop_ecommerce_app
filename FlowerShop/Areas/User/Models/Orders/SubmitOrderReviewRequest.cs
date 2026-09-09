@@ -1,7 +1,7 @@
 namespace FlowerShop.Web.Areas.User.Models.Orders;
 
-public class SubmitOrderReviewRequest
+public record SubmitOrderReviewRequest
 {
-    public int Rating { get; set; }
-    public string? Comment { get; set; }
+    public int Rating { get; init; }
+    public string? Comment { get; init; }
 }

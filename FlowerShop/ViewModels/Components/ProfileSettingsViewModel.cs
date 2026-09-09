@@ -1,18 +1,18 @@
 namespace FlowerShop.Web.ViewModels.Components;
 
-public class ProfileSettingsViewModel
+public record ProfileSettingsViewModel
 {
-    public string FirstName { get; set; } = null!;
-    
-    public string LastName { get; set; } = null!;
+    public string FirstName { get; init; } = null!;
 
-    public string FullNameInitials { get; set; } = null!;
-    
-    public string Email { get; set; } = null!;
-    
-    public string PhoneNumber { get; set; } = null!;
-    
-    public IFormFile? ProfilePicture { get; set; }
-    
-    public string? ImagePath { get; set; }
+    public string LastName { get; init; } = null!;
+
+    public string FullNameInitials { get; init; } = null!;
+
+    public string Email { get; init; } = null!;
+
+    public string PhoneNumber { get; init; } = null!;
+
+    public IFormFile? ProfilePicture { get; init; }
+
+    public string? ImagePath { get; init; }
 }

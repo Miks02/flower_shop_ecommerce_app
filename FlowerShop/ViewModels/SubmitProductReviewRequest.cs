@@ -1,7 +1,7 @@
 namespace FlowerShop.Web.ViewModels;
 
-public class SubmitProductReviewRequest
+public record SubmitProductReviewRequest
 {
-    public int Rating { get; set; }
-    public string? Comment { get; set; }
+    public int Rating { get; init; }
+    public string? Comment { get; init; }
 }

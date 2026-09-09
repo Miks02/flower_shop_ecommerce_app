@@ -11,8 +11,8 @@ public record ProductFormViewModel
     public int Id { get; init; }
     public string Name { get; init; } = string.Empty;
     public string Description { get; init; } = string.Empty;
-    public IFormFile? ProductImage { get; set; }
-    public string? ProductImageUrl { get; set; }
+    public IFormFile? ProductImage { get; init; }
+    public string? ProductImageUrl { get; init; }
     public decimal Price { get; init; }
     public decimal? PromoPrice { get; init; }
     public DiscountType DiscountType { get; init; } = DiscountType.None;

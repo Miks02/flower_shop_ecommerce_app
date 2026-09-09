@@ -1,9 +1,8 @@
 namespace FlowerShop.Web.ViewModels.Components;
 
-public class SettingsPageViewModel
+public record SettingsPageViewModel
 {
-    public ProfileSettingsViewModel ProfileVm { get; set; } = null!;
-    
-    public ChangePasswordViewModel ChangePasswordVm { get; set; } = null!;
+    public ProfileSettingsViewModel ProfileVm { get; init; } = null!;
 
+    public ChangePasswordViewModel ChangePasswordVm { get; init; } = null!;
 }

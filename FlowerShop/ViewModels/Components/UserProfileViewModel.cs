@@ -3,29 +3,29 @@ using FlowerShop.Domain.Enums;
 
 namespace FlowerShop.Web.ViewModels.Components;
 
-public class UserProfileViewModel
+public record UserProfileViewModel
 {
-    public string FirstName { get; set; } = null!;
+    public string FirstName { get; init; } = null!;
 
-    public string LastName { get; set; } = null!;
+    public string LastName { get; init; } = null!;
 
-    public string Email { get; set; } = null!;
+    public string Email { get; init; } = null!;
 
-    public string PhoneNumber { get; set; } = null!;
+    public string PhoneNumber { get; init; } = null!;
 
-    public string? ProfilePicture { get; set; }
-    
-    public AccountStatus Status { get; set; }
+    public string? ProfilePicture { get; init; }
 
-    public string RegistrationDate { get; set; } = null!;
+    public AccountStatus Status { get; init; }
 
-    public int TotalOrders { get; set; } = 0;
+    public string RegistrationDate { get; init; } = null!;
 
-    public int LoyaltyPoints { get; set; } = 0;
+    public int TotalOrders { get; init; } = 0;
 
-    public int UpcomingOrders { get; set; } = 0;
+    public int LoyaltyPoints { get; init; } = 0;
 
-    public IReadOnlyList<UserRecentOrderViewModel> RecentOrders { get; set; } = [];
+    public int UpcomingOrders { get; init; } = 0;
+
+    public IReadOnlyList<UserRecentOrderViewModel> RecentOrders { get; init; } = [];
 }
 
 public record UserRecentOrderViewModel

@@ -8,19 +8,19 @@ using FlowerShop.SharedKernel.Results;
 
 namespace FlowerShop.Web.ViewModels;
 
-public class CatalogueViewModel
+public record CatalogueViewModel
 {
-    public PagedResult<ProductDto> PagedProducts { get; set; } = null!;
-    public IReadOnlyList<CategoryDto> Categories { get; set; } = [];
-    public IReadOnlyList<OccasionDto> Occasions { get; set; } = [];
-    public IReadOnlyList<CatalogueFlowerDto> Flowers { get; set; } = [];
-    public List<int> CategoryIds { get; set; } = [];
-    public List<int> OccasionIds { get; set; } = [];
-    public List<int> FlowerIds { get; set; } = [];
-    public int PriceRange { get; set; }
-    public int Page { get; set; } = 1;
-    public int PageSize { get; set; } = 15;
-    public string Sort { get; set; } = "name_asc";
+    public PagedResult<ProductDto> PagedProducts { get; init; } = null!;
+    public IReadOnlyList<CategoryDto> Categories { get; init; } = [];
+    public IReadOnlyList<OccasionDto> Occasions { get; init; } = [];
+    public IReadOnlyList<CatalogueFlowerDto> Flowers { get; init; } = [];
+    public List<int> CategoryIds { get; init; } = [];
+    public List<int> OccasionIds { get; init; } = [];
+    public List<int> FlowerIds { get; init; } = [];
+    public int PriceRange { get; init; }
+    public int Page { get; init; } = 1;
+    public int PageSize { get; init; } = 15;
+    public string Sort { get; init; } = "name_asc";
 
     public GetCatalogQuery ToQueryRequest()
     {

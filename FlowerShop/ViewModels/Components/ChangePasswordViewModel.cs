@@ -1,10 +1,10 @@
 namespace FlowerShop.Web.ViewModels.Components;
 
-public class ChangePasswordViewModel
+public record ChangePasswordViewModel
 {
-    public string CurrentPassword { get; set; } = null!;
-    
-    public string NewPassword { get; set; } = null!;
-    
-    public string ConfirmPassword { get; set; } = null!;
+    public string CurrentPassword { get; init; } = null!;
+
+    public string NewPassword { get; init; } = null!;
+
+    public string ConfirmPassword { get; init; } = null!;
 }
