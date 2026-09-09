@@ -26,7 +26,7 @@ namespace FlowerShop.Web.Controllers;
 
         private readonly string _loginComponent = "_Login";
         private readonly string _registerComponent = "_Register";
-        private readonly string _profileSettingsComponent = "~/Views/Shared/Components/Settings/Default.cshtml";
+        private readonly string _profileSettingsComponent = "~/Views/Shared/_SettingsPartial.cshtml";
 
         public AccountController(
             LoginHandler loginHandler,
@@ -191,25 +191,53 @@ namespace FlowerShop.Web.Controllers;
             }
 
             Response.ShowSuccess("Profil je uspešno ažuriran");
-            Response.Headers.Append("HX-Redirect", "/User/Profile/Settings");
+            Response.Headers.Append("HX-Redirect", GetProfileSettingsPath());
             return Ok();
         }
-        
+
         [Authorize]
         [HttpGet]
         public async Task<IActionResult> RemoveProfilePicture()
         {
             var result = await _removeProfilePictureHandler.Handle(new RemoveProfilePictureCommand{ UserId = _userProvider.GetCurrentUserId() });
-        
-            if (!result.IsSuccess)
-            {
-                Response.ShowError("Došlo je do greške prilikom brisanja profilne slike");
-                return ViewComponent("Settings");
-            }
 
-            Response.ShowSuccess("Profilna slika je uspešno obrisana");
-            return ViewComponent("Settings");
-        
+            if (!result.IsSuccess)
+                Response.ShowError("Došlo je do greške prilikom brisanja profilne slike");
+            else
+                Response.ShowSuccess("Profilna slika je uspešno obrisana");
+
+            var vm = await BuildSettingsViewModelAsync();
+            return PartialView(_profileSettingsComponent, vm);
+        }
+
+        private async Task<SettingsPageViewModel> BuildSettingsViewModelAsync()
+        {
+            var user = await _userProvider.GetCurrentUserDetails(_userProvider.GetCurrentUserId());
+
+            return new SettingsPageViewModel
+            {
+                ProfileVm = new ProfileSettingsViewModel
+                {
+                    FirstName = user.FirstName,
+                    LastName = user.LastName,
+                    Email = user.Email,
+                    PhoneNumber = user.PhoneNumber,
+                    FullNameInitials = user.FirstName[0].ToString() + user.LastName[0],
+                    ImagePath = user.ProfilePicture
+                },
+                ChangePasswordVm = new ChangePasswordViewModel()
+            };
+        }
+
+        private string GetProfileSettingsPath()
+        {
+            if (_userProvider.IsAdmin())
+                return "/Admin/Profile/Settings";
+
+            if (_userProvider.IsDeliverer())
+                return "/Deliverer/Profile/Settings";
+
+            return "/User/Profile/Settings";
         }
 
         [HttpPost]

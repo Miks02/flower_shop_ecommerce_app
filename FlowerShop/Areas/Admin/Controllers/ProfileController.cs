@@ -1,27 +1,16 @@
 using FlowerShop.Application.Common.Abstractions;
-using FlowerShop.Web.Controllers;
 using FlowerShop.Web.ViewModels.Components;
 using Htmx;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace FlowerShop.Web.Areas.User.Controllers;
+namespace FlowerShop.Web.Areas.Admin.Controllers;
 
-[Area("User")]
-[Authorize(Roles = "User")]
-public class ProfileController(IUserProvider userProvider, ILogger<BaseController> logger) : BaseController(logger)
+[Area("Admin")]
+[Authorize(Roles = "Admin")]
+public class ProfileController(IUserProvider userProvider) : Controller
 {
     private const string SettingsPartial = "~/Views/Shared/_SettingsPartial.cshtml";
-
-    [HttpGet("/User/Profile/")]
-    public IActionResult Index()
-    {
-
-        if (Request.IsHtmx())
-            return ViewComponent("Profile");
-
-        return View();
-    }
 
     [HttpGet]
     public async Task<IActionResult> Settings(CancellationToken ct = default)
