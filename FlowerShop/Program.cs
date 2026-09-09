@@ -51,6 +51,8 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseRateLimiter();
+
 app.UseSerilogRequestLogging();
 
 app.UseAuthentication();

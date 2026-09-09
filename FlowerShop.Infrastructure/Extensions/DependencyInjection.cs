@@ -22,6 +22,7 @@ public static class DependencyInjection
         services.AddInfrastructureServices();
         services.AddExceptionHandlers();
         services.AddProblemDetails();
+        services.AddGlobalRateLimiter();
         services.AddScoped<HtmxToastFilter>();
         services.AddScoped<NotFoundResultFilter>();
     }
