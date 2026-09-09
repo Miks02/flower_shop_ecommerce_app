@@ -1,3 +1,4 @@
+using FlowerShop.Domain.Common;
 using FlowerShop.Domain.Entities.Orders;
 
 namespace FlowerShop.Application.Features.Orders.Queries.GetOrderReceipt;
@@ -29,7 +30,7 @@ public record OrderReceiptDto
 
     public IReadOnlyList<OrderReceiptItemDto> Items { get; init; } = [];
     public decimal Subtotal => Items.Sum(i => i.TotalPrice);
-    public decimal DeliveryFee { get; init; } = 300m;
+    public decimal DeliveryFee { get; init; } = DeliveryPricing.StandardDeliveryFee;
     public decimal TotalPrice { get; init; }
     public int LoyaltyPointsSpent { get; init; }
     

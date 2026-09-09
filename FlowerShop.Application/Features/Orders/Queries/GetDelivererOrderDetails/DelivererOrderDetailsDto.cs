@@ -1,3 +1,4 @@
+using FlowerShop.Domain.Common;
 using FlowerShop.Domain.Entities.Orders;
 
 namespace FlowerShop.Application.Features.Orders.Queries.GetDelivererOrderDetails;
@@ -28,7 +29,7 @@ public record DelivererOrderDetailsDto
     public IReadOnlyList<DelivererOrderItemDetailDto> Items { get; init; } = [];
 
     public decimal Subtotal => Items.Sum(i => i.TotalPrice);
-    public decimal DeliveryFee { get; init; } = 300m;
+    public decimal DeliveryFee { get; init; } = DeliveryPricing.StandardDeliveryFee;
     public int LoyaltyPointsSpent { get; init; }
     public decimal TotalPrice => Subtotal + DeliveryFee - LoyaltyPointsSpent;
 }

@@ -1,4 +1,5 @@
 using FlowerShop.Application.Features.Cart.Queries.GetCart;
+using FlowerShop.Domain.Common;
 
 namespace FlowerShop.Web.ViewModels;
 
@@ -25,7 +26,7 @@ public record CheckoutViewModel
     public int LoyaltyPoints { get; init; }
 
     public GetCartResponse Cart { get; init; } = new();
-    public decimal DeliveryFee { get; init; } = 300m;
+    public decimal DeliveryFee { get; init; } = DeliveryPricing.StandardDeliveryFee;
     public decimal Subtotal => Cart.Total;
     public decimal Total => Subtotal + (Cart.ItemCount > 0 ? DeliveryFee : 0m);
 }
