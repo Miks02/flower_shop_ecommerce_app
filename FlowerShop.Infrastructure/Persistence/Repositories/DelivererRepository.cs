@@ -90,10 +90,11 @@ public class DelivererRepository : Repository<Deliverer>, IDelivererRepository
         var scooter = items.Count(d => d.VehicleType == VehicleType.Scooter);
         var car = items.Count(d => d.VehicleType == VehicleType.Car);
         var averageRating = items.SelectMany(d => d.Orders)
-                               .Where(o => o.ServiceReview != null)
-                               .Average(o => o.ServiceReview!.Rating);
+            .Where(o => o.ServiceReview != null)
+            .Select(o => (double?)o.ServiceReview!.Rating)
+            .Average() ?? 0.0;
 
-        return new DelivererStatisticsDto(total, available, onDuty, unavailable, bicycle, scooter, car, averageRating);
+        return new DelivererStatisticsDto(total, available, onDuty, unavailable, bicycle, scooter, car, (decimal)averageRating);
     }
 
     public async Task<IReadOnlyList<DelivererDto>> GetAvailableDeliverersListAsync(CancellationToken ct = default)
