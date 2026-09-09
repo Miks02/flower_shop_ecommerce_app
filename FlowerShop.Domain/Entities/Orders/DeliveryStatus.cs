@@ -10,8 +10,8 @@ public enum DeliveryStatus
     Prepared,
     [Display(Name = "Na putu")]
     InTransit,
-    [Display(Name = "Na putu")]
-    OnTheWay,
+    [Display(Name = "Uskoro stiže")]
+    AlmostOnDestination,
     [Display(Name = "Dostavljeno")]
     Delivered
 }

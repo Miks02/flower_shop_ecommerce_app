@@ -53,9 +53,14 @@ public class UpdateOrderStatusHandler(
                 $"Vaša porudžbina {orderNumber} je pripremljena i uskoro kreće ka vama.",
                 NotificationType.Information),
 
-            DeliveryStatus.OnTheWay or DeliveryStatus.InTransit => (
+            DeliveryStatus.InTransit => (
                 "Porudžbina je na putu",
                 $"Vaša porudžbina {orderNumber} je na putu ka odredištu. Očekujte isporuku uskoro.",
+                NotificationType.Information),
+
+            DeliveryStatus.AlmostOnDestination => (
+                "Porudžbina uskoro stiže",
+                $"Vaša porudžbina {orderNumber} uskoro stiže na odredište. Budite spremni da je preuzmete!",
                 NotificationType.Information),
 
             DeliveryStatus.Delivered => (
@@ -72,10 +77,9 @@ public class UpdateOrderStatusHandler(
         return (current, target) switch
         {
             (DeliveryStatus.Standby, DeliveryStatus.Prepared) => true,
-            (DeliveryStatus.Prepared, DeliveryStatus.OnTheWay) => true,
             (DeliveryStatus.Prepared, DeliveryStatus.InTransit) => true,
-            (DeliveryStatus.OnTheWay, DeliveryStatus.Delivered) => true,
-            (DeliveryStatus.InTransit, DeliveryStatus.Delivered) => true,
+            (DeliveryStatus.InTransit, DeliveryStatus.AlmostOnDestination) => true,
+            (DeliveryStatus.AlmostOnDestination, DeliveryStatus.Delivered) => true,
             _ => false
         };
     }

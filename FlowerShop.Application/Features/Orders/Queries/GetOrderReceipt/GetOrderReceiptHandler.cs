@@ -1,4 +1,5 @@
 using FlowerShop.Application.Common.Abstractions;
+using FlowerShop.Domain.Common;
 using FlowerShop.Domain.Entities.LoyaltyTransactions;
 using FlowerShop.Domain.Entities.Orders;
 using FlowerShop.SharedKernel.Results;
@@ -41,7 +42,7 @@ public class GetOrderReceiptHandler(IOrderRepository orderRepo) : IHandler
             BuyerPhoneNumber = order.User?.PhoneNumber ?? string.Empty,
             DelivererFullName = delivererName,
             DelivererPhoneNumber = delivererPhone,
-            TotalPrice = order.OrderPrice + 300m,
+            TotalPrice = order.OrderPrice + DeliveryPricing.StandardDeliveryFee,
             LoyaltyPointsSpent = loyaltyPointsSpent,
             ServiceRating = order.ServiceReview?.Rating,
             ReviewComment = order.ServiceReview?.Comment,
@@ -52,7 +53,7 @@ public class GetOrderReceiptHandler(IOrderRepository orderRepo) : IHandler
                 i.UnitPrice,
                 i.TotalPrice
             )).ToList(),
-            DeliveryFee = 300m
+            DeliveryFee = DeliveryPricing.StandardDeliveryFee
         };
 
         return Result<OrderReceiptDto>.Success(receipt);

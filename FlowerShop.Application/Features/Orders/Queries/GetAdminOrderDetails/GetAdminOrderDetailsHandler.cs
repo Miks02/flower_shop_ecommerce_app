@@ -1,4 +1,5 @@
 using FlowerShop.Application.Common.Abstractions;
+using FlowerShop.Domain.Common;
 using FlowerShop.Domain.Entities.Deliverers;
 using FlowerShop.Domain.Entities.LoyaltyTransactions;
 using FlowerShop.Domain.Entities.Orders;
@@ -62,7 +63,7 @@ public class GetAdminOrderDetailsHandler(
                 i.TotalPrice
             )).ToList(),
             AvailableDeliverers = availableDeliverers,
-            DeliveryFee = 300m
+            DeliveryFee = DeliveryPricing.StandardDeliveryFee
         };
 
         return Result<AdminOrderDetailsDto>.Success(dto);

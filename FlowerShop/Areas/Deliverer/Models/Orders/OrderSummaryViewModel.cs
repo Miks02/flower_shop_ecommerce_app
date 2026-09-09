@@ -7,10 +7,10 @@ namespace FlowerShop.Web.Areas.Deliverer.Models.Orders;
 public record OrderSummaryViewModel
 {
     public PagedResult<DelivererOrderDto> PagedOrders { get; init; } = null!;
-    public int TotalOrders { get; init; }
-    public int PendingOrders { get; init; }
-    public int InDeliveryOrders { get; init; }
-    public int CompletedOrders { get; init; }
+    public int TotalDeliveries { get; init; }
+    public int ActiveDeliveries { get; init; }
+    public int CompletedDeliveries { get; init; }
+    public decimal AverageRating { get; init; }
     public string? SearchBy { get; init; }
     public string? SortBy { get; init; } = "date_desc";
     public OrderStatus? SelectedStatus { get; init; }

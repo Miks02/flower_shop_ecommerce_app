@@ -18,7 +18,7 @@ public class GetDelivererOrdersHandler(IOrderRepository orderRepo) : IHandler
             request.PageSize,
             ct);
 
-        var stats = await orderRepo.GetAdminOrderStatsAsync(ct);
+        var stats = await orderRepo.GetDelivererOrderStatsAsync(request.DelivererId, ct);
 
         var mappedItems = pagedOrders.Items.Select(o =>
         {
@@ -66,11 +66,10 @@ public class GetDelivererOrdersHandler(IOrderRepository orderRepo) : IHandler
         return new GetDelivererOrdersResponse
         {
             PagedOrders = pagedResult,
-            TotalOrders = stats.TotalOrders,
-            PendingOrders = stats.PendingOrders,
-            UnassignedOrders = stats.UnassignedOrders,
-            InDeliveryOrders = stats.InDeliveryOrders,
-            CompletedOrders = stats.CompletedOrders
+            TotalDeliveries = stats.TotalDeliveries,
+            ActiveDeliveries = stats.ActiveDeliveries,
+            CompletedDeliveries = stats.CompletedDeliveries,
+            AverageRating = stats.AverageRating
         };
     }
 }

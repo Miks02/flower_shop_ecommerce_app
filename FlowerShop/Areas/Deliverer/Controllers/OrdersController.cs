@@ -47,10 +47,10 @@ public class OrdersController(
         var viewModel = new OrderSummaryViewModel
         {
             PagedOrders = summary.PagedOrders,
-            TotalOrders = summary.TotalOrders,
-            PendingOrders = summary.PendingOrders,
-            InDeliveryOrders = summary.InDeliveryOrders,
-            CompletedOrders = summary.CompletedOrders,
+            TotalDeliveries = summary.TotalDeliveries,
+            ActiveDeliveries = summary.ActiveDeliveries,
+            CompletedDeliveries = summary.CompletedDeliveries,
+            AverageRating = summary.AverageRating,
             SearchBy = searchBy,
             SortBy = sortBy,
             SelectedStatus = status,
