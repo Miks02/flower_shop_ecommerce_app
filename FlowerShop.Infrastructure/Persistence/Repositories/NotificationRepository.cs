@@ -13,7 +13,7 @@ namespace FlowerShop.Infrastructure.Persistence.Repositories
     {
         public async Task<IReadOnlyList<NotificationRecipient>> GetAllNotificationsByUserId(string userId)
         {
-            return await context.NotificationRecipients
+            return await Context.NotificationRecipients
                 .Where(nt => nt.UserId == userId)
                 .Include(nt => nt.Notification) 
                 .ToListAsync();
@@ -21,7 +21,7 @@ namespace FlowerShop.Infrastructure.Persistence.Repositories
 
         public async Task<int> MarkNotificationsAsRead(string userId)
         {
-            return await context.NotificationRecipients
+            return await Context.NotificationRecipients
                 .Where(nt => nt.UserId == userId) 
                 .ExecuteUpdateAsync(nt => nt.SetProperty(x => x.ReadAt, DateTime.UtcNow));
         }
@@ -35,7 +35,7 @@ namespace FlowerShop.Infrastructure.Persistence.Repositories
 
             }).ToList();
 
-            context.Add(notification);
+            Context.Add(notification);
         }
 
         public void Add(Notification notification, string userId)
@@ -46,12 +46,12 @@ namespace FlowerShop.Infrastructure.Persistence.Repositories
                 Notification = notification
             });
 
-            context.Notifications.Add(notification);
+            Context.Notifications.Add(notification);
         }
 
         public async Task<int> CountUnreadAsync(string userId, CancellationToken ct = default)
         {
-            return await context.NotificationRecipients
+            return await Context.NotificationRecipients
                 .CountAsync(r => r.UserId == userId && r.ReadAt == null, ct);
         }
     }

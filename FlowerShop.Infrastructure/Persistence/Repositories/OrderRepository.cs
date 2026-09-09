@@ -9,7 +9,7 @@ public class OrderRepository(AppDbContext context) : Repository<Order>(context),
 {
     public async Task<Order?> GetByIdAsync(int id, CancellationToken ct = default)
     {
-        return await context.Orders
+        return await Context.Orders
             .AsSplitQuery()
             .Include(o => o.LoyaltyTransactions)
             .Include(o => o.OrderItems)
@@ -22,7 +22,7 @@ public class OrderRepository(AppDbContext context) : Repository<Order>(context),
 
     public async Task<Order?> GetByIdForUserAsync(int id, string userId, CancellationToken ct = default)
     {
-        return await context.Orders
+        return await Context.Orders
             .AsSplitQuery()
             .Include(o => o.LoyaltyTransactions)
             .Include(o => o.OrderItems)
@@ -42,7 +42,7 @@ public class OrderRepository(AppDbContext context) : Repository<Order>(context),
         int pageSize,
         CancellationToken ct = default)
     {
-        var query = context.Orders
+        var query = Context.Orders
             .AsNoTracking()
             .AsSplitQuery()
             .Include(o => o.LoyaltyTransactions)
@@ -89,7 +89,7 @@ public class OrderRepository(AppDbContext context) : Repository<Order>(context),
 
     public async Task<(int TotalOrders, int PendingOrders, int InDeliveryOrders, int CompletedOrders)> GetUserOrderStatsAsync(string userId, CancellationToken ct = default)
     {
-        var userOrders = context.Orders.Where(o => o.UserId == userId);
+        var userOrders = Context.Orders.Where(o => o.UserId == userId);
 
         var total = await userOrders.CountAsync(ct);
         var pending = await userOrders.CountAsync(o => o.OrderStatus == OrderStatus.Pending, ct);
@@ -109,7 +109,7 @@ public class OrderRepository(AppDbContext context) : Repository<Order>(context),
         int pageSize,
         CancellationToken ct = default)
     {
-        var query = context.Orders
+        var query = Context.Orders
             .AsNoTracking()
             .AsSplitQuery()
             .Include(o => o.LoyaltyTransactions)
@@ -181,7 +181,7 @@ public class OrderRepository(AppDbContext context) : Repository<Order>(context),
         int pageSize,
         CancellationToken ct = default)
     {
-        var query = context.Orders
+        var query = Context.Orders
             .AsNoTracking()
             .AsSplitQuery()
             .Include(o => o.LoyaltyTransactions)
@@ -239,7 +239,7 @@ public class OrderRepository(AppDbContext context) : Repository<Order>(context),
 
     public async Task<(int TotalOrders, int PendingOrders, int UnassignedOrders, int InDeliveryOrders, int CompletedOrders, int ActiveOrders)> GetAdminOrderStatsAsync(CancellationToken ct = default)
     {
-        var orders = context.Orders.AsNoTracking();
+        var orders = Context.Orders.AsNoTracking();
 
         var total = await orders.CountAsync(ct);
         var pending = await orders.CountAsync(o => o.OrderStatus == OrderStatus.Pending, ct);
@@ -255,7 +255,7 @@ public class OrderRepository(AppDbContext context) : Repository<Order>(context),
     {
         var today = DateTime.UtcNow.Date;
 
-        var todaysOrders = context.Orders
+        var todaysOrders = Context.Orders
             .AsNoTracking()
             .Where(o => o.CreatedAt.Date == today && o.OrderStatus != OrderStatus.Cancelled);
 
@@ -267,7 +267,7 @@ public class OrderRepository(AppDbContext context) : Repository<Order>(context),
 
     public async Task<IReadOnlyList<Order>> GetRecentOrdersAsync(int count, CancellationToken ct = default)
     {
-        return await context.Orders
+        return await Context.Orders
             .AsNoTracking()
             .Include(o => o.User)
             .OrderByDescending(o => o.CreatedAt)
@@ -277,7 +277,7 @@ public class OrderRepository(AppDbContext context) : Repository<Order>(context),
 
     public async Task<IReadOnlyList<Order>> GetRecentOrdersForUserAsync(string userId, int count, CancellationToken ct = default)
     {
-        return await context.Orders
+        return await Context.Orders
             .AsNoTracking()
             .Where(o => o.UserId == userId)
             .OrderByDescending(o => o.CreatedAt)
@@ -287,7 +287,7 @@ public class OrderRepository(AppDbContext context) : Repository<Order>(context),
 
     public async Task<(int TotalDeliveries, int ActiveDeliveries, int CompletedDeliveries, decimal AverageRating)> GetDelivererOrderStatsAsync(string delivererId, CancellationToken ct = default)
     {
-        var orders = context.Orders.AsNoTracking().Where(o => o.DelivererId == delivererId);
+        var orders = Context.Orders.AsNoTracking().Where(o => o.DelivererId == delivererId);
 
         var total = await orders.CountAsync(ct);
         var active = await orders.CountAsync(o => o.OrderStatus != OrderStatus.Completed && o.OrderStatus != OrderStatus.Cancelled, ct);
@@ -305,11 +305,11 @@ public class OrderRepository(AppDbContext context) : Repository<Order>(context),
 
     public OrderItem? GetItemById(int id)
     {
-        return context.OrderItems.FirstOrDefault(i => i.Id == id);
+        return Context.OrderItems.FirstOrDefault(i => i.Id == id);
     }
 
     public void RemoveItem(OrderItem orderItem)
     {
-        context.OrderItems.Remove(orderItem);
+        Context.OrderItems.Remove(orderItem);
     }
 }
