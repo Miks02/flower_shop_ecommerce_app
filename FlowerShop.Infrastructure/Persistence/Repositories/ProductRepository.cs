@@ -65,7 +65,7 @@ public class ProductRepository : Repository<Product>, IProductRepository
                 Stock = p.Stock,
                 Description = p.Description,
                 CategoryName = p.Category.Name,
-                AverageRating = p.ProductReviews.Select(pr => pr.Rating).Average(),
+                AverageRating = p.ProductReviews.Any() ? p.ProductReviews.Select(pr => pr.Rating).Average() : (decimal?)null,
                 Occasions = p.Occasions.Select(o => o.Name).ToList(),
                 ProductFlowers = p.ProductFlowers.Select(pf => new ProductFlowerDto
                 {
@@ -138,7 +138,7 @@ public class ProductRepository : Repository<Product>, IProductRepository
                 Stock = p.Stock,
                 Description = p.Description,
                 CategoryName = p.Category.Name,
-                AverageRating = p.ProductReviews.Select(pr => pr.Rating).Average(),
+                AverageRating = p.ProductReviews.Any() ? p.ProductReviews.Select(pr => pr.Rating).Average() : (decimal?)null,
                 Occasions = p.Occasions.Select(o => o.Name).ToList(),
                 ProductFlowers = p.ProductFlowers.Select(pf => new ProductFlowerDto
                 {

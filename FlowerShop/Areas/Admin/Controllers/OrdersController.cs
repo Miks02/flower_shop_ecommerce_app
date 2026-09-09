@@ -132,7 +132,7 @@ public class OrdersController(
         var result = await assignOrderHandler.Handle(command, ct);
         if (!result.IsSuccess)
         {
-            var errorMessage = result.Errors.FirstOrDefault().Description ?? "Došlo je do greške prilikom dodele dostavljača.";
+            var errorMessage = result.Errors.FirstOrDefault()?.Description ?? "Došlo je do greške prilikom dodele dostavljača.";
             Response.ShowError(errorMessage);
         }
         else

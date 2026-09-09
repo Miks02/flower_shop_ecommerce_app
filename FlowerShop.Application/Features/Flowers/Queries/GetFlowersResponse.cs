@@ -4,5 +4,5 @@ namespace FlowerShop.Application.Features.Flowers.Queries;
 
 public record GetFlowersResponse
 {
-    public IReadOnlyList<FlowerDto> Flowers { get; init; }
+    public IReadOnlyList<FlowerDto> Flowers { get; init; } = [];
 }

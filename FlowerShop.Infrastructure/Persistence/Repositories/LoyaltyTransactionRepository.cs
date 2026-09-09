@@ -8,7 +8,7 @@ public class LoyaltyTransactionRepository(AppDbContext context) : Repository<Loy
 {
     public async Task<LoyaltyTransaction?> GetMostRecentLoyaltyTransaction(string userId, CancellationToken ct = default)
     {
-        return await context.LoyaltyTransactions
+        return await Context.LoyaltyTransactions
             .AsNoTracking()
             .Where(lt => lt.UserId == userId)
             .OrderByDescending(lt => lt.TransactionDate)
@@ -17,7 +17,7 @@ public class LoyaltyTransactionRepository(AppDbContext context) : Repository<Loy
 
     public async Task<int> GetCurrentLoyaltyPoints(string userId, CancellationToken ct = default)
     {
-        return await context.LoyaltyTransactions
+        return await Context.LoyaltyTransactions
             .AsNoTracking()
             .Where(lt => lt.UserId == userId)
             .OrderByDescending(lt => lt.TransactionDate)
@@ -27,7 +27,7 @@ public class LoyaltyTransactionRepository(AppDbContext context) : Repository<Loy
 
     public async Task<LoyaltyTransaction?> GetLastLoyaltyTransactionByOrderId(int orderId, CancellationToken ct = default)
     {
-        return await context.LoyaltyTransactions
+        return await Context.LoyaltyTransactions
             .AsNoTracking()
             .Where(lt => lt.OrderId == orderId)
             .OrderByDescending(lt => lt.TransactionDate)
@@ -36,14 +36,14 @@ public class LoyaltyTransactionRepository(AppDbContext context) : Repository<Loy
     
     public async Task<int> GetAllSpentLoyaltyPoints(CancellationToken ct = default)
     {
-        return await context.LoyaltyTransactions
+        return await Context.LoyaltyTransactions
             .Where(lt => lt.TransactionType == TransactionType.Redeemed)
             .SumAsync(lt => lt.PreviousPoints, ct);
     }
 
     public async Task<int> GetAllSpentLoyaltyPointsByUserId(string userId, CancellationToken ct = default)
     {
-        return await context.LoyaltyTransactions
+        return await Context.LoyaltyTransactions
             .Where(lt => lt.TransactionType == TransactionType.Redeemed && lt.UserId == userId)
             .SumAsync(lt => lt.PreviousPoints, ct);
     }

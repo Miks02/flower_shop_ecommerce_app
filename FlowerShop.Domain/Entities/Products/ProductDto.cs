@@ -5,7 +5,7 @@ namespace FlowerShop.Domain.Entities.Products;
 public record ProductDto
 {
     public int Id { get; set; }
-    public string Name { get; set; }
+    public required string Name { get; set; }
     public string? Description { get; set; }
     public string ProductImage { get; set; } = null!;
     public decimal Price { get; set; }

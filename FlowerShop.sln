@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlowerShop.Infrastructure",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlowerShop.Application", "FlowerShop.Application\FlowerShop.Application.csproj", "{B4D42CDC-DFCD-46C8-B5D3-7556D83A9E99}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlowerShop.UnitTests", "FlowerShop.UnitTests\FlowerShop.UnitTests.csproj", "{4A39DC8D-1745-4B19-95A4-5AC19E39219E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{B4D42CDC-DFCD-46C8-B5D3-7556D83A9E99}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B4D42CDC-DFCD-46C8-B5D3-7556D83A9E99}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B4D42CDC-DFCD-46C8-B5D3-7556D83A9E99}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4A39DC8D-1745-4B19-95A4-5AC19E39219E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4A39DC8D-1745-4B19-95A4-5AC19E39219E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4A39DC8D-1745-4B19-95A4-5AC19E39219E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4A39DC8D-1745-4B19-95A4-5AC19E39219E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
