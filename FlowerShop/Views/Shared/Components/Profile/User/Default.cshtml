@@ -1,3 +1,4 @@
+@using FlowerShop.Domain.Entities.Orders
 @using FlowerShop.Domain.Enums
 @using FlowerShop.Web.ViewModels.Components
 @model UserProfileViewModel
@@ -45,30 +46,6 @@
                         <h5 class="text-red-900 font-semibold">@Model.PhoneNumber</h5>
                     </div>
                 </div>
-                <div class="flex flex-wrap w-full gap-5">
-                    <div class="flex flex-col gap-1 p-3 w-auto bg-red-200 flex-1 shadow-xl w-25">
-                        <div class="text-gray-500 relative">
-                            <i class="fa-solid fa-location-pin mr-2"></i>
-                            <span>Adresa</span>
-                            <button class="absolute right-0 @(String.IsNullOrEmpty(Model.Address) ? "" : "hidden")" >
-                                <i class="text-2xl fa-solid fa-plus text-blue-600 hover:text-blue-400 transition-colors duration-200"></i> 
-                            </button>
-                        </div>
-                            
-                        @if (string.IsNullOrEmpty(Model.Address))
-                        {
-                            <div class="flex justify-between w-full">
-                                <h5 class="text-red-900 font-semibold">Nemate podrazumevanu adresu</h5>
-                                    
-                            </div>
-                        }
-                        else
-                        {
-                            <h5 class="text-red-900 font-semibold break-words">@Model.Address</h5>
-                        }
-                    </div>
-                </div>
-                    
                     
 
             </div>
@@ -92,11 +69,63 @@
                 <span class="text-center text-gray-600">Predstojeće porudžbine</span>
             </div>
 
-                
+
         </div>
-            
+
+        <div class="flex flex-col shadow-xl bg-red-100 rounded-xl w-full overflow-hidden transition-all duration-200 hover:-translate-y-1">
+            <div class="text-red-100 gradient-red px-4 py-2 rounded-t-xl w-full flex items-center justify-between">
+                <h4 class="text-red-100 font-semibold flex items-center gap-2">
+                    <i class="fa-solid fa-clock-rotate-left"></i>
+                    Poslednje porudžbine
+                </h4>
+                <a hx-get="/User/Orders" hx-target="#user-content" hx-swap="innerHTML" hx-push-url="true" class="text-xs bg-white/20 hover:bg-white/30 px-3 py-1 rounded-lg transition-colors cursor-pointer">Pogledaj sve</a>
+            </div>
+            <div class="divide-y divide-red-200/60">
+                @if (Model.RecentOrders.Count == 0)
+                {
+                    <div class="p-4 text-center text-gray-500 text-sm">Nemate porudžbina.</div>
+                }
+                else
+                {
+                    @foreach (var order in Model.RecentOrders)
+                    {
+                        <div class="flex justify-between items-center p-3 gap-2">
+                            <div class="flex flex-col">
+                                <span class="font-mono font-bold text-red-800 text-sm">#@order.OrderNumber</span>
+                                <span class="text-xs text-gray-500">@order.CreatedAt.ToString("dd.MM.yyyy")</span>
+                            </div>
+                            <span class="font-bold text-sm">@order.OrderPrice.ToString("N0") RSD</span>
+                            @switch (order.OrderStatus)
+                            {
+                                case OrderStatus.Pending:
+                                    <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold bg-amber-100 text-amber-800 border border-amber-200">
+                                        <i class="fa-solid fa-hourglass-half text-[10px]"></i> Na čekanju
+                                    </span>
+                                    break;
+                                case OrderStatus.Confirmed:
+                                    <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold bg-blue-100 text-blue-800 border border-blue-200">
+                                        <i class="fa-solid fa-check text-[10px]"></i> Potvrđeno
+                                    </span>
+                                    break;
+                                case OrderStatus.Completed:
+                                    <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-800 border border-emerald-200">
+                                        <i class="fa-solid fa-circle-check text-[10px]"></i> Završeno
+                                    </span>
+                                    break;
+                                case OrderStatus.Cancelled:
+                                    <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold bg-gray-100 text-gray-700 border border-gray-300">
+                                        <i class="fa-solid fa-ban text-[10px]"></i> Otkazano
+                                    </span>
+                                    break;
+                            }
+                        </div>
+                    }
+                }
+            </div>
+        </div>
+
     </div>
-        
+
     <div class="flex flex-col w-full lg:w-[50%] gap-5">
             
         <div class="flex flex-col gap-3 p-5 shadow-xl bg-red-100 rounded-xl transition-all duration-200 hover:-translate-y-1">
@@ -119,7 +148,7 @@
                     <i class="fa-solid fa-user mr-2"></i>
                     Izmeni profil
                 </button>
-                <button class="btn-classic hover:bg-gray-200 text-gray-700">
+                <button hx-get="/User/Orders" hx-target="#user-content" hx-swap="innerHTML" hx-push-url="true" class="btn-classic hover:bg-gray-200 text-gray-700">
                     <i class="fa-solid fa-box mr-2"></i>
                     Pregled porudžbina
                 </button>

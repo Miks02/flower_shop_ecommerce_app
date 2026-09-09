@@ -1,7 +1,8 @@
+@model FlowerShop.Web.Areas.Admin.Models.Dashboard.AdminDashboardViewModel
 
 @{
     ViewBag.Title = "Statistika";
     Layout = "_AdminLayout";
 }
 
-@await Html.PartialAsync("_DashboardPartial")
+@await Html.PartialAsync("_DashboardPartial", Model)
