@@ -45,7 +45,7 @@
                 hx-swap="innerHTML"
                 hx-push-url="true"
                 class="group flex cursor-pointer p-2 items-center rounded-lg transition-all duration-300 hover:bg-orange-500/10">
-                <i class="fa-solid fa-heart mr-5 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:text-orange-300"></i>
+                <i class="fa-solid fa-box-open mr-5 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:text-orange-300"></i>
                 <span class="transition-colors duration-300 group-hover:text-orange-200">Proizvodi</span>
             </a>
         </li>
@@ -59,16 +59,7 @@
                 <span class="transition-colors duration-300 group-hover:text-orange-200">Dostavljači</span>
             </a>
         </li>
-        <li>
-            <a  hx-get="/Admin/Profile/Support"
-                hx-target="#user-content"
-                hx-swap="innerHTML"
-                hx-push-url="true"
-                class="group flex cursor-pointer p-2 items-center rounded-lg transition-all duration-300 hover:bg-orange-500/10">
-                <i class="fa-solid fa-handshake-angle mr-4 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:text-orange-300"></i>
-                <span class="transition-colors duration-300 group-hover:text-orange-200">Podrška</span>
-            </a>
-        </li>
+        
         <li>
             <a  href="/Admin/Profile/Settings"
                 hx-get="/Admin/Profile/Settings"
@@ -80,6 +71,7 @@
                 <span class="transition-colors duration-300 group-hover:text-orange-200">Podešavanje</span>
             </a>
         </li>
+ 
     </ul>
     <div class="mt-auto border-t border-t-red-100 pt-3 text-orange-100 text-lg">
         <a  asp-area="" asp-controller="Home" asp-action="Index"

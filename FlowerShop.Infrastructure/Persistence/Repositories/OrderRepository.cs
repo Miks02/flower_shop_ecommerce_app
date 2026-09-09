@@ -237,7 +237,7 @@ public class OrderRepository(AppDbContext context) : Repository<Order>(context),
         return new PagedResult<Order>(items, pageIndex, pageSize, totalCount, items.Count);
     }
 
-    public async Task<(int TotalOrders, int PendingOrders, int UnassignedOrders, int InDeliveryOrders, int CompletedOrders)> GetAdminOrderStatsAsync(CancellationToken ct = default)
+    public async Task<(int TotalOrders, int PendingOrders, int UnassignedOrders, int InDeliveryOrders, int CompletedOrders, int ActiveOrders)> GetAdminOrderStatsAsync(CancellationToken ct = default)
     {
         var orders = context.Orders.AsNoTracking();
 
@@ -246,8 +246,43 @@ public class OrderRepository(AppDbContext context) : Repository<Order>(context),
         var unassigned = await orders.CountAsync(o => o.DelivererId == null && o.OrderStatus != OrderStatus.Cancelled && o.OrderStatus != OrderStatus.Completed, ct);
         var inDelivery = await orders.CountAsync(o => o.DeliveryStatus == DeliveryStatus.InTransit || o.DeliveryStatus == DeliveryStatus.OnTheWay, ct);
         var completed = await orders.CountAsync(o => o.OrderStatus == OrderStatus.Completed, ct);
+        var active = await orders.CountAsync(o => o.OrderStatus != OrderStatus.Completed && o.OrderStatus != OrderStatus.Cancelled, ct);
 
-        return (total, pending, unassigned, inDelivery, completed);
+        return (total, pending, unassigned, inDelivery, completed, active);
+    }
+
+    public async Task<(decimal TotalSales, int NewOrdersCount)> GetTodaySalesStatsAsync(CancellationToken ct = default)
+    {
+        var today = DateTime.UtcNow.Date;
+
+        var todaysOrders = context.Orders
+            .AsNoTracking()
+            .Where(o => o.CreatedAt.Date == today && o.OrderStatus != OrderStatus.Cancelled);
+
+        var totalSales = await todaysOrders.SumAsync(o => (decimal?)o.OrderPrice, ct) ?? 0m;
+        var newOrdersCount = await todaysOrders.CountAsync(ct);
+
+        return (totalSales, newOrdersCount);
+    }
+
+    public async Task<IReadOnlyList<Order>> GetRecentOrdersAsync(int count, CancellationToken ct = default)
+    {
+        return await context.Orders
+            .AsNoTracking()
+            .Include(o => o.User)
+            .OrderByDescending(o => o.CreatedAt)
+            .Take(count)
+            .ToListAsync(ct);
+    }
+
+    public async Task<IReadOnlyList<Order>> GetRecentOrdersForUserAsync(string userId, int count, CancellationToken ct = default)
+    {
+        return await context.Orders
+            .AsNoTracking()
+            .Where(o => o.UserId == userId)
+            .OrderByDescending(o => o.CreatedAt)
+            .Take(count)
+            .ToListAsync(ct);
     }
 
     public async Task<(int TotalDeliveries, int ActiveDeliveries, int CompletedDeliveries, decimal AverageRating)> GetDelivererOrderStatsAsync(string delivererId, CancellationToken ct = default)

@@ -195,4 +195,9 @@ public class ProductRepository : Repository<Product>, IProductRepository
     {
         return await _context.Products.AnyAsync(p => p.Name == name, ct);
     }
+
+    public async Task<int> CountAvailableProductsAsync(CancellationToken ct = default)
+    {
+        return await _context.Products.CountAsync(p => !p.IsDeleted, ct);
+    }
 }
