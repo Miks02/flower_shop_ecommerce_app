@@ -21,88 +21,110 @@ public class CreateOrderHandler(
 
     public async Task<Result<CreateOrderResponse>> Handle(CreateOrderCommand command, CancellationToken ct = default)
     {
-          var outOfStockProducts = await productRepo.CheckStockForMultipleProductsAsync(
-                command.OrderItems.Select(oi => (oi.ProductId, oi.Quantity)).ToList(),
-                ct);
+        var requestedQuantities = command.OrderItems
+            .GroupBy(oi => oi.ProductId)
+            .ToDictionary(g => g.Key, g => g.Sum(oi => oi.Quantity));
 
-            if (outOfStockProducts.Any())
-                return Result<CreateOrderResponse>.Failure(OrderError.ItemsOutOfStock(outOfStockProducts));
+        var products = await productRepo.GetProductsByIdsAsync(requestedQuantities.Keys.ToList(), ct);
+        var productsById = products.ToDictionary(p => p.Id);
 
-            var currentPoints = await loyaltyRepo.GetCurrentLoyaltyPoints(command.BuyerId, ct);
+        var missingProductIds = requestedQuantities.Keys
+            .Where(id => !productsById.ContainsKey(id))
+            .ToList();
 
-            if (command.UseLoyaltyPoints && currentPoints < MinPointsToRedeem)
-                return Result<CreateOrderResponse>.Failure(LoyaltyTransactionErrors.InsufficientPoints());
+        if (missingProductIds.Any())
+            return Result<CreateOrderResponse>.Failure(ProductError.ProductsNotFound(missingProductIds));
 
-            var newOrder = new Order
+        var outOfStockProducts = requestedQuantities
+            .Where(rq => rq.Value > productsById[rq.Key].Stock)
+            .Select(rq => productsById[rq.Key].Name)
+            .ToList();
+
+        if (outOfStockProducts.Any())
+            return Result<CreateOrderResponse>.Failure(OrderError.ItemsOutOfStock(outOfStockProducts));
+
+        var currentPoints = await loyaltyRepo.GetCurrentLoyaltyPoints(command.BuyerId, ct);
+
+        if (command.UseLoyaltyPoints && currentPoints < MinPointsToRedeem)
+            return Result<CreateOrderResponse>.Failure(LoyaltyTransactionErrors.InsufficientPoints());
+
+        var newOrder = new Order
+        {
+            OrderDate = command.OrderDate,
+            Note = command.Note,
+            RecipientFullName = command.RecipientFullName,
+            RecipientPhoneNumber = command.RecipientPhoneNumber,
+            ZipCode = command.ZipCode,
+            City = command.City,
+            OrderAddress = command.OrderAddress,
+            UserId = command.BuyerId,
+            OrderPrice = command.OrderItems.Sum(oi => oi.Quantity * oi.UnitPrice),
+            OrderItems = command.OrderItems.Select(oi => new OrderItem
             {
-                OrderDate = command.OrderDate,
-                Note = command.Note,
-                RecipientFullName = command.RecipientFullName,
-                RecipientPhoneNumber = command.RecipientPhoneNumber,
-                ZipCode = command.ZipCode,
-                City = command.City,
-                OrderAddress = command.OrderAddress,
-                UserId = command.BuyerId,
-                OrderPrice = command.OrderItems.Sum(oi => oi.Quantity * oi.UnitPrice),
-                OrderItems = command.OrderItems.Select(oi => new OrderItem
-                {
-                    ProductName = oi.ProductName,
-                    ProductImagePath = oi.ProductImagePath,
-                    Quantity = oi.Quantity,
-                    UnitPrice = oi.UnitPrice
-                }).ToList()
-            };
+                ProductName = oi.ProductName,
+                ProductImagePath = oi.ProductImagePath,
+                Quantity = oi.Quantity,
+                UnitPrice = oi.UnitPrice
+            }).ToList()
+        };
 
-            var pointsBalanceAfterRedeem = currentPoints;
+        var pointsBalanceAfterRedeem = currentPoints;
 
-            if (command.UseLoyaltyPoints)
-            {
-                newOrder.OrderPrice = currentPoints > newOrder.OrderPrice
-                    ? 0
-                    : newOrder.OrderPrice - currentPoints;
+        if (command.UseLoyaltyPoints)
+        {
+            newOrder.OrderPrice = currentPoints > newOrder.OrderPrice
+                ? 0
+                : newOrder.OrderPrice - currentPoints;
 
-                pointsBalanceAfterRedeem = 0;
-                
-                orderRepo.Add(newOrder);
-                loyaltyRepo.Add(new LoyaltyTransaction
-                {
-                    TransactionType = TransactionType.Redeemed,
-                    UserId = command.BuyerId,
-                    Order = newOrder, 
-                    CurrentPoints = pointsBalanceAfterRedeem,
-                    PreviousPoints = currentPoints
-                });
-            }
-            else 
-                orderRepo.Add(newOrder);
+            pointsBalanceAfterRedeem = 0;
 
+            orderRepo.Add(newOrder);
             loyaltyRepo.Add(new LoyaltyTransaction
             {
-                TransactionType = TransactionType.Earned,
+                TransactionType = TransactionType.Redeemed,
                 UserId = command.BuyerId,
-                Order = newOrder, 
-                CurrentPoints = pointsBalanceAfterRedeem + PointsEarnedPerOrder,
+                Order = newOrder,
+                CurrentPoints = pointsBalanceAfterRedeem,
                 PreviousPoints = currentPoints
             });
+        }
+        else
+            orderRepo.Add(newOrder);
 
-            var cart = await cartRepo.GetByUserIdAsync(command.BuyerId, ct);
-            if (cart is not null)
-                cartRepo.Remove(cart);
+        loyaltyRepo.Add(new LoyaltyTransaction
+        {
+            TransactionType = TransactionType.Earned,
+            UserId = command.BuyerId,
+            Order = newOrder,
+            CurrentPoints = pointsBalanceAfterRedeem + PointsEarnedPerOrder,
+            PreviousPoints = currentPoints
+        });
 
-            await unitOfWork.SaveAsync(ct); 
-        
-            await notificationService.SendNotificationAsync(command.BuyerId,
-                "Porudžbina",
-                $"Vaša porudžbina #{newOrder.OrderNumber} je kreirana.",
-                NotificationType.Success,
-                NotificationEntityType.Order, newOrder.Id);
-            
-            await notificationService.SendNotificationsToAllAdminsAsync(
-                "Nova porudžbina",
-                $"Kreirana je nova porudžbina #{newOrder.OrderNumber}.",
-                NotificationType.Information,
-                NotificationEntityType.Order, newOrder.Id);
-            
-            return Result<CreateOrderResponse>.Success(new CreateOrderResponse(newOrder.Id, newOrder.OrderNumber));
-    }   
+        foreach (var (productId, quantity) in requestedQuantities)
+        {
+            var product = productsById[productId];
+            product.Stock -= quantity;
+            productRepo.Update(product);
+        }
+
+        var cart = await cartRepo.GetByUserIdAsync(command.BuyerId, ct);
+        if (cart is not null)
+            cartRepo.Remove(cart);
+
+        await unitOfWork.SaveAsync(ct);
+
+        await notificationService.SendNotificationAsync(command.BuyerId,
+            "Porudžbina",
+            $"Vaša porudžbina #{newOrder.OrderNumber} je kreirana.",
+            NotificationType.Success,
+            NotificationEntityType.Order, newOrder.Id);
+
+        await notificationService.SendNotificationsToAllAdminsAsync(
+            "Nova porudžbina",
+            $"Kreirana je nova porudžbina #{newOrder.OrderNumber}.",
+            NotificationType.Information,
+            NotificationEntityType.Order, newOrder.Id);
+
+        return Result<CreateOrderResponse>.Success(new CreateOrderResponse(newOrder.Id, newOrder.OrderNumber));
+    }
 }

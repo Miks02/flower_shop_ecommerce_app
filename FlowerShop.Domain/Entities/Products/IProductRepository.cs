@@ -23,12 +23,10 @@ public interface IProductRepository
         int priceRange,
         CancellationToken ct = default);
     Task<Product?> GetByIdAsync(int id, CancellationToken ct = default);
+    Task<IReadOnlyList<Product>> GetProductsByIdsAsync(IReadOnlyList<int> ids, CancellationToken ct = default);
     void Add(Product product);
     void Update(Product product);
     void Remove(Product product);
     Task<bool> ExistsAsync(int id, CancellationToken ct = default);
     Task<bool> ExistsByNameAsync(string name, CancellationToken ct = default);
-    Task<IReadOnlyList<string>> CheckStockForMultipleProductsAsync(
-        IReadOnlyList<(int ProductId, int Quantity)> productQuantities,
-        CancellationToken ct = default);
 }
