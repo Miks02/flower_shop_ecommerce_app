@@ -16,7 +16,7 @@ public class UserProvider(IHttpContextAccessor http, AppDbContext context) : IUs
     
     public string GetCurrentUserId()
     {
-        return http.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier) 
+        return http.HttpContext?.User.FindFirstValue(ClaimTypes.NameIdentifier)
                ?? throw new UnauthorizedAccessException();
     }
 
