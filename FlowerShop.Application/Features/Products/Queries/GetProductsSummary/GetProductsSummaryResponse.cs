@@ -7,7 +7,7 @@ namespace FlowerShop.Application.Features.Products.Queries.GetProductsSummary;
 
 public record GetProductsSummaryResponse
 {
-    public PagedResult<ProductDto> PagedProducts { get; set; }
-    public IReadOnlyList<CategoryDto> Categories { get; set; }
-    public IReadOnlyList<OccasionDto> Occasions { get; set; }
+    public PagedResult<ProductDto> PagedProducts { get; set; } = null!;
+    public IReadOnlyList<CategoryDto> Categories { get; set; } = [];
+    public IReadOnlyList<OccasionDto> Occasions { get; set; } = [];
 }
