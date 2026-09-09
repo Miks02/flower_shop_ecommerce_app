@@ -44,4 +44,5 @@ public interface IOrderRepository
     Task<(decimal TotalSales, int NewOrdersCount)> GetTodaySalesStatsAsync(CancellationToken ct = default);
     Task<IReadOnlyList<Order>> GetRecentOrdersAsync(int count, CancellationToken ct = default);
     Task<IReadOnlyList<Order>> GetRecentOrdersForUserAsync(string userId, int count, CancellationToken ct = default);
+    Task<bool> HasActiveOrdersAsync(string delivererId, int excludeOrderId, CancellationToken ct = default);
 }

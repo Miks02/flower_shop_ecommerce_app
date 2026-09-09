@@ -303,6 +303,15 @@ public class OrderRepository(AppDbContext context) : Repository<Order>(context),
         return (total, active, completed, averageRating);
     }
 
+    public async Task<bool> HasActiveOrdersAsync(string delivererId, int excludeOrderId, CancellationToken ct = default)
+    {
+        return await Context.Orders.AsNoTracking()
+            .AnyAsync(o => o.DelivererId == delivererId
+                           && o.Id != excludeOrderId
+                           && o.OrderStatus != OrderStatus.Completed
+                           && o.OrderStatus != OrderStatus.Cancelled, ct);
+    }
+
     public OrderItem? GetItemById(int id)
     {
         return Context.OrderItems.FirstOrDefault(i => i.Id == id);
